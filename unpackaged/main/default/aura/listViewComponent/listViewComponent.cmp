@@ -1,0 +1,22 @@
+<aura:component implements="flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId"  access="global" > 
+    <aura:attribute name="obj_Listview" type="String" default="" access="global"/>
+    <aura:attribute name="objectName" type="String" default="Account" />
+    <aura:attribute name="listViews" type="String" default="AllAccounts" />
+    <aura:attribute name="numOfRecordsToDisplay" type="Integer" default="8" access="global"/>
+    <aura:attribute name="enableInlineEdit" type="Boolean" default="true" access="global"/>
+    <aura:attribute name="hidelistviewactionbar" type="Boolean" default="false" access="global"/>
+    <aura:attribute name="hidesearchbar" type="Boolean" default="false" access="global"/>
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
+    
+    
+    <div style="height:auto;max-height:420px;overflow-y:auto;background-color:rgb(243, 242, 242);">
+    <lightning:listView aura:id="listViewAccounts"
+    objectApiName="{!v.objectName}"
+    listName="{!v.listViews}"
+    rows="{!v.numOfRecordsToDisplay}"                   
+    showSearchBar="{!!v.hidesearchbar}"                
+    showActionBar="{!!v.hidelistviewactionbar}"
+    enableInlineEdit="{!v.enableInlineEdit}"
+    showRowLevelActions="true"/>
+    </div>
+</aura:component>

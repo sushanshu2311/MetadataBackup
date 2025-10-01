@@ -1,0 +1,70 @@
+.cls_mainNev {
+    display: block;
+    padding-left: 21px !important
+}
+
+.cls_marignRight {
+    margin-right: 22px;
+}
+
+.allinteraction.small_modal .slds-modal__container {
+    max-width: 25rem !important;
+}
+
+.gap_10 {
+    gap: 10px;
+}
+
+.no_underline {
+    text-decoration: none;
+    font-size: 14px;
+}
+
+.fn-wt300 {
+    font-weight: 300;
+}
+
+.italic-font {
+    font-style: italic;
+}
+.help_txt{
+
+    padding-left: 4px;
+
+    position: relative;
+
+    top: -2px;
+
+}
+
+.headerSearch{
+    display: flex;
+    gap: 14px;
+    align-items: center;
+}
+.addto{
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    justify-content: end;
+}
+.d_none{
+    display:none;
+}
+.back_grey{
+    border: 1px solid #dddd;
+    background: #f3f3f3;
+}
+/* .hovLink:hover{
+    color:#0176d7;
+} */
+.slds-modal{
+    z-index:101;
+}
+.slds-backdrop{
+    z-index: 100;
+    height: 95vh !important;
+}
+.cur_point{
+    cursor: pointer;
+}

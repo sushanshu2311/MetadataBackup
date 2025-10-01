@@ -1,0 +1,96 @@
+<template>
+    <div class="slds-theme_default">
+        <template if:true={isloading}>
+            <lightning-spinner alternative-text="Loading"></lightning-spinner>
+        </template>
+        <template if:true={isopenmodal}>
+            <div>
+                <section role="dialog" tabindex="-1" aria-labelledby="modal-heading-01" aria-modal="true"
+                    aria-describedby="modal-content-id-1" class="slds-modal slds-fade-in-open" style="top:50">
+                    <div class="slds-modal__container" style="width: 25rem;">
+                        <header class="slds-modal__header">
+                            <button class="slds-button slds-button_icon slds-modal__close slds-button_icon-inverse"
+                                title="Close" onclick={closeModal}>
+                                <lightning-icon icon-name="utility:close" variant="inverse" alternative-text="Close">
+                                </lightning-icon>
+                                <span class="slds-assistive-text">Close</span>
+                            </button>
+                            <h2 id="modal-heading-01" class="slds-text-heading_medium slds-hyphenate">
+                                Search your Values here
+                            </h2>
+                        </header>
+                        <div class="slds-scrollable slds-modal__content" id="modal-content-id-1">
+                            <lightning-card title="Lookup" icon-name="standard:search">
+                                <template if:true={showsearch}>
+                                    <lightning-layout>
+                                        <lightning-layout-Item size="7">
+                                            <div class="slds-m-left_small">
+                                                <lightning-input name="enter-search" value={searchparam}
+                                                    onchange={setSearchParam} type="search"
+                                                    placeholder="Enter your Search Text"></lightning-input>
+                                            </div>
+                                        </lightning-layout-Item>
+                                        <lightning-layout-Item size="2">
+                                            <div class="slds-m-around_medium">
+                                                <lightning-button variant="brand-outline" disabled={disablegobutton}
+                                                    label="Go" title="Go" onclick={handleSearch}></lightning-button>
+                                            </div>
+                                        </lightning-layout-Item>
+                                        <lightning-layout-Item size="3">
+                                            <span></span>
+                                        </lightning-layout-Item>
+                                    </lightning-layout>
+                                </template>
+                                <div class="slds-grid slds-wrap slds-m-top_x-small slds-m-bottom_small">
+                                    <div class="slds-col slds-size_12-of-12">
+                                        <template if:true={title}>
+                                            <lightning-formatted-text value={title}></lightning-formatted-text>
+                                        </template>
+                                    </div>
+                                    <template if:true={currentmessage}>
+                                        <div class="slds-col slds-size_12-of-12 slds-m-left_small slds-m-bottom_small">
+                                            <lightning-formatted-text value={currentmessage}>
+                                            </lightning-formatted-text>
+                                        </div>
+                                    </template>
+                                </div>
+                                <template if:true={lookupvalues}>
+                                    <template if:false={isPicklist}>
+                                        <a style="position:relative; left:11px;" onclick={resetAll}>
+                                            Deselect All
+                                        </a>
+                                        <div id="sample" class="slds-var-m-around_small"
+                                            style="overflow:inherit;border: 2px solid #a59090;">
+                                            <lightning-datatable key-field="Id" data={lookupvalues}
+                                                selected-rows={selectedrows} columns={columns}
+                                                max-row-selection={maxrow} onrowselection={updateCheckBox}>
+                                            </lightning-datatable>
+                                        </div>
+                                    </template>
+                                    <template if:true={isPicklist}>
+                                        <div class="slds-scrollable slds-box" style="max-height:10rem;">
+                                            <template if:true={lookupvalues} for:each={lookupvalues} for:item="con"
+                                                for:index="index">
+                                                <lightning-menu-item key={con.Id} data-value={con.Id} label={con.label}
+                                                    value={con.Id} checked={con.checked} onclick={handlePickListSelect}>
+                                                </lightning-menu-item>
+                                            </template>
+                                        </div>
+                                    </template>
+                                </template>
+                            </lightning-card>
+                        </div>
+                        <footer class="slds-modal__footer">
+                            <center>
+                                <lightning-button label="Insert Selected Data" variant="neutral"
+                                    disabled={disableinsert} onclick={insertValues}>
+                                </lightning-button>
+                            </center>
+                        </footer>
+                    </div>
+                </section>
+                <div class="slds-backdrop slds-backdrop_open"></div>
+            </div>
+        </template>
+    </div>
+</template>

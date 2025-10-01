@@ -1,0 +1,126 @@
+<!--
+** Module Name : Acuity 2.0 - Acuity
+** Description : Displays the Acuity information of Acuity 2.0 including Interactions Section and Themes details.
+** Throws : NA
+** Calls : NA
+** Organization : Navatar Group
+** Product Name & Version : Acuity 2.0
+** Revision History:-
+** Version    Date(YYYY-MM-DD)    Author         Description of Action
+** 1.0        2022-11-14          Anshika Ahuja  Acuity Phase 2
+** Added by Tejaswini - Naming Convention-->
+<template>
+    <!--SPINNER : START-->
+    <template if:true={enableSpinner}>
+        <lightning-spinner alternative-text="Loading..."
+                           style="z-index:15002">
+        </lightning-spinner>
+    </template>
+    <!--SPINNER : END-->
+    <!--Start-->
+    <div class="slds-theme_default main-Container main-cont">
+        <div class="slds-grid slds-wrap">
+            <div class="slds-col slds-size_1-of-1">
+                <div class="slds-grid slds-wrap">
+                    <!--Start Notifications-->
+                    <div class="slds-col slds-size_1-of-1 slds-m-bottom_x-small">
+                        <div class="slds-col slds-size_1-of-1 slds-m-bottom_x-small" style="display: flex;justify-content: flex-end;">
+                            <lightning-button label="Export" title="Export" onclick={onclickExport} class="slds-m-left_x-small cur_point" style="float: left;"></lightning-button>
+                        <!-- Custom Notification Part Start-->
+                        <c-navatar-acuity-notification-lwc record-id={recordId}></c-navatar-acuity-notification-lwc>
+                        <!-- Custom Notification Part End-->
+                    </div>
+                    </div>
+                    <!--End Notifications-->
+
+                    <!--Start Left section to display Theme's description and Theme team details-->
+                    <div class="slds-col slds-size_3-of-12">
+                        <!--Added by Tejaswini- Naming Convention-->
+                            <!--<c-description-theme record-id={recordId}></c-description-theme>-->
+                            <c-navatar-acuity-theme-description-lwc record-id={recordId}></c-navatar-acuity-theme-description-lwc>
+                        </div>
+                    <!--End Left section to display Theme's description and Theme team details-->
+                        
+                    <!--Start Upper Section to display Interactions section-->
+                    <div class="slds-col slds-size_9-of-12">
+                        <div class="slds-p-bottom_none slds-m-bottom_small slds-theme_shade slds-box slds-p-horizontal_none main-Container main-cont">
+                            <div class="slds-grid slds-p-bottom_medium slds-wrap slds-p-horizontal_small slds-theme_shade" style="align-items:center;">
+                                <div class="slds-col slds-size_8-of-12">
+                                    <ul class="slds-list_horizontal slds-has-block-links_space" style="align-items:center;">
+                                        <li>
+                                            <span class="slds-page-header__title slds-text-align_left slds-m-left_xx-small"
+                                            title="Interactions">Interactions</span>
+                                        </li>
+                                        <li>
+                                            <!--Added by Tejaswini 00035144-->
+                                            <lightning-helptext content="Each interaction represents notes from a meeting with this company or with another company where this company was discussed and tagged to the note. An interaction may also represent an email exchange that was tagged by a user. Click on an interaction to view details. Click View All to see additional interactions." class="help_txt"></lightning-helptext>
+                                        </li>
+                                    </ul>
+                                </div>
+                                
+                                <div class="slds-col slds-size_4-of-12 slds-text-align_right">
+                                    <lightning-icon icon-name="utility:new_direct_message" onclick={callViewpopup} alternative-text="new_direct_message" size="x-small" title="Log a Call" class="cur_point logcallbtn bg-color-blue"></lightning-icon>
+                                </div>
+                            </div>
+                            <!--End Header-->
+                            <div class={interactionSecCls}>
+                                <!--Strat Box-->
+                                <template if:true={interactionsPartialInfoArray}>
+                                    <template for:each={interactionsPartialInfoArray}
+                                        for:item="actInfo">
+                                        <div class="slds-col slds-medium-size_3-of-12 slds-large-size_3-of-12" key={actInfo.actId}>
+                                            <c-navatar-acuity-interaction-tile-lwc  act-info={actInfo}
+                                                                                    act-date={actInfo.date}
+                                                                                    act-type={actInfo.type}
+                                                                                    act-icon-name={actInfo.iconName}
+                                                                                    button-title={actInfo.buttonTitle}
+                                                                                    act-subject={actInfo.subject}
+                                                                                    act-id={actInfo.id}
+                                                                                    act-detail={actInfo.detail}
+                                                                                    act-associates={actInfo.references}
+                                                                                    is-future-activity={actInfo.isFutureActivity}
+                                                                                    record-id={recordId}>
+                                            </c-navatar-acuity-interaction-tile-lwc>
+                                        </div>
+                                    </template>
+                                </template>
+                                <template if:false={interactionsPartialInfoArray}>
+                                <div class="slds-align_absolute-center">
+                                {errMsg}
+                                </div>
+                                </template>
+                                <!--End Box-->
+                    
+                            </div>   
+                            <div class="slds-col slds-size_1-of-1 slds-theme_shade slds-text-align_right slds-p-around_x-small" style="min-height:39.5px;">
+                                <div class="slds-page-header__col-actions">
+                                    <template if:true={displayViewAll}>
+                                        <a onclick={handleViewAllClick}
+                                           target="_blank"
+                                           title="View All"
+                                           style="width: max-content;display: inline-block;">
+                                            View All
+                                        </a>
+                                    </template>
+                                </div>
+                            </div>
+                    
+                        </div>
+                    </div>
+                    <!--End Upper Section to display Interactions section-->
+
+
+                </div>
+                <!--Start  Section to display Categories section-->
+                <c-navatar-acuity-theme-categories-l-w-c record-id={recordId}></c-navatar-acuity-theme-categories-l-w-c>
+                <!--End  Section to display Categories section-->
+            </div>
+        </div>
+    </div>
+    <template if:true={isCallLogOpen}>
+        <!--Added by Tejaswini Naming Convention-->
+        <c-navatar-notes-modal-lwc redirect-id={recordId} object-name="Task" task-type = 'Call' is-redirect-to-record={isRedirectToRecord} onclosemodal={noteModalClosed} oncancelchanges={noteModalClosed}>
+        </c-navatar-notes-modal-lwc>    
+    </template>    
+    <!--End-->
+</template>

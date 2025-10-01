@@ -1,0 +1,45 @@
+<apex:page sidebar="true" controller="NDCInfo">
+ <html>
+<head></head>
+<body>
+<apex:form >
+<!-- Start page content table -->
+
+    <div id="ootbe_container">
+    
+
+    <div id="contentcontainer">
+
+    <div class="col3" id="content">
+
+    <div id="modulecontainerline">
+<div id="maindebanner"><span class="ootbeheading"><b> Welcome to Navatar Deal Connect. Navatar Deal Connect connects buyers and sellers - intelligently, securely and completely free.<br/> You will be able to connect within or outside our network - based on your preferences.</b></span><br />
+<br />
+<a href="http://www.navatardealconnect.com/apex/landingPage" target="_blank" >Login here</a>&nbsp;&nbsp;if you have a Navatar Deal Connect account.<br/><br/>
+<a href="http://www.navatardealconnect.com/apex/registration?PUN={!JSENCODE(Uname)}&PI={!JSENCODE(Identifier)}" target="_blank" >Click here</a>&nbsp;&nbsp;to create a new Navatar Deal Connect account (you will need the following information).<br/>
+<span class="ootbesubhead"></span></div><br/>
+ 
+      <br/>
+      <table width="100%">
+      <tr>
+      <td width="13%">
+      <b> Product Username :</b></td><td width="87%" vertical-align="top" align="left"><apex:outputText value="{!$User.Username}"/>
+      </td>
+      </tr>
+      <tr>
+      <td width="13%">
+      <b> Product Identifier:</b></td><td width="87%" vertical-align="top" align="left"><apex:outputText value="{!Identifier}"/>
+      </td>
+      </tr>
+      </table>
+
+  
+
+</div>
+</div>
+</div>
+</div>
+</apex:form>
+</body>
+</html> 
+</apex:page>

@@ -1,0 +1,105 @@
+.cls_viewAllPopupScreen{
+    right: -15px;
+    top: 34px;
+    width: 150px;
+    z-index: 1;
+}
+.filtr-icon{
+    cursor: pointer;
+}
+.lgc-bg {
+    background-color: rgb(242, 242, 242);
+}
+.cur_point {
+    cursor: pointer;
+}
+/*START : Added by LK on 2024-10-07 to fix 00047722*/
+.errorMsgPopover{
+    position: absolute;
+    top: 70px;
+    right:-7px;
+    z-index:99999999999;
+}
+.my-icon {
+    --slds-c-icon-color-foreground-default: #BA0517;
+    --slds-c-icon-color-background: transparent;
+}
+.iconErrCls{
+    top:179px;
+    right:14px;
+    z-index:1;
+    cursor: pointer;
+}
+.errorMsgPopover .slds-popover {background-color: transparent; border: 0; box-shadow: 0; width: 190px;}
+.errorMsgPopover .slds-nubbin_bottom-right:before {left: 155px;}
+.errorMsgPopover .slds-nubbin_bottom-right:before {background-color: #BA0517;}
+.errorMsgPopover .slds-nubbin_bottom-right:after{display: none}
+.iconErrCls .slds-icon_xx-small {width: 0.75rem !important; height: 0.75rem !important;}
+.iconErrCls:hover {display:block}
+.slds-popover.slds-popover_tooltip.slds-nubbin_bottom-right{
+    background-color: #16325c !important;
+}
+/*END*/
+.dash-filter:before{               
+    content: '';
+    display: block;
+    width: var(--lwc-squareIconXSmallContent,0.5rem);
+    height: 2px;
+    border: 0;
+    transform: translate3d(-50%, -50%, 0);
+    background: var(--slds-c-checkbox-mark-color-foreground, var(--sds-c-checkbox-mark-color-foreground, var(--lwc-brandAccessible,rgb(1, 118, 211))));
+    position: relative;
+    top: 15px;
+    left: 8px;
+    z-index: 2;                          
+}
+.display_text{
+    text-align:right;padding-right:1rem;font-size:10px;
+    padding-bottom: 5px;
+
+}
+.full_size_spinner{
+    position: fixed;
+    height: 100%;
+    width: 100%;
+    z-index: 15002;
+    top:90px;
+}
+/*mobile css*/
+.for_mob{
+    display:none;
+}
+.margin_bottom{
+    margin-bottom: 0.75rem;
+}
+@media (max-width:600px){
+    .for_desk{
+        display:none;
+    }
+    .for_mob{
+        display: block;
+    }
+    .mob_bg_clr{
+        background-color:#fff !important;
+    }
+    .margin_bottom{
+        margin-bottom: 0rem;
+    }
+    /*Raju "header_tab, cont-tab-height, cont-tab-height_NoData" add class on 04-07-2024 ; 00046388*/
+    .header_tab{
+        align-items: center;
+        height: 66px;
+        display: flex;
+        padding: 10px 20px;
+    }
+    .cont-tab-height {
+        min-height: 235px;
+        max-height: 445px;
+        height: auto;
+        overflow-y: auto;
+        -webkit-overflow-scrolling: touch;
+    }
+    .cont-tab-height_NoData {
+        height: 235px;
+    }
+}

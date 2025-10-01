@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomFieldTranslation xmlns="http://soap.sforce.com/2006/04/metadata">
+        <label><!-- Type --></label>
+        <name>Type__c</name>
+        <picklistValues>
+            <masterLabel>Account Info</masterLabel>
+            <translation><!-- Account Info --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Add Note</masterLabel>
+            <translation><!-- Add Note --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Add Tag</masterLabel>
+            <translation><!-- Add Tag --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Clip Info</masterLabel>
+            <translation><!-- Clip Info --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Deal Activity Info</masterLabel>
+            <translation><!-- Deal Activity Info --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Theme Activity Info</masterLabel>
+            <translation><!-- Theme Activity Info --></translation>
+        </picklistValues>
+    </CustomFieldTranslation>

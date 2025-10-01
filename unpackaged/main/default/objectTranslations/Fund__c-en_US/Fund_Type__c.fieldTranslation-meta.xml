@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomFieldTranslation xmlns="http://soap.sforce.com/2006/04/metadata">
+        <label><!-- Fund Type --></label>
+        <name>Fund_Type__c</name>
+        <picklistValues>
+            <masterLabel>Fund</masterLabel>
+            <translation><!-- Fund --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Fund of Funds</masterLabel>
+            <translation><!-- Fund of Funds --></translation>
+        </picklistValues>
+    </CustomFieldTranslation>

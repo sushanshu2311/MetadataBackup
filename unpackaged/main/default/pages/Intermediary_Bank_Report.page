@@ -1,0 +1,273 @@
+<apex:page standardController="Account" extensions="NavatarFirmPDFCtrl" renderAs="pdf" applyBodyTag="false">
+     <head>
+        <!--background: url("{!$Resource.Navatar_BankPDF_Header}") no-repeat center center;-->
+        <style type="text/css" media="print">
+            @page :first {
+                @top-center {
+                    content: element(header);
+                }
+            }
+
+            @page {
+                @bottom-left {
+                    content: element(footer);
+                }
+            }
+
+            * {
+                margin: 0px;
+                padding: 0px;
+            }
+
+            body {
+                font-family: sans-serif;
+            }
+
+            div.header {
+                margin-top: 10px;
+                height: 130px;
+                width: 715px;
+                text-align: center;
+                position: running(header);
+            }
+
+            div.footer {
+                display: block;
+                padding: 5px;
+                position: running(footer);
+            }
+
+            div.subfooter {
+                display: inline-block;
+            }
+
+            div.right {
+                float: right;
+            }
+
+            .pagenumber:before {
+                content: counter(page);
+            }
+
+            .pagecount:before {
+                content: counter(pages);
+            }
+
+            .stationName {
+                text-align: center;
+                font-weight: bold;
+                font-size: 20pt;
+                margin-bottom: 30px;
+            }
+
+            table {
+                width: 100%;
+            }
+
+            .centered {
+                text-align: center;
+            }
+
+            .right {
+                text-align: right;
+            }
+
+            .tableHeader {
+                border-top: 1px solid #cccbcb;
+                border-bottom: 1px solid #cccbcb;
+                border-left: 1px solid #cccbcb;
+                color: #000;
+                padding: 5px 5px 8px 5px;
+                font-weight:400;
+                margin-top:0px;
+                background-color:#f2f2f2;
+                vertical-align:middle;
+                height: 24px;
+                line-height: 24px;
+                font-size: 14px;
+            }
+
+            .tableHeaderRepeat {
+                border-top: 0px;
+                border-bottom: 0px;
+                border-left: 0px;
+            }
+            .tableRows {
+                border-left: 1px solid #cccbcb;
+                border-bottom: 1px solid #cccbcb;
+            	background-color: #fff;
+                color: #4a4a4a;
+                padding: 5px 5px 8px 5px;
+                font-style: sans-serif;
+                font-size:13px;
+                vertical-align: top;
+            }
+
+            .sectionHeader {
+                padding: 5px;
+               	margin-top:25px;
+            	margin-bottom:15px;
+                color:#000000
+                font-weight:400;
+                font-size: 16px;
+            }
+
+            .recContent {
+                padding: 5px;
+                margin: 20px 0px;
+            }
+
+            .headcss{
+                background-color:#f2f2f2;
+                border: 1px solid #cccbcb;
+                vertical-align:middle;
+                height: 40px;
+                line-height: 40px;
+                margin-bottom:-5px;
+            }
+            .mainTitle_td_css{
+                vertical-align: top;
+                white-space: nowrap;
+                font-weight:600;
+                padding-right:2px;
+            }
+
+            #totalCost {
+                margin-top: 15px;
+            }
+            #totalCostLabel {
+                font-weight: bold;
+                margin-right: 10px;
+            }
+        </style>
+    </head>
+    <!--<div class="header">-->
+    <!-- <apex:image url="{!$Resource.Navatar_BankPDF_Header}" width="100%"/> -->
+    <div class="content">
+        <apex:pageBlock >
+            <div style="margin-top: 20px; margin-bottom: 35px;">
+                <table width="100%">
+                    <tr>
+                        <td style="width: 40%; border-right: 5px #808080 solid; font-size: 15px; font-weight: 700; vertical-align: top; padding-top: 2px;">
+                            {!mainTitle}
+                        </td>
+                        <td style="width: 60%; padding-left: 20px; line-height: 18px;">
+                            <table style="font-size: 12px;">
+                                <!-- <tr>
+                                    <td class="mainTitle_td_css">Deals Shown :</td>
+                                    <td>{!infodetailDealShown}</td>
+                                </tr> --> <!--For resolving Critical 00040039-->
+                                <tr>
+                                    <td class="mainTitle_td_css">Last Interaction Date :</td>
+                                    <td>{!infoDetail2}</td>
+                                </tr>
+                                <tr>
+                                    <td class="mainTitle_td_css">Address :</td>
+                                    <td>{!infoDetail4}</td>
+                                </tr>
+                            </table>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+
+            <div class="sectionHeader headcss">
+                Deals
+                <!--{!$ObjectType.navpeII_dev18__Pipeline__c.labelPlural}-->
+            </div>
+            <apex:pageBlockSection columns="1">
+                <apex:pageBlockTable value="{!listOfDealWrapper}" var="deal" headerClass="tableHeader" style="border-right: 1px solid #cccbcb;">
+                    <apex:column value="{!deal.name}" headerValue="Deal" styleClass="tableRows" />
+                    <apex:column value="{!deal.stage}" headerValue="Stage" styleClass="tableRows" />
+                    <apex:column value="{!deal.loginDate}" headerValue="Date" styleClass="tableRows" />
+                    <apex:column value="{!deal.sourceFirm}" headerValue="Source Contact" styleClass="tableRows" />
+                    <apex:column value="{!deal.notes}" headerValue="Notes" styleClass="tableRows" />
+                </apex:pageBlockTable>
+            </apex:pageBlockSection>
+
+            <br />
+
+            <div class="sectionHeader headcss">
+                Contacts
+                <!--{!$ObjectType.Contact.labelPlural}-->
+            </div>
+
+            <apex:pageBlockSection columns="1">
+                <apex:pageBlockTable value="{!conLst}" var="con" headerClass="tableHeader" style="border-right: 1px solid #cccbcb;">
+                    <apex:column value="{!con.Name}" headerValue="Name" styleClass="tableRows" />
+                    <apex:column value="{!con.Title}" headerValue="Title" styleClass="tableRows" />
+                    <apex:column value="{!con.dealCount}" headerValue="Deals" styleClass="tableRows" />
+                    <apex:column value="{!con.lastTouchPoint}" headerValue="Last Interaction" styleClass="tableRows" />
+                    <apex:column value="{!con.OwnerName}" headerValue="Relationship Owner" styleClass="tableRows" />
+                   <!-- <apex:column value="{!con.upcoming}" headerValue="Upcoming Meeting" styleClass="tableRows" />-->
+                </apex:pageBlockTable>
+            </apex:pageBlockSection>
+            <br />
+            <div class="sectionHeader headcss">Tagged Firms<!--{!$ObjectType.navpeII_dev18__Pipeline__c.labelPlural}--></div>
+
+            <apex:pageBlockSection columns="1">
+                <apex:pageBlockTable value="{!taggedFirmWrapLst}" var="com" headerClass="tableHeader" style="border-right: 1px solid #cccbcb;">
+                    <apex:column value="{!com.Name}" headerValue="Firm" styleClass="tableRows" />
+                   <!-- <apex:column value="{!dummy}" headerValue="Participants" styleClass="tableRows" />
+                    <apex:column value="{!dummy}" headerValue="Users" styleClass="tableRows" />-->
+                    <!--To be Changed-->
+                    <apex:column value="{!com.LastTouchpoint}" headerValue="Last Interaction Date" styleClass="tableRows" />
+                </apex:pageBlockTable>
+            </apex:pageBlockSection>
+            <br />
+            <div class="sectionHeader headcss">
+                Tagged People
+                <!--{!$ObjectType.navpeII_dev18__Pipeline__c.labelPlural}-->
+            </div>
+            <apex:pageBlockSection columns="1">
+                <apex:pageBlockTable value="{!refPplWrapList}" var="ppl" headerClass="tableHeader" style="border-right: 1px solid #cccbcb;">
+                    <apex:column value="{!ppl.Name}" headerValue="Name" styleClass="tableRows" />
+                    <apex:column value="{!ppl.Title}" headerValue="Title" styleClass="tableRows" />
+                    <apex:column value="{!ppl.AccountId}" headerValue="Firm" styleClass="tableRows" />
+
+                    <apex:column value="{!ppl.actCount}" headerValue="#Interactions" styleClass="tableRows" />
+                    <apex:column value="{!ppl.Last_Touch_Point}" headerValue="Last Interaction Date" styleClass="tableRows" />
+                    <apex:column value="{!ppl.OwnerId}" headerValue="Last Interaction By" styleClass="tableRows" />
+                </apex:pageBlockTable>
+            </apex:pageBlockSection>
+            <br />
+            <div class="sectionHeader headcss">
+                Tagged Deals
+                <!--{!$ObjectType.navpeII_dev18__Pipeline__c.labelPlural}-->
+            </div>
+            <apex:pageBlockSection columns="1">
+                <apex:pageBlockTable value="{!dealWrapLst}" var="deal" headerClass="tableHeader" style="border-right: 1px solid #cccbcb;">
+                    <apex:column value="{!deal.dealName}" headerValue="Deal" styleClass="tableRows" />
+                    <!-- <apex:column value="{!deal.navpeII_dev18__Introduced_by__c}" headerValue="Mentioned By"/> -->
+                    <apex:column value="{!deal.dealTeam}" headerValue="Internal Deal Team" styleClass="tableRows" />
+                    <!-- <apex:column value="{!deal.navpeII_dev18__Last_Touch_Point__c}" headerValue="Last Mentioned"/> -->
+                    <!-- <apex:column value="{!deal.Name}" headerValue="Other Firms Also Mentioned" styleClass="tableRows"/> -->
+                </apex:pageBlockTable>
+            </apex:pageBlockSection>
+            <br />
+            <div class="sectionHeader headcss">
+                All Interactions
+                <!--{!$ObjectType.navpeII_dev18__Pipeline__c.labelPlural}-->
+            </div>
+            <apex:pageBlockSection columns="1">
+                <apex:pageBlockTable value="{!interactionList}" var="t" headerClass="tableHeader" columns="5" columnsWidth="20%" style="border-right: 1px solid #cccbcb;">
+                    <apex:column value="{!t.ActivityDate}" headerValue="Date" width="20%" styleClass="tableRows" />
+                    <apex:column value="{!t.Subject}" headerValue="Subject" width="20%" styleClass="tableRows" />
+                    <apex:column value="{!t.Description}" headerValue="Comments" width="20%" styleClass="tableRows" />
+                    <apex:column value="{!t.ReferencesName}" headerValue="Tags" width="20%" styleClass="tableRows" />
+                    <apex:column value="{!t.OwnerName}" headerValue="User" width="20%" styleClass="tableRows" />
+                </apex:pageBlockTable>
+            </apex:pageBlockSection>
+            <br />
+
+            <!--<div id="totalCost" class="right"><span id="totalCostLabel">{!$ObjectType.Battle_Station__c.Fields.Total_Cost__c.Label}:</span> <apex:outputField value="{!Battle_Station__c.Total_Cost__c}"/></div>-->
+        </apex:pageBlock>
+    </div>
+    <!--<div class="footer">
+        <div class="centered">Generated by {!$User.FirstName} {!$User.LastName}</div>
+        <div>
+            <div class="subfooter">{!NOW()}</div>
+            <div class="subfooter right">Page <span class="pagenumber"/> of <span class="pagecount"/></div>
+        </div>
+    </div>-->
+</apex:page>

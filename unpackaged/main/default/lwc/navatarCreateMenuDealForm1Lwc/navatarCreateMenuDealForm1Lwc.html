@@ -1,0 +1,48 @@
+<template>
+
+	<template if:true={isError}>
+		<div class="slds-p-horizontal_large slds-p-top_medium slds-p-bottom_medium">
+			<div class="slds-notify slds-notify_alert slds-alert_error" style="display: -webkit-box;" role="alert">
+				<span class="slds-assistive-text">error</span>
+				<span class="slds-icon_container slds-icon-utility-error slds-m-right_x-small" title="Error">
+				</span>
+				<h2>Review the errors on this page.</h2>
+			</div>
+			<p class="slds-p-left_medium" style="color:red">{errorMessage} </p>
+		</div>
+	</template>
+
+	<div class="slds-modal__content slds-p-vertical_medium clrChange">
+		<!-- <div class="slds-text-heading_small slds-p-horizontal_large font_500">Enter Deal Name</div> -->
+		<lightning-layout class="slds-p-horizontal_large">
+			<lightning-layout-item size="12" flexibility="auto" class="slds-m-right_small">
+				<span style="margin: -10px;">
+					<abbr class="slds-required"  title="required">* </abbr>
+					<lightning-input name="Name" label="Deal Name" type="text" class="icon-right-css" style="margin-top: -22px;" maxlength="80"
+						onchange={handleChange}>
+					</lightning-input>
+				</span>
+				<template if:true={isError}>
+					<label class="slds-form-element__label" style="color:red;margin-left: 11px;">Complete this field.</label>
+				</template>
+			</lightning-layout-item>
+		</lightning-layout>
+		<template if:true={showRTSelector}>
+			<lightning-layout class="slds-p-horizontal_large">
+				<lightning-layout-item size="12" flexibility="auto" class="slds-m-right_small">
+					<lightning-combobox name="RecordTypeId" label="Record Type" value={recordTypeValue}
+						options={recordTypeOptions} onchange={handleChange}>
+					</lightning-combobox>
+				</lightning-layout-item>
+			</lightning-layout>
+		</template>
+	</div>
+
+	<!-- Modal/Popup Box LWC footer starts here -->
+	<footer class="slds-modal__footer cutomFooter">
+		<lightning-button label="Cancel" title="Cancel" onclick={closeModal} class="slds-m-left_x-small">
+		</lightning-button>
+		<lightning-button variant="brand" label="Next" title="Next" onclick={handleNext}
+			class="slds-m-left_x-small customBrandButton"></lightning-button>
+	</footer>
+</template>

@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomFieldTranslation xmlns="http://soap.sforce.com/2006/04/metadata">
+        <help><!-- If you mark this as primary; it will automatically update the Billing Address of associated account. --></help>
+        <label><!-- Primary --></label>
+        <name>Primary__c</name>
+    </CustomFieldTranslation>

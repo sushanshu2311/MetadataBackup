@@ -1,0 +1,1191 @@
+<apex:page id="thePage" controller="IndividualInvestorCreation_Ctlr" docType="html-5.0" contentType="text/html; charset=utf-8" sidebar="true" standardStylesheets="true" title="Individual Investor Creation">
+    <apex:form id="theForm">  
+    <apex:stylesheet value="{!URLFOR($Resource.SLDS100, 'assets/styles/salesforce-lightning-design-system-vf.css')}" />
+         
+    
+    <apex:outputPanel id="showErrorMessage">     
+        <apex:outputPanel id="showmsg" rendered="{!if(errorMessage!= '',true,false)}">         
+            <div class="slds">
+                <div id="showmsgDiv" class="slds-box slds-theme--error" style="margin:0 0px;">
+                     <img src="{!URLFOR($Resource.PE_35,'PE_3.5/images/error-icon.png')}" style="float: left;margin-right:5px;" /><p>{!errorMessage}</p>                
+                </div>
+            </div>                         
+        </apex:outputPanel> 
+     </apex:outputPanel>    
+             
+    <apex:actionRegion >
+        <apex:actionFunction name="AssignRequiredFieldtoString" action="{!viewRequiredFieldonPage}" reRender="showmsg,additionalSectionOpp" oncomplete="pageLoadOnComplete();">
+            <apex:param id="idReqFld" name="ReqFld" assignTo="{!strRequiredField}" value=""/>
+        </apex:actionFunction>
+    </apex:actionRegion>
+    
+    <apex:actionFunction name="createIndividualInvestorAF" action="{!createIndividualInvestorFinalAct}" reRender="showmsg,showErrorMessage">
+        <apex:param name="first" assignTo="{!defaultRecordTypeIdPg}" value=""/>
+    </apex:actionFunction>
+    
+    <apex:actionStatus id="counterStatus">
+        <apex:facet name="start">
+            <div style="width:100%; height:100%; display:block; background:#fff; text-align:center; vertical-align:middle; opacity:0.7; position:fixed; top:0; left:0; z-index:9999999; display:none;">
+            <div style="width:100px; height:100%; position:relative;top:41%; background:url({!URLFOR($Resource.PE_35, 'PE_3.5/images/icon_loading.gif')}) no-repeat top left; margin:0 auto;"></div></div>
+        </apex:facet>
+    </apex:actionStatus>       
+        
+         
+    <html>
+        <head>
+            <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+                <title>PE New | Individual Investor</title>
+                
+                <script src="{!URLFOR($Resource.PE_35,'PE_3.5/js/jquery.js')}" type="text/javascript"></script>
+                <script src="{!URLFOR($Resource.PE_35,'PE_3.5/js/aw.js')}" type="text/javascript"></script>
+                
+                <script src="/soap/ajax/28.0/connection.js" type="text/javascript"></script>
+                <script src="/soap/ajax/28.0/apex.js" type="text/javascript"></script>
+  
+                <link rel= "stylesheet" href = "{!URLFOR($Resource.PE_35, 'PE_3.5/css/PeLightning.css')}" type ="text/css" />
+                
+                <link rel= "stylesheet" href = "{!URLFOR($Resource.SLDS100, 'assets/styles/salesforce-lightning-design-system-vf.css')}" type ="text/css" />
+                
+                <!-- Start FancyBox -->
+                <script src="{!URLFOR($Resource.PE_35,'PE_3.5/js/jquery-ui.js')}"></script>
+                <script src="{!URLFOR($Resource.PE_35,'PE_3.5/js/jquery.dualListBox-1.3.min.js')}"></script>
+               
+                <script>
+                $(function() {
+                    $( ".FancyboxContainer" ).draggable({ cancel: ".PopupContentStart" });
+                });
+                </script>
+                <link rel="stylesheet" type="text/css" href="{!URLFOR($Resource.PE_35, 'PE_3.5/css/fancybox.css')}" media="screen" />
+                <link rel="stylesheet" type="text/css" href="{!URLFOR($Resource.PE_35, 'PE_3.5/css/aw.css')}" media="screen" />
+              
+               <script>
+                    sforce.connection.sessionId = "{!$Api.Session_ID}"; 
+                    var strObjectName = 'Account';      
+                    var arrObjRequiredFeild ='';
+                    var strCounter ='';
+                    var arrRightColumInputClass = '';
+                    var arrLeftColumInputClass = '';    
+                    var arrfirmColumInputClass = '';
+                    var arrsContColumInputClass = '';    
+                    var className = '';
+                    var errorMsgCls ='';
+                    var isBlankReqFieldLeft = '';
+                    var isBlankReqFieldRight = '';
+                    var iisSavedValues = '{!JSENCODE(iisSavedValues)}';
+                </script>
+                
+                <script type="text/javascript" src="{!URLFOR($Resource.PE_35,'PE_3.5/js/common.js')}"></script>
+                
+                <script language="javascript" type="text/javascript">
+                    
+                    $(function() {
+                        
+                        $.configureBoxes();
+                        
+                    });
+                
+                    $(function() {
+                        
+                        $.configureBoxes1();
+                        
+                    });
+                    $(function() {
+                        
+                        $.configureBoxes2();
+                        
+                    });     
+                    $(function() {
+                        
+                        $.configureBoxes3();
+                        
+                    });
+                </script>
+                
+                
+                <link href = "{!URLFOR($Resource.PE_35, 'PE_3.5/css/Navatar-Yellow-Theme.css')}" rel = "stylesheet" type = "text/css"/>               
+                <script type="text/javascript">                
+                    var popupStatus = 0;                
+                    function InsufficientPermissions_Fancybox() 
+                    {
+                        loadPopupnew('fancybox_background','InsufficientPermissions_Fancybox');
+                        centerPopupnew('InsufficientPermissions_Fancybox');
+                    }
+                    
+                    function CommitmentCreation_Fancybox() 
+                    {
+                        loadPopupnew('fancybox_background','CommitmentCreation_Fancybox');
+                        centerPopupnew('CommitmentCreation_Fancybox');
+                    }
+                    
+                    function RegularFund_Fancybox() 
+                    {
+                        loadPopupnew('fancybox_background','RegularFund_Fancybox');
+                        centerPopupnew('RegularFund_Fancybox');
+                    } 
+                    
+                    function accessControlFancyBox() 
+                    {
+                        loadPopupnew('fancybox_background','accessControlFancy');
+                        centerPopupnew('accessControlFancy');
+                    } 
+                    
+                    
+                    function loadPopupnew(cid1,cid2)
+                    {
+                        if(popupStatus==0){
+                            $('.'+cid1).css({
+                                "opacity": "0.5"
+                            });
+                            $('.'+cid1).fadeIn("slow");
+                            $('.'+cid2).fadeIn("slow");
+                            popupStatus = 1;
+                        }
+                    };
+                    function centerPopupnew(cid)
+                    {
+                        //request data for centering
+                        var windowWidth = document.documentElement.clientWidth;
+                        var windowHeight = document.documentElement.clientHeight;
+                        var popupHeight = $('.'+cid).height();
+                        var popupWidth = $('.'+cid).width();
+                        //centering
+                        $('.'+cid).css({
+                            "position": "fixed",
+                            "top": windowHeight/2-popupHeight/2,
+                            "left": windowWidth/2-popupWidth/2
+                        });
+                    };
+                    
+                    function closepopup(bgdivid,popupdivid)
+                    {
+                        disablePopupnew(bgdivid);
+                        $('.'+popupdivid).fadeOut("slow");
+                    } 
+                    
+                    function disablePopupnew(cid){
+                        if(popupStatus==1){
+                            $('.'+cid).fadeOut("slow");
+                            popupStatus = 0;
+                        }   
+                    };
+                </script>
+                <!-- End FancyBox -->
+                
+        <apex:outputpanel id="ScriptPanel">
+            <script>            
+                /*@Descrption: Used for view error message for requird field on page.*/
+                function checkRequiredField()
+                {  
+                     
+                    inputValue = '';  
+                    isBlankReqFieldLeft = viewRequiredfieldError(arrLeftColumInputClass);
+                    isBlankReqFieldRight = viewRequiredfieldError(arrRightColumInputClass);              
+                    
+                    /* *********FOR STATIC FEILDS********* */
+                    /*Last Name Check*/
+                    if(document.getElementById("thePage:theForm:lastNameIF").value == '')
+                    {
+                        document.getElementById("lastNameId").style.display="block";
+                        document.getElementById("thePage:theForm:lastNameIF").style.border="2px solid #c23934";
+                        isBlankReqFieldLeft = "true";
+                    }
+                    /*Description Check*/
+                    if(document.getElementById("thePage:theForm:descFormIF").value == '')
+                    {
+                        if(arrObjRequiredFeild.indexOf('Contact:Description') > -1 || arrObjRequiredFeild.indexOf('contact:description') > -1)
+                        {
+                            document.getElementById("conDescripId").style.display="block";
+                            document.getElementById("thePage:theForm:descFormIF").style.border="2px solid #c23934";
+                            isBlankReqFieldLeft = "true";
+                        }
+                    }
+                    /*Phone Check*/
+                    if(document.getElementById("thePage:theForm:phoneFormIF").value == '')
+                    {
+                        if(arrObjRequiredFeild.indexOf('Contact:Phone') > -1 || arrObjRequiredFeild.indexOf('contact:phone') > -1)
+                        {
+                            document.getElementById("phoneId").style.display="block";
+                            document.getElementById("thePage:theForm:phoneFormIF").style.border="2px solid #c23934";
+                            isBlankReqFieldRight = "true";
+                        }
+                    }
+                    /*Fax Check*/
+                    if(document.getElementById("thePage:theForm:faxFormIF").value == '')
+                    {
+                        if(arrObjRequiredFeild.indexOf('Contact:Fax') > -1 || arrObjRequiredFeild.indexOf('contact:fax') > -1)
+                        {
+                            document.getElementById("faxId").style.display="block";
+                            document.getElementById("thePage:theForm:faxFormIF").style.border="2px solid #c23934";
+                            isBlankReqFieldRight = "true";
+                        }
+                    }
+                    /*Mobile Phone Check*/
+                    if(document.getElementById("thePage:theForm:mPhoneFormIF").value == '')
+                    {
+                        if(arrObjRequiredFeild.indexOf('Contact:MobilePhone') > -1 || arrObjRequiredFeild.indexOf('contact:mobilephone') > -1)
+                        {
+                            document.getElementById("mobPhoneId").style.display="block";
+                            document.getElementById("thePage:theForm:mPhoneFormIF").style.border="2px solid #c23934";
+                            isBlankReqFieldRight = "true";
+                        }
+                    }
+                    /*Email Check*/
+                    if(document.getElementById("thePage:theForm:emailFormIF").value == '')
+                    {
+                        if(arrObjRequiredFeild.indexOf('Contact:Email') > -1 || arrObjRequiredFeild.indexOf('contact:email') > -1)
+                        {
+                            document.getElementById("emailIdId").style.display="block";
+                            document.getElementById("thePage:theForm:emailFormIF").style.border="2px solid #c23934";
+                            isBlankReqFieldRight = "true";
+                        }
+                    }
+                    
+                    if(isBlankReqFieldRight.indexOf('true') > -1 || isBlankReqFieldLeft.indexOf('true') > -1){
+                        document.getElementById('loadingDiv').style.display='none';
+                    }
+                    else{
+                        var getValue = document.getElementById("hiddedRcdTypeId").value;                 
+                        createIndividualInvestorAF(getValue);
+                    }
+                    
+                    CheckRequiredStatusOfStaticFields();
+                }
+                
+                
+                /*@Description: Used for view error message for requird field on page.*/
+                function viewRequiredfieldError(InputcolumnClass)
+                {
+                    
+                    InputcolumnClass = InputcolumnClass.split(',');
+                    var isReqField='';
+                    
+                    for(var i=0; i<InputcolumnClass.length; i++)
+                    {
+                        var isReq='';
+                        className = InputcolumnClass[i];
+                        errorMsgCls ='';
+                        
+                        if(className.indexOf('true')>0)
+                        {
+                            var inputval = document.getElementsByClassName(""+className+"")[0].value;
+                            errorMsgCls = className+'ErrorMsg';
+                            
+                            if(inputval.length==0)
+                            {
+                                document.getElementById(""+errorMsgCls+"").style.display="block";                               
+                                document.getElementsByClassName(""+className+"")[0].style.border="2px solid #c23934";
+                                if(document.getElementsByClassName(""+className+"")[1]!= null){
+                                    document.getElementsByClassName(""+className+"")[1].style.border="2px solid #c23934";
+                                }
+                                if(document.getElementsByClassName(""+className+"")[2]!= null){
+                                    document.getElementsByClassName(""+className+"")[2].style.border="2px solid #c23934";
+                                }
+                                if(document.getElementsByClassName(""+className+"")[3]!= null){
+                                    document.getElementsByClassName(""+className+"")[3].style.border="2px solid #c23934";
+                                }
+                                if(document.getElementsByClassName(""+className+"")[4]!= null){
+                                    document.getElementsByClassName(""+className+"")[4].style.border="2px solid #c23934";
+                                }
+                                isReq = true;
+                            }
+                            else
+                            {
+                                document.getElementById(""+errorMsgCls+"").style.display="none";
+                                document.getElementsByClassName(""+className+"")[0].style.borderColor="1px solid #d8dde6";
+                                isReq = false;
+                            }
+                        } 
+                        isReqField+= isReq;
+                    }
+                    return isReqField;
+                }
+            </script>
+        </apex:outputpanel>
+
+        
+        <script>
+        
+        
+        /*@Description: This remoting call will use the page timeout value*/
+        Visualforce.remoting.Manager.invokeAction('{!$RemoteAction.IndividualInvestorCreation_Ctlr.getRecorTypeid}',strObjectName, function(result, event) 
+        {
+            
+            if(iisSavedValues == '' || iisSavedValues == ';' ||  iisSavedValues == 'undefined;undefined')
+            {
+                document.getElementById("filterGridContactDiv3").style.display="none";
+                document.getElementById("AINameId").style.display="none";                
+            }
+            
+            if(event.status && result!= null && result!='') 
+            {   
+                              
+                document.getElementById("loadingDiv").style.display="block";
+                var arrRecordType = result.split('~');           //split objects    
+                
+                for(var i = 0; i < arrRecordType.length; i++) 
+                {                    
+                    var arrRecordType2= arrRecordType[i];
+                     
+                    arrRecordType2 = arrRecordType[i].split('^');   //obj  vs recordtype id
+                    
+                    var rcId ='';
+                    var objname = '';                   
+                    for(var j = 0; j < arrRecordType2.length; j++) 
+                    {
+                        if(j==0)
+                        {
+                            objname= arrRecordType2[j]; 
+                        }
+                        if(j==1)
+                        {
+                            rcId= arrRecordType2[j];
+                            if(objname == 'Account' || objname == 'account')
+                                document.getElementById("hiddedRcdTypeId").value = arrRecordType2[j]; 
+                        }
+                    } 
+                     
+                    var strRequiredFeild = '';                  
+                    strRequiredFeild = gerRequiredFeildsOnPageLayout(''+objname+'' ,rcId);                  
+                    strRequiredFeild = strRequiredFeild.toString();
+                    strRequiredFeild = strRequiredFeild.substring(0,strRequiredFeild.length-1);     
+                    
+                    if(arrObjRequiredFeild.length==0)
+                    {
+                        arrObjRequiredFeild = strRequiredFeild;
+                    }
+                    else
+                    {                      
+                        arrObjRequiredFeild = arrObjRequiredFeild+','+strRequiredFeild;                 
+                    }                    
+                }           
+                
+                CheckRequiredStatusOfStaticFields();
+                AssignRequiredFieldtoString(arrObjRequiredFeild);
+            }
+            document.getElementById("loadingDiv").style.display="none";
+        });
+
+        /*@Description:It Checks Required Status Of Static Fields*/
+        function CheckRequiredStatusOfStaticFields()
+        {
+            
+            /*Description Check*/
+            if(arrObjRequiredFeild.indexOf('Contact:Description') > -1 || arrObjRequiredFeild.indexOf('contact:description') > -1)
+                document.getElementById("reqDescId").style.display="";
+            
+            /*Phone Check*/
+            if(arrObjRequiredFeild.indexOf('Contact:Phone') > -1 || arrObjRequiredFeild.indexOf('contact:phone') > -1)
+                document.getElementById("reqPhoneId").style.display="";
+            
+            /*Fax Check*/
+            if(arrObjRequiredFeild.indexOf('Contact:Fax') > -1 || arrObjRequiredFeild.indexOf('contact:fax') > -1)
+                document.getElementById("reqFaxId").style.display="";
+            
+            /*Mobile Phone Check*/
+            if(arrObjRequiredFeild.indexOf('Contact:MobilePhone') > -1 || arrObjRequiredFeild.indexOf('contact:mobilephone') > -1)
+                document.getElementById("reqMPhoneId").style.display="";
+            
+            /*Email Check*/
+            if(arrObjRequiredFeild.indexOf('Contact:Email') > -1 || arrObjRequiredFeild.indexOf('contact:email') > -1)
+                document.getElementById("reqEmailId").style.display="";
+            
+            document.getElementById('loadingDiv').style.display='none';
+        }
+                
+        /*It will the required field according to the layout.*/
+        function gerRequiredFeildsOnPageLayout(ObjectName, RecordTypeId)   // it will return required field of passed obj n recordType id
+        {
+            var apinames_req='';         // this will contain fields which are visible as required on pagelayout                
+            var apinames_readOnly='';    // this will contain fields which are readonly on pagelayout                
+            var apinames = '';           // this will contain fields visible on pagelayout
+            var apiNameArray= new Array();
+            
+            var resultLayout = sforce.connection.describeLayout(ObjectName, new Array(RecordTypeId));
+            var layout = resultLayout.getArray("layouts")[0];
+             
+            var elSections = layout.getArray("editLayoutSections");
+             
+            for (var j = 0; j < elSections.length; j++) 
+            {
+                var els = elSections[j];
+                var allTheLayoutRows = els.getArray("layoutRows");
+               
+                for (var k = 0; k < allTheLayoutRows.length; k++) 
+                {
+                    var lr = allTheLayoutRows[k];
+                    var lis = lr.getArray("layoutItems");
+                    for (var h = 0; h < lis.length; h++) 
+                    {
+                        var li = lis[h];
+                        if (li.layoutComponents != null && li.layoutComponents.length == 2)     //only in case of Lead and Contact First Name, which includes Salutation also
+                        {
+                            if(apiNameArray.indexOf(li.layoutComponents[1].value)=='-1')
+                            {
+                                apinames+= li.layoutComponents[1].value + ',';
+                                apiNameArray.push(li.layoutComponents[1].value);
+                            }
+                            if(apinames_req.indexOf(li.layoutComponents[1].value)=='-1')
+                            {
+                                if(li.required==true || li.required=='true')
+                                apinames_req+=ObjectName+':'+li.layoutComponents[1].value +',';
+                            }
+                            if(apinames_readOnly.indexOf(li.layoutComponents[1].value)=='-1')
+                            {
+                                if(li.editable==false || li.editable=='false')
+                                apinames_readOnly+=li.layoutComponents[1].value +',';
+                            }
+                        }                            
+                        else if (li.layoutComponents != null)           //for all other fields
+                        {
+                            if(apiNameArray.indexOf(li.layoutComponents.value)=='-1')
+                            {
+                                if(li.required==true || li.required=='true')
+                                    apinames_req+=ObjectName+':'+li.layoutComponents.value +',';
+                                if(li.editable==false || li.editable=='false')
+                                    apinames_readOnly+=li.layoutComponents.value +',';
+                                apinames+= li.layoutComponents.value + ',';
+                                apiNameArray.push(li.layoutComponents.value);
+                            }
+                        }
+                    }
+                }
+            }
+            
+            var readOnlySections = layout.getArray("detailLayoutSections");
+            for (var j = 0; j < readOnlySections.length; j++) 
+            {
+                var els = readOnlySections[j];
+                var allTheLayoutRows = els.getArray("layoutRows");
+                for (var k = 0; k < allTheLayoutRows.length; k++) 
+                {
+                    var lr = allTheLayoutRows[k];
+                    var lis = lr.getArray("layoutItems");
+                    for (var h = 0; h < lis.length; h++) 
+                    {
+                        var li = lis[h];                        
+                        if (li.layoutComponents != null)           //for all other fields
+                        {
+                            if(apiNameArray.indexOf(li.layoutComponents.value)=='-1')
+                            {
+                                if(li.layoutComponents.value!=null){
+                                    apinames_readOnly+=li.layoutComponents.value +',';
+                                    apiNameArray.push(li.layoutComponents.value);
+                                }
+                            }
+                        }
+                    }
+                }
+            }  
+            return [apinames_req];
+        }
+        
+        /*@Description: It will copy Mailing Address details to Other Address Details.*/
+        function copyMailingToOtherAddressJS()
+        {
+            document.getElementById("thePage:theForm:oStreetId").value = document.getElementById("thePage:theForm:mStreetId").value;
+            document.getElementById("thePage:theForm:oCityId").value = document.getElementById("thePage:theForm:mCityId").value;
+            document.getElementById("thePage:theForm:oStateId").value = document.getElementById("thePage:theForm:mStateId").value;
+            document.getElementById("thePage:theForm:oPostalId").value = document.getElementById("thePage:theForm:mPostalId").value;
+            document.getElementById("thePage:theForm:oCountryId").value = document.getElementById("thePage:theForm:mCountryId").value;
+        }
+        
+        </script>
+                
+            <!-- Start Yellow Tooltip -->
+            <link rel="stylesheet" href="{!URLFOR($Resource.PE_35, 'PE_3.5/css/tip-yellow.css')}" type="text/css" />
+            <script type="text/javascript" src="{!URLFOR($Resource.PE_35, 'PE_3.5/js/jquery.poshytip.js')}"></script>
+            <script type="text/javascript">
+                $(function(){
+                    $('.YellowTooltip').poshytip();
+                });
+            </script>
+            <style>
+                html body.sfdcBody {
+                    height: auto !important;                
+               } 
+                <!--To show lookup icon inside the lookup field-->
+                span.lookupInput a {   
+                    position: relative;
+                    right: 30px;
+                    width:14px !important;
+                }
+                <!--Fix error msg position-->
+                
+                @media only screen and (min-device-width: 481px) and (max-device-width: 1024px) and (orientation:portrait) {
+                    
+                    #temp {
+                        min-width:100%;
+                        width: auto;
+                        min-height: 500px;
+                        height: 620px;
+                        margin: 0;
+                        padding: 0;
+                        padding-bottom: 10px;
+                        background: #f2f5fa;
+                        font-size: 14px;
+                        line-height: 20px;
+                        letter-spacing: 0.1px;
+                        border-radius: 6px; 
+                        top: 130px;
+                    }
+                    
+                }
+                
+                .tip-yellow { padding:15px !important; box-shadow:#ccc 0px 0px 5px !important; }
+                
+                <!--for chorme-->
+                @media screen and (-webkit-min-device-pixel-ratio:0) {
+                    input{width:151px;  }
+                }
+                
+                .td1 {
+                    font-weight: normal;
+                    padding-right: 0px !important;
+                    text-align: right;
+                    vertical-align:middle !important;
+                    word-break: break-all;
+                }
+                .inputValidationClass{
+                    border: 2px solid #c23934 !important;
+                }
+                .mandatory_msg{color:#c23934; font-size:12px;}
+                
+                .td2 {
+                    display: inline;
+                    vertical-align: middle;
+                    font-size: .875rem !important;
+                    color: #54698d;
+                }
+                
+                <!--To show lookup icon inside the lookup field-->
+                .lookupIconOn, .lookupIcon{                       
+                    background-image : url({!URLFOR($Resource.PE_35, '/PE_3.5/images/search_16.png')});
+                    font-size:12px !important;
+                    position:relative; 
+                    padding:9px !important;
+                    right: 18px;
+                    background-position: left top;
+                    background-repeat: no-repeat !important;
+                    background-color: #ffffff;
+                }
+                .slds img {
+                    max-width: 100%;
+                }
+                .dateFormat{
+                    display:none;
+                }
+                
+                .error {
+                    margin: 0 !important;
+                }
+                
+            </style>
+            
+            
+            <style>
+                
+                @supports (-ms-accelerator:true) {
+                    .text-area {  position:relative; top:-5px !important;}
+                }
+                
+                
+                @media all and (-ms-high-contrast:none)
+                {
+                    .text-area {  position:relative; top:-7px !important;} /* IE10 */
+                    *::-ms-backdrop, .text-area {  position:relative; top:-5px !important;} /* IE11 */
+                }
+                
+                .text-area {  position:relative; top:9px;}
+                
+            </style>
+                
+            <!-- End Yellow Tooltip -->
+            <script>
+            $(document).ready(function(){                   
+                $('.div_a').show();
+                $('.div_b').hide();
+                
+                $(".click_one").click(function(){
+                    $('.div_a').hide();
+                    $('.div_b').show();
+                });
+                
+                $(".click_Two").click(function(){
+                    $('.div_a').show();
+                    $('.div_b').hide();
+                });
+                
+            }); 
+            </script>
+            
+                
+            <script type="text/javascript">
+            $(document).ready(function() {
+                
+                $("#displayFilterText").show();
+                $("#hideFilterText").hide();
+                
+                $("#displayFilterText").click(function(){
+                    $("#displayFilterText").hide();
+                    $("#hideFilterText").show();
+                    $("#filterGridContactDiv").slideToggle();
+                    
+                });
+                
+                $("#hideFilterText").click(function(){
+                    $("#hideFilterText").hide();
+                    $("#displayFilterText").show();
+                    $("#filterGridContactDiv").slideToggle();
+                });
+                
+                
+            });
+            </script>   
+            <script type="text/javascript">
+                $(document).ready(function() {
+                    
+                    $("#displayFilterText2").show();
+                    $("#hideFilterText2").hide();
+                    
+                    $("#displayFilterText2").click(function(){
+                        $("#displayFilterText2").hide();
+                        $("#hideFilterText2").show();
+                        $("#filterGridContactDiv2").slideToggle();
+                        
+                    });
+                    
+                    $("#hideFilterText2").click(function(){
+                        $("#hideFilterText2").hide();
+                        $("#displayFilterText2").show();
+                        $("#filterGridContactDiv2").slideToggle();
+                    });
+                    
+                    
+                });
+            </script>
+            <script type="text/javascript">
+                $(document).ready(function() {
+                    
+                    $("#displayFilterText3").show();
+                    $("#hideFilterText3").hide();
+                    
+                    $("#displayFilterText3").click(function(){
+                        $("#displayFilterText3").hide();
+                        $("#hideFilterText3").show();
+                        $("#filterGridContactDiv3").slideToggle();
+                        
+                    });
+                    
+                    $("#hideFilterText3").click(function(){
+                        $("#hideFilterText3").hide();
+                        $("#displayFilterText3").show();
+                        $("#filterGridContactDiv3").slideToggle();
+                    });
+                    
+                    
+                });
+            </script>
+                
+            <script>
+                $(document).ready(function() {  
+                    $('.popup2').hide();
+                    $('.popup3').hide();
+                    $('#popup2').click(function () {
+                        
+                        $('.popup1').hide();
+                        $('.popup2').hide();
+                        $('.popup3').show();
+                        
+                    }); 
+                    
+                    $('.popup2_close').click(function () {
+                        
+                        $('.popup1').show();
+                        $('.popup2').hide();
+                        $('.popup3').hide();
+                        
+                    });
+                    
+                    $('.popup3_close').click(function () {
+                        
+                        $('.popup1').show();
+                        $('.popup2').hide();
+                        $('.popup3').hide();
+                        
+                    });
+                    
+                    
+                    $('#popup3').click(function () {
+                        
+                        $('.popup1').hide();
+                        $('.popup3').hide();
+                        $('.popup2').show();
+                        
+                        
+                    });
+                });
+                
+                function pageLoadOnComplete()
+                {
+                    var accessControl = {!if(isIICreation == true, 'true', 'false')};  // SK: 11Dec2017
+                    if(accessControl == 'false' || accessControl == false)
+                    {
+                        accessControlFancyBox();
+                        document.getElementById('accessControl').style.display = 'block';
+                    }
+                    else
+                    {
+                        document.getElementById('MainContentSection').style.display = 'block';
+                    }
+                }
+                
+                function removeErrorMessage(){
+                     
+                    var checkErrorSourceFirm = $(".ContentBox").find("div.errorMsg");            
+                     
+                  
+                    if(checkErrorSourceFirm.length >0){
+                                
+                        var fieldClasses = document.getElementsByClassName('error');                
+                        if(fieldClasses.length >0)
+                        {
+                            for(var i=0;i<fieldClasses.length;i++)
+                            {                   
+                                fieldClasses[i].classList.remove('error');                      
+                                fieldClasses = document.getElementsByClassName('error');                
+                                i=i-1;
+                            }
+                        }
+                        
+                        var checkError = document.getElementsByClassName('errorMsg');
+                          if(checkError.length >0)
+                          {
+                           
+                            for(var j=0;j<checkError.length;j++)
+                             { 
+                                var errorData = checkError[j].innerHTML;
+                                var dataError = errorData.split('<strong>Error:</strong> ').join('');                        
+                                 checkError[j].innerHTML = dataError;
+                              }  
+                            
+                          }   
+                    }       
+                }
+            </script>
+                
+            <style>
+                    <!--Added by Vanita-->
+                    select.picklist{
+                        padding: 0 0 0 12px !important;
+                    }
+                    select.dynamicField{
+                        padding: 0 0 0 12px !important;
+                    }
+                    <!---->
+                    .heading_section h1 {
+                    line-height: 42px !important;
+                    }
+                    .slds img {
+                        <!--height: 0 !important;-->
+                        max-width: 100%;
+                    }
+                    .multiSelectPicklistCell a {
+                        border: 0 none !important;
+                        left: 17%;
+                        position: relative;
+                    }
+                    .multiSelectPicklistRow td {width:200px !important;}
+                    .multiSelectPicklistRow td.multiSelectPicklistCell {width:60px !important;}
+                    
+                    .slds input[type="checkbox"], .slds input[type="radio"]{
+                        width: 15px !important;
+                        box-sizing: border-box;
+                        border: 1px solid #d8dde6;
+                    }
+                    
+                    .Copy-Mailing-Address{float:right; position:relative; top:-32px; right:14px}
+                    .Copy-Mailing-Address a{color:white !important; text-decoration:underline !important; font-size:12px}
+                    .Copy-Mailing-Address a:hover{color:#fcb141 !important; font-size:12px}
+                    input select{height:35px !important}
+                </style>
+                <style>
+                    .multiSelectPicklistRow select.slds-input {width:100% !important;height:122px !important;}
+                    .multiSelectPicklistRow a.slds-input {width:160px !important; margin-left:5px;}
+                    
+                    .slds .slds-input {padding: 0 18px 0 12px; background-color:transparent !important;}
+                    
+                    @media all and (-ms-high-contrast:none)
+     {                 *::-ms-backdrop, .slds .slds-input {padding: 0 0 0 10px !important; background-color:transparent !important;}
+                    }
+                    .multiSelectPicklistCell a {position:relative; left:21%; border:0 !important;}
+                    .picklistArrowRight {background: #fafafa url({!URLFOR($Resource.PE_35, '/PE_3.5/images/combobox_arrows_sprite.gif')}) no-repeat; border:0 !important;}
+                    .picklistArrowLeft {background: #fafafa url({!URLFOR($Resource.PE_35, '/PE_3.5/images/combobox_arrows_sprite.gif')}) no-repeat; border:0 !important; background-position: left -60px;}
+                    a.slds-input {border:0 !important; width:10% !important;}
+                    
+                    select.slds-input{  height: 36px !important; }
+                    
+                    .multiSelectPicklistCell a img {min-height:calc(20px + 2px) !important;}
+                    
+                    /*CSS FOR RIGHT SIDE*/
+                    .slds .slds-form-element__label {display:block !important;}
+                </style>
+            </head>
+            <body>
+                <style>
+                    .fancybox_background {position:fixed; z-index:999 !important;}
+                </style>
+                <div class="fancybox_background"></div>
+                <div class="slds" >
+                <input type="hidden" id="hiddedRcdTypeId" value=""/>
+                
+                
+                <div id="accessControl" style="position: fixed; top: 285px; left: 463.5px;display:none;Max-width:515px;" class="accessControlFancy FancyboxContainer Popup ui-draggable">                  
+                    <div class="slds-modal__header">
+                        <div class="close_white_60" >
+                            <a onclick="closepopup('fancybox_background','FancyboxContainer');window.top.location.href = '/home/home.jsp'; return false;" title="Close">
+                                <img src="{!URLFOR($Resource.PE_35, 'PE_3.5/images/close_white_60.png')}" />
+                            </a>
+                        </div>
+                        <addedRows_6 class="slds-text-heading--medium">Insufficient Permission</addedRows_6>
+                    </div>                  
+                    <div class="PopupContentStart" style="text-align:center; padding:15px 25px !important">
+                        You cannot access this functionality. Functionality may be disabled. Please contact Navatar administrator
+                        <div class="cl"></div> 
+                    </div>
+                    <div class="slds-modal__footer">
+                        <apex:commandButton value="OK" title="OK" reRender="" styleClass="slds-button slds-button--neutral" style="max-width:105px;" onclick="closepopup('fancybox_background','FancyboxContainer');window.top.location.href = '/home/home.jsp';return false;" />
+                    </div>                  
+                </div>
+                        
+                <!--Start Loading-->
+                <div id="loadingDiv" style="width:100%; height:100%; display:none; background:#fff; text-align:center; vertical-align:middle; opacity:0.7; position:fixed; top:0; left:0; z-index:9999999;">
+                 <div style="width:100px; height:100%; position:relative;top:41%; background:url({!URLFOR($Resource.PE_35, 'PE_3.5/images/icon_loading.gif')}) no-repeat top left; margin:0 auto;"></div>
+                </div>
+                <!--End Loading-->
+                     
+                    
+                    <!-- PRIMARY CONTENT WRAPPER -->
+                    <div class="myapp">
+                        <div id="temp">                            
+                            <div class="fancybox_background"></div>                           
+                             
+                            <!-------Insufficient Privlages Error------->
+                            <div class="InsufficientPermissions_Fancybox FancyboxContainer">
+
+                                <div class="slds-modal__header">
+                                   <div class="close_white_60">
+                                        <a onclick="closepopup('fancybox_background','FancyboxContainer');window.top.location.href = '/home/home.jsp';return false;" title="Close"><img src="{!URLFOR($Resource.PE_35, 'PE_3.5/images/close_white_60.png')}" /></a>
+                                    </div>
+                                    <h2 class="slds-text-heading--medium">Error
+                                    </h2>
+                                </div>
+
+                                <div class="PopupContentStart" style="padding:16px 25px 25px;">
+                                    Error Code: 12355. Please contact Navatar Support. System setup improperly.
+                                </div>
+
+                                <div class="slds-modal__footer">
+                                    <button class="slds-button slds-button--neutral" onclick="closepopup('fancybox_background','FancyboxContainer');window.top.location.href = '/home/home.jsp';return false;">OK</button>
+                                </div>                
+                            </div>
+                      
+                            
+                            <div id="MainContentSection" style="display:none;" class="float_r">                                
+                                <div class="ContentStart">
+                                    <div class="slds-page-header" role="banner">
+                                        <div class="slds-media" style="padding-bottom:10px">
+                                            <div class="slds-media__figure">
+                                               <div class="slds-icon slds-icon-standard-person-account slds-icon--large">
+                                                    <img style="height:47px !important;" src="{!URLFOR($Resource.SLDS100, '/assets/icons/standard/account_60.png')}"/>
+                                               </div> 
+                                            </div>
+                                            <div class="slds-media__body">
+                                                <p class="slds-page-header__title slds-truncate slds-align-middle" style="padding-top:8px"  >Individual Investor</p>                                               
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                    <!-- Start Content Box -->
+                                    
+                                    <div style="padding:16px 16px 16px 17px; float:right ">                                        
+                                        <apex:commandButton style="width:80px"  onclick="document.getElementById('loadingDiv').style.display='';" styleclass="slds-button slds-button--neutral" immediate="true" value="Cancel" action="{!cancelAct}" />
+                                        <apex:commandButton style="width:212px" onclick="document.getElementById('loadingDiv').style.display='';" action="{!createIndividualInvestorAct}" styleclass="slds-button slds-button--brand click_for_step_2" rerender="additionalSectionOpp, SectionCIAndAI, SectionCIAndAI2, ScriptPanel" oncomplete="checkRequiredField();removeErrorMessage();" value="Create Individual Investor" status="counterStatus" />
+                                    </div>
+                                    
+                                    <div style="clear:both"></div>
+                                    
+                                    <div style="margin:20px 30px 20px 30px; visibility:hidden; display:none;">
+                                        <h2>Individual Investor</h2>
+                                    </div> 
+                                    
+                                    <div id="COnInfoId" class="ContentBox" style="padding:20px 20px 0 20px !important; margin:0 15px 10px 15px">
+                                        <h2 class="slds-section__title">Contact Information</h2>
+                                        <div style="clear:both"></div>
+                                        <apex:outputpanel id="SectionCIAndAI">
+                                        <div id="filterGridContactDiv">
+                                            <table class="table" border="0" cellpadding="0" style="margin-top:20px;" cellspacing="0" width="100%">
+                                                <tbody>
+                                                    <tr>
+                                                        <td valign="top" width="50%">
+                                                            <table border="0" cellpadding="5" style="line-height:21px" cellspacing="0" width="100%">
+                                                                <tbody>
+                                                                    <tr>
+                                                                        <td class="td1" style="width:165px;"><label  class="slds-form-element__label" for="text-input-01">{!$ObjectType.Contact.fields.firstname.Label}&nbsp;</label></td>
+                                                                        <td class="td2"><apex:inputField value="{!conDetails.Salutation}" style="width:32%;top:10px;padding:0 0 0 12px !important" styleclass="slds-input {!$ObjectType.Contact.fields.Salutation.Type}"  />&nbsp;<apex:inputField id="firstNameIF" value="{!conDetails.firstname}" style="width:36%;margin-left:3px" styleclass="slds-input {!$ObjectType.Contact.fields.lastname.Type}"  /><div style="display:none;" id="firstNameId" class="mandatory_msg">Please enter a value</div></td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td class="td1" style="width:165px;"><label  class="slds-form-element__label" for="text-input-01"><span class="slds-required">*</span>{!$ObjectType.Contact.fields.lastname.Label}&nbsp;</label></td>
+                                                                        <td class="td2"><apex:inputField id="lastNameIF" required="false" value="{!conDetails.lastname}" style="width:70%;margin-top: 10px;" styleclass="slds-input" /></td>
+                                                                    </tr><tr ><td >&nbsp;</td><td ><span style="display:none;" id="lastNameId" class="mandatory_msg">Please enter a value</span></td></tr>
+                                                                    
+                                                                    <tr>
+                                                                        <td class="td1" style="width:165px; valign:top"><label  class="slds-form-element__label" for="text-input-01"><abbr id="reqDescId" style="display:none;" class="slds-required" >*</abbr>{!$ObjectType.Contact.fields.Description.Label}&nbsp;</label></td>
+                                                                        <td class="td2"><apex:inputField id="descFormIF" value="{!conDetails.Description}" style="width:70%; " styleclass="slds-input"  /></td>
+                                                                    </tr><tr><td>&nbsp;</td><td><span id="conDescripId" style="display:none;" class="mandatory_msg" >Please enter a value</span></td></tr>
+                                                                    
+                                                                </tbody>
+                                                            </table>
+                                                        </td>
+                                                        <td valign="top" width="50%">
+                                                            <table border="0" cellpadding="5"  style="line-height:21px;" cellspacing="0" width="100%">
+                                                                <tbody>
+                                                                    <tr>
+                                                                        <td class="td1"  style="width:165px;"><label  class="slds-form-element__label" for="text-input-01"><abbr id="reqPhoneId" style="display:none;" class="slds-required" >*</abbr>{!$ObjectType.Contact.fields.Phone.Label}&nbsp;</label></td>
+                                                                        <td class="td2"><apex:inputField id="phoneFormIF" value="{!conDetails.phone}" style="width:70%" styleclass="slds-input"  /></td>
+                                                                    </tr>
+                                                                    <tr ><td>&nbsp;</td><td><span id="phoneId" style="display:none;" class="mandatory_msg">Please enter a value</span></td></tr>
+                                                                    <tr>
+                                                                        <td class="td1" style="width:165px;"><label  class="slds-form-element__label" for="text-input-01"><abbr id="reqFaxId" style="display:none;" class="slds-required" >*</abbr>{!$ObjectType.Contact.fields.fax.Label}&nbsp;</label></td>
+                                                                        <td class="td2"><apex:inputField id="faxFormIF" value="{!conDetails.fax}" style="width:70%" styleclass="slds-input"  /></td>
+                                                                    </tr><tr ><td >&nbsp;</td><td ><span style="display:none;" id="faxId" class="mandatory_msg">Please enter a value</span></td></tr>
+                                                                    
+                                                                    <tr>
+                                                                        <td class="td1" style="width:165px;"><label  class="slds-form-element__label" for="text-input-01"><abbr id="reqMPhoneId" style="display:none;" class="slds-required" >*</abbr>{!$ObjectType.Contact.fields.MobilePhone.Label}&nbsp;</label></td>
+                                                                        <td class="td2"><apex:inputField id="mPhoneFormIF" value="{!conDetails.MobilePhone}" style="width:70%" styleclass="slds-input"  /></td>
+                                                                    </tr><tr ><td >&nbsp;</td><td ><span style="display:none;" id="mobPhoneId" class="mandatory_msg">Please enter a value</span></td></tr>
+                                                                    
+                                                                    <tr>
+                                                                        <td class="td1" style="width:165px;"><label class="slds-form-element__label" for="text-input-01"><abbr id="reqEmailId" style="display:none;" class="slds-required" >*</abbr>{!$ObjectType.Contact.fields.email.Label}&nbsp;</label></td>
+                                                                        <td class="td2"><apex:inputField id="emailFormIF" value="{!conDetails.email}" style="width:70%" styleclass="slds-input"  /></td>
+                                                                    </tr><tr ><td>&nbsp;</td><td ><span style="display:none;" id="emailIdId" class="mandatory_msg">Please enter a value</span></td></tr>
+                                                                </tbody>
+                                                            </table>
+                                                        </td>
+                                                    </tr>
+                                                </tbody></table>
+                                        </div>
+                                        </apex:outputpanel>
+                                    </div>
+                                    
+                                    <div id="AddInfoId" class="ContentBox" style=" margin:0 15px 10px 15px">
+                                        <h2 class="slds-section__title">Address Information</h2>
+                                        <div style="clear:both"></div>
+                                        <div class="Copy-Mailing-Address" >
+                                            <a onclick="copyMailingToOtherAddressJS();" href="">Copy Mailing Address to Other Address</a> 
+                                        </div>
+                                        <apex:outputpanel id="SectionCIAndAI2">
+                                        <div id="filterGridContactDiv2">
+                                            
+                                            <div class="cl"></div>
+                                            
+                                            <table class="table" border="0" cellpadding="0" style="margin-top:00px;" cellspacing="0" width="100%">
+                                                <tbody>
+                                                    <tr>
+                                                        <td valign="top" width="50%">
+                                                            <table border="0" cellpadding="5" style="line-height:46px"  cellspacing="0" width="100%">
+                                                                <tbody>
+                                                                    <tr>
+                                                                        <td class="td1" style="width:165px; valign:top"><label class="slds-form-element__label" for="text-input-01">{!$ObjectType.Contact.fields.MailingStreet.Label}&nbsp;</label></td>
+                                                                        <td class="td2"><apex:inputField id="mStreetId" value="{!conDetails.MailingStreet}" style="width:70%;margin-top: 10px; " styleclass="slds-input"  /></td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td class="td1"><label class="slds-form-element__label" for="text-input-01">{!$ObjectType.Contact.fields.MailingCity.Label}&nbsp;</label></td>
+                                                                        <td class="td2"><apex:inputField id="mCityId" value="{!conDetails.MailingCity}" style="width:70%;margin-top: 10px;" styleclass="slds-input"  /></td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td class="td1" style="width:165px"><label  class="slds-form-element__label" for="text-input-01">{!$ObjectType.Contact.fields.MailingState.Label}&nbsp;</label></td>
+                                                                        <td class="td2"><apex:inputField id="mStateId" value="{!conDetails.MailingState}" style="width:70%;margin-top: 10px; " styleclass="slds-input"  /></td>
+                                                                    </tr> 
+                                                                    
+                                                                    <tr>
+                                                                        <td class="td1" width="165px"><label  class="slds-form-element__label" for="text-input-01">{!$ObjectType.Contact.fields.MailingPostalCode.Label}&nbsp;</label></td>
+                                                                        <td class="td2"><apex:inputField id="mPostalId" value="{!conDetails.MailingPostalCode}" style="width:70%;margin-top: 10px; " styleclass="slds-input"  /></td>
+                                                                    </tr>
+                                                                    
+                                                                    <tr>
+                                                                        <td class="td1"><label  class="slds-form-element__label" for="text-input-01">{!$ObjectType.Contact.fields.MailingCountry.Label}&nbsp;</label></td>
+                                                                        <td class="td2"><apex:inputField id="mCountryId" value="{!conDetails.MailingCountry}" style="width:70%;margin-top: 10px; " styleclass="slds-input"  /></td>
+                                                                    </tr>
+                                                                    
+                                                                </tbody>
+                                                            </table>
+                                                            
+                                                        </td>
+                                                        <td valign="top" style="width:49.5%">
+                                                            <table border="0"   cellpadding="5" style="line-height:46px"  cellspacing="0" width="100%">
+                                                                <tbody>
+                                                                    <tr>
+                                                                        <td class="td1" style="width:165px; valign:top"><label  class="slds-form-element__label" for="text-input-01">{!$ObjectType.Contact.fields.OtherStreet.Label}&nbsp;</label></td>
+                                                                        <td class="td2"><apex:inputField id="oStreetId" value="{!conDetails.OtherStreet}" style="width:70%;margin-top: 10px; " styleclass="slds-input"  /></td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td class="td1" style="width:165px;"><label  class="slds-form-element__label" for="text-input-01">{!$ObjectType.Contact.fields.OtherCity.Label}&nbsp;</label></td>
+                                                                        <td class="td2"><apex:inputField id="oCityId" value="{!conDetails.OtherCity}" style="width:70%;margin-top: 10px;" styleclass="slds-input"  /></td>
+                                                                    </tr> 
+                                                                    <tr>
+                                                                        <td class="td1" style="width:165px;"><label  class="slds-form-element__label" for="text-input-01">{!$ObjectType.Contact.fields.OtherState.Label}&nbsp;</label></td>
+                                                                        <td class="td2"><apex:inputField id="oStateId" value="{!conDetails.OtherState}" style="width:70%;margin-top: 10px; " styleclass="slds-input"  /></td>
+                                                                    </tr>
+                                                                    
+                                                                    <tr>
+                                                                        <td class="td1" width="165px"><label  class="slds-form-element__label" for="text-input-01">{!$ObjectType.Contact.fields.OtherPostalCode.Label}&nbsp;</label></td>
+                                                                        <td class="td2"><apex:inputField id="oPostalId" value="{!conDetails.OtherPostalCode}" style="width:70%;margin-top: 10px; " styleclass="slds-input"  /></td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td class="td1" width="165px"><label  class="slds-form-element__label" for="text-input-01">{!$ObjectType.Contact.fields.OtherCountry.Label}&nbsp;</label></td>
+                                                                        <td class="td2"><apex:inputField id="oCountryId" value="{!conDetails.OtherCountry}" style="width:70%;margin-top: 10px; " styleclass="slds-input"  /></td>
+                                                                    </tr>
+                                                                </tbody>
+                                                            </table>
+                                                        </td>
+                                                    </tr>
+                                                </tbody></table>
+                                            <div class="cl"></div>
+                                        </div>
+                                        </apex:outputpanel>
+                                    </div>
+                                    
+                                    <div id="AINameId" style="display:block;">
+                                    <div class="ContentBox"  style=" margin:0 15px 10px 15px">
+                                        <div class="cl"></div>          
+                                        <span ><h2  class="slds-section__title">Additional Information</h2></span>                                        
+                                        <div style="clear:both"></div>
+                                        <div id="filterGridContactDiv3"> 
+                                        <apex:outputpanel id="additionalSectionOpp">
+                                                                    
+                                            <table class="table" border="0" style="margin-top:20px; margin-bottom:20px" cellpadding="0" cellspacing="0" width="100%">
+                                                <tbody>
+                                                    <tr>
+                                                        <td valign="top" style="width:50%">
+                                                         
+                                                            <apex:variable var="leftinputcolumcls" value="{!1}" />                                              
+                                                                <apex:repeat id="dt2i" var="fld" value="{!leftColumnObjectFieldList}" rendered="{!NOT(ISNULL(leftColumnObjectFieldList))}">                    
+                                                                    <script>                                                                         
+                                                                        var strCounter2 = 'leftinputcolumcls'+'{!leftinputcolumcls}'+'{!fld.isrequired}';                                                                                                            
+                                                                        if('{!leftinputcolumcls}'== 1){
+                                                                            arrLeftColumInputClass = strCounter2;
+                                                                        }else{                                                                                                                  
+                                                                            arrLeftColumInputClass =  arrLeftColumInputClass +','+strCounter2 ; 
+                                                                        } 
+                                                                        
+                                                                    </script>   
+                                                                       <table border="0" cellpadding="5" cellspacing="0" width="100%">
+                                                                        <tbody> 
+                                                                        <tr>
+                                                                            <td class="td1" style="max-width:165Px;width:165px; word-wrap: break-word;"><label style="word-break: normal;" class="slds-form-element__label">
+                                                                                <abbr style="{!(if(fld.isrequired== false,'display:none;',''))}" class="slds-required" >*</abbr>{!fld.label}</label>
+                                                                            </td>
+                                                                            <td class="td2" >
+                                                                                <label class="{!if(fld.objectname[fld.apiname] == false,'slds-checkbox','')}">                                                                                                                                                                      
+                                                                                    <apex:inputField id="lookupId" required="false" value="{!fld.objectname[fld.apiname]}" style="width:50%;" styleclass="leftinputcolumcls{!leftinputcolumcls}{!fld.isrequired} slds-input dynamicField" />
+                                                                                    <span class="slds-checkbox--faux" style="display:{!if(fld.objectname[fld.apiname] == false,'block','none')}"></span>                               
+                                                                                </label>
+                                                                                <!--<apex:inputField id="lookupId" required="false" value="{!fld.objectname[fld.apiname]}" style="width:50%;" styleclass="leftinputcolumcls{!leftinputcolumcls}{!fld.isrequired} slds-input dynamicField" />-->
+                                                                            </td>
+                                                                        </tr>                                       
+                                                                        <tr>
+                                                                            <td>&nbsp;</td>
+                                                                            <td>
+                                                                                <apex:outputpanel >
+                                                                                    <apex:message for="lookupId" id="lookupIderror" styleClass="mandatory_msg"/>
+                                                                                    <span id="leftinputcolumcls{!leftinputcolumcls}{!fld.isrequired}ErrorMsg" style="display:none;" class="mandatory_msg">Please enter a value</span>  
+                                                                                </apex:outputpanel>                                                                                
+                                                                            </td>
+                                                                        </tr>   
+                                                                        </tbody>
+                                                                    </table>                                                                                                                
+                                                                    <apex:variable var="leftinputcolumcls" value="{!leftinputcolumcls+1}"/> 
+                                                                </apex:repeat>
+                                                                
+                                                        </td>
+                                                        <td valign="top" width="50%">
+                                                         
+                                                        <apex:variable var="rightinputcolumcls" value="{!1}" />
+                                                            <apex:repeat id="colmn2" var="fld" value="{!rightColumnObjectFieldList}" rendered="{!NOT(ISNULL(rightColumnObjectFieldList))}">                    
+                                                                <script>                                                    
+                                                                    strCounter = 'rightinputcolumcls'+'{!rightinputcolumcls}'+'{!fld.isrequired}';                                                       
+                                                                    if('{!rightinputcolumcls}'==1){
+                                                                        arrRightColumInputClass = strCounter;
+                                                                    }else{                                                                                                                  
+                                                                        arrRightColumInputClass =  arrRightColumInputClass +','+strCounter ; 
+                                                                    }  
+                                                                     
+                                                                </script>
+                                                                       <table border="0" cellpadding="5" cellspacing="0" width="100%">
+                                                                        <tbody>                             
+                                                                        <tr>
+                                                                            <td class="td1" style="width:165px;">
+                                                                                <label style="word-break: normal;" class="slds-form-element__label">
+                                                                                    <span id="rightinputcolumcls{!rightinputcolumcls}">
+                                                                                        <abbr style="{!(if(fld.isrequired==false,'display:none;',''))}" class="slds-required" >*</abbr>
+                                                                                    </span>{!fld.label}
+                                                                                </label>
+                                                                            </td>
+                                                                            <td class="td2">                                                                               
+                                                                                <label class="{!if(fld.objectname[fld.apiname] == false,'slds-checkbox','')}">                                                                                                                                                                      
+                                                                                    <apex:inputField id="lookupId2" value="{!fld.objectname[fld.apiname]}" required="false" style="width:50%;" styleclass="slds-input rightinputcolumcls{!rightinputcolumcls}{!fld.isrequired} dynamicField" />
+                                                                                    <span class="slds-checkbox--faux" style="display:{!if(fld.objectname[fld.apiname] == false,'block','none')}"></span>                               
+                                                                                </label>
+                                                                                <!--<apex:inputField id="lookupId2" required="false" value="{!fld.objectname[fld.apiname]}" style="width:50%;" styleclass="slds-input rightinputcolumcls{!rightinputcolumcls}{!fld.isrequired} dynamicField" />-->
+                                                                            </td>
+                                                                        </tr>
+                                                                        <tr>
+                                                                            <td>&nbsp;</td>
+                                                                            <td>
+                                                                                <apex:outputpanel >
+                                                                                    <apex:message for="lookupId2" id="lookupIderror2" styleClass="mandatory_msg"/>
+                                                                                    <span id="rightinputcolumcls{!rightinputcolumcls}{!fld.isrequired}ErrorMsg" style="display:none;" class="mandatory_msg">Please enter a value</span>
+                                                                                </apex:outputpanel>
+                                                                                
+                                                                            </td>
+                                                                        </tr>   
+                                                                    </tbody>
+                                                                </table> 
+                                                                <apex:variable var="rightinputcolumcls" value="{!rightinputcolumcls+1}"/>   
+                                                            </apex:repeat>                                                            
+                                                        </td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                            </apex:outputpanel>
+                                        </div>
+                                    </div>
+                                    </div>
+                                    <div style="padding:16px 16px 16px 17px; float:right" >
+                                        <apex:commandButton style="width:80px" onclick="document.getElementById('loadingDiv').style.display='';" styleclass="slds-button slds-button--neutral" immediate="true" value="Cancel" action="{!cancelAct}" />
+                                        <apex:commandButton style="width:212px" onclick="document.getElementById('loadingDiv').style.display='';" action="{!createIndividualInvestorAct}" rerender="additionalSectionOpp, SectionCIAndAI, SectionCIAndAI2, ScriptPanel" oncomplete="checkRequiredField();removeErrorMessage();" styleclass="slds-button slds-button--brand click_for_step_2" value="Create Individual Investor" status="counterStatus" />
+                                    </div>
+                                    <div class="cl"></div>
+                                </div>
+                            </div>
+                            <div class="cl"></div>
+                        </div>
+                    </div>
+                </div>
+                <script>
+                 
+                    function displayError(){                     
+                        var checkPermission = {!if(checkPermission == true, 'true', 'false')};  // SK: 11Dec2017
+                        
+                        if(checkPermission == false || checkPermission == 'false'){
+                            InsufficientPermissions_Fancybox();
+                            return false;
+                        }
+                    }
+                    displayError();
+                </script>
+            </body>
+        </html>
+    </apex:form>
+     
+</apex:page>

@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomFieldTranslation xmlns="http://soap.sforce.com/2006/04/metadata">
+        <label><!-- Reason for Decline --></label>
+        <name>Reason_for_Decline__c</name>
+        <picklistValues>
+            <masterLabel>Lack of Capital</masterLabel>
+            <translation><!-- Lack of Capital --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>No Reason Given</masterLabel>
+            <translation><!-- No Reason Given --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Not ready-6 months</masterLabel>
+            <translation><!-- Not ready-6 months --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Portfolio Performance</masterLabel>
+            <translation><!-- Portfolio Performance --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Uninterested</masterLabel>
+            <translation><!-- Uninterested --></translation>
+        </picklistValues>
+    </CustomFieldTranslation>

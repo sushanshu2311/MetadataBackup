@@ -1,0 +1,61 @@
+.text_non_decor{
+    text-decoration: none;
+    color:#333435;
+}
+.text_non_decor:hover{
+    color:#0176d3;
+}
+.last_block{
+    margin: 10px;
+}
+.d_flex{
+    display: flex;
+    justify-content: center;
+    font-size: 1em;
+    /* padding: 25px 20px; */
+    /* border-bottom: 1px solid #ccc; */
+}
+.d_flex_on{
+    display: flex;
+    justify-content: center;
+}
+.text_dec_none{
+    text-decoration: none;
+}
+.searchinputCss{
+    display: flex;
+    justify-content: center;
+}
+
+.searchinputCss:focus {
+    outline: none;
+    border-color: blue;
+}
+
+.btnHelpIcon .slds-icon-standard-search{
+    background-color: #0176d3;
+    padding: 4px;
+    cursor: pointer;
+}
+/*css added by raju on dated 23-10-2024 ; 47982*/
+.clsBoxContainer {
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    align-items: center;
+    height: 100%;
+}
+
+.clsDisplayEle{
+    display: flex;
+    justify-content: center;
+    flex-direction: row;
+}
+
+.clsFontSize {
+    font-size: 11px;
+}
+
+.clsColor{
+    color: #1b427d;
+}

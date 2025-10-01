@@ -1,0 +1,159 @@
+<apex:page showHeader="true" standardStylesheets="false" standardController="Fund_Distribution__c" sidebar="true" applyHtmlTag="true" applyBodyTag="false"  action="{!evaluate}" extensions="FundSelectionDistribution">    
+<apex:form >
+
+<apex:actionFunction name="calldistribution" action="{!redirectFun}" rerender="idFundTablPnl"  status="" />
+<apex:actionFunction name="cancel" action="{!cancel}" rerender=""  status="" />
+
+<html>  
+
+<apex:stylesheet value="{!URLFOR($Resource.SLDS100, 'assets/styles/salesforce-lightning-design-system-vf.css')}" />
+<!-- Start PE New Theme -->
+<link href = "{!URLFOR($Resource.PE_35, 'PE_3.5/css/pe_3.5.css')}" rel = "stylesheet" type = "text/css"/>
+<!-- End PE New Theme -->
+ <style>
+      .slds {background: #f2f5fa !important;}
+      .slds-page-header__title {position:relative; left:-1px;}
+      .lookupIconOn, .lookupIcon{
+            <!--background-image: url("/resource/1457007465000/PE_35/PE_3.5/images/lookup.png");-->
+            background-image : url({!URLFOR($Resource.PE_35, '/PE_3.5/images/search_16.png')});
+            font-size:12px !important;
+            position:relative; 
+            right: 45px;
+            background-position: left top;
+            background-repeat: no-repeat !important;    
+            background-color: #ffffff;    
+            
+            }
+            
+            .lookupInput img {
+                vertical-align: middle;
+                margin-right: -2.75em;
+                background-repeat: no-repeat;
+                
+            }
+            
+             a.inputTextClass{
+            <!--border: 2px solid #c23934;-->
+            border:none !important;
+            
+            background-color: white !important;
+            color: #16325c !important;      
+            border-radius: 4px !important;
+            width: 50%;
+            transition: border 0.1s linear, background-color 0.1s linear;       
+            padding: 0 0 0 12px !important;
+            line-height: 34px !important;
+            min-height: calc(34px + 2px);
+        }
+            
+            .inputTextClass{
+                 padding-right: 32px !important;
+            background-color: white !important;
+            color: #16325c !important;
+            border: 1px solid #d8dde6 !important;
+            /*border-radius: 4px !important;     */   
+            width: 85%;
+            transition: border 0.1s linear, background-color 0.1s linear;       
+            padding: 0 16px 0 12px !important;
+            line-height: 34px !important;
+            min-height: calc(34px + 2px);
+            }
+            
+            .slds .slds-button {height:37px !important;}
+            
+  </style>
+ <link href = "{!URLFOR($Resource.PE_35, 'PE_3.5/css/Navatar-Yellow-Theme.css')}" rel = "stylesheet" type = "text/css"/>
+<!-- REQUIRED SLDS WRAPPER -->
+    <div class="slds">
+    
+    
+            <style>
+                .slds-media__body {position:relative; top:0px;}
+                .slds-page-header { padding: 24px 24px 24px !important; }
+            </style>
+            <div class="slds-page-header" role="banner">
+            <a class="slds-button slds-button--neutral" title="Back" style="float:right;position: relative;top: 6px;" onclick="onCancelClicked();">
+                
+                    <div aria-hidden="true" class="slds-icon icon-utility-back slds-icon-text-default" style="width:15px;">
+                        <img src="{!URLFOR($Resource.SLDS100, 'assets/icons/utility/back_60.png')}" style="position:relative; top:8px;" />
+                    </div>
+                </a>
+              <div class="slds-media">
+                <div class="slds-media__figure">
+                   <div aria-hidden="true" class="slds-icon slds-icon-custom-3 slds-icon--large">
+                      <img src="{!URLFOR($Resource.SLDS100, 'assets/icons/custom/custom3_60.png')}" />
+                  </div>
+                </div>
+                <div class="slds-media__body">
+                  <p class="slds-page-header__title slds-truncate slds-align-middle">New </p>
+                  <p class="slds-text-body--small">Fund Distribution</p>
+                </div>
+              </div>
+            </div>
+
+
+    
+    <!-- Start Content Box -->
+    <div class="ContentBox">
+        <h2 class="slds-section__title">Select Fund</h2>
+        <div class="cl"></div><br />
+        
+        <center>
+        
+        <!--<button class="slds-button slds-button--neutral">Cancel</button>-->
+        <apex:commandButton value="Cancel" title="Cancel" styleClass="slds-button slds-button--neutral" action="{!cancel}"/>
+        <button class="slds-button slds-button--brand" onclick="callcreateDistribution();return false;">Create Distribution</button>
+          <apex:outputpanel id="idFundTablPnl">
+        <table border="0" cellpadding="0" cellspacing="0" class="table" style="margin:15px 0;">
+            <tr>
+                <td class="td1" width="33%;" style=" vertical-align: middle; "><span class="slds-required" >*</span>Fund</td>
+                <td class="td2">
+                    
+                     <div class="slds-form-element__control slds-input-has-icon slds-input-has-icon--right" style="width:400px">
+                     <!-- 
+                      <div aria-hidden="true" class="slds-input__icon slds-icon-text-default">
+                           <img src="{!URLFOR($Resource.SLDS100, 'assets/icons/utility/search_60.png')}" />
+                        </div> -->
+                     <!--<input id="lookup" class="slds-input error_border" type="text" aria-autocomplete="list" role="combobox" aria-expanded="true" aria-activedescendant="" /> -->
+                      <apex:inputField value="{!part.Fund__c}" id="lookupIdCom7" style="border:2px solid #c23934"  styleclass="inputTextClass"/>             
+                    </div>    
+                                        
+                </td>
+            </tr>
+            <tr>
+                <td class="td1"></td>
+                            <td class="td2" style="padding-top:0 !important; line-height: 12px;">
+                                <apex:message id="StdErrMsgCompWrng" styleClass="mandatory_msg" for="lookupIdCom7"/>
+                               <span class="mandatory_msg" id="ErrMsgCompTypWrng" style="display:none"></span>
+                            </td>
+            </tr>
+        </table>
+
+        <!--<button class="slds-button slds-button--neutral">Cancel</button>-->
+
+                        <apex:commandButton value="Cancel" title="Cancel" styleClass="slds-button slds-button--neutral" action="{!cancel}"/>
+                        <button class="slds-button slds-button--brand" onclick="callcreateDistribution();return false;">Create Distribution</button>
+                    </apex:outputpanel>
+        </center>
+        
+    </div>
+    <br />
+</div>
+<script>
+    function callcreateDistribution(){
+    calldistribution();
+    }
+                function onCancelClicked()
+            {
+                cancel();
+            }
+    function stopRKey(evt) { 
+                    var evt = (evt) ? evt : ((event) ? event : null); 
+                    var node = (evt.target) ? evt.target : ((evt.srcElement) ? evt.srcElement : null); 
+                    if ((evt.keyCode == 13) && (node.type=="text"))  {return false;} 
+     } 
+     document.onkeypress = stopRKey;
+</script>
+</html>
+</apex:form>
+</apex:page>

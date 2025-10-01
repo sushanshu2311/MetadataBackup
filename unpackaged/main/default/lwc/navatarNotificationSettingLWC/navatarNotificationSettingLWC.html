@@ -1,0 +1,108 @@
+<!--
+  @description       : 
+  @author            : ChangeMeIn@UserSettingsUnder.SFDoc
+  @group             : 
+  @last modified on  : 11-22-2022
+  @last modified by  : ChangeMeIn@UserSettingsUnder.SFDoc
+-->
+<template>
+    <div class="slds-grid slds-wrap">
+        <div class="slds-col slds-size_2-of-12">
+            <div class="slds-theme_shade slds-p-bottom_x-large clsFullHeight tabhead">
+                <lightning-vertical-navigation selected-item="allgrids" class="removeHyperlink" shaded>
+                    <lightning-vertical-navigation-section label="Settings">
+                        <lightning-vertical-navigation-item-badge data-id="all_id" label="Notifications" name="allgrids"
+                            onclick={onAllClick} title="Notifications">
+                        </lightning-vertical-navigation-item-badge>
+                    </lightning-vertical-navigation-section>
+                </lightning-vertical-navigation>
+            </div>
+        </div>
+        <div class="slds-col slds-size_10-of-12 slds-p-left_small main-Container">
+            <!--Start-->
+            <div class="slds-box slds-theme_shade slds-p-vertical_medium slds-p-horizontal_medium" style="border-radius: 0.35rem !important;">
+                <!-- <div class="d-block">
+                    <div class="slds-p-vertical_small d-flex">
+                        <lightning-layout-item class="slds-p-right_x-small">Enable Action Notifications
+                        </lightning-layout-item>
+                        <lightning-layout-item>
+                            <lightning-input type="checkbox" name="actionNotification" onchange={handleActionChange} checked={setupRec.actionNotification}></lightning-input>
+                        </lightning-layout-item>
+                    </div>
+                    <div class="slds-p-vertical_small  d-flex">
+                        <lightning-layout-item class="slds-p-right_x-small">Enable Informational Notifications
+                        </lightning-layout-item>
+                        <lightning-layout-item>
+                            <lightning-input type="checkbox" name="infoNotification" onchange={handleInfoChange} checked={setupRec.infoNotification}></lightning-input>
+                        </lightning-layout-item>
+                    </div>
+
+                    <div class="slds-p-vertical_small  d-flex">
+                        <lightning-layout-item class="slds-p-right_x-small">Enable Review Tag Notification
+                        </lightning-layout-item>
+                        <lightning-layout-item>
+                            <lightning-input type="checkbox" name="reviewTag" onchange={handleReviewTag} disabled={isReviewTag} checked={setupRec.reviewTag}></lightning-input>
+                        </lightning-layout-item>
+                    </div>
+                </div> -->
+
+                <div class="d-block slds-p-around_medium slds-border_top slds-border_bottom slds-border_left slds-border_right" style="border-radius: 0.35rem;">
+                    <div>
+                        <lightning-layout>
+                            <lightning-layout-item size="12">
+                                <div >
+                                    <lightning-layout>
+                                        <lightning-layout-item size="6" class="slds-p-right_xx-small">
+                                            <strong>Enable Action Notifications</strong><br />
+                                            <!--<span>Allow users to activate add note/review tag notification.</span>-->
+                                        </lightning-layout-item>
+                                        <lightning-layout-item size="6">
+                                            <lightning-input type="checkbox" name="actionNotification" onchange={handleActionChange} checked={setupRec.actionNotification}></lightning-input>
+                                        </lightning-layout-item>
+                                    </lightning-layout>                                 
+                                </div>
+                            </lightning-layout-item>
+                        </lightning-layout>
+
+                        <lightning-layout>
+                            <lightning-layout-item size="12">
+                                <div class="slds-m-top_small">
+                                    <lightning-layout>
+                                        <lightning-layout-item size="6" class="slds-p-right_xx-small">
+                                            Enable Review Tag Notifications
+                                        </lightning-layout-item>
+                                        <lightning-layout-item size="6">
+                                            <lightning-input type="checkbox" name="reviewTag" onchange={handleReviewTag} disabled={isReviewTag} checked={setupRec.reviewTag}></lightning-input>
+                                        </lightning-layout-item>
+                                    </lightning-layout>                                 
+                                </div>
+                            </lightning-layout-item>
+                        </lightning-layout>
+                    </div>
+                </div>
+                
+                <div class="d-block slds-p-around_medium slds-border_top slds-border_bottom slds-border_left slds-border_right slds-m-top_medium" style="border-radius: 0.35rem;">
+                    <div>
+                        <lightning-layout>
+                            <lightning-layout-item size="12">
+                                <div >
+                                    <lightning-layout>
+                                        <lightning-layout-item size="6" class="slds-p-right_xx-small">
+                                            <strong>Enable Information Notifications</strong><br />
+                                            <!--<span>Allow users to activate all 4 information notification.</span>-->
+                                        </lightning-layout-item>
+                                        <lightning-layout-item size="6">
+                                            <lightning-input type="checkbox" name="infoNotification" onchange={handleInfoChange} checked={setupRec.infoNotification}></lightning-input>
+                                        </lightning-layout-item>
+                                    </lightning-layout>                                 
+                                </div>
+                            </lightning-layout-item>
+                        </lightning-layout>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+</template>

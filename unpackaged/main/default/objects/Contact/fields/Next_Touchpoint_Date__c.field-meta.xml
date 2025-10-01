@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Next_Touchpoint_Date__c</fullName>
+    <formula>CASE(Tier__c,
+
+
+&quot;1&quot;,
+
+IF(DATEVALUE(CreatedDate) &gt;= DATEVALUE(&quot;2024-04-25&quot;), (IF(ISBLANK(Last_Touch_Point__c),DATEVALUE(CreatedDate) +90 ,Last_Touch_Point__c + 90)),(IF(ISBLANK(Last_Touch_Point__c),DATEVALUE(&quot;2024-04-25&quot;) + 90 ,Last_Touch_Point__c + 90))),
+
+
+&quot;2&quot;,
+
+IF(DATEVALUE(CreatedDate) &gt;= DATEVALUE(&quot;2024-04-25&quot;), IF(ISBLANK(Last_Touch_Point__c),DATEVALUE(CreatedDate) +120 ,Last_Touch_Point__c + 120),IF(ISBLANK(Last_Touch_Point__c),DATEVALUE(&quot;2024-04-25&quot;) + 120 ,Last_Touch_Point__c + 120)),
+
+
+&quot;3&quot;,
+
+IF(DATEVALUE(CreatedDate) &gt;= DATEVALUE(&quot;2024-04-25&quot;), IF(ISBLANK(Last_Touch_Point__c),DATEVALUE(CreatedDate) +180 ,Last_Touch_Point__c + 180),IF(ISBLANK(Last_Touch_Point__c),DATEVALUE(&quot;2024-04-25&quot;) + 180 ,Last_Touch_Point__c + 180)),
+
+
+(IF(DATEVALUE(CreatedDate) &gt;= DATEVALUE(&quot;2024-04-25&quot;),IF(ISBLANK(Last_Touch_Point__c),DATEVALUE(CreatedDate) +120 ,Last_Touch_Point__c + 120),IF(ISBLANK(Last_Touch_Point__c),DATEVALUE(&quot;2024-04-25&quot;) + 120 ,Last_Touch_Point__c + 120)))
+
+)</formula>
+    <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+    <label>Next Touchpoint Date</label>
+    <required>false</required>
+    <type>Date</type>
+</CustomField>

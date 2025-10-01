@@ -1,0 +1,23 @@
+.d-flex{
+    display: flex !important;
+}
+.d-block{
+    display: block;
+}
+.slds-box{
+    border-radius:0px !important;
+}
+.pd-3rem{
+    padding-bottom: 3.4rem;
+}
+.bg_f{
+    background: #fff;
+}
+.br_radius{
+    border-radius: 0 0 3px 3px !important;
+}
+
+.clsFullHeight  {
+    min-height: 125px;
+    height: auto;
+}

@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomFieldTranslation xmlns="http://soap.sforce.com/2006/04/metadata">
+        <label><!-- CTS Activity --></label>
+        <name>CTS_Activity__c</name>
+        <picklistValues>
+            <masterLabel>Old Institution Only</masterLabel>
+            <translation><!-- Old Institution Only --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Old and New Institutions</masterLabel>
+            <translation><!-- Old and New Institutions --></translation>
+        </picklistValues>
+    </CustomFieldTranslation>

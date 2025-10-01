@@ -1,0 +1,77 @@
+<template>
+    <template if:true={isModalOpen}>
+        <section role="dialog" tabindex="-1" aria-modal="true" aria-labelledby="modal-heading-01"
+            class="slds-modal slds-fade-in-open">
+            <div class="slds-modal__container" style="width:30rem;">
+                <lightning-icon variant="inverse" size="small" icon-name="utility:close" alternative-text="close!"
+                    title="Close this window" class="slds-text-align_right slds-m-bottom_small slds-text-link_reset"
+                    onclick={closeModal}></lightning-icon>
+                <div class="slds-modal__header">
+                    <h1 class="slds-modal__title slds-hyphenate">Send Email</h1>
+                </div>
+                <div class="slds-modal__content slds-p-around_medium maincont-sendemail">
+                    <template if:true={isError}>
+                        <div class="slds-p-bottom_medium">
+                        <div class="slds-notify slds-notify_alert slds-alert_error" role="alert">
+                        <span class="slds-assistive-text">error</span>
+                        <span class="slds-icon_containerslds-icon-utility-error slds-m-right_x-small" title="Description of icon when needed">
+                        </span>
+                        <h2 class="slds-p-left_medium slds-text-align_left errorleft">Review the errors on this page.</h2>
+                        </div>
+                        <template if:true={errorMessage}>
+                        <p class="slds-p-left_medium slds-text-align_left"  style="color:red">{errorMessage}</p>
+                        </template>
+                    </div>
+                </template>       
+                    <div class="slds-form-element__control lbelfirst slds-grid">
+                        <label class="slds-form-element__label slds-col slds-size_1-of-12 slds-p-left_x-small" for="to">To</label>
+
+                        <lightning-layout>
+                            <lightning-layout-item>
+																<c-navatar-Send-Email-Combobox-Lwc onselection={handleToAddressChange}></c-navatar-Send-Email-Combobox-Lwc>
+                            </lightning-layout-item>
+                            <lightning-layout-item>
+                                <template if:true={ccLink}>
+                                    <lightning-button variant="base" label="Cc" onclick={ccPopup} class="noBtn slds-p-left_small slds-p-left_x-small"></lightning-button>
+                                </template>
+                            </lightning-layout-item>
+                        </lightning-layout>
+                    </div>
+                   
+                    <template if:true={ccpop}>
+                        <div class="slds-form-element__control lbel slds-grid">
+                            <label class="slds-form-element__label slds-col slds-size_1-of-12 slds-m-top_x-small slds-p-left_x-small" for="to">Cc</label>
+														<c-navatar-Send-Email-Combobox-Lwc onselection={handleCcAddressChange} class="slds-col slds-size_11-of-12 slds-m-top_x-small"></c-navatar-Send-Email-Combobox-Lwc>
+                        </div>
+                        <div class="slds-form-element__control lbel slds-grid">
+                            <label class="slds-form-element__label slds-col slds-size_1-of-12 slds-m-top_x-small slds-p-left_x-small" for="bcc">Bcc</label>
+														<c-navatar-Send-Email-Combobox-Lwc  onselection={handleBccAddressChange} class="slds-col slds-size_11-of-12 slds-m-top_x-small"></c-navatar-Send-Email-Combobox-Lwc>
+                        </div>
+                    </template>
+
+                    <lightning-layout multiple-rows="true">
+                        <lightning-layout-item class="slds-m-top_x-small">
+                            <div class="slds-form-element__control lbel slds-grid">
+                                <label class="slds-form-element__label slds-col slds-size_1-of-12 slds-p-left_x-small" for="Subject">Subject</label>
+                                <lightning-input value={subject} type="text" onchange={handleSubjectChange}>
+                                </lightning-input>
+                            </div>
+                        </lightning-layout-item>
+                    </lightning-layout>
+
+                    <div class="slds-p-top_small">
+                        <lightning-textarea  value={body} onchange={handleBodyChange}  class="txt_ht">
+                        </lightning-textarea>
+                    </div>
+                </div>
+
+                <div class="slds-modal__footer">
+                    <button class="slds-button slds-button_neutral" aria-label="Cancel"
+                        onclick={closeModal} title="Cancel">Cancel</button>
+                    <button class="slds-button slds-button_brand" onclick={handleSendEmail} title="Send">Send</button>
+                </div>
+            </div>
+        </section>
+        <div class="slds-backdrop slds-backdrop_open" role="presentation"></div>
+    </template>
+</template>

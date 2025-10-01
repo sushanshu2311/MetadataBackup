@@ -1,0 +1,143 @@
+<template>
+    <div class="slds-border_bottom slds-p-bottom_medium main-Container-filter">
+        <div data-id="myLayoutItem" style="position: relative;">
+            <!-- <template if:true={addSpecficRecordRow}> -->
+            <div>
+                <!--<template if:true={renderDO}>-->
+                <template for:each={listOfAccounts} for:item="rec" for:index="index">
+                    <lightning-layout data-id="myLayout" key={rec} class="slds-m-top_small dnone myLayoutc"
+                        style="align-items: center;">
+                        <lightning-layout-item size="4">
+                            <div class="slds-form-element">
+                                <div class="slds-form-element__control">
+                                    <div class="slds-combobox-group">
+                                        <div class="slds-combobox_object-switcher slds-combobox-addon_start">
+                                            <div class="slds-form-element">
+                                                <div class="slds-form-element__control">
+                                                    <lightning-combobox name="progress" data-indexvalue={index}
+                                                        variant="label-hidden" value={rec.obj}
+                                                        placeholder="Select" options={optionsSpecefic}
+                                                        onchange={handleChangeSpecefic}>
+                                                    </lightning-combobox>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="slds-combobox_container slds-combobox-addon_end">
+                                            <div
+                                                class="slds-combobox slds-dropdown-trigger slds-dropdown-trigger_click">
+                                                <div class="slds-combobox__form-element slds-input-has-icon slds-input-has-icon_right lookup_css_h"
+                                                    role="none">
+                                                    <template if:true={rec.loopkUp}>
+                                                    <!--Updated "search-placeholder" by LK on 2024-05-15 to fix 00045706-->
+                                                    <c-navatar-research-single-lookup-lwc obj-name={rec.obj}
+                                                        selected-id={rec.currId} search-placeholder="Search..."
+                                                        onlookupselected={handleSelectedCompanyRecord}
+                                                        is-rec-selected="true" onremovedata={handleRemovePillFromOtherCmp}
+                                                        indexvalue={index} callingfrom="specificRecordPage"></c-navatar-research-single-lookup-lwc>
+                                                    </template>
+                                                    <template if:false={rec.loopkUp}>
+                                                        <div class="pill_div">
+                                                            <div class="slds-form-element">
+                                                                <div class="slds-form-element__control">
+                                                                    <div class="slds-combobox_container">
+                                                                        <div id="box" class={boxClass} aria-expanded="true" aria-haspopup="listbox" role="combobox">
+                                                                            <div class="slds-combobox__form-element slds-input-has-icon slds-input-has-icon_right" role="none">
+                                                                                <label class="slds-form-element__label" for="unique-id-of-input">{fieldLabelName}</label>
+                                                                                
+                                                                                    <div id="lookup-pill" class="slds-pill-container slds-input d_flex pill_div">
+                                                                                        <lightning-pill data-listindexorder={index} class="pillSize d_flex pillwidth" label={rec.RecordName} name={rec.RecordName} onremove={handleRemovePill}>
+                                                                                            <lightning-icon icon-name={rec.iconName} alternative-text={objName} ></lightning-icon>
+                                                                                        </lightning-pill>
+                                                                                    </div>
+                                                                                
+                                                                                </div>
+                                                                                </div>
+                                                                                </div>
+                                                                                </div>
+                                                                                </div>
+                                                                                </div>
+                                                    </template>
+
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                </div>
+                           
+                            </div>
+
+                        </lightning-layout-item>
+                        <lightning-layout-item size="8" class="addMinus banpostion1">
+                            <lightning-icon data-storeindex={index} icon-name="utility:ban" if:true={rec.hideBtn}
+                                onclick={removeRow} alternative-text="Remove" class="cur_point slds-m-left_small"
+                                title="Remove" size="x-small"></lightning-icon>
+                            
+                 
+                        </lightning-layout-item>
+                    </lightning-layout>
+                </template>
+           <!--</template>-->
+         <!--  <template if:false={renderDO}>
+            <template for:each={listOfAccounts} for:item="rec" for:index="index">
+                <lightning-layout data-id="myLayout" key={rec.indexOrder} class="slds-m-top_small dnone myLayoutc"
+                    style="align-items: center;">
+                    <lightning-layout-item size="4">
+                        <div class="slds-form-element">
+                            <div class="slds-form-element__control">
+                                <div class="slds-combobox-group">
+                                    <div class="slds-combobox_object-switcher slds-combobox-addon_start">
+                                        <div class="slds-form-element">
+                                            <div class="slds-form-element__control">
+                                                <lightning-combobox name="progress" data-indexvalue={index}
+                                                    variant="label-hidden" value={rec.obj}
+                                                    placeholder="Select" options={optionsSpecefic}
+                                                    onchange={handleChangeSpecefic}>
+                                                </lightning-combobox>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="slds-combobox_container slds-combobox-addon_end">
+                                        <div
+                                            class="slds-combobox slds-dropdown-trigger slds-dropdown-trigger_click">
+                                            <div class="slds-combobox__form-element slds-input-has-icon slds-input-has-icon_right lookup_css_h"
+                                                role="none">
+                                                
+                                                <c-navatar-research-single-lookup-lwc obj-name={rec.obj}
+                                                    selected-id={rec.currId} search-placeholder="Search "
+                                                    onlookupselected={handleSelectedCompanyRecord}
+                                                    is-rec-selected="true"
+                                                    indexvalue={index}></c-navatar-research-single-lookup-lwc>
+                                                
+
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+                       
+                        </div>
+
+                    </lightning-layout-item>
+                    <lightning-layout-item size="8" class="addMinus banpostion1">
+                        <lightning-icon data-storeindex={index} icon-name="utility:ban" if:true={rec.hideBtn}
+                            onclick={removeRow} alternative-text="Remove" class="cur_point slds-m-left_small"
+                            title="Remove" size="x-small"></lightning-icon>
+                        
+                        
+                    </lightning-layout-item>
+                </lightning-layout>
+            </template>
+           </template>-->
+            </div>
+         
+         
+        </div>
+        <!-- UI change added a specificrecordass_css class 16 dec -->
+        <div class="addMinus position_btn1 posibtn1" style="position:relative;">
+            <lightning-icon icon-name="utility:new" alternative-text="Add" onclick={addNewRow} title="Add"
+                size="x-small" class="cur_point slds-m-left_small specificrecordadd_css" aria-disabled={disableMoreRows}></lightning-icon>
+        </div>
+    </div>
+</template>

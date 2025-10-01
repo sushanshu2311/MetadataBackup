@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObjectTranslation xmlns="http://soap.sforce.com/2006/04/metadata">
+    <caseValues>
+        <plural>false</plural>
+        <value>Valuation</value>
+    </caseValues>
+    <caseValues>
+        <plural>true</plural>
+        <value>Valuations</value>
+    </caseValues>
+    
+    
+    
+    
+    
+    
+    
+    <layouts>
+        <layout>Valuation Layout</layout>
+        <sections>
+            <label><!-- Custom Links --></label>
+            <section>Custom Links</section>
+        </sections>
+        <sections>
+            <label><!-- Customer KPIs --></label>
+            <section>Customer KPIs</section>
+        </sections>
+        <sections>
+            <label><!-- Financial KPIs --></label>
+            <section>Financial KPIs</section>
+        </sections>
+        <sections>
+            <label><!-- Please do not remove this section --></label>
+            <section>Please do not remove this section</section>
+        </sections>
+        <sections>
+            <label><!-- Sales KPIs --></label>
+            <section>Sales KPIs</section>
+        </sections>
+    </layouts>
+    <startsWith>Consonant</startsWith>
+</CustomObjectTranslation>

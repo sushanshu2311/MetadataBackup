@@ -1,0 +1,12 @@
+<aura:component  access="global">
+   
+	
+    <lightning:overlayLibrary aura:id="overlayLib"/>
+    <aura:html tag="style">
+        .slds-p-around--medium {
+        padding: 0rem !important;
+        }        
+    </aura:html>
+    <c:navatarCreateMenuContactLwc  onclosemodal = "{!c.handleModalClose}"></c:navatarCreateMenuContactLwc>
+    
+</aura:component>

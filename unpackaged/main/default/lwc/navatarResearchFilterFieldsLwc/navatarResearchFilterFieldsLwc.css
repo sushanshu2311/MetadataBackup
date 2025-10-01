@@ -1,0 +1,25 @@
+lightning-icon[aria-disabled="true"] {
+  display: inline-block; /* For IE11/ MS Edge bug */
+  pointer-events: none;
+  text-decoration: none;
+  opacity: 0.6;
+}
+
+.marginLeftMinus {margin-left: -9px;}
+
+.position_btn{
+  position: relative;
+  top: auto;
+  right: 130px;
+}
+.btnposition_btn{
+  position: relative;
+  top: auto;
+  right: 108px;
+}
+@media (max-width: 1480px) {
+  .btnposition_btn {
+      right: 80px;
+      left: -80px;
+  }
+}

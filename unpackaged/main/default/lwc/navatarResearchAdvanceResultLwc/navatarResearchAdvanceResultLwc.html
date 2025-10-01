@@ -1,0 +1,733 @@
+<!--
+** Module Name : Advance Research Box
+** Description : Handles behavior of the custom combobox
+** Throws : NA
+** Calls : NA
+** Organization : Navatar Group
+** Product Name & Version : Acuity 3.0
+** Revision History:-
+** Version    Date(YYYY-MM-DD)    Author         Description of Action
+** 1.0        2024-03-08          Lakshya        Acuity Phase 3
+** 2.0        2024-03-18          Lakshya        Acuity Phase 3.2
+-->
+<template>
+    <div class="main-Container-search">
+      <!--Start Modal-->
+      <template if:true={isCreateRecord}>
+        <section role="dialog" tabindex="-1" aria-modal="true" aria-labelledby="modal-heading-01"
+            class="slds-modal slds-fade-in-open">
+            <div class="slds-modal__container" style="width:30rem;">
+                <lightning-icon variant="inverse" size="small" icon-name="utility:close" alternative-text="close!"
+                    title="Close" class="slds-text-align_right slds-m-bottom_small slds-text-link_reset"
+                    onclick={closeCreateRecord}></lightning-icon>
+                <div class="slds-modal__header" >
+                    <!--Updated header text by LK on 2024-05-13 to fix 00045693-->
+                    <h1 class="slds-modal__title slds-hyphenate">Create {themeLabel}</h1>
+                </div>
+                <div class="slds-modal__content slds-p-around_medium">
+                    <lightning-layout>
+                        <lightning-layout-item size="12">
+                            <!--Added onblur by LK on 2024-05-15 to fix 00045601-->
+                            <lightning-input required="true" type="text" label={themeLabel} placeholder="Enter Name" onchange={setThemeName} onblur={btnDisableCheck}></lightning-input>
+                        </lightning-layout-item>
+                    </lightning-layout>
+                    <lightning-layout>
+
+                        <lightning-layout-item size="12" class="slds-m-top_small">
+                            <lightning-textarea name="input1" label={themeDesLabel} onchange={setThemeDescription}></lightning-textarea>
+                        </lightning-layout-item>
+
+                    </lightning-layout>
+                    <lightning-layout class="main-Container slds-m-top_small">
+                        <lightning-layout-item size="12">
+                            <div class="slds-section slds-is-open slds-m-vertical_none">
+                                <button aria-controls="expando-unique-id" aria-expanded="true"
+                                    class="slds-button expandablebtn" onclick={isExpandadvance}>
+                                    <lightning-icon icon-name="utility:chevronright" size="xx-small"
+                                        alternative-text="Advanced" title="Advanced"
+                                        class="slds-m-right_xx-small hovLink" if:true={isCollapse}></lightning-icon>
+                                    <lightning-icon icon-name="utility:chevrondown" size="xx-small"
+                                        alternative-text="Advanced" title="Advanced"
+                                        class="slds-m-right_xx-small hovLink" if:true={isExpand}></lightning-icon>
+                                    <span class="slds-truncate" title="Advanced"
+                                        style="font-size:14px;">Advanced</span>
+                                </button>
+                                <div class="slds-section__content slds-p-horizontal_small"
+                                    if:true={isExpandCollapseBox}>
+                                    <lightning-layout>
+                                        <lightning-layout-item size="12">
+                                            <div class="slds-border_left slds-border_right slds-border_top">
+                                                <lightning-datatable key-field="id" data={dataCatogryForInternalPart} data-id="SelectedThemeCreateTable_id"
+                                                    resize-column-disabled="true" columns={columnsCatogry}
+                                                    selected-rows={selectedRows} onrowselection={getSelectedRec1} class="datatable_theme heightDataTable theme_css">
+                                                </lightning-datatable>
+                                            </div>
+                                            <!--<template if:true={showCheckBoxForAllContactsForEachFirm}>
+                                            <lightning-input class="slds-text-align_right slds-m-top_x-small" 
+                                                type="checkbox" label="Include all contacts for each firm"
+                                                name="input1" onchange={CreateTeamBooleanForAllContactsForEachFirm}></lightning-input>
+                                                </template>-->
+                                        </lightning-layout-item>
+                                    </lightning-layout>
+                                </div>
+                            </div>
+                        </lightning-layout-item>
+                    </lightning-layout>
+                </div>
+                <div class="slds-modal__footer">
+                    <button class="slds-button slds-button_neutral" aria-label="Cancel" title="Cancel"
+                        onclick={closeCreateRecord}>Cancel</button>
+                    <button class="slds-button slds-button_brand" title="Create" onclick={createThemeApex} disabled={saveCheck}>Create</button>
+                </div>
+            </div>
+        </section>
+        <div class="slds-backdrop slds-backdrop_open" role="presentation"></div>
+    </template>
+    <!--End Modal-->
+
+    <!--Start Modal-->
+    <template if:true={isAddTo}>
+        <section role="dialog" tabindex="-1" aria-modal="true" aria-labelledby="modal-heading-01"
+            class="slds-modal slds-fade-in-open">
+            <div class="slds-modal__container" style="width:30rem;">
+                <lightning-icon variant="inverse" size="small" icon-name="utility:close" alternative-text="close!"
+                    title="Close" class="slds-text-align_right slds-m-bottom_small slds-text-link_reset"
+                    onclick={closeAddTo}></lightning-icon>
+                <div class="slds-modal__header">
+                    <h1 class="slds-modal__title slds-hyphenate">Add To {themeLabel}</h1>
+                </div>
+                
+                <div class="slds-modal__content slds-p-around_medium">
+                    <!--Gui Configure-->
+                 <!-- <lightning-layout>
+                        <lightning-layout-item size="12">
+                            <lightning-input name="enter-search" label="Theme" type="search" placeholder="Search"></lightning-input>
+                        </lightning-layout-item>
+                    </lightning-layout>-->
+                    <!-- End-->
+                    <lightning-layout>
+                        <lightning-layout-item size="12" class="lookup_css_h">
+                            <!--Added "Name" by LK on 2024-07-05 to fix 00046479-->
+                            <label class="slds-form-element__label slds-no-flex">{themeLabel} Name</label>
+                            <!--Added "onremovedata={handleThemeRemove}" by LK on 2024-05-20 to fix 00045915 for Add To Theme-->
+                            <!--Updated "search-placeholder" value by LK on 2024-07-02 to fix 00046319-->
+                            <c-navatar-research-single-lookup-lwc class="addtothemelookup" obj-name={sobjectApiName} selected-id={themeIdComingFromThemePage}
+                                search-placeholder="Search..." onlookupselected={handleSelectedThemeRecord}
+                                is-rec-selected="true" callingfrom="AddToThemeLookupPage" onremovedata={handleThemeRemove}></c-navatar-research-single-lookup-lwc>
+                        </lightning-layout-item>
+                    </lightning-layout>
+                   
+
+                    <lightning-layout class="main-Container slds-m-top_small">
+                        <lightning-layout-item size="12">
+                            <div class="slds-section slds-is-open">
+                                <button aria-controls="expando-unique-id" aria-expanded="true"
+                                    class="slds-button expandablebtn" onclick={isExpandadvance}>
+                                    <lightning-icon icon-name="utility:chevronright" size="xx-small"
+                                        alternative-text="Advanced" title="Advanced"
+                                        class="slds-m-right_xx-small hovLink" if:true={isCollapse}></lightning-icon>
+                                    <lightning-icon icon-name="utility:chevrondown" size="xx-small"
+                                        alternative-text="Advanced" title="Advanced"
+                                        class="slds-m-right_xx-small hovLink" if:true={isExpand}></lightning-icon>
+                                    <span class="slds-truncate" title="Advanced"
+                                        style="font-size:14px;">Advanced</span>
+                                </button>
+                                <div class="slds-section__content slds-p-horizontal_small"
+                                    if:true={isExpandCollapseBox}>
+                                    <lightning-layout>
+                                        <lightning-layout-item size="12">
+                                            <div class="slds-border_left slds-border_right slds-border_top">
+                                                <lightning-datatable key-field="id" data={dataCatogryForInternalPart} data-id="SelectedThemeAddToTable_id"
+                                                    resize-column-disabled="true" columns={columnsCatogry}
+                                                    selected-rows={selectedRows} onrowselection={getSelectedRec2} class="datatable_theme heightDataTable theme_css">
+                                                </lightning-datatable>
+                                            </div>
+                                            <!--<p class="slds-m-top_small"> {itemCount} items selected</p>-->
+                                            <!--<template if:true={showCheckBoxForAllContactsForEachFirm}>
+                                            <lightning-input class="slds-text-align_right slds-m-top_x-small" 
+                                                type="checkbox" label="Include all contacts for each firm"
+                                                name="inputCheck" onchange={AddToTeamBooleanForAllContactsForEachFirm}></lightning-input>--><!--onclick={AddToTeamBooleanForAllContactsForEachFirm}-->
+                                        
+                                        <!--</template>-->
+                                            </lightning-layout-item>
+                                    </lightning-layout>
+                                </div>
+                            </div>
+                        </lightning-layout-item>
+                    </lightning-layout>
+                </div>
+                <div class="slds-modal__footer">
+                    <button class="slds-button slds-button_neutral" aria-label="Cancel"
+                        onclick={closeAddTo} title="Cancel">Cancel</button>
+                    <button class="slds-button slds-button_brand" title="Save" onclick={AddtoThemeRecordApex} disabled={saveCheck}>Save</button>
+                </div>
+            </div>
+        </section>
+        <div class="slds-backdrop slds-backdrop_open" role="presentation"></div>
+    </template>
+    <!--End Modal-->
+
+    <!--Start Modal-->
+    <template if:true={isExport}>
+        <section role="dialog" tabindex="-1" aria-modal="true" aria-labelledby="modal-heading-01"
+            class="slds-modal slds-fade-in-open">
+            <div class="slds-modal__container" style="width:30rem;">
+                <lightning-icon variant="inverse" size="small" icon-name="utility:close" alternative-text="close!"
+                    title="Close" class="slds-text-align_right slds-m-bottom_small slds-text-link_reset"
+                    onclick={closeExport}></lightning-icon>
+                <div class="slds-modal__header">
+                    <h1 class="slds-modal__title slds-hyphenate">Export To Excel</h1>
+                    
+                </div>
+                <div class="slds-modal__content slds-p-around_medium">
+                    <!--<lightning-layout>
+                        <lightning-layout-item size="12">
+                            <lightning-input name="enter-search" type="text" label="Export As" readonly="" value="Excel" class="export_name"></lightning-input>
+                            
+                        </lightning-layout-item>
+                    </lightning-layout>-->
+                    <lightning-layout class="main-Container slds-m-top_small">
+                        <lightning-layout-item size="12">
+                            <div class="slds-section slds-is-open">
+                               <!-- <button aria-controls="expando-unique-id" aria-expanded="true"
+                                    class="slds-button  expandablebtn" onclick={isExpandadvance}>
+                                    <lightning-icon icon-name="utility:chevronright" size="xx-small"
+                                        alternative-text="Advanced" title="Advanced"
+                                        class="slds-m-right_xx-small hovLink" if:true={isCollapse}></lightning-icon>
+                                    <lightning-icon icon-name="utility:chevrondown" size="xx-small"
+                                        alternative-text="Advanced" title="Advanced"
+                                        class="slds-m-right_xx-small hovLink" if:true={isExpand}></lightning-icon>
+                                    <span class="slds-truncate" title="Advanced"
+                                        style="font-size:14px;">Advanced</span>
+                                </button>-->
+                                <div class="slds-section__content slds-p-horizontal_small"
+                                    ><!--if:true={isExpandCollapseBox}-->
+                                    <lightning-layout>
+                                        <lightning-layout-item size="12">
+                                            <div class="slds-border_left slds-border_right slds-border_top">
+                                                <lightning-datatable key-field="id" data={dataCatogry} data-id="SelectedToExportTable_id"
+                                                    resize-column-disabled="true" columns={columnsCatogry}
+                                                    selected-rows={selectedRows} onrowselection={getSelectedRec3} class="datatable_theme">
+                                                </lightning-datatable>
+                                            </div>
+                                            
+                                        </lightning-layout-item>
+                                    </lightning-layout>
+                                </div>
+                            </div>
+                        </lightning-layout-item>
+                    </lightning-layout>
+                </div>
+                <div class="slds-modal__footer">
+                    <button class="slds-button slds-button_neutral" aria-label="Cancel"
+                        onclick={closeExport} title="Cancel">Cancel</button>
+                    <button class="slds-button slds-button_brand" title="Export" onclick={serverDatamakingAsExport}>Export</button>
+                    
+                    <c-navatar-Export-Lwc> </c-navatar-Export-Lwc>
+                </div>
+            </div>
+        </section>
+        <div class="slds-backdrop slds-backdrop_open" role="presentation"></div>
+    </template>
+    <!--End Modal-->
+    <!--Start Modal-->
+    <template if:true={isRange}>
+        <section role="dialog" tabindex="-1" aria-modal="true" aria-labelledby="modal-heading-01"
+            class="slds-modal slds-fade-in-open">
+            <div class="slds-modal__container">
+                <lightning-icon variant="inverse" size="small" icon-name="utility:close" alternative-text="close!"
+                    title="Close" class="slds-text-align_right slds-m-bottom_small slds-text-link_reset"
+                    onclick={closeRange}></lightning-icon>
+                <div class="slds-modal__header">
+                    <h1 class="slds-modal__title slds-hyphenate">Filters</h1>
+                </div>
+                <div class="slds-modal__content slds-p-around_medium">
+                    <lightning-layout style="gap:10px;">
+                        <lightning-layout-item size="2">
+                            <label class="slds-form-element__label">View</label>
+                        </lightning-layout-item>
+                        <lightning-layout-item size="5">
+                            <lightning-combobox name="progress" variant="label-hidden" value={rangevalue}
+                                placeholder="All Feilds" options={rangeoptions} onchange={handleChangerange}>
+                            </lightning-combobox>
+                            <lightning-input name="enter-search" variant="label-hidden" type="search"
+                                placeholder="Search" class="slds-m-top_small"></lightning-input>
+                        </lightning-layout-item>
+                    </lightning-layout>
+                    <lightning-layout>
+                        <lightning-layout-item style="width:100%;">
+                            <lightning-dual-listbox name="Feilds" variant="label-hidden"
+                                source-label="Available Fields" selected-label="Selected Feilds"
+                                options={optionsdualSelect} onchange={handleChangedualSelect}>
+                            </lightning-dual-listbox>
+                        </lightning-layout-item>
+                    </lightning-layout>
+                </div>
+                <div class="slds-modal__footer">
+                    <button class="slds-button slds-button_neutral" aria-label="Cancel"
+                        onclick={closeRange}>Cancel</button>
+                    <button class="slds-button slds-button_neutral" aria-label="Cancel">Revert to Default</button>
+                    <button class="slds-button slds-button_brand">Apply</button>
+                </div>
+            </div>
+        </section>
+        <div class="slds-backdrop slds-backdrop_open" role="presentation"></div>
+    </template>
+    <!--End Modal-->
+    <template if:true={AddAllPop}>
+        <section role="dialog" tabindex="-1" aria-modal="true" aria-labelledby="modal-heading-01"
+            class="slds-modal slds-fade-in-open">
+            <div class="slds-modal__container" style="width:30rem;">
+                <lightning-icon variant="inverse" size="small" icon-name="utility:close" alternative-text="close!"
+                    title="Close" class="slds-text-align_right slds-m-bottom_small slds-text-link_reset"
+                    onclick={closealladdpop}></lightning-icon>
+                <div class="slds-modal__header">
+                    <h1 class="slds-modal__title slds-hyphenate">Add to Theme</h1>
+                </div>
+                <div class="slds-modal__content slds-p-around_medium">
+                    <lightning-layout class="main-Container slds-m-top_small ">
+                        <lightning-layout-item size="12">
+                            <lightning-layout>
+                                <lightning-layout-item size="12">
+                                    <div class="slds-border_left slds-border_right slds-border_top">
+                                        <lightning-datatable class="datatable_theme" key-field="id" data={dataCatogryForInternalPart}
+                                            resize-column-disabled="true" columns={columnsCatogry}
+                                            selected-rows={selectedRows} onrowselection={getSelectedRec1} >
+                                        </lightning-datatable>
+                                    </div>
+                                    <lightning-input class="slds-text-align_right slds-m-top_x-small"
+                                        type="checkbox" label="Include all the contacts for each firm"
+                                        name="input1"></lightning-input>
+                                </lightning-layout-item>
+                            </lightning-layout>
+                        </lightning-layout-item>
+                    </lightning-layout>
+                </div>
+                <div class="slds-modal__footer">
+                    <button class="slds-button slds-button_neutral" aria-label="Cancel"
+                        onclick={closealladdpop}>Cancel</button>
+                    <button class="slds-button slds-button_brand" onclick={navigateToThemes}>Add</button>
+                </div>
+            </div>
+        </section>
+        <div class="slds-backdrop slds-backdrop_open" role="presentation"></div>
+    </template>
+
+    <!--Added below code by LK for the Add to Fund functionality - START-->
+    <!--Start Modal-->
+    <template if:true={isCreateNew}>
+        <section role="dialog" tabindex="-1" aria-modal="true" aria-labelledby="modal-heading-01"
+            class="slds-modal slds-fade-in-open">
+            <div class="slds-modal__container" style="width:20rem;">
+                <lightning-icon variant="inverse" size="small" icon-name="utility:close" alternative-text="close!"
+                    title="Close" class="slds-text-align_right slds-m-bottom_small slds-text-link_reset"
+                    onclick={closeCreateNew}></lightning-icon>
+                <div class="slds-modal__header">
+                    <!--Updated header text by LK on 2024-05-13 to fix 00045692-->
+                    <h1 class="slds-modal__title slds-hyphenate">Create</h1>
+                </div>
+                <div class="slds-modal__content slds-p-around_medium">
+                    <!-- <lightning-layout>
+                        <lightning-layout-item size="12">
+                            <label class="slds-form-element__label">Create a new:</label>
+                        </lightning-layout-item>
+                    </lightning-layout> -->
+                    <lightning-layout>
+                        <lightning-layout-item size="12">
+                            <!--Updated label by LK on 2024-05-13 to fix 00045692-->
+                            <lightning-radio-group name="radioGroup" options={optionsCreateNew}
+                                label="Create new:" value={valueCreateNew} type="radio"
+                                onchange={handleChangeCreate} class="createOption addto_radio"></lightning-radio-group>
+                        </lightning-layout-item>
+
+                        
+                    </lightning-layout>
+                </div>
+                <div class="slds-modal__footer">
+                    <button class="slds-button slds-button_neutral" aria-label="Cancel" onclick={closeCreateNew}
+                        title="Cancel">Cancel</button>
+                    <button class="slds-button slds-button_brand" title="Next" onclick={createNext}>Next</button>
+                </div>
+            </div>
+        </section>
+        <div class="slds-backdrop slds-backdrop_open" role="presentation"></div>
+    </template>
+    <!--End Modal-->
+
+    <!--New Fund-->
+    <template if:true={isAddNewFund}>
+        <section role="dialog" tabindex="-1" aria-modal="true" aria-labelledby="modal-heading-01"
+            class="slds-modal slds-fade-in-open">
+            <div class="slds-modal__container" style="width:30rem;">
+                <lightning-icon variant="inverse" size="small" icon-name="utility:close" alternative-text="close!"
+                    title="Close" class="slds-text-align_right slds-m-bottom_small slds-text-link_reset"
+                    onclick={closeAddNewFund}></lightning-icon>
+                <div class="slds-modal__header">
+                    <template if:true={createFund}>
+                        <!--Updated header text by LK on 2024-05-13 to fix 00045694-->
+                        <h1 class="slds-modal__title slds-hyphenate">Create {fundLabel}</h1> <!--bug #00041545 fixes by salauddin sheikh--><!--dynamic label fixes by salauddin sheikh 5th july 2023-->
+                    </template>
+                    <template if:true={addFund}>
+                        <!--Added {fundLabel} in below line by LK on 2024-05-11 to fix 00045696-->
+                        <h1 if:true={mainSearch} class="slds-modal__title slds-hyphenate">Add To {fundLabel}</h1> <!--changes for bug #00041546, #00042434 fixes by salauddin sheikh--><!--dynamic label fixes by salauddin sheikh 5th july 2023-->
+                        <h1 if:true={mainSearchfromFund} class="slds-modal__title slds-hyphenate">Add To {fundLabel}</h1> <!--added for bug #00042434 fixes by salauddin sheikh-->
+                    </template>
+                </div>
+                <div class="slds-modal__content slds-p-around_medium heightdeal">
+                    <!-- <div class="label_testers">UI TESTING NOT REQUIRED</div> -->
+                    <template if:true={createFund}>
+                        <lightning-layout>
+                            <lightning-layout-item size="12"> <!--bug #00041618 fixes by salauddin sheikh-->
+                                <!--Removed "Fund" from placeholder by LK on 2024-07-03 to fix 00046361-->
+                                <lightning-input name="enter-name" value={fundName} label={fundLabel} type="text"
+                                    placeholder="Enter Name" required="true" onchange={handleChangeFundName}></lightning-input>
+                            </lightning-layout-item>
+                        </lightning-layout>
+                        <lightning-layout>
+                            <lightning-layout-item size="12" class="slds-m-top_small">
+                                <lightning-combobox label={fundTypeLabel} value={selectedFundType}
+                                        dropdown-alignment="auto" options={fundTypeOptns} onchange={handleChangeFundType} placeholder="--None--" required>
+                                </lightning-combobox>
+                            </lightning-layout-item>
+                        </lightning-layout>
+                        <lightning-layout>
+                            <lightning-layout-item size="12" class="slds-m-top_small">
+                                <lightning-combobox label={invCategoryLabel} value={selectedInvCategory}
+                                        dropdown-alignment="auto" options={invCategoryOptns} onchange={handleChangeInvCategory} placeholder="--None--" required>
+                                </lightning-combobox>
+                            </lightning-layout-item>
+                        </lightning-layout>
+                        <template if:true={fundRecTypeExists}>
+                            <lightning-layout>
+                                <lightning-layout-item size="12" class="slds-m-top_small">
+                                    <lightning-combobox label="Record Type" value={selectedRecordTypeID}
+                                            dropdown-alignment="auto" options={fundRecTypeList} onchange={handleChangeRecordTypeID}>
+                                    </lightning-combobox>
+                                </lightning-layout-item>
+                            </lightning-layout>
+                        </template>
+                    </template>
+                    <template if:true={addFund}>
+                        <lightning-layout>
+                            <lightning-layout-item size="12"  class="slds-p-horizontal_medium">
+                                <label class="slds-form-element__label slds-no-flex pl_5">
+                                    <!--Added "Name" by LK on 2024-07-05 to fix 00046479-->
+                                    <abbr class="slds-required" title="required">* </abbr> <!--dynamic label, Ui fixes by salauddin sheikh 5th july 2023-->
+                                    {fundLabel} Name
+                                </label>
+                                <!--Updated "search-placeholder" value by LK on 2024-07-02 to fix 00046327-->
+                                <c-navatar-single-lookup-lwc class="addtoDeallookup" obj-name="navpeII_dev18__Fund__c"
+                                search-placeholder="Search..." onlookupselected={handleSelectedFundRecord}
+                                is-rec-selected="true" callingfrom="AddToDealLookupPage"  selected-id={themeIdComingFromThemePageFunctionality}></c-navatar-single-lookup-lwc> <!--bug #00041201 fixes by salauddin sheikh-->
+                            </lightning-layout-item>
+                        </lightning-layout>
+                    </template>
+                    <lightning-layout class="main-Container">
+                        <lightning-layout-item size="12" class="slds-p-horizontal_medium">
+                            <div class="slds-section slds-is-open">
+                                <button aria-controls="expando-unique-id" aria-expanded="true"
+                                    class="slds-button expandablebtn" onclick={isExpandadvance}>
+                                    <lightning-icon icon-name="utility:chevronright" size="xx-small"
+                                        alternative-text="Advanced" title="Advanced"
+                                        class="slds-m-right_xx-small hovLink" if:true={isCollapse}></lightning-icon>
+                                    <lightning-icon icon-name="utility:chevrondown" size="xx-small"
+                                        alternative-text="Advanced" title="Advanced"
+                                        class="slds-m-right_xx-small hovLink" if:true={isExpand}></lightning-icon>
+                                    <span class="slds-truncate" title="Advanced"
+                                        style="font-size:14px;">Advanced</span>
+                                </button>
+                                <div class="slds-section__content slds-p-horizontal_small"
+                                    if:true={isExpandCollapseBox}>
+                                    <lightning-layout>
+                                        <lightning-layout-item size="12">
+                                            <div class="slds-border_left slds-border_right slds-border_top">
+                                                <!--Added selected-rows={selectedRows} by LK on 2024-05-17 to fix 00045908-->
+                                                <lightning-datatable class="heightDataTable theme_css"
+                                                    key-field="id" data={availableAccRecList}
+                                                    resize-column-disabled="true" columns={columnsCatogryFund}
+                                                     onrowselection={getSelectedRec}
+                                                     selected-rows={selectedRows}> <!-- selected-rows={selectedRows}-->
+                                                </lightning-datatable>
+                                            </div>
+                                           
+                                        </lightning-layout-item>
+                                    </lightning-layout>
+                                </div>
+                            </div>
+                        </lightning-layout-item>
+                    </lightning-layout>
+                </div>
+                <div class="slds-modal__footer">
+                    <button class="slds-button slds-button_neutral" aria-label="Cancel" onclick={closeAddNewFund}
+                        title="Cancel">Cancel</button>
+                    <template if:true={createFund}>
+                        <button class="slds-button slds-button_brand" onclick={createFundAndFdr}
+                            title="Create" disabled={createCheck}>Create</button> <!--UI fixes by salauddin sheikh 5th july 2023-->
+                    </template>
+                    <template if:true={addFund}>
+                        <button class="slds-button slds-button_brand" onclick={addToFundAndFdr} title="Save" disabled={saveCheck}>Save</button>
+                    </template>
+                </div>
+            </div>
+        </section>
+        <div class="slds-backdrop slds-backdrop_open" role="presentation"></div>
+    </template>
+    <!--New Fund-->
+
+    <!--Start Modal-->
+    <template if:true={isAddNew}>
+        <section role="dialog" tabindex="-1" aria-modal="true" aria-labelledby="modal-heading-01"
+            class="slds-modal slds-fade-in-open">
+            <div class="slds-modal__container" style="width:20rem;">
+                <lightning-icon variant="inverse" size="small" icon-name="utility:close" alternative-text="close!"
+                    title="Close" class="slds-text-align_right slds-m-bottom_small slds-text-link_reset"
+                    onclick={closeAddeNew}></lightning-icon>
+                <div class="slds-modal__header">
+                    <!--Updated header text by LK on 2024-05-13 to fix 00045695-->
+                    <h1 class="slds-modal__title slds-hyphenate">Add</h1> <!--bug #00040423 fixes by Salauddin Sheikh-->
+                </div>
+                <div class="slds-modal__content slds-p-around_medium">
+                    <!-- <lightning-layout>
+                                        <lightning-layout-item size="12">
+                                            <label class="slds-form-element__label">Add To an Existing:</label>
+                                        </lightning-layout-item>
+                                    </lightning-layout> -->
+                    <lightning-layout>
+                        <lightning-layout-item size="12">
+                            <!--Updated label by LK on 2024-05-13 to fix 00045695-->
+                            <lightning-radio-group name="radioGroup" label="Add to existing:"
+                                options={optionsAddNew} value={valueAddNew} type="radio" onchange={handleChangeAdd}
+                                class="addOption addto_radio"></lightning-radio-group>
+                        </lightning-layout-item>
+                    </lightning-layout>
+                </div>
+                <div class="slds-modal__footer">
+                    <button class="slds-button slds-button_neutral" aria-label="Cancel" onclick={closeAddeNew}
+                        title="Cancel">Cancel</button>
+                    <button class="slds-button slds-button_brand" title="Next" onclick={addNext}>Next</button>
+                </div>
+            </div>
+        </section>
+        <div class="slds-backdrop slds-backdrop_open" role="presentation"></div>
+    </template>
+    <!--End Modal-->
+
+    <template if:true={isYesNoFund}>
+        <section role="dialog" tabindex="-1" aria-modal="true" aria-labelledby="modal-heading-01"
+        class="slds-modal slds-fade-in-open">
+        <div class="slds-modal__container" style="width:30rem;">
+            <header class="slds-modal__header">
+                <button class="slds-button slds-button_icon slds-modal__close slds-button_icon-inverse"
+                    title="Close" onclick={closeYesNo}>
+                    <lightning-icon icon-name="utility:close" alternative-text="close" variant="inverse"
+                        size="small"></lightning-icon>
+                    <span class="slds-assistive-text">Close</span>
+                </button>
+                <h2 class="slds-text-heading_medium slds-hyphenate">Add {pcontactLabel}</h2>    <!--dynamic label fixes by salauddin sheikh 5th july 2023-->
+            </header>
+            <div class="slds-modal__content slds-p-around_medium">
+                <p class="slds-text-heading_small slds-text-align_center font_18" style="padding: 3rem 2rem;"> 
+                    <!--Replaced text with getter by LK on 2024-05-11 to fix 00045699-->
+                    {addConMsg}
+                    <!--Do you want to add all {pcontactLabel} of the {paccountLabel} or select {pcontactLabel}?--> <!--dynamic label fixes by salauddin sheikh 5th july 2023-->
+                     </p>
+               
+            </div>
+            <div class="slds-modal__footer">
+                <button class="slds-button slds-button_neutral" aria-label="Cancel" onclick={closeYesNo}
+                    title="Cancel">Cancel</button>
+                <button class="slds-button slds-button_brand" title="Add all Contacts"
+                    onclick={addAllContactsFund}>Add All {pcontactLabel}</button> <!--dynamic label fixes by salauddin sheikh 5th july 2023-->
+                <button class="slds-button slds-button_brand" title="Select Contacts"
+                    onclick={yesContactFund}>Select {pcontactLabel}</button> <!--dynamic label fixes by salauddin sheikh 5th july 2023-->
+            </div>
+        </div>
+    </section>
+    
+    <div class="slds-backdrop slds-backdrop_open" role="presentation"></div>
+    </template>
+
+    <template if:true={isYesNo}>
+        <section role="dialog" tabindex="-1" aria-modal="true" aria-labelledby="modal-heading-01"
+            class="slds-modal slds-fade-in-open">
+            <div class="slds-modal__container" style="width:30rem;">
+                
+                <header class="slds-modal__header">
+                    <button class="slds-button slds-button_icon slds-modal__close slds-button_icon-inverse"
+                        title="Close" onclick={closeYesNo}>
+                        <lightning-icon icon-name="utility:close" alternative-text="close" variant="inverse"
+                            size="small"></lightning-icon>
+                        <span class="slds-assistive-text">Close</span>
+                    </button>
+                    <h2 class="slds-text-heading_medium slds-hyphenate">Add {pcontactLabel}</h2> <!--dynamic label fixes by salauddin sheikh 5th july 2023-->
+                </header>
+                <div class="slds-modal__content slds-p-around_medium">
+                    <p class="slds-text-heading_small slds-text-align_center font_18" style="padding: 3rem 2rem;"> 
+                        <!--Replaced text with getter by LK on 2024-05-11 to fix 00045697-->
+                        {addConMsg}
+                        <!--Do you want to add all {pcontactLabel} of the {paccountLabel} or select {pcontactLabel}?-->    <!--dynamic label fixes by salauddin sheikh 5th july 2023-->
+                         </p>
+                                  </div>
+                <div class="slds-modal__footer">
+                    <button class="slds-button slds-button_neutral" aria-label="Cancel" onclick={closeYesNo}
+                        title="Cancel">Cancel</button>
+                    <button class="slds-button slds-button_brand" title="Add all Contacts"
+                        onclick={addAllContacts}>Add All {pcontactLabel}</button> <!--dynamic label fixes by salauddin sheikh 5th july 2023-->
+                    <button class="slds-button slds-button_brand" title="Select Contacts"
+                        onclick={yesContact}>Select {pcontactLabel}</button> <!--dynamic label fixes by salauddin sheikh 5th july 2023-->
+                </div>
+            </div>
+        </section>
+
+        <div class="slds-backdrop slds-backdrop_open" role="presentation"></div>
+    </template>
+    <!--End Modal-->
+    <!--Added above code by LK for the Add to Fund functionality - END-->
+
+    <!-- style : (1) page header as per POC -->
+    <div class="slds-page-header slds-m-bottom_x-small">
+        <div class="slds-page-header__row">
+            <div class="slds-page-header__col-title">
+                <lightning-layout style="align-items: center;justify-content: space-between;">
+                    <lightning-layout-item>
+                        <div class="slds-media__figure headerSearch">
+                            <lightning-icon icon-name="standard:search" title="Search" size="medium"
+                                class="slds-text-align_left"></lightning-icon>
+                            <div class="slds-page-header__name-title">
+                                <div class="entityNameTitle slds-line-height--reset">Research</div>
+                                <div 
+                                    class="slds-page-header__title slds-m-right--small slds-align-middle clip-text slds-line-clamp">
+                                    <template if:true={advanceParameterShow}>Advanced Search</template><template if:false={advanceParameterShow}>{searchKeyword}</template>
+                                    <span if:false={advanceSearch}
+                                    
+                                        class="slds-m-left_medium slds-m-right_x-small slds-text-align_left slds-text-link_reset slds-text-link"
+                                        style="font-weight:400;font-size:14px;"
+                                        onclick={isExpandCollapseLink}  title="Advanced">Advanced</span></div>
+
+                            </div>
+                        </div>
+                    </lightning-layout-item>
+                    <lightning-layout-item>
+                        <template if:true={mainSearch}>
+                            <lightning-button-group>
+                                <lightning-button label="Create" title="Create"
+                                    onclick={onHnadleCreate}></lightning-button>
+                                <lightning-button label="Add" title="Add" onclick={onHandleAdd}>
+                                </lightning-button>
+                                <lightning-button label="Export" title="Export" onclick={onHandleExport}>
+                                </lightning-button>
+                            </lightning-button-group>
+                        </template>
+                        <template if:true={mainSearchfromTheme}>
+                            <lightning-button label="Add to Theme" title="Add To Theme" onclick={onHandleAddTo}>
+                            </lightning-button>
+                        </template>
+                    </lightning-layout-item>
+                </lightning-layout>
+            </div>
+        </div>
+    </div>
+    <!-- end -->
+ <!--Start Advanced Search-->
+ <div class="inner-custom-mechanish hidediv" ><!--if:true={advanceSearch}-->
+    <lightning-layout class="slds-box slds-theme_default slds-m-vertical_small main-Container">
+        <lightning-layout-item size="12" class="back_grey">
+            <div class="slds-section slds-is-open">
+                <div class="slds-section__content slds-p-horizontal_xx-large" >
+                    <div style="display: inline-flex;">
+                    <p class="slds-text-heading_small" style="font-weight:500;">Search By Keyword(s)</p>
+                    
+                    <lightning-helptext content="Advanced search gives you the ability to specify how the research tool combs through the system and returns results. You can search based on keyword, specific records, and specific fields in Navatar. You can also use all of these parameters in combination." style="padding-left: 4px;position: absolute;
+                                right: 30px;"></lightning-helptext>
+                    </div>
+                    <lightning-layout class="slds-m-top_small">
+                        <lightning-layout-item size="12" class="slds-border_bottom slds-p-bottom_medium">
+                            <lightning-layout>
+                                <lightning-layout-item size="3">
+                                    <!--Updated "placeholder" by LK on 2024-05-15 to fix 00045706-->
+                                    <lightning-input type="text"  placeholder="Search..." variant="label-hidden" value={searchKeyword} onchange={searchKeywordChange}>
+                                    </lightning-input>
+                                </lightning-layout-item>
+                            </lightning-layout>
+                        </lightning-layout-item>
+                    </lightning-layout>
+                    <p class="slds-text-heading_small slds-p-top_small" style="font-weight:500;">Search For
+                        Specific Records</p>
+                    <lightning-layout>
+
+                        <lightning-layout-item size="12" data-id="myLayoutItem">
+ 
+
+                            <!-- <template if:true={addSpecficRecordRow}> -->
+                              
+                               
+                                    <c-navatar-Research-Polymorphic-Combobox-Lwc obj-option-list={objOptionList} curr-page-record-obj={currObj} curr-page-record-id={currId}  icon-list-value={iconObjectList} sobject-api-name={currObj} default-record-id={currId} onlookupupdatehandler={itteratorLookupChildcallinghandler} onheaderreset={resetHeaderFromChilCmp}></c-navatar-Research-Polymorphic-Combobox-Lwc>
+                                    
+                             
+                            <!-- </template> -->
+
+                        </lightning-layout-item>
+
+                    </lightning-layout>
+                    <p class="slds-text-heading_small slds-p-top_small" style="font-weight:500;">Search By Field
+                        Parameters
+                        <!-- <lightning-icon size="xx-small" class="slds-m-left_small" onclick={openRangePop} icon-name="utility:custom_apps" alternative-text="custom" title="custom"></lightning-icon> -->
+                        <!--<c-wrenchlwc style="position:absolute;margin-left:10px;"></c-wrenchlwc>-->
+                        <!--<c-wrenchlwc style="position:absolute;margin-left:10px;" object-list={wrenchObjects}
+                                     page-name="AP"
+                                     fixed-selected-fields-api-name={fixedSelFieldsApiName}
+                                     default-field-list={defaultFieldList}
+                                     onprogressvaluechange={refreshDataTable}>
+                        </c-wrenchlwc>-->
+                    </p>
+                    <lightning-layout class="slds-border_bottom slds-p-bottom_medium">
+                        <lightning-layout-item size="12" data-id="myLayoutItem">
+ <!-- Partial comment for the addspecicRecordRow-->
+                            <!-- <template if:true={addSpecficRecordRow}> -->
+                          <!-- <template for:each={listOfAccountsPara} for:item="rec">-->
+                                <!-- <lightning-layout data-id="myLayout"> -->
+                                    
+                                    <c-navatar-Research-Filter-Fields-Lwc obj-api-names-list={objApiNamesListTab1}
+                                   
+                                    enable-add-row=true
+                                    enable-add-filter-logic=false
+                                    mandate-filter=false onhandlefieldfilter={handleFieldFilter}></c-navatar-Research-Filter-Fields-Lwc>
+                                   
+                                    <!-- <lightning-layout-item size="6" class="addMinus"> -->
+                                        <!-- <lightning-button-icon icon-name="utility:add"
+                                            class="slds-m-left_xx-small" alternative-text="Add" title="Add"
+                                            onclick={addNewRowpara}></lightning-button-icon> -->
+                                      <!--     <lightning-icon icon-name="utility:new" alternative-text="Add" onclick={addNewRowpara} title="Add" size="x-small" class="cur_point slds-m-left_small"></lightning-icon>
+
+                                            <lightning-icon icon-name="utility:ban" if:true={rec.hideBtn} onclick={removeRow}  alternative-text="Remove" class="cur_point slds-m-left_small"  title="Remove" size="x-small"></lightning-icon>-->
+                                                    <!-- <lightning-button-icon if:true={rec.hideBtnpara} icon-name="utility:ban"
+                                            class="slds-m-left_xx-small" alternative-text="Remove" title="Remove"
+                                            onclick={removeRow}></lightning-button-icon> -->
+                                    <!-- </lightning-layout-item> -->
+                                <!-- </lightning-layout> -->
+                          <!--  </template>-->
+                            <!-- </template> -->
+<!-- ui change -->
+                        </lightning-layout-item>
+
+                    </lightning-layout>
+                    <lightning-layout class="slds-m-top_medium slds-text-align_center">
+                        <lightning-layout-item size="12">
+                            <lightning-button variant="brand" onclick={clickAdvanceResearch} label="Research" title="Research" disabled={saveButtonDisable}>
+                            </lightning-button>
+                            <lightning-button label="Close" title="Close" onclick={closeAdvance}
+                                class="slds-m-left_x-small"></lightning-button>
+                        </lightning-layout-item>
+                    </lightning-layout>
+                   
+
+                </div>
+                
+            </div>
+        </lightning-layout-item>
+    </lightning-layout>
+    
+</div>
+<!--End Advanced Search-->
+</div>
+</template>

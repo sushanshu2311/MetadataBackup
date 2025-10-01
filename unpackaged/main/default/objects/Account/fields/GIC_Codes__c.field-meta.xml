@@ -1,0 +1,1355 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>GIC_Codes__c</fullName>
+    <label>GIC Codes</label>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <type>Picklist</type>
+    <valueSet>
+        <controllingField>Sub_Industry__c</controllingField>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>10101010 Oil &amp; Gas Drilling</fullName>
+                <default>false</default>
+                <label>10101010 Oil &amp; Gas Drilling</label>
+            </value>
+            <value>
+                <fullName>10101020 Oil &amp; Gas Equipment &amp; Services</fullName>
+                <default>false</default>
+                <label>10101020 Oil &amp; Gas Equipment &amp; Services</label>
+            </value>
+            <value>
+                <fullName>10102010 Integrated Oil &amp; Gas</fullName>
+                <default>false</default>
+                <label>10102010 Integrated Oil &amp; Gas</label>
+            </value>
+            <value>
+                <fullName>10102020 Oil &amp; Gas Exploration &amp; Production</fullName>
+                <default>false</default>
+                <label>10102020 Oil &amp; Gas Exploration &amp; Production</label>
+            </value>
+            <value>
+                <fullName>10102030 Oil &amp; Gas Refining &amp; Marketing</fullName>
+                <default>false</default>
+                <label>10102030 Oil &amp; Gas Refining &amp; Marketing</label>
+            </value>
+            <value>
+                <fullName>10102040 Oil &amp; Gas Storage &amp; Transportation</fullName>
+                <default>false</default>
+                <label>10102040 Oil &amp; Gas Storage &amp; Transportation</label>
+            </value>
+            <value>
+                <fullName>10102050 Coal &amp; Consumable Fuels</fullName>
+                <default>false</default>
+                <label>10102050 Coal &amp; Consumable Fuels</label>
+            </value>
+            <value>
+                <fullName>15101010 Commodity Chemicals</fullName>
+                <default>false</default>
+                <label>15101010 Commodity Chemicals</label>
+            </value>
+            <value>
+                <fullName>15101020 Diversified Chemicals</fullName>
+                <default>false</default>
+                <label>15101020 Diversified Chemicals</label>
+            </value>
+            <value>
+                <fullName>15101030 Fertilizers &amp; Agricultural Chemicals</fullName>
+                <default>false</default>
+                <label>15101030 Fertilizers &amp; Agricultural Chemicals</label>
+            </value>
+            <value>
+                <fullName>15101040 Industrial Gases</fullName>
+                <default>false</default>
+                <label>15101040 Industrial Gases</label>
+            </value>
+            <value>
+                <fullName>15101050 Specialty Chemicals</fullName>
+                <default>false</default>
+                <label>15101050 Specialty Chemicals</label>
+            </value>
+            <value>
+                <fullName>15103010 Metal &amp; Glass Containers</fullName>
+                <default>false</default>
+                <label>15103010 Metal &amp; Glass Containers</label>
+            </value>
+            <value>
+                <fullName>15103020 Paper Packaging</fullName>
+                <default>false</default>
+                <label>15103020 Paper Packaging</label>
+            </value>
+            <value>
+                <fullName>15104010 Aluminum</fullName>
+                <default>false</default>
+                <label>15104010 Aluminum</label>
+            </value>
+            <value>
+                <fullName>15104020 Diversified Metals &amp; Mining</fullName>
+                <default>false</default>
+                <label>15104020 Diversified Metals &amp; Mining</label>
+            </value>
+            <value>
+                <fullName>15104030 Gold</fullName>
+                <default>false</default>
+                <label>15104030 Gold</label>
+            </value>
+            <value>
+                <fullName>15104040 Precious Metals &amp; Minerals</fullName>
+                <default>false</default>
+                <label>15104040 Precious Metals &amp; Minerals</label>
+            </value>
+            <value>
+                <fullName>15104050 Steel</fullName>
+                <default>false</default>
+                <label>15104050 Steel</label>
+            </value>
+            <value>
+                <fullName>15105010 Forest Products</fullName>
+                <default>false</default>
+                <label>15105010 Forest Products</label>
+            </value>
+            <value>
+                <fullName>15105020 Paper Products</fullName>
+                <default>false</default>
+                <label>15105020 Paper Products</label>
+            </value>
+            <value>
+                <fullName>20101010 Aerospace &amp; Defense</fullName>
+                <default>false</default>
+                <label>20101010 Aerospace &amp; Defense</label>
+            </value>
+            <value>
+                <fullName>20102010 Building Products</fullName>
+                <default>false</default>
+                <label>20102010 Building Products</label>
+            </value>
+            <value>
+                <fullName>20103010 Construction &amp; Engineering</fullName>
+                <default>false</default>
+                <label>20103010 Construction &amp; Engineering</label>
+            </value>
+            <value>
+                <fullName>15102010 Construction Materials</fullName>
+                <default>false</default>
+                <label>15102010 Construction Materials</label>
+            </value>
+            <value>
+                <fullName>20104010 Electrical Components &amp; Equipment</fullName>
+                <default>false</default>
+                <label>20104010 Electrical Components &amp; Equipment</label>
+            </value>
+            <value>
+                <fullName>20104020 Heavy Electrical Equipment</fullName>
+                <default>false</default>
+                <label>20104020 Heavy Electrical Equipment</label>
+            </value>
+            <value>
+                <fullName>20105010 Industrial Conglomerates</fullName>
+                <default>false</default>
+                <label>20105010 Industrial Conglomerates</label>
+            </value>
+            <value>
+                <fullName>20106010 Construction &amp; Farm Machinery &amp; Heavy Trucks</fullName>
+                <default>false</default>
+                <label>20106010 Construction &amp; Farm Machinery &amp; Heavy Trucks</label>
+            </value>
+            <value>
+                <fullName>20106020 Industrial Machinery</fullName>
+                <default>false</default>
+                <label>20106020 Industrial Machinery</label>
+            </value>
+            <value>
+                <fullName>20107010 Trading Companies &amp; Distributors</fullName>
+                <default>false</default>
+                <label>20107010 Trading Companies &amp; Distributors</label>
+            </value>
+            <value>
+                <fullName>20201010 Commercial Printing</fullName>
+                <default>false</default>
+                <label>20201010 Commercial Printing</label>
+            </value>
+            <value>
+                <fullName>20201030 Diversified Commercial &amp; Professional Services</fullName>
+                <default>false</default>
+                <label>20201030 Diversified Commercial &amp; Professional Services</label>
+            </value>
+            <value>
+                <fullName>20201040 Human Resource &amp; Employment Services</fullName>
+                <default>false</default>
+                <label>20201040 Human Resource &amp; Employment Services</label>
+            </value>
+            <value>
+                <fullName>20201050 Environmental &amp; Facilities Services</fullName>
+                <default>false</default>
+                <label>20201050 Environmental &amp; Facilities Services</label>
+            </value>
+            <value>
+                <fullName>20201060 Office Services &amp; Supplies</fullName>
+                <default>false</default>
+                <label>20201060 Office Services &amp; Supplies</label>
+            </value>
+            <value>
+                <fullName>20301010 Air Freight &amp; Logistics</fullName>
+                <default>false</default>
+                <label>20301010 Air Freight &amp; Logistics</label>
+            </value>
+            <value>
+                <fullName>20302010 Airlines</fullName>
+                <default>false</default>
+                <label>20302010 Airlines</label>
+            </value>
+            <value>
+                <fullName>20303010 Marine</fullName>
+                <default>false</default>
+                <label>20303010 Marine</label>
+            </value>
+            <value>
+                <fullName>20304010 Railroads</fullName>
+                <default>false</default>
+                <label>20304010 Railroads</label>
+            </value>
+            <value>
+                <fullName>20304020 Trucking</fullName>
+                <default>false</default>
+                <label>20304020 Trucking</label>
+            </value>
+            <value>
+                <fullName>20305010 Airport Services</fullName>
+                <default>false</default>
+                <label>20305010 Airport Services</label>
+            </value>
+            <value>
+                <fullName>20305020 Highways &amp; Railtracks</fullName>
+                <default>false</default>
+                <label>20305020 Highways &amp; Railtracks</label>
+            </value>
+            <value>
+                <fullName>20305030 Marine Ports &amp; Services</fullName>
+                <default>false</default>
+                <label>20305030 Marine Ports &amp; Services</label>
+            </value>
+            <value>
+                <fullName>25101010 Auto Parts &amp; Equipment</fullName>
+                <default>false</default>
+                <label>25101010 Auto Parts &amp; Equipment</label>
+            </value>
+            <value>
+                <fullName>25101020 Tires &amp; Rubber</fullName>
+                <default>false</default>
+                <label>25101020 Tires &amp; Rubber</label>
+            </value>
+            <value>
+                <fullName>25102010 Automobile Manufacturers</fullName>
+                <default>false</default>
+                <label>25102010 Automobile Manufacturers</label>
+            </value>
+            <value>
+                <fullName>25102020 Motorcycle Manufacturers</fullName>
+                <default>false</default>
+                <label>25102020 Motorcycle Manufacturers</label>
+            </value>
+            <value>
+                <fullName>25201010 Consumer Electronics</fullName>
+                <default>false</default>
+                <label>25201010 Consumer Electronics</label>
+            </value>
+            <value>
+                <fullName>25201020 Home Furnishings</fullName>
+                <default>false</default>
+                <label>25201020 Home Furnishings</label>
+            </value>
+            <value>
+                <fullName>25201030 Homebuilding</fullName>
+                <default>false</default>
+                <label>25201030 Homebuilding</label>
+            </value>
+            <value>
+                <fullName>25201040 Household Appliances</fullName>
+                <default>false</default>
+                <label>25201040 Household Appliances</label>
+            </value>
+            <value>
+                <fullName>30301010 Household Products</fullName>
+                <default>false</default>
+                <label>30301010 Household Products</label>
+            </value>
+            <value>
+                <fullName>25201050 Housewares &amp; Specialties</fullName>
+                <default>false</default>
+                <label>25201050 Housewares &amp; Specialties</label>
+            </value>
+            <value>
+                <fullName>25202010 Leisure Products including Sporting Goods</fullName>
+                <default>false</default>
+                <label>25202010 Leisure Products including Sporting Goods</label>
+            </value>
+            <value>
+                <fullName>25202020 Photographic Products</fullName>
+                <default>false</default>
+                <label>25202020 Photographic Products</label>
+            </value>
+            <value>
+                <fullName>25203010 Apparel, Accessories &amp; Luxury Goods</fullName>
+                <default>false</default>
+                <label>25203010 Apparel, Accessories &amp; Luxury Goods</label>
+            </value>
+            <value>
+                <fullName>25203020 Footwear</fullName>
+                <default>false</default>
+                <label>25203020 Footwear</label>
+            </value>
+            <value>
+                <fullName>25203030 Textiles</fullName>
+                <default>false</default>
+                <label>25203030 Textiles</label>
+            </value>
+            <value>
+                <fullName>25301010 Casinos &amp; Gaming</fullName>
+                <default>false</default>
+                <label>25301010 Casinos &amp; Gaming</label>
+            </value>
+            <value>
+                <fullName>25301020 Hotels, Resorts &amp; Cruise Lines</fullName>
+                <default>false</default>
+                <label>25301020 Hotels, Resorts &amp; Cruise Lines</label>
+            </value>
+            <value>
+                <fullName>25301030 Leisure Facilities</fullName>
+                <default>false</default>
+                <label>25301030 Leisure Facilities</label>
+            </value>
+            <value>
+                <fullName>25301040 Restaurants</fullName>
+                <default>false</default>
+                <label>25301040 Restaurants</label>
+            </value>
+            <value>
+                <fullName>25302010 Education Services</fullName>
+                <default>false</default>
+                <label>25302010 Education Services</label>
+            </value>
+            <value>
+                <fullName>25302020 Specialized Consumer Services</fullName>
+                <default>false</default>
+                <label>25302020 Specialized Consumer Services</label>
+            </value>
+            <value>
+                <fullName>25401010 Advertising</fullName>
+                <default>false</default>
+                <label>25401010 Advertising</label>
+            </value>
+            <value>
+                <fullName>25401020 Broadcasting &amp; Cable TV</fullName>
+                <default>false</default>
+                <label>25401020 Broadcasting &amp; Cable TV</label>
+            </value>
+            <value>
+                <fullName>25401030 Movies &amp; Entertainment</fullName>
+                <default>false</default>
+                <label>25401030 Movies &amp; Entertainment</label>
+            </value>
+            <value>
+                <fullName>25401040 Publishing</fullName>
+                <default>false</default>
+                <label>25401040 Publishing</label>
+            </value>
+            <value>
+                <fullName>25501010 Distributors</fullName>
+                <default>false</default>
+                <label>25501010 Distributors</label>
+            </value>
+            <value>
+                <fullName>25502010 Catalog Retail</fullName>
+                <default>false</default>
+                <label>25502010 Catalog Retail</label>
+            </value>
+            <value>
+                <fullName>25502020 Internet Retail</fullName>
+                <default>false</default>
+                <label>25502020 Internet Retail</label>
+            </value>
+            <value>
+                <fullName>25503010 Department Stores</fullName>
+                <default>false</default>
+                <label>25503010 Department Stores</label>
+            </value>
+            <value>
+                <fullName>25503020 General Merchandise Stores</fullName>
+                <default>false</default>
+                <label>25503020 General Merchandise Stores</label>
+            </value>
+            <value>
+                <fullName>25504010 Apparel Retail</fullName>
+                <default>false</default>
+                <label>25504010 Apparel Retail</label>
+            </value>
+            <value>
+                <fullName>25504020 Computer &amp; Electronics Retail</fullName>
+                <default>false</default>
+                <label>25504020 Computer &amp; Electronics Retail</label>
+            </value>
+            <value>
+                <fullName>25504030 Home Improvement Retail</fullName>
+                <default>false</default>
+                <label>25504030 Home Improvement Retail</label>
+            </value>
+            <value>
+                <fullName>25504040 Specialty Stores</fullName>
+                <default>false</default>
+                <label>25504040 Specialty Stores</label>
+            </value>
+            <value>
+                <fullName>25504050 Automotive Retail</fullName>
+                <default>false</default>
+                <label>25504050 Automotive Retail</label>
+            </value>
+            <value>
+                <fullName>25504060 Homefurnishing Retail</fullName>
+                <default>false</default>
+                <label>25504060 Homefurnishing Retail</label>
+            </value>
+            <value>
+                <fullName>30101010 Drug Retail</fullName>
+                <default>false</default>
+                <label>30101010 Drug Retail</label>
+            </value>
+            <value>
+                <fullName>30101020 Food Distributors</fullName>
+                <default>false</default>
+                <label>30101020 Food Distributors</label>
+            </value>
+            <value>
+                <fullName>30101030 Food Retail</fullName>
+                <default>false</default>
+                <label>30101030 Food Retail</label>
+            </value>
+            <value>
+                <fullName>30101040 Hypermarkets &amp; Super Centers</fullName>
+                <default>false</default>
+                <label>30101040 Hypermarkets &amp; Super Centers</label>
+            </value>
+            <value>
+                <fullName>30201010 Brewers</fullName>
+                <default>false</default>
+                <label>30201010 Brewers</label>
+            </value>
+            <value>
+                <fullName>30201020 Distillers &amp; Vintners</fullName>
+                <default>false</default>
+                <label>30201020 Distillers &amp; Vintners</label>
+            </value>
+            <value>
+                <fullName>30201030 Soft Drinks</fullName>
+                <default>false</default>
+                <label>30201030 Soft Drinks</label>
+            </value>
+            <value>
+                <fullName>30202010 Agricultural Products</fullName>
+                <default>false</default>
+                <label>30202010 Agricultural Products</label>
+            </value>
+            <value>
+                <fullName>30202030 Packaged Foods &amp; Meats</fullName>
+                <default>false</default>
+                <label>30202030 Packaged Foods &amp; Meats</label>
+            </value>
+            <value>
+                <fullName>30203010 Tobacco</fullName>
+                <default>false</default>
+                <label>30203010 Tobacco</label>
+            </value>
+            <value>
+                <fullName>30302010 Personal Products</fullName>
+                <default>false</default>
+                <label>30302010 Personal Products</label>
+            </value>
+            <value>
+                <fullName>35101010 Health Care Equipment</fullName>
+                <default>false</default>
+                <label>35101010 Health Care Equipment</label>
+            </value>
+            <value>
+                <fullName>35101020 Health Care Supplies</fullName>
+                <default>false</default>
+                <label>35101020 Health Care Supplies</label>
+            </value>
+            <value>
+                <fullName>35102010 Health Care Distributors</fullName>
+                <default>false</default>
+                <label>35102010 Health Care Distributors</label>
+            </value>
+            <value>
+                <fullName>35102015 Health Care  Services</fullName>
+                <default>false</default>
+                <label>35102015 Health Care  Services</label>
+            </value>
+            <value>
+                <fullName>35102020 Health Care Facilities</fullName>
+                <default>false</default>
+                <label>35102020 Health Care Facilities</label>
+            </value>
+            <value>
+                <fullName>35102030 Managed Health Care</fullName>
+                <default>false</default>
+                <label>35102030 Managed Health Care</label>
+            </value>
+            <value>
+                <fullName>35103010 Health Care Technology</fullName>
+                <default>false</default>
+                <label>35103010 Health Care Technology</label>
+            </value>
+            <value>
+                <fullName>35201010 Biotechnology</fullName>
+                <default>false</default>
+                <label>35201010 Biotechnology</label>
+            </value>
+            <value>
+                <fullName>35202010 Pharmaceuticals</fullName>
+                <default>false</default>
+                <label>35202010 Pharmaceuticals</label>
+            </value>
+            <value>
+                <fullName>35203010 Life Sciences Tools &amp; Services</fullName>
+                <default>false</default>
+                <label>35203010 Life Sciences Tools &amp; Services</label>
+            </value>
+            <value>
+                <fullName>40101010 Diversified Banks</fullName>
+                <default>false</default>
+                <label>40101010 Diversified Banks</label>
+            </value>
+            <value>
+                <fullName>40101015 Regional Banks</fullName>
+                <default>false</default>
+                <label>40101015 Regional Banks</label>
+            </value>
+            <value>
+                <fullName>40102010 Thrifts &amp; Mortgage Finance</fullName>
+                <default>false</default>
+                <label>40102010 Thrifts &amp; Mortgage Finance</label>
+            </value>
+            <value>
+                <fullName>40201020 Other Diversified Financial Services</fullName>
+                <default>false</default>
+                <label>40201020 Other Diversified Financial Services</label>
+            </value>
+            <value>
+                <fullName>40201030 Multi-Sector Holdings</fullName>
+                <default>false</default>
+                <label>40201030 Multi-Sector Holdings</label>
+            </value>
+            <value>
+                <fullName>40201040 Specialized Finance</fullName>
+                <default>false</default>
+                <label>40201040 Specialized Finance</label>
+            </value>
+            <value>
+                <fullName>40202010 Consumer Finance</fullName>
+                <default>false</default>
+                <label>40202010 Consumer Finance</label>
+            </value>
+            <value>
+                <fullName>40203010 Asset Management &amp; Custody Banks</fullName>
+                <default>false</default>
+                <label>40203010 Asset Management &amp; Custody Banks</label>
+            </value>
+            <value>
+                <fullName>40203020 Investment Banking &amp; Brokerage</fullName>
+                <default>false</default>
+                <label>40203020 Investment Banking &amp; Brokerage</label>
+            </value>
+            <value>
+                <fullName>40203030 Diversified Capital Markets</fullName>
+                <default>false</default>
+                <label>40203030 Diversified Capital Markets</label>
+            </value>
+            <value>
+                <fullName>40301010 Insurance Brokers</fullName>
+                <default>false</default>
+                <label>40301010 Insurance Brokers</label>
+            </value>
+            <value>
+                <fullName>40301020 Life &amp; Health Insurance</fullName>
+                <default>false</default>
+                <label>40301020 Life &amp; Health Insurance</label>
+            </value>
+            <value>
+                <fullName>40301030 Multi-line Insurance</fullName>
+                <default>false</default>
+                <label>40301030 Multi-line Insurance</label>
+            </value>
+            <value>
+                <fullName>40301040 Property &amp; Casualty Insurance</fullName>
+                <default>false</default>
+                <label>40301040 Property &amp; Casualty Insurance</label>
+            </value>
+            <value>
+                <fullName>40301050 Reinsurance</fullName>
+                <default>false</default>
+                <label>40301050 Reinsurance</label>
+            </value>
+            <value>
+                <fullName>40402010 Diversified REIT&#39;s</fullName>
+                <default>false</default>
+                <label>40402010 Diversified REIT&#39;s</label>
+            </value>
+            <value>
+                <fullName>40402020 Industrial REIT&#39;s</fullName>
+                <default>false</default>
+                <label>40402020 Industrial REIT&#39;s</label>
+            </value>
+            <value>
+                <fullName>40402030 Mortgage REIT&#39;s</fullName>
+                <default>false</default>
+                <label>40402030 Mortgage REIT&#39;s</label>
+            </value>
+            <value>
+                <fullName>40402040 Office REIT&#39;s</fullName>
+                <default>false</default>
+                <label>40402040 Office REIT&#39;s</label>
+            </value>
+            <value>
+                <fullName>40402050 Residential REIT&#39;s</fullName>
+                <default>false</default>
+                <label>40402050 Residential REIT&#39;s</label>
+            </value>
+            <value>
+                <fullName>40402060 Retail REIT&#39;s</fullName>
+                <default>false</default>
+                <label>40402060 Retail REIT&#39;s</label>
+            </value>
+            <value>
+                <fullName>40402070 Specialized REIT&#39;s</fullName>
+                <default>false</default>
+                <label>40402070 Specialized REIT&#39;s</label>
+            </value>
+            <value>
+                <fullName>40403010 Real Estate Management &amp; Development</fullName>
+                <default>false</default>
+                <label>40403010 Real Estate Management &amp; Development</label>
+            </value>
+            <value>
+                <fullName>45101010 Internet Software &amp; Services</fullName>
+                <default>false</default>
+                <label>45101010 Internet Software &amp; Services</label>
+            </value>
+            <value>
+                <fullName>45102010 IT Consulting &amp; Other Services</fullName>
+                <default>false</default>
+                <label>45102010 IT Consulting &amp; Other Services</label>
+            </value>
+            <value>
+                <fullName>45102020 Data Processing &amp; Outsourced Services</fullName>
+                <default>false</default>
+                <label>45102020 Data Processing &amp; Outsourced Services</label>
+            </value>
+            <value>
+                <fullName>45103010 Application Software</fullName>
+                <default>false</default>
+                <label>45103010 Application Software</label>
+            </value>
+            <value>
+                <fullName>45103020 Systems Software</fullName>
+                <default>false</default>
+                <label>45103020 Systems Software</label>
+            </value>
+            <value>
+                <fullName>45103030 Home Entertainment Software</fullName>
+                <default>false</default>
+                <label>45103030 Home Entertainment Software</label>
+            </value>
+            <value>
+                <fullName>45201020 Communications Equipment</fullName>
+                <default>false</default>
+                <label>45201020 Communications Equipment</label>
+            </value>
+            <value>
+                <fullName>45202010 Computer Hardware</fullName>
+                <default>false</default>
+                <label>45202010 Computer Hardware</label>
+            </value>
+            <value>
+                <fullName>45202020 Computer Storage &amp; Peripherals</fullName>
+                <default>false</default>
+                <label>45202020 Computer Storage &amp; Peripherals</label>
+            </value>
+            <value>
+                <fullName>45203010 Electronic Equipment Manufacturers</fullName>
+                <default>false</default>
+                <label>45203010 Electronic Equipment Manufacturers</label>
+            </value>
+            <value>
+                <fullName>45203020 Electronic Manufacturing Services</fullName>
+                <default>false</default>
+                <label>45203020 Electronic Manufacturing Services</label>
+            </value>
+            <value>
+                <fullName>45203030 Technology Distributors</fullName>
+                <default>false</default>
+                <label>45203030 Technology Distributors</label>
+            </value>
+            <value>
+                <fullName>45204010 Office Electronics</fullName>
+                <default>false</default>
+                <label>45204010 Office Electronics</label>
+            </value>
+            <value>
+                <fullName>45301010 Semiconductor Equipment</fullName>
+                <default>false</default>
+                <label>45301010 Semiconductor Equipment</label>
+            </value>
+            <value>
+                <fullName>45301020 Semiconductors</fullName>
+                <default>false</default>
+                <label>45301020 Semiconductors</label>
+            </value>
+            <value>
+                <fullName>50102010 Wireless Telecommunication Services</fullName>
+                <default>false</default>
+                <label>50102010 Wireless Telecommunication Services</label>
+            </value>
+            <value>
+                <fullName>50101010 Alternative Carriers</fullName>
+                <default>false</default>
+                <label>50101010 Alternative Carriers</label>
+            </value>
+            <value>
+                <fullName>50101020 Integrated Telecommunication Services</fullName>
+                <default>false</default>
+                <label>50101020 Integrated Telecommunication Services</label>
+            </value>
+            <value>
+                <fullName>55101010 Electric Utilities</fullName>
+                <default>false</default>
+                <label>55101010 Electric Utilities</label>
+            </value>
+            <value>
+                <fullName>55102010 Gas Utilities</fullName>
+                <default>false</default>
+                <label>55102010 Gas Utilities</label>
+            </value>
+            <value>
+                <fullName>55103010 Multi-Utilities</fullName>
+                <default>false</default>
+                <label>55103010 Multi-Utilities</label>
+            </value>
+            <value>
+                <fullName>55104010 Water Utilities</fullName>
+                <default>false</default>
+                <label>55104010 Water Utilities</label>
+            </value>
+            <value>
+                <fullName>55105010 Independent Power Producers &amp; Energy Traders</fullName>
+                <default>false</default>
+                <label>55105010 Independent Power Producers &amp; Energy Traders</label>
+            </value>
+            <value>
+                <fullName>1 Old Portfolio Company</fullName>
+                <default>false</default>
+                <label>1 Old Portfolio Company</label>
+            </value>
+            <value>
+                <fullName>2 Old Pipeline Company</fullName>
+                <default>false</default>
+                <label>2 Old Pipeline Company</label>
+            </value>
+        </valueSetDefinition>
+        <valueSettings>
+            <controllingFieldValue>Niche Industrials - Automobiles</controllingFieldValue>
+            <valueName>25101010 Auto Parts &amp; Equipment</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Niche Industrials - Automobiles</controllingFieldValue>
+            <valueName>25101020 Tires &amp; Rubber</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Niche Industrials - Automobiles</controllingFieldValue>
+            <valueName>25102010 Automobile Manufacturers</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Niche Industrials - Automobiles</controllingFieldValue>
+            <valueName>25102020 Motorcycle Manufacturers</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Other - REITS</controllingFieldValue>
+            <valueName>40402010 Diversified REIT&#39;s</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Other - REITS</controllingFieldValue>
+            <valueName>40402020 Industrial REIT&#39;s</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Other - REITS</controllingFieldValue>
+            <valueName>40402030 Mortgage REIT&#39;s</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Other - REITS</controllingFieldValue>
+            <valueName>40402040 Office REIT&#39;s</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Other - REITS</controllingFieldValue>
+            <valueName>40402050 Residential REIT&#39;s</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Other - REITS</controllingFieldValue>
+            <valueName>40402060 Retail REIT&#39;s</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Other - REITS</controllingFieldValue>
+            <valueName>40402070 Specialized REIT&#39;s</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Other - REITS</controllingFieldValue>
+            <valueName>40403010 Real Estate Management &amp; Development</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Niche Industrials -  Building Products</controllingFieldValue>
+            <valueName>20102010 Building Products</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Niche Industrials -  Building Products</controllingFieldValue>
+            <valueName>20103010 Construction &amp; Engineering</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Niche Industrials -  Building Products</controllingFieldValue>
+            <valueName>15102010 Construction Materials</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Other - Natural Resources</controllingFieldValue>
+            <valueName>10101010 Oil &amp; Gas Drilling</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Other - Natural Resources</controllingFieldValue>
+            <valueName>10101020 Oil &amp; Gas Equipment &amp; Services</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Other - Natural Resources</controllingFieldValue>
+            <valueName>10102010 Integrated Oil &amp; Gas</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Other - Natural Resources</controllingFieldValue>
+            <valueName>10102020 Oil &amp; Gas Exploration &amp; Production</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Other - Natural Resources</controllingFieldValue>
+            <valueName>10102030 Oil &amp; Gas Refining &amp; Marketing</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Other - Natural Resources</controllingFieldValue>
+            <valueName>10102040 Oil &amp; Gas Storage &amp; Transportation</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Other - Natural Resources</controllingFieldValue>
+            <valueName>10102050 Coal &amp; Consumable Fuels</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Niche Industrials - Chemicals</controllingFieldValue>
+            <valueName>15101010 Commodity Chemicals</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Niche Industrials - Chemicals</controllingFieldValue>
+            <valueName>15101020 Diversified Chemicals</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Niche Industrials - Chemicals</controllingFieldValue>
+            <valueName>15101030 Fertilizers &amp; Agricultural Chemicals</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Niche Industrials - Chemicals</controllingFieldValue>
+            <valueName>15101040 Industrial Gases</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Niche Industrials - Chemicals</controllingFieldValue>
+            <valueName>15101050 Specialty Chemicals</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Other</controllingFieldValue>
+            <valueName>1 Old Portfolio Company</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Other</controllingFieldValue>
+            <valueName>2 Old Pipeline Company</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Niche Industrials - Logistics and Transportation</controllingFieldValue>
+            <valueName>20301010 Air Freight &amp; Logistics</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Niche Industrials - Logistics and Transportation</controllingFieldValue>
+            <valueName>20302010 Airlines</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Niche Industrials - Logistics and Transportation</controllingFieldValue>
+            <valueName>20303010 Marine</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Niche Industrials - Logistics and Transportation</controllingFieldValue>
+            <valueName>20304010 Railroads</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Niche Industrials - Logistics and Transportation</controllingFieldValue>
+            <valueName>20304020 Trucking</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Niche Industrials - Logistics and Transportation</controllingFieldValue>
+            <valueName>20305010 Airport Services</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Niche Industrials - Logistics and Transportation</controllingFieldValue>
+            <valueName>20305020 Highways &amp; Railtracks</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Niche Industrials - Logistics and Transportation</controllingFieldValue>
+            <valueName>20305030 Marine Ports &amp; Services</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Niche Industrials - Metals and Mining</controllingFieldValue>
+            <valueName>15104020 Diversified Metals &amp; Mining</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Niche Industrials - Metals and Mining</controllingFieldValue>
+            <valueName>15104030 Gold</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Niche Industrials - Metals and Mining</controllingFieldValue>
+            <valueName>15104040 Precious Metals &amp; Minerals</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Niche Industrials - Metals and Mining</controllingFieldValue>
+            <valueName>15104050 Steel</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Niche Industrials - Paper and Packaging</controllingFieldValue>
+            <valueName>15103010 Metal &amp; Glass Containers</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Niche Industrials - Paper and Packaging</controllingFieldValue>
+            <valueName>15103020 Paper Packaging</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Niche Industrials - Paper and Packaging</controllingFieldValue>
+            <valueName>15104010 Aluminum</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Niche Industrials - Paper and Packaging</controllingFieldValue>
+            <valueName>15105010 Forest Products</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Niche Industrials - Paper and Packaging</controllingFieldValue>
+            <valueName>15105020 Paper Products</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Niche Industrials - Utilities</controllingFieldValue>
+            <valueName>55101010 Electric Utilities</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Niche Industrials - Utilities</controllingFieldValue>
+            <valueName>55102010 Gas Utilities</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Niche Industrials - Utilities</controllingFieldValue>
+            <valueName>55103010 Multi-Utilities</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Niche Industrials - Utilities</controllingFieldValue>
+            <valueName>55104010 Water Utilities</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Niche Industrials - Utilities</controllingFieldValue>
+            <valueName>55105010 Independent Power Producers &amp; Energy Traders</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Niche Industrials - Other</controllingFieldValue>
+            <valueName>20101010 Aerospace &amp; Defense</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Niche Industrials - Other</controllingFieldValue>
+            <valueName>20104010 Electrical Components &amp; Equipment</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Niche Industrials - Other</controllingFieldValue>
+            <valueName>20104020 Heavy Electrical Equipment</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Niche Industrials - Other</controllingFieldValue>
+            <valueName>20105010 Industrial Conglomerates</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Niche Industrials - Other</controllingFieldValue>
+            <valueName>20106010 Construction &amp; Farm Machinery &amp; Heavy Trucks</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Niche Industrials - Other</controllingFieldValue>
+            <valueName>20106020 Industrial Machinery</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Niche Industrials - Other</controllingFieldValue>
+            <valueName>20107010 Trading Companies &amp; Distributors</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Other - Environmental</controllingFieldValue>
+            <valueName>20201050 Environmental &amp; Facilities Services</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Business Services</controllingFieldValue>
+            <valueName>20201010 Commercial Printing</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Business Services</controllingFieldValue>
+            <valueName>20201030 Diversified Commercial &amp; Professional Services</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Business Services</controllingFieldValue>
+            <valueName>20201040 Human Resource &amp; Employment Services</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Business Services</controllingFieldValue>
+            <valueName>20201060 Office Services &amp; Supplies</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Consumer - Apparel</controllingFieldValue>
+            <valueName>25203010 Apparel, Accessories &amp; Luxury Goods</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Consumer - Apparel</controllingFieldValue>
+            <valueName>25203020 Footwear</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Consumer - Apparel</controllingFieldValue>
+            <valueName>25203030 Textiles</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Consumer - Food and Beverage</controllingFieldValue>
+            <valueName>25501010 Distributors</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Consumer - Food and Beverage</controllingFieldValue>
+            <valueName>30101020 Food Distributors</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Consumer - Food and Beverage</controllingFieldValue>
+            <valueName>30101030 Food Retail</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Consumer - Food and Beverage</controllingFieldValue>
+            <valueName>30101040 Hypermarkets &amp; Super Centers</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Consumer - Food and Beverage</controllingFieldValue>
+            <valueName>30201010 Brewers</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Consumer - Food and Beverage</controllingFieldValue>
+            <valueName>30201020 Distillers &amp; Vintners</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Consumer - Food and Beverage</controllingFieldValue>
+            <valueName>30201030 Soft Drinks</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Consumer - Food and Beverage</controllingFieldValue>
+            <valueName>30202010 Agricultural Products</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Consumer - Food and Beverage</controllingFieldValue>
+            <valueName>30202030 Packaged Foods &amp; Meats</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Consumer - Food and Beverage</controllingFieldValue>
+            <valueName>30203010 Tobacco</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Consumer - Home Furnishing and Appliances</controllingFieldValue>
+            <valueName>25201010 Consumer Electronics</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Consumer - Home Furnishing and Appliances</controllingFieldValue>
+            <valueName>25201020 Home Furnishings</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Consumer - Home Furnishing and Appliances</controllingFieldValue>
+            <valueName>25201030 Homebuilding</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Consumer - Home Furnishing and Appliances</controllingFieldValue>
+            <valueName>25201040 Household Appliances</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Consumer - Home Furnishing and Appliances</controllingFieldValue>
+            <valueName>30301010 Household Products</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Consumer - Home Furnishing and Appliances</controllingFieldValue>
+            <valueName>25201050 Housewares &amp; Specialties</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Consumer - Leisure</controllingFieldValue>
+            <valueName>25202010 Leisure Products including Sporting Goods</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Consumer - Leisure</controllingFieldValue>
+            <valueName>25202020 Photographic Products</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Consumer - Leisure</controllingFieldValue>
+            <valueName>25301010 Casinos &amp; Gaming</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Consumer - Leisure</controllingFieldValue>
+            <valueName>25301020 Hotels, Resorts &amp; Cruise Lines</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Consumer - Leisure</controllingFieldValue>
+            <valueName>25301030 Leisure Facilities</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Consumer  - Personal Products</controllingFieldValue>
+            <valueName>30302010 Personal Products</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Consumer - Retail</controllingFieldValue>
+            <valueName>25301040 Restaurants</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Consumer - Retail</controllingFieldValue>
+            <valueName>25502010 Catalog Retail</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Consumer - Retail</controllingFieldValue>
+            <valueName>25502020 Internet Retail</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Consumer - Retail</controllingFieldValue>
+            <valueName>25503010 Department Stores</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Consumer - Retail</controllingFieldValue>
+            <valueName>25503020 General Merchandise Stores</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Consumer - Retail</controllingFieldValue>
+            <valueName>25504010 Apparel Retail</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Consumer - Retail</controllingFieldValue>
+            <valueName>25504020 Computer &amp; Electronics Retail</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Consumer - Retail</controllingFieldValue>
+            <valueName>25504030 Home Improvement Retail</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Consumer - Retail</controllingFieldValue>
+            <valueName>25504040 Specialty Stores</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Consumer - Retail</controllingFieldValue>
+            <valueName>25504050 Automotive Retail</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Consumer - Retail</controllingFieldValue>
+            <valueName>25504060 Homefurnishing Retail</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Consumer - Retail</controllingFieldValue>
+            <valueName>30101010 Drug Retail</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Consumer - Other Services</controllingFieldValue>
+            <valueName>25302010 Education Services</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Consumer - Other Services</controllingFieldValue>
+            <valueName>25302020 Specialized Consumer Services</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Financial Services</controllingFieldValue>
+            <valueName>40101010 Diversified Banks</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Financial Services</controllingFieldValue>
+            <valueName>40101015 Regional Banks</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Financial Services</controllingFieldValue>
+            <valueName>40102010 Thrifts &amp; Mortgage Finance</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Financial Services</controllingFieldValue>
+            <valueName>40201020 Other Diversified Financial Services</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Financial Services</controllingFieldValue>
+            <valueName>40201030 Multi-Sector Holdings</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Financial Services</controllingFieldValue>
+            <valueName>40201040 Specialized Finance</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Financial Services</controllingFieldValue>
+            <valueName>40202010 Consumer Finance</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Financial Services</controllingFieldValue>
+            <valueName>40203010 Asset Management &amp; Custody Banks</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Financial Services</controllingFieldValue>
+            <valueName>40203020 Investment Banking &amp; Brokerage</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Financial Services</controllingFieldValue>
+            <valueName>40203030 Diversified Capital Markets</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Financial Services</controllingFieldValue>
+            <valueName>40301010 Insurance Brokers</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Financial Services</controllingFieldValue>
+            <valueName>40301020 Life &amp; Health Insurance</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Financial Services</controllingFieldValue>
+            <valueName>40301030 Multi-line Insurance</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Financial Services</controllingFieldValue>
+            <valueName>40301040 Property &amp; Casualty Insurance</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Financial Services</controllingFieldValue>
+            <valueName>40301050 Reinsurance</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Other - Healthcare</controllingFieldValue>
+            <valueName>35101010 Health Care Equipment</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Other - Healthcare</controllingFieldValue>
+            <valueName>35101020 Health Care Supplies</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Other - Healthcare</controllingFieldValue>
+            <valueName>35102010 Health Care Distributors</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Other - Healthcare</controllingFieldValue>
+            <valueName>35102015 Health Care  Services</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Other - Healthcare</controllingFieldValue>
+            <valueName>35102020 Health Care Facilities</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Other - Healthcare</controllingFieldValue>
+            <valueName>35102030 Managed Health Care</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Other - Healthcare</controllingFieldValue>
+            <valueName>35103010 Health Care Technology</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Other - Healthcare</controllingFieldValue>
+            <valueName>35201010 Biotechnology</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Other - Healthcare</controllingFieldValue>
+            <valueName>35202010 Pharmaceuticals</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Other - Healthcare</controllingFieldValue>
+            <valueName>35203010 Life Sciences Tools &amp; Services</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Media and Communications</controllingFieldValue>
+            <valueName>25401010 Advertising</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Media and Communications</controllingFieldValue>
+            <valueName>25401020 Broadcasting &amp; Cable TV</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Media and Communications</controllingFieldValue>
+            <valueName>25401030 Movies &amp; Entertainment</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Media and Communications</controllingFieldValue>
+            <valueName>25401040 Publishing</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Media and Communications</controllingFieldValue>
+            <valueName>45201020 Communications Equipment</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Media and Communications</controllingFieldValue>
+            <valueName>50102010 Wireless Telecommunication Services</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Media and Communications</controllingFieldValue>
+            <valueName>50101010 Alternative Carriers</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Media and Communications</controllingFieldValue>
+            <valueName>50101020 Integrated Telecommunication Services</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Other - Technology</controllingFieldValue>
+            <valueName>45101010 Internet Software &amp; Services</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Other - Technology</controllingFieldValue>
+            <valueName>45102010 IT Consulting &amp; Other Services</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Other - Technology</controllingFieldValue>
+            <valueName>45102020 Data Processing &amp; Outsourced Services</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Other - Technology</controllingFieldValue>
+            <valueName>45103010 Application Software</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Other - Technology</controllingFieldValue>
+            <valueName>45103020 Systems Software</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Other - Technology</controllingFieldValue>
+            <valueName>45103030 Home Entertainment Software</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Other - Technology</controllingFieldValue>
+            <valueName>45202010 Computer Hardware</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Other - Technology</controllingFieldValue>
+            <valueName>45202020 Computer Storage &amp; Peripherals</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Other - Technology</controllingFieldValue>
+            <valueName>45203010 Electronic Equipment Manufacturers</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Other - Technology</controllingFieldValue>
+            <valueName>45203020 Electronic Manufacturing Services</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Other - Technology</controllingFieldValue>
+            <valueName>45203030 Technology Distributors</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Other - Technology</controllingFieldValue>
+            <valueName>45204010 Office Electronics</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Other - Technology</controllingFieldValue>
+            <valueName>45301010 Semiconductor Equipment</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Other - Technology</controllingFieldValue>
+            <valueName>45301020 Semiconductors</valueName>
+        </valueSettings>
+    </valueSet>
+</CustomField>

@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomMetadata xmlns="http://soap.sforce.com/2006/04/metadata" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+    <label>RG API Key</label>
+    <protected>false</protected>
+    <values>
+        <field>IsActive__c</field>
+        <value xsi:type="xsd:boolean">false</value>
+    </values>
+    <values>
+        <field>RG_Contact_Sync_Fix__c</field>
+        <value xsi:type="xsd:boolean">true</value>
+    </values>
+    <values>
+        <field>Value__c</field>
+        <value xsi:type="xsd:string">eyJhbGciOiJSUzI1NiIsImtpZCI6Ijk2NzA4M0NERjREOTFBQzA1MEVCNDUyNEE3Q0RGQzMxRTZCRDg3NjYiLCJ4NXQiOiJsbkNEemZUWkdzQlE2MFVrcDgzOE1lYTloMlkiLCJ0eXAiOiJKV1QifQ.eyJ0aWQiOiI2OWU3YTFjZi1kN2RjLTRjZDEtOGNkYS1kYzg0OTcxOGEwYjEiLCJnaWQiOiIxYTM3NjBmMC1jNTAwLTQzYjEtOTg5My0wOTdkNmE4NmYwM2YiLCJ1aWQiOiIxYTU5MmI0YS00OThjLTRkMzQtOTQ4Ny1mOGQ5MWZiMWRhMGYiLCJzc3RpZCI6IjdmMWJmY2RhLTJhMWYtNGRhYS05YmViLWUwMzA1M2U2YjhkOSIsInNzdG4iOiJodHRwczovL25hdmF0YXJ0ZXN0LWtlZGFyYWNhcGl0YWwtc3luYy5yZXZlbnVlZ3JpZC5jb20iLCJyZ3RuIjoiaHR0cHM6Ly9uYXZhdGFydGVzdC1rZWRhcmFjYXBpdGFsLnJldmVudWVncmlkLmNvbSIsInVlbSI6InJvYmVydGRheUBrZWRhcmFjYXBpdGFsLW5nLmNvbSIsInNzdXAiOiJyZWFkLHdyaXRlIiwibmJmIjoxNjcxNTU3NjA3LCJleHAiOjE3MDMwOTM1ODEsImlhdCI6MTY3MTU1NzYwN30.a8U47rGbZMK665x1exPLUu4Pap1L9yE9qK_yQiXbXhyqXWQqwlVi01xJvNj1XOBExgsfLoQtdYhTaCGBlAWm4ouEZcUhzNUJAr_w1rr1H_Px_kmysCWfPV7yn8huVA8U56q074yA5q7I8H7xtdpvTYwqTbd8LumyktyRwqjZc26IM-prVrc9bhW8aIwfvPx4QqcHJyiANVsVULq_5BnBC8eSOjg6TZgSg6lIQ4NT0r-jdEEE3WYQWWipwqrUr6O-iS090oP4l7CzLDyYhVlF0HqgJS_904fjKY6UyxUcOMdVy7pV5a19srLsIEgEG4vDCaj0xZvJscLVFfBT1iZdQg</value>
+    </values>
+</CustomMetadata>

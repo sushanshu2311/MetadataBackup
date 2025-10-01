@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObjectTranslation xmlns="http://soap.sforce.com/2006/04/metadata">
+    <caseValues>
+        <plural>false</plural>
+        <value>Advisor</value>
+    </caseValues>
+    <caseValues>
+        <plural>true</plural>
+        <value>Advisors</value>
+    </caseValues>
+    
+    
+    
+    
+    
+    <layouts>
+        <layout>Advisor Layout</layout>
+        <sections>
+            <label><!-- Advisor/ Client Information --></label>
+            <section>Advisor/ Client Information</section>
+        </sections>
+        <sections>
+            <label><!-- Please do not remove this section. --></label>
+            <section>Please do not remove this section.</section>
+        </sections>
+    </layouts>
+    <startsWith>Consonant</startsWith>
+</CustomObjectTranslation>

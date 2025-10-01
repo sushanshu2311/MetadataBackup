@@ -1,0 +1,31 @@
+<template>
+    <!-- <div class="for_mob slds-col slds-size_1-of-1 slds-m-bottom_x-small" style="position:fixed;top:0;z-index:9999">
+                        
+        <c-global-buttons-lwc></c-global-buttons-lwc>
+        
+    </div> -->
+    <ul class="slds-list_horizontal" style="width: 100%;background: #ffffff;border-bottom: 1px solid #ddd;justify-content: space-around;padding: 10px 0px;">
+        <li style="text-align: center;">
+            <lightning-icon icon-name="action:log_a_call" onclick={openLogcallpage} size="x-small" style="width:30px;height:30px;padding: 5px;"></lightning-icon>
+            <p style="font-size:12px;">Log a Call</p>
+        </li>
+        <li style="text-align: center;">
+            <lightning-icon icon-name="action:new_task" onclick={openCreateTask} size="x-small" style="width:30px;height:30px;padding: 5px;"></lightning-icon>
+            <p style="font-size:12px;">Create Task</p>
+        </li>
+        <template if:true={isHomePage}>
+            <li style="text-align: center;">
+                <lightning-icon icon-name="action:new_contact" onclick={openAddContact} size="x-small" style="width:30px;height:30px;padding: 5px;"></lightning-icon>
+                <p style="font-size:12px;">Add Contact</p>
+            </li>
+            <li style="text-align: center;">
+                <lightning-icon icon-name="action:new_account" onclick={openAddAccount} size="x-small" style="width:30px;height:30px;padding: 5px;"></lightning-icon>
+                <p style="font-size:12px;">Add Firm</p>
+            </li>
+        </template>
+      </ul>
+      <!-- <template if:true={isCallLogOpen}>
+        <c-navatar-notes-modal-lwc-phone object-name="Task" task-type = 'Call' is-redirect-to-record={isRedirectToRecord} onclosemodal={noteModalClosed} oncancelchanges={noteModalClosed}>
+        </c-navatar-notes-modal-lwc-phone>    
+    </template> -->
+</template>

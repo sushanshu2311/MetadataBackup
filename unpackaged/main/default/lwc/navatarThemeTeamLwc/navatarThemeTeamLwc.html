@@ -1,0 +1,77 @@
+<template>
+    <!--SPINNER : START-->
+    <template if:true={enableSpinner}>
+        <lightning-spinner alternative-text="Loading..."
+                           style="z-index:15002">
+        </lightning-spinner>
+    </template>
+    <!--SPINNER : END-->
+    <!--Start-->
+    <div class="slds-grid slds-wrap main-Container-themeteam">
+        <div class="slds-col slds-size_12-of-12 slds-p-left_small">
+            <!-- <div class="sep_border"></div> -->
+            <div class="slds-p-vertical_small">
+                <!--Start Header-->
+                <div class="slds-grid slds-wrap slds-theme_shade slds-box">
+                    <div class="slds-col slds-size_2-of-12">
+                        <ul class="slds-grid slds-wrap slds-p-top_xx-small slds-p-bottom_xxx-small" style="align-items:center">
+                            <li>
+                                <span class="slds-page-header__title slds-text-align_left slds-m-top_xx-small"
+                                    title="Team">Team</span>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="slds-col slds-size_8-of-12">
+                        <template if:true={cancelSave}>
+                            <div class="slds-col slds-size_1-of-1 slds-theme_shade slds-text-align_right slds-p-top_x-small">
+                                <div class="slds-page-header__col-actions slds-align_absolute-center">
+                                    <lightning-button variant="neutral" label="Cancel" title="Cancel"
+                                        class="slds-m-left_x-small" onclick={handleCancel}></lightning-button>
+                                    <lightning-button variant="brand" label="Remove" title="Remove"
+                                        class="slds-m-left_x-small" onclick={handleRemove}></lightning-button>
+                                </div>
+                            </div>
+                            <template if:true={showError}>
+                                <p style="color: red;margin-left: 26rem;">{noData}</p>
+                            </template>
+                        </template>                        
+                    </div>
+                    <div class="slds-col slds-size_2-of-12 slds-text-align_right addMinus slds-p-top_x-small">
+                        <template if:true={isaddIconBtn}>
+                            <lightning-icon icon-name="utility:new" size="x-small" alternative-text="Add Team Member" title="Add Team Member" onclick={handleNewTeamMember} class="slds-m-right_x-small" style="cursor: pointer;"></lightning-icon>
+                        </template>
+                        <template if:true={isBanIconBtn}>
+                            <lightning-icon icon-name="utility:ban" onclick={handleButtonBottom} alternative-text="Remove Team Member" class="slds-m-left_xx-small" title="Remove Team Member" size="x-small" style="cursor: pointer;"></lightning-icon>
+                        </template>
+                    </div>
+                </div>
+                <!--End Header-->
+    
+                <!--Start-->
+                <div class="slds-box slds-box_x-small slds-p-around_none">
+                    <div class="slds-grid slds-wrap">
+                        <div class="slds-col slds-size_1-of-1 slds-text-align_left">
+                            <div class="cont-tab-height">                                
+                                <template if:true={conData}>
+                                    <c-navatar-inline-picklist-Lwc
+                                        class="tabcont contactDataTableA shadowremovedatatable themteamdatatable"
+                                        key-field="Id" data={conData} show-row-number-column="false"
+                                        columns={conCols} hide-checkbox-column={chckBoxAdvisor} onsave={handleSave}
+                                        draft-values={fldsItemValues}
+                                        oncancel={handleCancelFromTable}
+                                        onrowselection={handleRowSelection} onpicklistchanged={picklistChanged}>
+                                    </c-navatar-inline-picklist-Lwc>
+                                </template>
+                                <template if:true={noDataToDisplay}>
+                                    <p style="margin: 10px;">{noDataToDisplay}</p>
+                                </template>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!--End-->
+            </div>
+        </div>        
+    </div>
+    <!--End-->
+</template>

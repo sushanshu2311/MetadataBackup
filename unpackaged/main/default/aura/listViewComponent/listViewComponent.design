@@ -1,0 +1,8 @@
+<design:component label="Navatar List View">
+    <design:attribute name="obj_Listview" label="List View" datasource="apex://Listviewpicklist"/>
+    <!--PE V4.1:21_Feb_2019:Added option similar to Standard list view-->
+    <design:attribute name="numOfRecordsToDisplay" label="Number of Records to Display" min="1" max="30"/>
+    <design:attribute name="enableInlineEdit" label="Enable inline edit" description="Inline edit doesn't apply to the components in the small region. Inline edit is disabled if the list has more than one record type or its fields aren't editable." />
+    <design:attribute name="hidelistviewactionbar" label="Hide list view action bar" description="This setting doesn't apply when components renders in a small region." />
+    <design:attribute name="hidesearchbar" label="Hide search bar" default="false" description="The search bar doesn't apply to components in the small region. Picklist, formula fields, and some lookup fields aren't searchable." />
+</design:component>

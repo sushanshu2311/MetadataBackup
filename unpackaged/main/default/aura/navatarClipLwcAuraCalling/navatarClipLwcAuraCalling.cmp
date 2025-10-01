@@ -1,0 +1,8 @@
+<aura:component implements="lightning:actionOverride,lightning:isUrlAddressable,force:appHostable,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId,force:lightningQuickActionWithoutHeader" access="global" >
+    <aura:attribute name="clipboardDataId" type="String"/>
+    <lightning:utilityBarAPI aura:id="utilitybar" />
+    <aura:attribute name="recordId" type="String" />
+    <lightning:messageChannel type="navpeII_dev18__navatarClipLwcAuraChannel__c" aura:id="clipIdChannel" scope="APPLICATION" />
+    <!-- <lightning:button variant="brand" label="Edit Clip" title="Edit Clip" onclick="{! c.openProgarm }" /> -->
+    <lightning:messageChannel type="navpeII_dev18__navatarClipAuraUtilityBarChannel__c" onMessage="{!c.openProgarm}"/>
+</aura:component>

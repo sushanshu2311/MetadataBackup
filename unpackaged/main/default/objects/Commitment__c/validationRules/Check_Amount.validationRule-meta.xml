@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Check_Amount</fullName>
+    <active>true</active>
+    <description>This VD checks if the Commitment Amount is greater than zero.</description>
+    <errorConditionFormula>IF( Commitment_Amount_nearest__c &lt; 0, true, false)</errorConditionFormula>
+    <errorDisplayField>Commitment_Amount_nearest__c</errorDisplayField>
+    <errorMessage>Commitment Amount cannot be less than zero.</errorMessage>
+</ValidationRule>

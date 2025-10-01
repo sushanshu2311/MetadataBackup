@@ -1,0 +1,17 @@
+<aura:component implements="flexipage:availableForAllPageTypes,lightning:isUrlAddressable" access="global" >
+	   <aura:handler name="init" value="{!this}" action="{!c.doInit}" description="Handler for valueInit event fired when the component has been initialised"/>
+    <link REL="SHORTCUT ICON" HREF="{!$Resource.NavatarIcon}"> </link>
+    <aura:attribute name="name" type="String"/>
+    <aura:attribute name="isloaded" type="boolean" default="false" />
+    <aura:renderIf isTrue="{!v.isloaded}">
+    <iframe
+      src="{!v.name}"
+      referrerpolicy="no-referrer"
+      height="99%"
+      width="100%"  
+     sandbox="allow-same-origin allow-scripts allow-popups allow-forms"  
+      scrolling="true"
+      title="iFrame"
+    ></iframe>
+    </aura:renderIf>
+</aura:component>

@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>FundType_InvestmentCategory_Validation</fullName>
+    <active>true</active>
+    <errorConditionFormula>AND(NOT(ISPICKVAL(Investment_Category__c, &quot;Fund&quot;)), ISPICKVAL(Fund_Type__c, &quot;Fund of Funds&quot;))</errorConditionFormula>
+    <errorDisplayField>Investment_Category__c</errorDisplayField>
+    <errorMessage>You should select Fund while selecting Fund Type as Fund of Funds.</errorMessage>
+</ValidationRule>

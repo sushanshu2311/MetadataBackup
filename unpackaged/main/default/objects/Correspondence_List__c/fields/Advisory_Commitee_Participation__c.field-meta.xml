@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Advisory_Commitee_Participation__c</fullName>
+    <label>Advisory Commitee Participation</label>
+    <required>false</required>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Picklist</type>
+    <valueSet>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>Advisory Committee Member</fullName>
+                <default>false</default>
+                <label>Advisory Committee Member</label>
+            </value>
+            <value>
+                <fullName>Advisory Committee Observer</fullName>
+                <default>false</default>
+                <label>Advisory Committee Observer</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
+</CustomField>

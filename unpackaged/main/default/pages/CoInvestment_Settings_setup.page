@@ -1,0 +1,472 @@
+<!--
+Project: PE 3.5
+Start: 09-June-2016
+Module: CoInvestment Settings setup
+Class use:CoInvestment_Settings_setup_Ctlr 
+Call From: NAVATAR SETUP
+Developer: Faizan
+Last Modified: Faizan (14-Nov-2016)
+-->
+<apex:page docType="html-5.0" contentType="text/html; charset=utf-8"  id="thePage" controller="CoInvestment_Settings_setup_Ctlr" sidebar="false" standardStylesheets="false" tabstyle="Navatar_Setup__tab" title="CoInvestment Settings">
+  <apex:form id="theForm" >
+    <apex:actionFunction name="redirectpageActFn" action="{!redirectpage}" reRender="false" immediate="true">
+        <apex:param name="pgname" assignTo="{!strPageName}"  value=""/>
+    </apex:actionFunction>
+    <html>
+    <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Co-investment Settings Setup</title>
+
+    <script src="{!URLFOR($Resource.PE_35,'PE_3.5/js/jquery.js')}" type="text/javascript"></script>
+    <link rel="stylesheet" href="{!URLFOR($Resource.PE_35,'PE_3.5/AutoComp/css.css')}" type="text/css" />
+
+    <!-- Start FancyBox -->
+    <script src="{!URLFOR($Resource.PE_35,'PE_3.5/js/jquery-ui.js')}"></script>
+    <script>
+    window.onload = function(){
+        var showConInstmntError= '{!if(showConInstmntError==true,'true','false')}';
+        if(showConInstmntError=='true')
+        {
+            document.getElementById('hidethisdmsg').style.display = 'block';
+        }
+    }
+        
+    $(function() {
+    $( ".FancyboxContainer" ).draggable({ cancel: ".PopupContentStart" });
+    });
+    
+    function hidewarningmsg()
+    {
+        document.getElementById('hidethisdmsg').style.display = 'none';
+    }
+
+    </script>
+    
+    <style>
+            .table .td2 .slds-checkbox { position: relative;top: 15px;}
+            /*.table .td2 .slds-form-element__control { position: relative;top: 5px; }*/
+            .table .td1 {vertical-align: middle !important;}
+             .lookupIconOn, .lookupIcon{
+            <!--background-image: url("/resource/1457007465000/PE_35/PE_3.5/images/lookup.png");-->
+            background-image : url({!URLFOR($Resource.PE_35, '/PE_3.5/images/search_16.png')});
+            font-size:12px !important;
+            position:relative; 
+            right: 35px;
+            background-position: left top;
+            background-repeat: no-repeat !important;        
+            width: 15px;
+            }
+            
+            .lookupInput img {
+                vertical-align: middle;
+                margin-right: -2.75em;
+                background-repeat: no-repeat;
+                
+            }
+            .inputTextClass{
+                border: 2px solid #c23934;
+                padding-right: 0px !important;
+                background-color: white !important;
+                color: #16325c !important;
+                border: 1px solid #d8dde6 !important;
+                border-radius: 4px !important;
+                width: 100%;
+                transition: border 0.1s linear, background-color 0.1s linear;       
+                padding: 0 0 0 9px !important;
+                line-height: 34px !important;
+                min-height: calc(34px + 2px);
+            }
+              .largeimge img {max-width:none !important;}
+             
+                .slds a:focus {
+                outline: thin dotted;
+                outline: none !important;
+                outline-offset: -2px;
+                }            
+              
+        </style>
+        
+    <link rel="stylesheet" type="text/css" href="{!URLFOR($Resource.PE_35,'PE_3.5/css/fancybox.css')}" media="screen" />
+            
+    <script type="text/javascript">
+    var popupStatus = 0;
+            
+            function InsufficientPermissions_Fancybox() 
+            {
+                loadPopupnew('fancybox_background','InsufficientPermissions_Fancybox');
+                centerPopupnew('InsufficientPermissions_Fancybox');
+            }
+            
+                                                                                
+            function loadPopupnew(cid1,cid2)
+            {
+                if(popupStatus==0){
+                    $('.'+cid1).css({
+                        "opacity": "0.5"
+                    });
+                    $('.'+cid1).fadeIn("slow");
+                    $('.'+cid2).fadeIn("slow");
+                    popupStatus = 1;
+                }
+            };
+            function centerPopupnew(cid)
+            {
+                //request data for centering
+                var windowWidth = document.documentElement.clientWidth;
+                var windowHeight = document.documentElement.clientHeight;
+                var popupHeight = $('.'+cid).height();
+                var popupWidth = $('.'+cid).width();
+                //centering
+                $('.'+cid).css({
+                    "position": "fixed",
+                    "top": windowHeight/2-popupHeight/2,
+                    "left": windowWidth/2-popupWidth/2
+                });
+            };
+            
+            function closepopup(bgdivid,popupdivid)
+            {
+                disablePopupnew(bgdivid);
+                $('.'+popupdivid).fadeOut("slow");
+            } 
+            
+            function disablePopupnew(cid){
+                if(popupStatus==1){
+                    $('.'+cid).fadeOut("slow");
+                    popupStatus = 0;
+                }   
+            };
+    </script>
+    <!-- End FancyBox -->
+
+    <!-- Start Yellow Tooltip -->
+    <link rel="stylesheet" href="{!URLFOR($Resource.PE_35,'PE_3.5/css/tip-yellow.css')}" type="text/css" />
+    <script type="text/javascript" src="{!URLFOR($Resource.PE_35,'PE_3.5/js/jquery.poshytip.js')}"></script>
+    <script type="text/javascript">
+        $(function(){
+            $('.YellowTooltip').poshytip();
+        });
+    </script>
+    <style>
+    .tip-yellow { padding:15px !important; box-shadow:#ccc 0px 0px 5px !important; }
+    </style>
+    <!-- End Yellow Tooltip -->
+    <script>
+    $(document).ready(function(){
+      
+      $('.div_a').show();
+      $('.div_b').hide();
+      
+      $(".click_one").click(function(){
+        $('.div_a').hide();
+        $('.div_b').show();
+      });
+      
+       $(".click_Two").click(function(){
+        $('.div_a').show();
+        $('.div_b').hide();
+      });
+      
+    }); 
+    </script>
+
+    <!---start script error, warning, suceess msg---->
+    <script type="text/javascript" src="{!URLFOR($Resource.PE_35,'PE_3.5/js/common.js')}"></script>
+    <!---end script error, warning, suceess msg---->
+
+    <!---start lightning css---->
+    <apex:stylesheet value="{!URLFOR($Resource.SLDS100, 'assets/styles/salesforce-lightning-design-system-vf.css')}" />
+    <link href = "{!URLFOR($Resource.PE_35, 'PE_3.5/css/PeLightning.css')}" rel = "stylesheet" type = "text/css" />
+    <link href = "{!URLFOR($Resource.PE_35, 'PE_3.5/css/Navatar-Yellow-Theme-Setup-Left-Section.css')}" rel = "stylesheet" type = "text/css" />
+    <link href = "{!URLFOR($Resource.PE_35, 'PE_3.5/css/Navatar-Yellow-Theme.css')}" rel = "stylesheet" type = "text/css"/>
+    
+    <style>
+        .contentBox_shadow {box-shadow:none !important; border:#eee 1px solid !important}
+        .mandatory_msg { color: #c23934; font-size: 12px;}
+    </style>
+    <!---end lighting css--->
+
+    </head>
+    <body>
+
+    <!-- Start REQUIRED SLDS WRAPPER -->
+    <div class="slds">
+        
+        
+     <apex:pageMessages ></apex:pageMessages>
+     <div id="loadingDiv" style="width:100%; height:100%; display:none; background:#fff; text-align:center; vertical-align:middle; opacity:0.7; position:fixed; top:0; left:0; z-index:9999999;">
+        <div style="width:100px; height:100%; position:relative;top:41%; background:url({!URLFOR($Resource.PE_35, 'PE_3.5/images/icon_loading.gif')}) no-repeat top left; margin:0 auto;"></div>
+    </div>
+    <!-- Start PRIMARY CONTENT WRAPPER -->
+    <div class="myapp">
+
+    <div id="temp" style="padding-bottom:0px !important;">
+
+    <div class="fancybox_background"></div>
+
+    <!-- Start InsufficientPermissions_Fancybox -->
+    <div class="InsufficientPermissions_Fancybox FancyboxContainer Popup">
+        <div class="slds-modal__header">
+            <div class="close_white_60" >
+                <a onclick="closepopup('fancybox_background','FancyboxContainer');return false;" title="Close"><img src="{!URLFOR($Resource.PE_35, 'PE_3.5/images/close_white_60.png')}" /></a>
+            </div>
+            <h2 class="slds-text-heading--medium">Insufficient Permission</h2>
+        </div>
+        <div class="PopupContentStart" style="text-align:center; padding:15px 25px !important">
+            You do not have permission to edit this information. <br />Please contact your Navatar Administrator.
+            <div class="cl"></div> 
+        </div>
+        <div class="slds-modal__footer">
+            <apex:commandButton value="OK" title="OK" styleClass="slds-button slds-button--neutral" onclick="closepopup('fancybox_background','FancyboxContainer');return false;" />
+        </div>                  
+    </div>
+    <!-- End InsufficientPermissions_Fancybox -->
+       
+
+    <table width="100%" border="0" cellpadding="0" cellspacing="0">
+        <tr>
+            <td style="width:240px; padding:0 !important;" valign="top" class="Left_bgcolor">  
+                <div id="LeftMenuSection" class="float_l">
+                    
+                    <div class="ContentStart">
+                        <ul>
+                            <li><apex:outputLink title="Deal Creation" value="/apex/Deal_Creation_Setup" target="_parent">Deal Creation</apex:outputLink></li>
+                            <li><apex:outputLink title="Individual Investor Creation" value="/apex/Individual_Investor_Setup" target="_parent">Individual Investor Creation</apex:outputLink></li>
+                            <li><apex:outputLink title="Commitment Creation" value="/apex/Commitment_Creation_Setup" target="_parent">Commitment Creation</apex:outputLink></li>
+                            <li><apex:outputLink title="Contact Transfer" value="/apex/ContactTransfer_Settings_Setup" target="_parent">Contact Transfer</apex:outputLink></li>
+                            <li><apex:outputLink title="Account Associations" value="/apex/ProductSetting" target="_parent">Account Associations</apex:outputLink></li>
+                            <li><apex:outputLink title="Bulk Email" value="/apex/Bulk_Email_Setup" target="_parent">Bulk Email</apex:outputLink></li>
+                            <li><apex:outputLink title="Office Locations" value="/apex/Office_Locations_Setup" target="_parent">Office Locations</apex:outputLink></li>
+                            <li><apex:outputLink title="Co-investment Settings" value="/apex/CoInvestment_Settings_Setup" styleClass="selected" target="_parent">Co-investment Settings</apex:outputLink></li>
+                            <li><apex:outputLink title="Pipeline Stage Log" value="/apex/Pipeline_Stage_Log" target="_parent">Pipeline Stage Log</apex:outputLink></li>
+                        </ul>
+                    </div>
+                </div>
+            </td>
+        
+        <td valign="top">
+        <div id="RightMenuContentSection" class="float_r" style="padding-bottom:10px !important;">
+            
+            <!-- Start Div A -->
+            <div class="ContentStart div_a" style="display:block;"> 
+                    <div class="grid">                
+                        <div class="slds-box slds-theme--warning" id="hidethisdmsg" style="border-radius: 0; position:relative; border:none; display:none;">
+                            <a href="javascript:void(0);" onclick="hidewarningmsg();" title="Hide" style="position:absolute; top:5px; right:5px"><img style="width:22px" src="{!URLFOR($Resource.PE_35, 'PE_3.5/images/close_white_60.png')}" /></a>
+                            <p><img src="{!URLFOR($Resource.SLDS100, '/assets/icons/utility/warning_60.png')}" style="width:27px; height:27px; position:relative; top:-2px" /> Co-investment fund is deleted. Please select another co-investment fund for using this functionality.</p>
+                        </div>
+                    </div>
+                <div class="slds-page-header" role="banner">
+                
+                  <div class="slds-media" style="padding-bottom:10px;">
+                  <div class="slds-media__figure float_l">
+                     
+                      <div class="slds-icon slds-icon-custom-3 slds-icon--large">
+                        <img src="{!URLFOR($Resource.SLDS100, '/assets/icons/custom/custom67_60.png')}" />
+                      </div>
+                    </div>
+                    <div class="slds-media__body float_l">
+                      <p class="slds-page-header__title slds-truncate slds-align-middle" style="padding-top:8px">Co-investment Settings 
+                        <span class="YellowTooltip" title="Use this setting to automatically link all Co-investment Fundraisings or Commitments to a pre-defined fund.">
+                          
+                            <span class="slds-icon icon-utility-info slds-icon-text-default">
+                            <img src="{!URLFOR($Resource.SLDS100, '/assets/icons/utility/info_60_white.png')}" style="width:22px; height:22px; position:relative; top:-7px" />
+                           </span> 
+                        </span>  
+                      </p>                        
+                    </div>
+                    
+                    <div class="slds-button-group float_r">
+                    <apex:outputpanel id="editPanel">
+                      <apex:commandButton id="editbutton" value="Edit" onclick="document.getElementById('loadingDiv').style.display = '';" title="Edit" styleClass="slds-button slds-button--neutral" action="{!editConInvestmentSetup}" reRender="editPanel" oncomplete="onEditJS();"/>
+                      <script>
+                        /*
+                        @Description: Function called on onComplete of edit event.
+                        */
+                        function onEditJS()
+                        {
+                            var isAdmin= '{!if(isAdmin==true,'true','false')}';
+                            if(isAdmin == 'true' || isAdmin == true)
+                            {
+                                $('.div_a').hide();
+                                $('.div_b').show();
+                                document.getElementById('thePage:theForm:editbutton').style.display = 'none';
+                            }
+                            else
+                            {
+                                InsufficientPermissions_Fancybox();
+                            }
+                            document.getElementById('loadingDiv').style.display = 'none';
+                        }
+                    </script>
+                     </apex:outputpanel>
+                    </div>                                      
+                  </div>
+                  
+                <div class="cl"></div>  
+                </div>
+                              
+              
+               <div class="cl"></div>
+                                          
+                <!-- Start Content Box -->
+                
+                <div class="popupLayoutHeading_Top" style="margin:15px 15px 0 15px;padding:3px 0px 6px 10px;">
+                    <table border="0" cellpadding="0" cellspacing="0" width="100%" class="table">
+                        <tr>
+                            <td valign="top" width="50%">
+                                 <table border="0" cellpadding="5" cellspacing="0" class="" width="100%">
+                                    <tbody>
+                                        <tr>
+                                            <td class="td1" colspan="2" style="text-align:left !important">
+                                              <label class="slds-checkbox">
+                                                <apex:inputcheckbox id="checkbox-00" styleclass="slds-input" value="{!strEnableCMTSetup}" disabled="true" />
+                                                <span class="slds-checkbox--faux"></span>                               
+                                              </label>
+                                              <span class="title primaryPaletteBorder" style="position:relative; top:1px; left:3px;">Automatically link any Co-investment Fundraisings or Commitments to this Fund</span>
+                                            </td>
+                                        </tr>
+                                        <tr><td colspan="2">&nbsp;</td></tr>
+                                        <tr>
+                                            <td class="td1" style="width:146px;">
+                                                <label class="slds-form-element__label" for="text-input-01">Co-investment Fund</label>
+                                            </td>
+                                            <!--<td class="td2"><span>{!JSENCODE(fundName)}</span></td-->
+                                            <td class="td2"><apex:outputfield value="{!LkupPopup.Name}"/></td>
+                                        </tr>
+                                                                                            
+                                    </tbody>
+                                </table>                               
+                            </td>
+                        </tr>
+                    </table>                                
+                </div>
+                <!-- End Content Box -->
+                
+            </div>
+            <!-- End Div A -->
+            
+            <!-- Start Div B -->
+            <div class="ContentStart div_b" style="display:none;">                
+                <div class="slds-page-header" role="banner">
+                  <div class="slds-media" style="padding-bottom:10px;">
+                    <div class="slds-media__figure float_l">
+                      
+                      <div class="slds-icon slds-icon-custom-3 slds-icon--large">
+                        <img src="{!URLFOR($Resource.SLDS100, '/assets/icons/custom/custom67_60.png')}" />
+                      </div>
+                    </div>
+                    <div class="slds-media__body float_l">
+                      <p class="slds-page-header__title slds-truncate slds-align-middle" style="padding-top:8px">Co-investment Settings 
+                        <span class="YellowTooltip" title="Use this setting to automatically link all Co-investment Fundraisings or Commitments to a pre-defined fund.">
+                           <span class="slds-icon icon-utility-info slds-icon-text-default">
+                            <img src="{!URLFOR($Resource.SLDS100, '/assets/icons/utility/info_60_white.png')}" style="width:22px; height:22px; position:relative; top:-7px" />
+                           </span>  
+                        </span>  
+                      </p>                        
+                    </div>                     
+                  </div>
+                <div class="cl"></div>  
+                </div>
+                
+               
+                <div class="cl"></div>
+                <!-- Start Content Box -->
+                <div class="popupLayoutHeading_Top" style="margin:15px 15px 0 15px;padding:3px 0px 12px 10px;">
+                    <table border="0" cellpadding="0" cellspacing="0" width="100%" class="table">
+                        <tr>
+                            <td valign="top" width="50%">
+                                 <table border="0" cellpadding="5" cellspacing="0" class="" width="100%">
+                                    <tbody>
+                                        <tr>
+                                            <td class="td1" colspan="2" style="text-align:left !important">
+                                              <label class="slds-checkbox">
+                                                <apex:inputcheckbox id="checkbox-01" onclick="checkBoxClickJS();" styleclass="slds-input" value="{!strEnableCMTSetup}" disabled="false" />
+                                                <span class="slds-checkbox--faux"></span>                               
+                                              </label>
+                                              <span class="title primaryPaletteBorder" style="position:relative; top:1px; left:3px;">Automatically link any Co-investment Fundraisings or Commitments to this Fund</span>
+                                            </td>
+                                        </tr>
+                                        <tr><td colspan="2">&nbsp;</td></tr>
+                                        <tr>
+                                            <td class="td1" style="width:146px;">
+                                                <label class="slds-form-element__label" for="text-input-01"><span style="color:#ff0000">*</span>Co-investment Fund</label><div>&nbsp;</div>
+                                            </td>
+                                            <td class="td2">
+                                                <apex:outputpanel id="fundpanel">
+                                                <div class="slds-form-element__control slds-input-has-icon slds-input-has-icon--right" style="width:260px;">                                                 
+                                                   <apex:inputField id="lookupIdFundCom"  value="{!LkupPopup.Fund_Name__c}" style="border:2px solid #c23934;" styleClass="inputTextClass"/>
+                                                    <div class="mandatory_msg"><apex:message for="lookupIdFundCom" id="lookupIdFundComError"/></div> 
+                                                    <div id="errConInvstmnt" style="display:none;" class="mandatory_msg">Please select a Co-investment fund</div>
+                                                    <div id="err" style="display:none;" class="mandatory_msg">Please enter a value</div>
+                                                </div>
+                                                <div class="cl"></div>
+                                                </apex:outputpanel>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                             <td class="td1" style="width:146px;"></td>
+                                             <td class="td2"></td>
+                                        </tr>
+                                                                                            
+                                    </tbody>
+                                </table>                               
+                            </td>
+                        </tr>
+                    </table>                                
+                </div>
+                
+                <!-- End Content Box -->
+                <div class="cl"></div>                
+                <div class="float_r" style="margin:8px 17px 0 0px;">                    
+                    <apex:commandButton value="Cancel" title="Cancel" styleClass="slds-button slds-button--neutral" onclick="document.getElementById('loadingDiv').style.display = '';" oncomplete="location.reload();" />
+                    <apex:commandButton value="Save" title="Save" onclick="" action="{!onSaveCoInvestmentSetup}" rerender="errDiv, fundpanel" styleClass="slds-button slds-button--brand" oncomplete="CheckOnComplete();" />
+                </div>
+                <div class="cl"></div> <br />
+            </div>
+            <!-- End Div B -->
+        </div>
+        <div class="cl"></div>
+        </td>
+        </tr>
+    </table>    
+    </div>
+    <apex:outputpanel id="errDiv">
+        <script>
+            var yesBlank = '{!if(showError==true,'true','false')}';
+            var boolChckBoxVal = '{!if(strEnableCMTSetup==true,'true','false')}';
+            var showConInstmntError = '{!if(showConInstmntError==true,'true','false')}';
+            function CheckOnComplete()
+            {
+                /*When checkbox is true only then show error.*/
+                if(document.getElementById('thePage:theForm:lookupIdFundComError') == null){
+                    if( showConInstmntError == 'false' && ((yesBlank == 'true' && boolChckBoxVal ==  'false') || (yesBlank == 'false' && boolChckBoxVal ==  'false') || (yesBlank == 'false' && boolChckBoxVal ==  'true')) ){
+                        
+                        window.location.reload();
+                    }
+                    
+                    else if( yesBlank == 'true' && boolChckBoxVal ==  'true' )
+                    {
+                        document.getElementById('err').style.display = '';
+                        document.getElementById('errConInvstmnt').style.display = 'none';
+                    }
+                    else if(showConInstmntError == 'true')
+                    {
+                        document.getElementById('errConInvstmnt').style.display = '';
+                        document.getElementById('err').style.display = 'none';
+                    }
+                    document.getElementById('loadingDiv').style.display = 'none';
+                }
+                
+            }
+        </script>
+    </apex:outputpanel>
+    </div>
+    <!-- Start PRIMARY CONTENT WRAPPER -->
+
+    </div>
+    <!-- End REQUIRED SLDS WRAPPER -->
+    </body>
+    </html>
+    
+  </apex:form>  
+</apex:page>

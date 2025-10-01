@@ -1,0 +1,101 @@
+<!--
+** Module Name : Add To Fund - Theme
+** Description : To create Fundraisings from user selected funds to related firms of theme record
+** Organization : Navatar Group
+** Product Name & Version : Acuity 3.0
+** Revision History:-
+** Version    Date(YYYY-MM-DD)    Author      Description of Action
+** 1.0        2024-03-08          Lakshya     Acuity Phase 3
+** 2.0        2024-03-18          Lakshya     Acuity Phase 3.2
+-->
+<template>
+    <div class="listdiv">
+        <template if:true={addtofundfirstscreen}>
+            <lightning-quick-action-panel header={headerLabel}>
+                <div class="dd createfundtheme_main">
+                    <div class="slds-form-element__control slds-m-horizontal_medium slds-grow">
+                        <lightning-layout>
+                            <lightning-layout-item size="12">
+                                <label class="slds-form-element__label" for="unique-id-of-input" style="margin-left: 5px;">
+                                    <!--Added "Name" by LK on 2024-07-05 to fix 00046479-->
+                                    <abbr class="slds-required" title="required">*</abbr>{fundObjLabel} Name</label>
+                                <!--Updated search-placeholder by LK on 2024-07-03 to fix 00046327-->
+                                <c-navatar-single-lookup-lwc obj-name="navpeII_dev18__Fund__c"
+                                search-placeholder="Search..." onlookupselected={handleSelectedFundRecord} onremovedata={handleRemovedData}
+                                is-rec-selected="true" callingfrom="AddToFundLookupPage"></c-navatar-single-lookup-lwc>
+                            </lightning-layout-item>
+                        </lightning-layout>
+                        <lightning-layout class="main-Container">
+                            <lightning-layout-item size="12">
+                                <div class="slds-section slds-is-open">
+                                    <button aria-controls="expando-unique-id" aria-expanded="true"
+                                        class="slds-button expandablebtn" onclick ={isExpandadvance}>
+                                        <lightning-icon icon-name="utility:chevronright" size="xx-small"
+                                            alternative-text="Advanced" title="Advanced"
+                                            class="slds-m-right_xx-small hovLink" if:true={isCollapse}></lightning-icon>
+                                        <lightning-icon icon-name="utility:chevrondown" size="xx-small"
+                                            alternative-text="Advanced" title="Advanced"
+                                            class="slds-m-right_xx-small hovLink" if:true={isExpand}></lightning-icon>
+                                        <span class="slds-truncate" title="Advanced"
+                                            style="font-size:14px;">Advanced</span>
+                                    </button>
+                                    <div class="slds-section__content"
+                                        if:true={isExpandCollapseBox}>
+                                        <lightning-layout>
+                                            <lightning-layout-item size="12">
+                                                <div class="slds-border_left slds-border_right slds-border_top">
+                                                    <!--Added "selected-rows={selectedRows}" by LK on 2024-05-21 to fix 00045856-->
+                                                    <!--00046039 fixed by raju on dated 11-06-2024 (Add this css clsRemoveXscroll)-->
+                                                    <lightning-datatable class="heightDataTable addtofund_css clsRemoveXscroll"
+                                                        key-field="id" data={availableAccRecList}
+                                                        resize-column-disabled="true" columns={columnsCatogryFund}
+                                                        onrowselection={getSelectedRec}
+                                                        selected-rows={selectedRows}>
+                                                    </lightning-datatable>
+                                                </div>
+                                            </lightning-layout-item>
+                                        </lightning-layout>
+                                    </div>
+                                </div>
+                            </lightning-layout-item>
+                        </lightning-layout>
+                    </div>
+                </div>
+                <div slot="footer">
+                    <lightning-button variant="neutral" label="Cancel" title="Cancel"
+                        onclick={closeModal}></lightning-button>
+                    <lightning-button variant="brand" class="slds-m-left_small" label="Save" title="Save"
+                        onclick={addToFundAndFdr} disabled={disableSave}></lightning-button>
+                </div>
+            </lightning-quick-action-panel>
+    </template>
+        <template if:true={isYesNoFund}>
+            <lightning-quick-action-panel header={allContactsHeader}>
+                <div class="dd createfundtheme_main">
+                    <div class="slds-form-element__control slds-grow ">
+                        <!-- <lightning-icon variant="inverse" size="small" icon-name="utility:close" alternative-text="close!"
+                        title="Close" class="slds-text-align_right slds-m-bottom_small slds-text-link_reset"
+                        onclick={closeYesNo}>
+                    </lightning-icon> -->
+                        <div class="slds-modal__content slds-p-around_medium">
+                            <!--Do you want to add all {contactPluralLabel} of the {accObjPluralLabel} or select {contactPluralLabel}?-->
+                            <!--Replaced above static text with {isYesNoFundMsg} by LK on 2024-07-02 to fix 00046312-->
+                            <p class="slds-text-heading_small slds-text-align_center font_18" style="padding: 3rem 2rem;">{isYesNoFundMsg}</p>
+                        </div>
+                    </div>
+                </div>
+                <div slot="footer">
+                    <lightning-button variant="neutral" aria-label="Cancel" onclick={closeYesNo} title="Cancel"
+                        label="Cancel"></lightning-button>
+                         <!-- changed class name for bug - 00041650 By Nikita-->
+                    <lightning-button variant="brand" class="slds-m-left_x-small" title={allContactsLabel}
+                        onclick={addAllContactsFund} label={allContactsLabel}></lightning-button>
+                    <lightning-button variant="brand" class="slds-m-left_x-small" title={selectContactsLabel}
+                        onclick={yesContactFund} label={selectContactsLabel}></lightning-button>
+                         <!-- changed class name for bug - 00041650 By Nikita-->
+                </div>
+
+            </lightning-quick-action-panel>
+        </template>
+    </div>
+</template>

@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CompactLayout xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Fund_Manager_Highlight</fullName>
+    <fields>Name</fields>
+    <fields>Phone</fields>
+    <fields>AUM_in_Millions__c</fields>
+    <fields>Fundraising_in_Next_12_Months__c</fields>
+    <fields>NumberOfEmployees</fields>
+    <label>Fund_Manager_Highlight</label>
+</CompactLayout>

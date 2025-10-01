@@ -1,0 +1,30 @@
+<template>
+    
+    <template if:true={helpDesk}>
+        <div class="main-Container2 maincontainer_supportmenu slds-m-around_small slds-p-top_large" style="display: block; text-align: center;">
+            <div class="search-input searchinputCss searchlabel">
+                <lightning-input name="enter-search" value={searchValue} class="lightning-input-css"
+                    placeholder="Enter Question or Topic... " autocomplete="off" onkeydown={handleKeyDown} autofocus></lightning-input>
+                <div class="btnHelpIcon">
+                    <lightning-icon icon-name="standard:search" onclick={handleNavigate} size="small"
+                        alternative-text="Search"></lightning-icon>
+                </div>
+            </div>
+            <div class="d_flex slds-p-top_small">
+                <a href="javascript(void)"></a>
+                <p>Browse <a href={baseURL} target="_blank" class="text_dec_none">Help Topics</a></p>
+            </div>
+        </div>
+    </template>
+
+<!-- Bug 00047982 fixed by Sudhanshu  -->
+    <template if:false={helpDesk}>
+        <lightning-layout class="clsBoxContainer slds-p-around_x-small">
+            <lightning-layout-item size="12">                
+                <div class="slds-text-body_small slds-text-align_center"><lightning-icon icon-name="utility:call" size="xx-small" alternative-text="Event" title="Event" class="clsColor"></lightning-icon><span class="slds-m-left_x-small">212-863-9655</span></div></div>
+                <div class="slds-text-body_small slds-text-align_center slds-m-top_small"><lightning-icon icon-name="utility:email" size="xx-small" alternative-text="Event" title="Event" class="clsColor"></lightning-icon><span class="slds-m-left_x-small">Concierge@navatargroup.com</span></div>
+            </lightning-layout-item>
+        </lightning-layout>
+    </template>
+   
+</template>

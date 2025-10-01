@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ListView xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Tier_1_Intermediaries_to_Call</fullName>
+    <columns>FULL_NAME</columns>
+    <columns>forTotalDealsShown__c</columns>
+    <columns>forAverageDealQualityScore__c</columns>
+    <columns>Industry_Focus__c</columns>
+    <filterScope>Everything</filterScope>
+    <filters>
+        <field>Tier__c</field>
+        <operation>equals</operation>
+        <value>1</value>
+    </filters>
+    <filters>
+        <field>Contact_Type__c</field>
+        <operation>equals</operation>
+        <value>Banker</value>
+    </filters>
+    <label>Tier 1 Intermediaries to Call</label>
+</ListView>

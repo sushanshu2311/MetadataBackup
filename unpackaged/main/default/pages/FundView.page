@@ -1,0 +1,1333 @@
+<!--
+Project: PE 3.5
+Start: 09-June-2016
+Module: Commitment detail Page
+Class use:Fund view  
+Common Class use: CommonUtilityGlobal
+Standard Controller: Account
+Call From: Institution detail page
+Developer: Vasudha
+Last Modified: Vivek (11-november -2016)
+-->
+
+<apex:page showHeader="true" standardController="Account" standardStylesheets="false" sidebar="false" applyHtmlTag="true" applyBodyTag="true" extensions="FundView" id="pageid"> 
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<apex:stylesheet value="{!URLFOR($Resource.SLDS100, 'assets/styles/salesforce-lightning-design-system-vf.css')}" />
+
+<script type="text/javascript" src="{!URLFOR($Resource.PE_35,'PE_3.5/js/jquery.js')}"></script>
+
+<style>
+    / *.table .td2 .slds-checkbox { position: relative;top: 15px;}*/
+    .table .td2 .slds-form-element__control { position: relative;top: 5px; }
+    
+    
+}
+</style>
+
+<title>Fund View</title>
+
+<link href = "{!URLFOR($Resource.PE_35, 'PE_3.5/css/pe_3.5.css')}" rel = "stylesheet" type = "text/css"/>
+<script src="{!URLFOR($Resource.PE_35,'PE_3.5/js/aw.js')}" type="text/javascript"></script>
+
+<link rel="stylesheet" type="text/css" href="{!URLFOR($Resource.PE_35, 'PE_3.5/css/aw.css')}" media="screen" />
+
+<link rel="stylesheet" type="text/css" href="{!URLFOR($Resource.PE_35, 'PE_3.5/css/fancybox.css')}" media="screen" />
+        <script src="{!URLFOR($Resource.PE_35,'PE_3.5/js/jquery-ui.js')}"></script>
+        <script src="/soap/ajax/38.0/connection.js" type="text/javascript"></script>
+        <script src="/soap/ajax/19.0/apex.js" type="text/javascript"></script>
+        <script>
+            $(function() {
+            $( ".FancyboxContainer" ).draggable({ cancel: ".PopupContentStart" });
+    
+            });
+        </script>
+        
+        <style>
+            .FancyboxContainer {cursor:move; }
+            .PopupContentStart{cursor:text; }
+            
+            a {
+                color: #36535c;
+                text-decoration: none;
+            }
+            a:hover { color: #fcb141 !important; }
+        </style>
+        
+        <script type="text/javascript">
+        sforce.connection.sessionId = "{!$Api.Session_ID}";    
+        var popupStatus = 0;
+        var Namespaceprefix1 = '{!JSENCODE(NameSpacePrefix)}';  // For namespace of org
+        
+        var LocaleStrings='{!JSENCODE(localeString)}';          // Locale of User
+        LocaleStrings=LocaleStrings.replace(/_/g,'-');
+        var currenyisocode='';
+        var arrcheckboxIndex = [];                              // Array contains the index of checkbox fields
+        var arrdatetimeIndex = [];                              // Array contains the index of datetime fields
+        var arrdateIndex = [];                                  // Array contains the index of date fields
+        var arrcurrencyIndex = [];                              // Array contains the index of currency fields
+        var arrCommitmentIndex = [];                            // Array contains the index of Commitment field
+        var arrHeaderNames = new Array();                       // Array contains the headernames of grid
+        var arrApiFieldsNames = new Array();                    // Array contains the APIName of fields
+        var columnarry;
+        var arrAllFinalGridRecords = new Array();               // Array contains the all grid data
+        var SortClicked=false;                                  // when grid header is clicked . NOTE : Onload value is false
+        var direction = 'DESC NULLS LAST';                      // This vriable give direction in query 
+        var colDirection = 'descending';                        // variable contains the sorting direction
+        var columnno;                                           // variable contains the column number on which currently sorting is done
+        var header_name_ofSort = '';                            // variable contains the column name 
+        var ischeckLoadFlag = true;                             //  On load check
+        var fundName = '';                                      //  Contains fundName
+        var commitmentApi = [];                                 // Contains all access ApiName of  Commitment fields
+        var partnershipApi = [];                                // Contains all access ApiName of Partnership fields
+        var CommitmentLabelSecurity =[];                        // Contains all access Label of  Commitment fields      
+        var PartnershipLabelSecurity =[];                       // Contains all access Label of Partnership fields
+        var arrfieldsDataType = [];                             // Contains datatype of fields
+        
+            
+            function ColumnstoDisplay_Fancybox2() 
+            {
+                loadPopupnew('fancybox_background','ColumnstoDisplay_Fancybox2');
+                centerPopupnew('ColumnstoDisplay_Fancybox2');
+            }
+             function Past_FundraisingsContact2_PopUp() 
+            {
+                loadPopupnew('fancybox_background','Past_FundraisingsContact2_PopUp');
+                centerPopupnew('Past_FundraisingsContact2_PopUp');
+            }
+            function Past_FundraisingsContact_PopUp() 
+            {
+                loadPopupnew('fancybox_background','Past_FundraisingsContact_PopUp');
+                centerPopupnew('Past_FundraisingsContact_PopUp');
+            }            
+            function Past_Fundraisings_PopUp() 
+            {
+                loadPopupnew('fancybox_background','Past_Fundraisings_PopUp');
+                centerPopupnew('Past_Fundraisings_PopUp');
+            }
+            function Confirmation_PopUp() 
+            {
+                loadPopupnew('fancybox_background','Confirmation_PopUp');
+                centerPopupnew('Confirmation_PopUp');
+            }
+            function Warning_PopUp() 
+            {
+                loadPopupnew('fancybox_background','Warning_PopUp');
+                centerPopupnew('Warning_PopUp');
+            }
+            
+            function SelectFund_Popup() 
+            {
+                loadPopupnew('fancybox_background','SelectFund_Popup');
+                centerPopupnew('SelectFund_Popup');
+            }
+            
+            function loadPopupnew(cid1,cid2)
+            {
+                if(popupStatus==0){
+                    $('.'+cid1).css({
+                        "opacity": "0.5"
+                    });
+                    $('.'+cid1).fadeIn("slow");
+                    $('.'+cid2).fadeIn("slow");
+                    popupStatus = 1;
+                }
+            };
+            function centerPopupnew(cid)
+            {
+                //request data for centering
+                var windowWidth = document.documentElement.clientWidth;
+                var windowHeight = document.documentElement.clientHeight;
+                var popupHeight = $('.'+cid).height();
+                var popupWidth = $('.'+cid).width();
+                //centering
+                $('.'+cid).css({
+                    "position": "fixed",
+                    "top": windowHeight/2-popupHeight/2,
+                    "left": windowWidth/2-popupWidth/2
+                });
+            };
+            
+            function closepopup(bgdivid,popupdivid)
+            {
+                disablePopupnew(bgdivid);
+                $('.'+popupdivid).fadeOut("slow");
+            } 
+            
+            function disablePopupnew(cid){
+                if(popupStatus==1){
+                    $('.'+cid).fadeOut("slow");
+                    popupStatus = 0;
+                }   
+                
+            };
+        </script>
+        
+        <style>
+            .slds {background: #f2f5fa !important;}
+            .slds-page-header__title {position:relative; left:-1px;}
+          
+            /*for close button*/
+            .close_white_60{position:absolute; right:0; top:-41px;}
+            .close_white_60 a img{width:34px; height:34px; cursor:pointer;}
+            .close_white_60 a img:hover{opacity:0.8; }
+        </style>
+        <script>
+                // On Load this function first checks the field level security and then call other function
+                MainGridFildsInsufficientPrivilagesDefalut = [Namespaceprefix1+"Partnership__c:"+Namespaceprefix1+"Fund__c",Namespaceprefix1+"Commitment__c:Name",Namespaceprefix1+"Commitment__c:"+Namespaceprefix1+"Commitment_Amount_nearest__c",Namespaceprefix1+"Commitment__c:"+Namespaceprefix1+"Limited_Partner__c",Namespaceprefix1+"Commitment__c:"+Namespaceprefix1+"Partnership__c",Namespaceprefix1+"Commitment__c:CreatedDate"];
+                
+                function onLoading()
+                { 
+                    try{
+                        commitmentApi = getDescribeObject('Commitment__c',commitmentApi);
+                        partnershipApi = getDescribeObject('Partnership__c',partnershipApi);
+                    
+                        var isSufficientPriviledge = checkInsuficientPrivilages();
+                        if(isSufficientPriviledge){
+                         
+                            document.getElementById('errormsg').style.display = 'block';
+                            document.getElementById('wrench').style.display = 'none';
+                            hidePopup();
+                            return null;
+                        }
+                        else{       
+                            getNavatarSetupData();                      
+                            executeQuery(MainGridFilds);
+                        }
+                    } 
+                    catch(err){
+                       document.getElementById('errormsg').style.display = 'block';
+                       document.getElementById('wrench').style.display = 'none';
+                       hidePopup();
+                       return null;
+                    }
+                }
+                
+                var MainGridFilds = []; // Contains grid header values from default array or navatarsetup obj.
+                var getqueryMain;       // Create query
+                var getSelectedfields;  // Contains query fields
+                
+                
+                var MainGridFildsDefalut =[Namespaceprefix1+"Partnership__c:"+Namespaceprefix1+"Fund__c:Fund:reference",Namespaceprefix1+"Commitment__c:Name:Commitment ID:string",Namespaceprefix1+"Commitment__c:"+Namespaceprefix1+"Commitment_Amount_nearest__c:Commitment Amount:currency",Namespaceprefix1+"Commitment__c:"+Namespaceprefix1+"Limited_Partner__c:Limited Partner:reference",Namespaceprefix1+"Commitment__c:"+Namespaceprefix1+"Partnership__c:Partnership:reference",Namespaceprefix1+"Commitment__c:"+Namespaceprefix1+"Portfolio_Company__c:Portfolio Company:reference",Namespaceprefix1+"Commitment__c:CreatedDate:Created Date:datetime"];
+              
+                /*This function get the fields either from navatar setup or MainGridFildsDefalut array
+                After that if any user change the label of the field than it fetched the current label 
+                and bind the MainGridFildsDefalut and MainGridFilds array */
+                
+                function getNavatarSetupData()
+                {
+                   try
+                    {    
+                        var query="select id, "+Namespaceprefix1+"IFC_Setting__c FROM "+Namespaceprefix1+"Navatar_Setup__c where OwnerId = '{!$User.Id}' ";    
+                        var resultdesc = sforce.connection.query(query);         
+                        var recsize = resultdesc.getArray("size");                      
+                        if(recsize == 0)
+                        {                            
+                            MainGridFilds = MainGridFildsDefalut;
+                        }
+                        else{
+                            var recordsdesc = resultdesc.getArray("records");                
+                            var CommitFieldValues = recordsdesc[0].get(Namespaceprefix1+'IFC_Setting__c');
+                            if(CommitFieldValues != '' && CommitFieldValues != null){
+                                if(CommitFieldValues.indexOf('fundview:') > -1){
+                                    var gridFields = CommitFieldValues.split('fundview:')[1]; 
+                                    
+                                    if(gridFields != '' || gridFields != null){
+                                        MainGridFilds = gridFields.split(',');
+                                    }
+                                    else{
+                                        MainGridFilds = MainGridFildsDefalut;
+                                    }
+                                }
+                                else{
+                                    MainGridFilds = MainGridFildsDefalut;
+                                }
+                            }
+                            else{
+                                MainGridFilds = MainGridFildsDefalut;
+                            }   
+                        }
+                        
+                        for(i = MainGridFildsDefalut.length-1;i>=0;i--){
+                            var tempField = MainGridFildsDefalut[i].split(':');
+                            
+                            if(tempField[0] == Namespaceprefix1+'Commitment__c'){
+                                if(commitmentApi.indexOf(tempField[1]) == -1){
+                                    MainGridFildsDefalut.splice(i,1);
+                                }
+                                else{
+                                    if (CommitmentLabelSecurity.indexOf(tempField[2]) == -1){
+                                        tempField[2] = CommitmentLabelSecurity[commitmentApi.indexOf(tempField[1])];
+                                        MainGridFildsDefalut[i] = tempField[0]+':'+tempField[1]+':'+tempField[2]+':'+tempField[3];
+                                    }
+                                }
+                            }
+                            else if(tempField[0] == Namespaceprefix1+'Partnership__c'){
+                                if(partnershipApi.indexOf(tempField[1]) == -1){
+                                    MainGridFildsDefalut.splice(i,1);
+                                }
+                                else{
+                                    if (PartnershipLabelSecurity.indexOf(tempField[2]) == -1){
+                                        tempField[2] = PartnershipLabelSecurity[partnershipApi.indexOf(tempField[1])];
+                                        MainGridFildsDefalut[i] = tempField[0]+':'+tempField[1]+':'+tempField[2]+':'+tempField[3];
+                                    }
+                                }
+                            }                       
+                        }
+                        
+                        for(i = MainGridFilds.length-1;i>=0;i--){
+                            var tempField = MainGridFilds[i].split(':');
+                            
+                            
+                            if(tempField[0] == Namespaceprefix1+"Commitment__c"){
+                                if(commitmentApi.indexOf(tempField[1]) == -1){
+                                  MainGridFilds.splice(i,1);
+                                }
+                                else{
+                                    if (CommitmentLabelSecurity.indexOf(tempField[2]) == -1){
+                                        tempField[2] = CommitmentLabelSecurity[commitmentApi.indexOf(tempField[1])];
+                                        MainGridFilds[i] = tempField[0]+':'+tempField[1]+':'+tempField[2]+':'+tempField[3];
+                                    }
+                                }
+                            }
+                            else if(tempField[0] == Namespaceprefix1+"Partnership__c")
+                            {
+                                if(partnershipApi.indexOf(tempField[1]) == -1){
+                                  MainGridFilds.splice(i,1);
+                                }
+                                else{
+                                    if (PartnershipLabelSecurity.indexOf(tempField[2]) == -1){
+                                        tempField[2] = PartnershipLabelSecurity[partnershipApi.indexOf(tempField[1])];
+                                        MainGridFilds[i] = tempField[0]+':'+tempField[1]+':'+tempField[2]+':'+tempField[3];
+                                    }
+                                }
+                            }
+                        }
+
+                    }
+                    catch(err)
+                    {
+                        if(err.faultcode=='sf:INVALID_SESSION_ID')
+                        {
+                           sessionError(err);
+                        }
+                        else{
+                             alert('Error getnavatarsetup : '+err);
+                        }
+                    }
+                }
+                
+                // This function put the gris headers fields in array and after that create the query
+                function setHeaderValues()
+                {
+                    try
+                    {
+                    
+                        getqueryMain = "Select ";
+                        
+                        for (var i=0; i<getSelectedfields.length; i++) 
+                        {   
+                            var objectName = getSelectedfields[i].split(':')[0];
+                            var apiFieldName = getSelectedfields[i].split(':')[1];
+                            var fieldLabelName = getSelectedfields[i].split(':')[2];
+                            var fielddatatype = getSelectedfields[i].split(':')[3];
+                            arrfieldsDataType.push(getSelectedfields[i].split(':')[3]);
+                          
+                            if(objectName == Namespaceprefix1+'Partnership__c'){
+                         
+                                if(fielddatatype.trim().toLowerCase().indexOf('boolean') > -1){
+                                    arrcheckboxIndex.push(i);
+                                    arrHeaderNames.push(getSelectedfields[i].split(':')[2]);
+                                    arrApiFieldsNames.push(getSelectedfields[i].split(':')[1]);
+                                }
+                                else if(fielddatatype.trim().toLowerCase().indexOf('datetime') > -1)
+                                {
+                                    arrdatetimeIndex.push(i);
+                                    arrHeaderNames.push(getSelectedfields[i].split(':')[2]);
+                                    arrApiFieldsNames.push(getSelectedfields[i].split(':')[1]);
+                                }
+                                else if(fielddatatype.trim().toLowerCase().indexOf('date') > -1){
+                                    arrdateIndex.push(i);
+                                    arrHeaderNames.push(getSelectedfields[i].split(':')[2]);
+                                    arrApiFieldsNames.push(getSelectedfields[i].split(':')[1]);
+                                }
+                                else if(fielddatatype.trim().toLowerCase().indexOf('currency') > -1){
+                                    arrcurrencyIndex.push(i);
+                                    arrHeaderNames.push(getSelectedfields[i].split(':')[2]);
+                                    arrApiFieldsNames.push(getSelectedfields[i].split(':')[1]);
+                                }
+                                
+                                else{                                    
+                                    arrHeaderNames.push(getSelectedfields[i].split(':')[2]);
+                                    arrApiFieldsNames.push(getSelectedfields[i].split(':')[1]);
+                                }
+                                
+                                // For query creation through reference fields
+                                
+                                if(fielddatatype.trim().toLowerCase().indexOf('reference') > -1){
+                                    var refFieldApi;
+                                    var stdRefChk;
+                                    refFieldApi=apiFieldName;
+                                    stdRefChk=refFieldApi.substring(refFieldApi.length-3,refFieldApi.length);
+                                    if(stdRefChk=='__c')
+                                    {
+                                        if(apiFieldName == Namespaceprefix1+'Fund__c'){
+                                            getqueryMain += Namespaceprefix1+"Partnership__r."+Namespaceprefix1+"Fund__r.Name , ";
+                                        }
+                                        else{
+                                            refFieldApi=refFieldApi.substring(0,refFieldApi.length-1);
+                                            getqueryMain += Namespaceprefix1+'Partnership__r.'+refFieldApi+'r.Name ,';
+                                        }
+                                    }
+                                    else{
+                                        stdRefChk=refFieldApi.substring(refFieldApi.length-2,refFieldApi.length);
+                                        if(stdRefChk.toLowerCase()=='id')
+                                        {
+                                            var stdRefFieldApi=apiFieldName;
+                                            stdRefFieldApi=stdRefFieldApi.substring(0,stdRefFieldApi.length-2);
+                                            getqueryMain += Namespaceprefix1+'Partnership__r.'+stdRefFieldApi+'.Name ,';
+                                        }
+                                    }
+                                }
+                                else{
+                                    getqueryMain += Namespaceprefix1+"Partnership__r."+apiFieldName+" ,";
+                                    
+                                }
+                            }
+                            
+                            else if(objectName == Namespaceprefix1+'Commitment__c')
+                            {
+                              //Header Creation by Commitment's fields
+                                if(fielddatatype.trim().toLowerCase().indexOf('boolean') > -1){
+                                    arrcheckboxIndex.push(i);
+                                    arrHeaderNames.push(getSelectedfields[i].split(':')[2]);
+                                    arrApiFieldsNames.push(getSelectedfields[i].split(':')[1]);
+                                }
+                                else if(fielddatatype.trim().toLowerCase().indexOf('datetime') > -1)
+                                {
+                                    arrdatetimeIndex.push(i);
+                                    arrHeaderNames.push(getSelectedfields[i].split(':')[2]);
+                                    arrApiFieldsNames.push(getSelectedfields[i].split(':')[1]);
+                                    
+                                }
+                                else if(fielddatatype.trim().toLowerCase().indexOf('date') > -1){
+                                    arrdateIndex.push(i);
+                                    arrHeaderNames.push(getSelectedfields[i].split(':')[2]);
+                                    arrApiFieldsNames.push(getSelectedfields[i].split(':')[1]);
+                                }
+                                else if(fielddatatype.trim().toLowerCase().indexOf('currency') > -1){
+                                    arrcurrencyIndex.push(i);
+                                    arrHeaderNames.push(getSelectedfields[i].split(':')[2]);
+                                    arrApiFieldsNames.push(getSelectedfields[i].split(':')[1]);
+                                }
+                                else{                                    
+                                    arrHeaderNames.push(getSelectedfields[i].split(':')[2]);
+                                    arrApiFieldsNames.push(getSelectedfields[i].split(':')[1]);
+                                    }
+                             
+                                if(fielddatatype.trim().toLowerCase().indexOf('reference') > -1){
+                                    var comrefFieldApi;
+                                    var comstdRefChk;
+                                    comrefFieldApi=apiFieldName;
+                                    comstdRefChk=comrefFieldApi.substring(comrefFieldApi.length-3,comrefFieldApi.length);
+                                    if(comstdRefChk=='__c')
+                                    {
+                                        comrefFieldApi=comrefFieldApi.substring(0,comrefFieldApi.length-1);
+                                        getqueryMain += comrefFieldApi+'r.Name ,'
+                                                                         
+                                    }
+                                    else
+                                    {
+                                        comstdRefChk=comrefFieldApi.substring(comrefFieldApi.length-2,comrefFieldApi.length);
+                                        if(comstdRefChk.toLowerCase()=='id')
+                                        {
+                                            var stdRefFieldApi=apiFieldName;
+                                            stdRefFieldApi=stdRefFieldApi.substring(0,stdRefFieldApi.length-2);
+                                            getqueryMain += stdRefFieldApi+'.Name ,';
+                                        }
+                                    }
+                                }
+                                else{
+                                    getqueryMain += apiFieldName + ", ";
+                                }
+                            }
+                        }
+                        
+                        if(!SortClicked)
+                        {
+                            
+                            var indexfundName = arrApiFieldsNames.indexOf('CreatedDate');
+                            columnno = indexfundName;
+                        }
+                        var whereCommitmentClause = Namespaceprefix1+'Limited_Partner__r.ParentId=\''+document.getElementById('pageid:frm:lpId').value+'\' OR '+Namespaceprefix1+'Limited_Partner__r.Id=\''+document.getElementById('pageid:frm:lpId').value+'\''; 
+                        if (ischeckLoadFlag == true)
+                        {
+                            header_name_ofSort='';
+                            header_name_ofSort='CreatedDate'+' '+direction;
+                        }
+                        else
+                        {                          
+                            if(header_name_ofSort[0].indexOf(Namespaceprefix1+'Partnership__c') > -1)
+                            {
+                                if(header_name_ofSort[1] == Namespaceprefix1+'Fund__c'){
+                                    
+                                    header_name_ofSort=Namespaceprefix1+'Partnership__r.'+Namespaceprefix1+'Fund__r.Name '+direction;
+                                }
+                                else{
+                                    header_name_ofSort=Namespaceprefix1+'Partnership__r.'+header_name_ofSort[1]+' '+direction;
+                                }
+                            }
+                            else if(header_name_ofSort[0].indexOf(Namespaceprefix1+"Commitment__c") > -1)
+                            {
+                            header_name_ofSort=header_name_ofSort[1]+' '+direction;
+                            }
+                        }
+                        var accessiblecheck={!$ObjectType.Commitment__c.fields.Portfolio_Company__c.Accessible};
+                            if(accessiblecheck){
+                             getqueryMain += Namespaceprefix1+"Partnership__r."+Namespaceprefix1+"Fund__c, "+Namespaceprefix1+"Partnership__r.Id, "+Namespaceprefix1+"Portfolio_Company__r.Id, "+Namespaceprefix1+"Limited_Partner__r.Id,Id from "+Namespaceprefix1+"Commitment__c where "+ whereCommitmentClause +"order by  "+Namespaceprefix1+"Partnership__r."+Namespaceprefix1+"Fund__r.Name ASC , "+header_name_ofSort;
+                       
+                            }
+                            else{
+                             getqueryMain += Namespaceprefix1+"Partnership__r."+Namespaceprefix1+"Fund__c, "+Namespaceprefix1+"Partnership__r.Id,"+Namespaceprefix1+"Limited_Partner__r.Id,Id from "+Namespaceprefix1+"Commitment__c where "+ whereCommitmentClause +"order by  "+Namespaceprefix1+"Partnership__r."+Namespaceprefix1+"Fund__r.Name ASC , "+header_name_ofSort;
+                            }
+                    }
+                    catch(err)
+                    {                       
+                        if(err.faultcode=='sf:INVALID_SESSION_ID')
+                        {                          
+                           sessionError(err);
+                          
+                        }
+                        else{
+                             alert('Error  setheaderssetheaders: '+err);
+                        }
+                    }
+                }
+                
+                //This function execute the query, calculate the total commitment and bind the data in the grouping of fund
+                function executeQuery(fields)
+                {
+                    try
+                    {
+                        showImz();
+                        if (ischeckLoadFlag == true){
+                            SortClicked=false;
+                            colDirection='descending';
+                            direction='DESC NULLS LAST' ;
+                        }
+                        
+                        arrcheckboxIndex = new Array();
+                        arrdatetimeIndex = new Array();
+                        arrdateIndex = new Array();
+                        arrCommitmentIndex = new Array();   
+                        arrcurrencyIndex = new Array();
+                        arrHeaderNames = new Array();
+                        arrApiFieldsNames = new Array();
+                        getSelectedfields = new Array();
+                        arrAllFinalGridRecords = new Array();
+                        arrfieldsDataType = new Array();
+                        var getcolumn;
+                        columnarry = new Array();
+                        var queryMore = true;
+                        var TotalCommitmentAmount=0;
+                        var fundForTotalCom;
+                        var rowVal1 = new Array();
+                        fundName = '';
+            
+                        if(fields != null && fields != 'null' && fields != '')
+                        {            
+                            getSelectedfields = fields;
+                        }
+                        else
+                        {
+                            return false;
+                        }            
+                        // set header values and create query.
+                        setHeaderValues();
+                        getcolumn = getqueryMain.substring(6,getqueryMain.indexOf('from'));                         
+                        var clumnsplit = getcolumn.split(',');                      
+                        for( var c=0; c<clumnsplit.length; c++)
+                        {
+                           columnarry.push(clumnsplit[c].trim());
+                        }                      
+                        var mainqueryresult = sforce.connection.query(getqueryMain);                      
+                        while(queryMore)
+                        {
+                            var records;    
+                            records = mainqueryresult.getArray("records");
+                            for(var i=0;i<records.length;i++)
+                            {
+                                rowVal1 = new Array();
+                                
+                                var LPVal = records[i].get(Namespaceprefix1+"Limited_Partner__r");
+                                var LPId = LPVal.get('Id');
+                                var partnershipVal = records[i].get(Namespaceprefix1+"Partnership__r");
+                                var partnershipId = partnershipVal.get('Id');
+                                var fundVal = records[i].get(Namespaceprefix1+"Partnership__r");
+                                var fId = fundVal.get(Namespaceprefix1+"Fund__c");
+                                var PC_Val = records[i].get(Namespaceprefix1+"Portfolio_Company__r");
+                                if(PC_Val != null)
+                                var pcid=PC_Val.get('Id');                              
+                                for(var j=0;j<columnarry.length;j++)
+                                {   
+                                   if(columnarry[j] == Namespaceprefix1+"Partnership__r."+Namespaceprefix1+"Fund__r.Name")
+                                    {                              
+                                        var fund = fundRecords(columnarry[j] , records[i]);
+                                    }     
+                                   
+                                    if(((fund!= null || fund != '') && fund != fundName)|| fundName == '' || fundName == null)
+                                    {
+                                        fundName = fund;
+                                        TotalCommitmentAmount=0;
+                                        
+                                        for(var m=0;m<records.length;m++)
+                                        {
+                                            for(var n=0;n<columnarry.length;n++)
+                                            { 
+                                                if(columnarry[n] == Namespaceprefix1+"Partnership__r."+Namespaceprefix1+"Fund__r.Name")
+                                                {
+                                                    fundForTotalCom = fundRecords(columnarry[n] , records[m]);
+                                                }
+                                                else{
+                                                    fundForTotalCom = '';
+                                                }
+                                                
+                                                if((fundForTotalCom != null ||fundForTotalCom != '') && fundForTotalCom == fundName ){
+                                                    var comAmount = records[m].get(Namespaceprefix1+"Commitment_Amount_nearest__c");
+                                                
+                                                    if(comAmount != null){
+                                                        rowVal1 = new Array();
+                                                        TotalCommitmentAmount += parseFloat(comAmount);
+                                                    }
+                                                }
+                                            }
+                                        }
+                                        
+                                        for (var rec=0; rec<getSelectedfields.length; rec++) 
+                                        {   
+                                            var objectName = getSelectedfields[rec].split(':')[0];
+                                            var apiFieldName = getSelectedfields[rec].split(':')[1];
+                                            
+                                            if(objectName == Namespaceprefix1+'Partnership__c' && apiFieldName == Namespaceprefix1+"Fund__c")
+                                            {
+
+                                                var check = replaceSpecialChars(fundName);
+                                                var checktitle=check;
+                                                 checktitle = checktitle.split('"').join('&quot;');
+                                                var fundString = '<div id="' + fId + 'aa" title="'+fundName+'">  <a href="/' + fId + '" id = "' + fId + '"  target="_blank"  title="'+checktitle+'">' + check + ' </a> </div>';
+                                                rowVal1.push(fundString);
+                                            }
+                                            else if(objectName == Namespaceprefix1+'Commitment__c' && apiFieldName == Namespaceprefix1+"Commitment_Amount_nearest__c")
+                                            {
+                                              
+                                                var TotalCommitment = TotalCommitmentAmount.toFixed(2);
+                                                var TotalCommitmentAmount1 = parseFloat(TotalCommitment).toLocaleString(LocaleStrings, { style: 'currency', currency: '{!JSENCODE(strCurrencySystembol)}' });  // (PE3.5, SK, 11Aug2017): added JSENCODE()
+                                               
+                                                var TotalCommitmentAmountnew = '<span style="font-weight:bold;" title="'+TotalCommitmentAmount1+'">' + TotalCommitmentAmount1 + '</span>';
+                                                
+                                                rowVal1.push(TotalCommitmentAmountnew);
+                                            }
+                                            else{
+                                                rowVal1.push('');
+                                            }
+                                            
+                                        }
+                                        arrAllFinalGridRecords.push(rowVal1);
+                                        rowVal1 = new Array();
+                                    }
+                                    
+                                    if(columnarry[j] == Namespaceprefix1+"Partnership__r."+Namespaceprefix1+"Fund__r.Name")
+                                    {  
+                                        rowVal1.push('');
+                                    }
+                                    else
+                                    {
+                                        if(columnarry[j].indexOf('.') == -1)
+                                        {                      
+                                            if(records[i].get(columnarry[j]) != null)
+                                            {
+                                                if(columnarry[j] == 'Name'){
+                                                    var nameString = '<div  style="height:40px;width:180px;" id="' + records[i].Id + 'aa">  <a href="/' + records[i].Id + '" id = "' + records[i].Id + '"  target="_blank" >' + records[i].Name + ' </a> </div>';
+                                                    
+                                                    rowVal1.push(nameString);
+                                                }
+                                                else if(arrcurrencyIndex.indexOf(j) > -1){
+                                                    var currencyData = records[i].get(columnarry[j]);
+                                                    var getcurrencyfldvalue = getCurrencyValue('{!JSENCODE(strCurrencySystembol)}',currencyData,LocaleStrings);
+                                                    getcurrencyfldvalue = '<div  style="height:40px;width:180px;" title="'+getcurrencyfldvalue+'">' + getcurrencyfldvalue + '</div>';
+                                                    rowVal1.push(getcurrencyfldvalue);
+                                                }
+                                                else{
+                                                    if(arrdateIndex.indexOf(j) > -1 || arrdatetimeIndex.indexOf(j) > -1){
+                                                        rowVal1.push(records[i].get(columnarry[j]));
+                                                    }
+                                                    else{
+                                                        var replacedData =  records[i].get(columnarry[j]);
+                                                        replacedData = '<span title="'+replacedData+'">' + replacedData + '</span>';
+                                                        rowVal1.push(replacedData);
+                                                    }
+                                                }
+                                            }
+                                            else
+                                            {
+                                                rowVal1.push('');
+                                            }
+                                        }
+                                        else
+                                        {      
+                                            var getparentobjname=columnarry[j].substring(0,columnarry[j].lastIndexOf('.'));
+                                            
+                                            var getparentobjfld=columnarry[j].substring(columnarry[j].lastIndexOf('.')+1,columnarry[j].length);
+                                            
+                                            if(getparentobjname.indexOf('.') > -1){
+                                                var getparentobjname1 = getparentobjname.substring(0,getparentobjname.indexOf('.'));
+                                                
+                                                var getparentobj1=records[i].get(getparentobjname1);
+                                                
+                                                    var getparentobjname2 = getparentobjname.substring(getparentobjname.indexOf('.')+1,getparentobjname.length);
+                                                    var getparentobj = getparentobj1.get(getparentobjname2);
+                                            }
+                                            else{
+                                                    
+                                                    var getparentobj=records[i].get(getparentobjname);
+                                            }
+                                                                   
+                                            if(getparentobj!=null)
+                                            {  
+                                                var getparentobjfldvalue;                                      
+                                                getparentobjfldvalue = getparentobj.get(getparentobjfld);      
+                                                
+                                                
+                                                if(getparentobjfldvalue != null)  
+                                                {
+                                                    var myRegExp = new RegExp('<' ,'gi');
+                                                    getparentobjfldvalue = getparentobjfldvalue.replace(myRegExp,'&#60;');
+                                                    myRegExp = new RegExp('>' ,'gi');
+                                                    getparentobjfldvalue = getparentobjfldvalue.replace(myRegExp,'&gt;');
+                                                    
+                                                    if(getparentobjfld.trim().toLowerCase() == 'name' && getparentobjname == Namespaceprefix1+"Limited_Partner__r"){
+
+                                                        var getparentobjfldvaluetitle=getparentobjfldvalue;
+                                                        getparentobjfldvaluetitle = getparentobjfldvaluetitle.split('"').join('&quot;');
+                                                        var linkLP = '<div title="'+getparentobjfldvaluetitle+'"><a href="/' + LPId + '" id = "' + LPId + '"  target="_blank"   title="'+getparentobjfldvaluetitle+'"  style="margin-right:5px;">' + getparentobjfldvalue + ' </a></div>';
+                                                       rowVal1.push(linkLP);
+                                                    }
+                                                    else if(getparentobjfld.trim().toLowerCase() == 'name' && getparentobjname == Namespaceprefix1+"Portfolio_Company__r"){
+
+                                                        var getparentobjfldvaluetitle=getparentobjfldvalue;
+                                                        getparentobjfldvaluetitle = getparentobjfldvaluetitle.split('"').join('&quot;');
+                                                        var linkLP = '<div id="' + pcid + 'bb" title="'+getparentobjfldvaluetitle+'">  <a href="/' + pcid + '" id = "' + pcid + '"  target="_blank" style="margin-right:5px;">' + getparentobjfldvalue + ' </a> </div>';
+                                                        
+                                                        rowVal1.push(linkLP);
+                                                    }
+                                                    else if(getparentobjfld.trim().toLowerCase() == 'name' && getparentobjname == Namespaceprefix1+"Partnership__r"){
+                                                         var getparentobjfldvaluetitle=getparentobjfldvalue;
+                                                        getparentobjfldvaluetitle = getparentobjfldvaluetitle.split('"').join('&quot;');                                                    
+                                                       var linkLP = '<div  title="'+getparentobjfldvaluetitle+'"><a href="/' + partnershipId + '" id = "' + partnershipId + '"  target="_blank"  style="margin-right:5px;"  title="'+getparentobjfldvaluetitle+'">' + getparentobjfldvalue + ' </a> </div>';
+                                                       
+                                                        rowVal1.push(linkLP);
+                                                        
+                                                        
+                                                    }
+                                                    
+                                                    else if(arrcurrencyIndex.indexOf(j) > -1){
+                                                        if(getparentobjname == Namespaceprefix1+"Partnership__r"){
+                                                            getparentobjfldvalue = getCurrencyValue('{!JSENCODE(strCurrencySystembol)}',currencyData,LocaleStrings);                                                         
+                                                            getparentobjfldvalue = '<div  title="'+getparentobjfldvalue+'"> '+ getparentobjfldvalue +' </div>';
+                                                            rowVal1.push(getparentobjfldvalue);
+                                                        }
+                                                    }
+                                                    else if(arrdateIndex.indexOf(j) > -1 || arrdatetimeIndex.indexOf(j) > -1){
+                                                        
+                                                        rowVal1.push(getparentobjfldvalue);
+                                                    }
+                                                    else{
+                                                        var getparentobjfldvaluetitle = getparentobjfldvalue;
+                                                        getparentobjfldvaluetitle = getparentobjfldvaluetitle.split('"').join('&quot;');
+                                                        getparentobjfldvalue = '<span title="'+getparentobjfldvaluetitle+'">' + getparentobjfldvalue + '</span>';
+                                                        rowVal1.push(getparentobjfldvalue);
+                                                    }
+                                                    
+                                                }
+                                                else
+                                                {
+                                                    rowVal1.push('');
+                                                }
+                                            }
+                                            else
+                                            {
+                                                rowVal1.push('');
+                                            }  
+                                        
+                                        }
+                                    }
+                                }   
+                                arrAllFinalGridRecords.push(rowVal1);
+                            }
+                            if(mainqueryresult.getBoolean("done"))
+                            {                    
+                                queryMore = false;
+                            }
+                            else
+                            {   
+                                mainqueryresult = sforce.connection.queryMore(mainqueryresult.queryLocator);   
+                            }                 
+                        }
+                        createdata();
+                        hidePopup();                        
+                    }      
+                    catch(err){
+                        if(err.faultcode == 'sf:INVALID_SESSION_ID'  )
+                        {
+                             sessionError(err);
+                        }
+                        else{
+                            alert('Error execute: '+err);
+                        }
+                    }
+                }
+                
+                // This function process the image 
+                function showImz() {                
+                    document.getElementById('loadprogress').style.display = 'block';
+                    if (navigator.userAgent.toLowerCase().indexOf('chrome') > -1) {
+                        myVar = setTimeout(hidePopup, 2000);
+                    } else if (navigator.userAgent.toLowerCase().indexOf('firefox') > -1) {
+                        myVar = setTimeout(hidePopup, 1000);
+                    } else myVar = setTimeout(hidePopup, 2000);
+                }
+                
+                function hidePopup(){
+                    document.getElementById('loadprogress').style.display = 'none';
+                }
+                
+                function checkWrenchIcon_field()
+                {
+                   try
+                    {
+                        Namespaceprefix1 = '{!JSENCODE(NameSpacePrefix)}';
+                        var querySoql = "Select Name, "+Namespaceprefix1+"Partnership__r."+Namespaceprefix1+"Fund__r.Name, "+Namespaceprefix1+"Commitment_Amount_nearest__c, "+Namespaceprefix1+"Limited_Partner__r.Name, "+Namespaceprefix1+"Partnership__r.Name, CreatedDate from "+Namespaceprefix1+"Commitment__c limit 1";
+                        
+                        
+                        var queryResult = sforce.connection.query(querySoql);
+                        return false;
+                        
+                    }
+                    catch(ex)
+                    {
+                        return true;
+                    }
+                   
+                }
+                
+                // This function retuen the value of fund because it is 2nd level relationship field
+                function fundRecords(column , records)
+                {
+                    try{
+                        var getparentobjname=column.substring(0,column.lastIndexOf('.'));
+                        var getparentobjfld=column.substring(column.lastIndexOf('.')+1,column.length);
+                        var getparentobjname1 = getparentobjname.substring(0,getparentobjname.indexOf('.'));
+                        var getparentobj1=records.get(getparentobjname1);
+                        var getparentobjname2 = getparentobjname.substring(getparentobjname.indexOf('.')+1,getparentobjname.length);
+                        var getparentobj = getparentobj1.get(getparentobjname2);
+                        var fund = getparentobj.get(getparentobjfld);
+                        
+                        return fund ;           
+                    }
+                    catch(err)
+                    {
+                        if(err.faultcode=='sf:INVALID_SESSION_ID')
+                        {
+                            sessionError(err);
+                          
+                        }
+                        else{
+                             alert('Error fundrecord: '+err);
+                        }
+                    }
+                }
+                
+                /*This function returns the apiName in commitmentApi and partnershipApi
+                  also gets the Label of fields*/
+                function getDescribeObject(objName,arrName){                   
+                    var resultfieldarray =[];
+                    var result;
+                    if(objName == 'Commitment__c'){
+                        result = sforce.connection.describeSObject(Namespaceprefix1+objName);
+                        
+                    }
+                    else
+                        result = sforce.connection.describeSObject(Namespaceprefix1+objName);
+                        
+                    
+                    //This block puts the fields from the describe call on object into the resultfieldarray array
+                    for (var i = 0; i < result.fields.length; i++) 
+                    {
+                        var field = result.fields[i];
+                        var fieldarray = new Array();
+                        if (field.type == 'reference') {
+                            fieldarray.push(field.name);
+                            fieldarray.push(field.label);
+                            fieldarray.push(field.type);
+                        } 
+                        else if (field.type != 'textarea') 
+                        {
+                            fieldarray.push(field.name);
+                            fieldarray.push(field.label);
+                            fieldarray.push(field.type);
+                        } 
+                        else if (field.type == 'textarea' && field.length <= 255) 
+                        {
+                            fieldarray.push(field.name);
+                            fieldarray.push(field.label);
+                            fieldarray.push(field.type);
+                        }
+                        if (fieldarray.length > 0) 
+                        {
+                            resultfieldarray.push(fieldarray);
+                        }
+                    }
+                    
+                    for (var j = 0; j < resultfieldarray.length; j++) 
+                    {
+                        var fldtype = resultfieldarray[j][2].toUpperCase();
+                        var fldname = resultfieldarray[j][0].toLowerCase();
+                        if(objName == 'Commitment__c')
+                        {
+                            if ((fldtype != 'ENCRYPTEDSTRING') && (fldtype != 'ID') && (resultfieldarray[j][0].toUpperCase() != 'SYSTEMMODSTAMP') && (resultfieldarray[j][0].toLowerCase() !='jigsawcompanyid') && (fldname != 'jigsaw') ) 
+                            {
+                                arrName.push(resultfieldarray[j][0]);
+                                CommitmentLabelSecurity.push(resultfieldarray[j][1]);
+                            }
+                        }
+                        else if(objName =='Partnership__c')
+                        {
+                            if ((fldtype != 'ENCRYPTEDSTRING') && (fldtype != 'ID') && (resultfieldarray[j][0].toUpperCase() != 'SYSTEMMODSTAMP') && (resultfieldarray[j][1].toLowerCase() != 'jigsaw contact id') && (fldname != 'jigsaw') ) 
+                            {
+                                arrName.push(resultfieldarray[j][0]);
+                                PartnershipLabelSecurity.push(resultfieldarray[j][1]);
+                            }
+                        }
+                    }
+                    arrName.push('RecordTypeId');
+                    //targetLabelSecurity.push('Record Type');
+                    return arrName;
+                }
+                 
+                // This function check the field level security 
+                function checkInsuficientPrivilages()
+                {
+                    for(i = MainGridFildsInsufficientPrivilagesDefalut.length-1;i>=0;i--)
+                    {
+                        var tempField = MainGridFildsInsufficientPrivilagesDefalut[i].split(':');
+                       if(tempField[0] == Namespaceprefix1+"Commitment__c")
+                        {
+                            if(commitmentApi.indexOf(tempField[1]) < 0)
+                            {
+                                return true;
+                            }
+                        }
+                        else if(tempField[0] == Namespaceprefix1+"Partnership__c"){
+                      
+                            if(partnershipApi.indexOf(tempField[1]) == -1)
+                            {
+                                return true;
+                            }   
+                        }
+                    }
+                }
+                
+                //This function get the column Name when grid's header clicked.
+                function getColumnName(column_Number)
+                { 
+                    if(column_Number!=null)
+                    {
+                       return  arrApiFieldsNames[column_Number];
+                    }
+                    else
+                    {
+                        alert("Select a column.");
+                    }
+                }
+                
+                //This function find the datatype of given column.
+                function checkColumnDataType(column_Number)
+                {
+                    if(column_Number!=null)
+                    {
+                        return arrfieldsDataType[column_Number];
+                    }
+                    else
+                    {
+                        alert("Select a column.");
+                    }
+                }
+                
+                //This function used for multicurrency value according to user's locale.
+                function getCurrencyValue(defaultCurrencySysbol,amount,useLocale){                  
+                    var finalAmount;
+                    finalAmount = parseFloat(amount).toLocaleString(useLocale, { style: 'currency', currency: defaultCurrencySysbol })
+                    return finalAmount;
+                }
+                
+                // This function replace the special characters from data.
+                 function replaceSpecialChars(strToChange){
+                    try
+                    {    
+                        if(strToChange != null || strToChange != '')
+                            return strToChange.replace('<br>','').replace(/&#60;/g,'<').replace(/&#62;/g,'>').replace('&','&amp;').replace('\'','&#39;').replace(',','&#44;').replace('/','&#47;').replace('^','&#94;').replace('_','&#95;').replace('`','&#96;').replace('~','&#126;').replace('$','&#36;').replace('!','&#33;').replace('%','&#37;').replace('*','&#42;').replace('?','&#63;').replace(':','&#58;').replace('|','&#124;').replace('+','&#43;').replace('=','&#61;').replace('[','&#91;').replace(']','&#93;').replace('{','&#123;').replace('}','&#125;').replace('\\','&#92;').replace('€','&#128;').replace('£','&#163;');
+                        else
+                            return '';
+                    }
+                    catch(ex){ return ''; }
+                }
+                
+                function sessionError(c){                    
+                    if(err.faultcode == 'sf:INVALID_SESSION_ID')
+                    {                        
+                        if(alertNo == 0){
+                            alertNo++;                           
+                            loadPopupnew('fancybox_background','SessionError_PopUp');
+                            centerPopupnew('SessionError_PopUp');
+                            
+                        }
+                    }   
+                }
+            
+                //This function blocks the enter
+                function stopRKey(evt) { 
+                    var evt = (evt) ? evt : ((event) ? event : null); 
+                    var node = (evt.target) ? evt.target : ((evt.srcElement) ? evt.srcElement : null); 
+                    if ((evt.keyCode == 13) && (node.type=="text"))  {return false;} 
+                } 
+                document.onkeypress = stopRKey;
+          </script>
+        <link href = "{!URLFOR($Resource.PE_35, 'PE_3.5/css/Navatar-Yellow-Theme.css')}" rel = "stylesheet" type = "text/css"/>
+</head>
+<body>
+    <apex:form id="frm">
+    <style>
+        .fancybox_background {position:fixed !important; }
+    </style>
+     <div class="SessionError_PopUp FancyboxContainer Popup" id="showerrorifamtisblank">
+            <div class="slds-modal__header">
+            <div class="close_white_60" >
+            <a onclick="closepopup('fancybox_background','FancyboxContainer');return false;" title="Close"><img src="{!URLFOR($Resource.PE_35, 'PE_3.5/images/close_white_60.png')}" /></a>
+            </div>
+            <h2 class="slds-text-heading--medium">Error</h2>
+            </div>
+            <div id="Duepriortocalldate" class="PopupContentStart" style="text-align:center;display:none;padding:15px 25px !important">
+            Your session has expired. Please refresh your page.
+            <div class="cl"></div> 
+            </div>
+            <div class="slds-modal__footer">           
+            <apex:commandButton value="OK" title="OK" styleClass="slds-button slds-button--neutral click_one" onclick="closepopup('fancybox_background','FancyboxContainer');return false;" />
+            </div>                  
+        </div>
+    <div id="error">
+    <span id="errormsg" style="display:none; color:red;" >Insufficient privilege.Please contact your system administrator.</span>
+    </div>
+    
+    <div id="loadprogress" style="width:100%; height:100%; display:block; background:#fff; text-align:center; vertical-align:middle; opacity:0.7; position:fixed; top:0; left:0; z-index:9999999;">
+        <div style="width:100px; height:100%; position:relative;top:41%; background:url({!URLFOR($Resource.PE_35, 'PE_3.5/images/icon_loading.gif')}) no-repeat top left; margin:0 auto;"></div>
+    </div>
+    
+    <apex:inputHidden value="{!lpId}" id="lpId"/>
+    <div class="fancybox_background"></div> 
+    <input type="text" id="fcs" style="width: 0px; Height: 0px; padding:0px; border:#fff 1px solid; position:relative; opacity:0;"/>
+    <!-- REQUIRED SLDS WRAPPER -->
+   <c:WrenchIcon id="Main_wrench" UsingPageName="ICG" Objects="Partnership__c:Commitment__c" FixedSelectedFieldsApiName="Name:Commitment ID:string_@_Fund__c:Fund:reference_@_Commitment_Amount_nearest__c:Commitment Amount:currency"  componentID="wrenchICG" PopUpHeader="Columns to Display"/>
+    <!-- End REQUIRED SLDS WRAPPER -->
+        
+    <div style="position:relative; height:30px; width:100%;">
+        <span style=" position:absolute; top:0; right:0; z-index:9999999" id="wrench">
+            <a title="Columns to Display" onclick="showImz();show_wrenchpopup_pagewrenchICG(); return false;" href="#" style="cursor: pointer;">
+                <div aria-hidden="true" class="slds-icon icon-utility-custom-apps slds-icon-text-default" style="width:22px; height:22px;"><img id="wrenchid" src="{!URLFOR($Resource.SLDS100, 'assets/icons/utility/custom_apps_60.png')}" style="width:22px; height:22px;" /></div>
+            </a>
+        </span>
+    </div>
+
+    <!-- Start Active Widget -->
+    <style>
+        #grid_dealalert {width:100% !important; height:544px; border:none !important; padding:0 !important; } 
+        
+         .aw-strict .aw-grid-row {
+            height: 25px;
+            line-height:25px
+            }
+            .aw-grid-view{height: auto !important; display:block !important; border:1px solid white !important;}
+    </style>
+    <div style="margin:0 5px; border:0px solid #E9F2F7; border-top:none" >
+        <table cellpadding="0" cellspacing="0" border="0"  style="table-layout: fixed; width: 100%;">
+          <tr>
+           <td>
+             
+            <div id="grid_show" style="width:auto;">
+              <span id="grid" style="width:100%;"></span>
+            </div>
+           </td>                                                         
+          </tr>
+        </table>
+    </div>
+    <div id="focusId"/>
+    <script>
+    
+    var getDateTypeColumn = []; 
+    
+    // This function bind the data in the grid.
+    function createdata()
+    {
+        try{
+            showImz();
+            var totalrowcount = 0;
+            var columnnum=0;
+            // create grid object
+            var obj = new AW.UI.Grid;
+            // assign cells and headers text
+            obj.setHeaderText(arrHeaderNames);
+            obj.setHeaderTooltip(arrHeaderNames);
+            obj.setColumnCount(arrHeaderNames.length);
+            obj.setRowCount(arrAllFinalGridRecords.length);
+            obj.setId("grid_dealalert");
+            obj.setHeaderHeight(31);
+            var html = new AW.Formats.HTML;
+            var string = new AW.Formats.String;
+            var number = new AW.Formats.Number;
+            number.setTextFormat("$ #,###.##");
+             obj.setStyle("border", "0px solid white");
+            //obj.setStyle("width", "100%");
+            obj.setStyle("height", "544px");
+            var date = new AW.Formats.Date;
+            date.setDataFormat("ISO8601"); 
+            date.setTextFormat("mm/dd/yy");
+            var grid1sortingHeader = new Array();
+            grid1sortingHeader = [];
+           // grid1sortingHeader.push(string);
+            obj.getCellTemplate().setStyle("font-size", "9pt");
+            obj.getCellTemplate().setStyle("font-family", "'Helvetica','Arial',sans-serif");
+            obj.getCellTemplate().setStyle("border", "0px");
+            
+            for(i=0;i<getSelectedfields.length;i++){
+                
+                var getDataType = getSelectedfields[i].split(':');
+                if(getDataType[3] == 'datetime' || getDataType[3] == 'date'){
+                    grid1sortingHeader.push(date);
+                     getDateTypeColumn.push(i);
+                }
+                else if(getDataType[3] == 'currency' || getDataType[3] == 'percent' || getDataType[3] == 'number' || getDataType[3] == 'phone' ){
+                    grid1sortingHeader.push(number);
+                    getDateTypeColumn.push(i);
+                    
+                }
+                else if(getDataType[1] == 'email')
+                    grid1sortingHeader.push(html);
+                else
+                    grid1sortingHeader.push(string);
+            }          
+                    obj.setCellFormat(grid1sortingHeader);
+                    obj.setColumnWidth(160, 0);
+                    obj.setColumnWidth(130, 1);
+                    obj.setColumnWidth(150, 2);
+                    obj.setColumnWidth(150, 3);
+                    obj.setColumnWidth(135, 4);
+                    obj.setColumnWidth(160, 5);
+                    obj.setColumnWidth(150, 6);
+                    obj.setVirtualMode(false);              
+                       
+            if(arrAllFinalGridRecords.length == 0 ){                
+                obj.setRowCount(1);
+                obj.setCellText('<span style="color:red; font-weight:bold;">No data to display.</span>',0,0);
+            }
+            else{
+                for(var i=0;i<arrAllFinalGridRecords.length;i++)
+                {
+                    for(var j=0;j<arrHeaderNames.length;j++)
+                    {
+                        
+                        if(arrdatetimeIndex.indexOf(j) > -1)
+                        {   
+                            if(arrAllFinalGridRecords[i][j] != '' || arrAllFinalGridRecords[i][j] == null)
+                            {
+                                var dateVal = new Date(arrAllFinalGridRecords[i][j]);
+                                try
+                                { 
+                                   var dateOutput = DateUtil.getDateTimeStringFromUserLocale(dateVal); 
+                                    obj.setCellText(dateOutput,j,parseInt(totalrowcount)); 
+                                    
+                                }
+                                catch(err)
+                                {
+                                    alert('err='+err);
+                                }   
+                            }
+                        }
+                        else if(arrdateIndex.indexOf(j) > -1)
+                        {           
+                            if(arrAllFinalGridRecords[i][j] != '' || arrAllFinalGridRecords[i][j] == null)
+                            {
+                         
+                                var dateVal=arrAllFinalGridRecords[i][j];
+                                var _rcrdsVal=arrAllFinalGridRecords[i][j];
+                                var splt=_rcrdsVal.split(':');
+                                
+                                if(splt.length>1)
+                                {
+                                    var value = new Date(dateVal);
+                                
+                                    try
+                                    { 
+                                        var dateOutput = DateUtil.getDateStringFromUserLocale(value); 
+                                        obj.setCellText(dateOutput,j,parseInt(totalrowcount));                                 
+                                    }
+                                    catch(err)
+                                    {
+                                      alert("Create Data DateIndex Error.."+err);
+                                    }
+                                }
+                                else
+                                {
+                                    var value = new Date(dateVal.replace(/-/g, "/"));
+                                    try
+                                    { 
+                                        var dateOutput = DateUtil.getDateStringFromUserLocale(value); 
+                                        obj.setCellText(dateOutput,j,parseInt(totalrowcount));                                 
+                                    }
+                                    catch(err)
+                                    {
+                                      alert("Create Data DateIndex Error.."+err);
+                                    }
+                                }
+                            }
+                        }
+                        else if(arrcheckboxIndex.indexOf(j) > -1){
+                            var imgs = "";
+                            
+                            if(arrAllFinalGridRecords[i][0] == null || arrAllFinalGridRecords[i][0] == ''){
+                                if (arrAllFinalGridRecords[i][j].trim().toLowerCase() == 'true') {
+                                    imgs = "<img style='margin-left: 40%; margin-top: 12px;' width='21' height='16' title='true' alt='Checked' src='{!URLFOR($Resource.PE_35,'PE_3.5/images/checkbox_checked_sf.gif')}'>";
+                                } else {
+                                    imgs += "<img style='margin-left: 40%; margin-top: 12px;' width='21' height='16' title='false' alt='Not Checked' src='{!URLFOR($Resource.PE_35,'PE_3.5/images/checkbox_sf.gif')}'>";
+                                }
+                                obj.setCellText(imgs,j,parseInt(totalrowcount));
+                            }
+                        }
+                        else
+                        {
+                            var finaldata;
+                            obj.setRowCount(arrAllFinalGridRecords.length);
+                            finaldata = arrAllFinalGridRecords[i][j];                       
+                            obj.setCellText(finaldata,j,parseInt(totalrowcount));
+                            
+                        }
+                    }
+                    totalrowcount = totalrowcount+1;
+                }
+            }
+            obj.onSelectedRowsChanged = function(arrayOfRowIndices){
+            window.status = arrayOfRowIndices;
+            }
+            obj.setControlImage("fontsize");
+            obj.setControlValue("mixed");
+            obj.setCellEditable(false);
+            document.getElementById("grid").innerHTML = obj; 
+            obj.setSortColumn(columnno); 
+            obj.setSortDirection(colDirection,columnno); 
+            
+            obj.onCellMouseOver = function(event, column, row)
+            {
+                
+                this.setCellTooltip(function(column, row) {
+                
+                    if (column > 0) 
+                    {
+                        var temp = document.createElement("pre");
+                        if(getDateTypeColumn.indexOf(parseInt(column)) > -1)
+                        {
+                          temp.innerHTML = this.getCellText(column, row);
+                        }
+                        else
+
+                        {                       
+                         temp.innerHTML= this.getCellValue(column, row);
+
+                        
+                        }                       
+                        if (temp.firstChild != null) return temp.firstChild.nodeValue;
+                        else return "";
+                    } 
+                    else {
+                        return "";
+                    }
+                });
+            }
+            obj.onHeaderClicked = function(event,column)
+            {
+                SortClicked=true;
+                var headerName = getColumnName(column);
+                var d_type= checkColumnDataType(column);
+                
+                if(headerName == Namespaceprefix1+'Fund__c')
+                {
+                    return 'disabled';
+                }
+                else if(d_type.toLowerCase() ==('multipicklist').toLowerCase())
+                {
+                     return 'disabled';
+                } 
+                else if(columnno==column)
+                { 
+                     showImz();
+                    if(direction=='DESC NULLS LAST')
+                    {
+                        direction='ASC';
+                       colDirection="ascending";
+                    }  
+                    else
+                    {
+                        direction='DESC NULLS LAST';
+                        colDirection="descending";
+                    }
+                }
+                else
+                {      
+                     direction='DESC NULLS LAST';
+                     colDirection="descending";
+                }
+                document.getElementById('fcs').focus();
+                document.getElementById('fcs').blur();
+                
+                ischeckLoadFlag = false;
+                columnno=column;
+                header_name_ofSort = MainGridFilds[column].split(':');
+                executeQuery(MainGridFilds);
+                showImz();
+            }
+            obj.refresh();
+            hidePopup();
+        }
+        catch(err)
+        {
+            if(err.faultcode =='sf:INVALID_SESSION_ID')
+            {
+            
+               sessionError(err);
+              
+            }
+            else{
+                 alert('Error : '+err);
+            }
+        }
+    }
+    </script>
+    <!-- End Active Widget -->  
+
+    <script>  
+        window.addEventListener("load", onLoading(), false);
+        setFocus = function() { return; }
+    </script>
+    
+</apex:form>
+
+</body>
+</apex:page>

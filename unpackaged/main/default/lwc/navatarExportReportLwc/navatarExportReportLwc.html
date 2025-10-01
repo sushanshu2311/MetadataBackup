@@ -1,0 +1,39 @@
+<template>
+    <div class="listdiv">  
+        <lightning-quick-action-panel header="Export">
+            <div class="dd">
+                <template if:true={isReportFound}>
+                    <template for:each={data} for:item="report">
+                        <div class="slds-grid slds-m-vertical_medium slds-p-horizontal_medium slds-grid_align-center" key={report.reportName}>
+                            <div class="slds-col slds-size_1-of-3 slds-p-horizontal_x-small">
+                                <span>
+                                    <!-- UI-fix for bug 31287 added title tooltip was missing 20-09-22 -->	
+                                    <!-- UI-fix added text class to truncate 31449 -->
+                                    <a href={report.reportURL} target="_blank" class="list slds-truncate text" title={report.reportName}>{report.reportName}</a></span>
+                            </div>
+                            <div class="slds-col slds-order_1 slds-large-order_2 slds-size_2-of-3 slds-p-horizontal_x-small text">
+                                <!-- UI-fix for bug 31287 added title tooltip was missing 20-09-22 -->	
+                                <!-- UI-fix added text class to truncate 31449 -->
+                                <span class="text" title={report.reportDescription}>{report.reportDescription}</span>
+                            </div>
+                        </div>
+                    </template>
+                </template>
+                <template if:false={isReportFound}>
+                    No Records Found
+                </template>
+            </div>
+            <div slot="footer">
+                <lightning-button variant="neutral" label="Close" onclick={closeModal}></lightning-button>
+                <!-- <lightning-button variant="brand" class="slds-m-left_x-small" label="Save" type="submit" onclick={handleSubmit} disabled={disabled}></lightning-button> -->
+            </div>
+        </lightning-quick-action-panel>   
+        <!-- <div class="slds-modal__header">
+            <h1 id="modal-heading-01" class="slds-modal__title slds-hyphenate">Export</h1>
+        </div> -->
+        
+        
+    </div>
+
+
+</template>

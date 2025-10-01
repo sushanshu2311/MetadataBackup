@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Transaction_Type__c</fullName>
+    <description>Note for Admin- Please do not change these picklist values, since it may impact certain features of Navatar Deal Connect.</description>
+    <inlineHelpText>Note for Admin- Please do not change these picklist values, since it may impact certain features of Navatar Deal Connect.</inlineHelpText>
+    <label>Transaction Type</label>
+    <required>false</required>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>MultiselectPicklist</type>
+    <valueSet>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>Buyout</fullName>
+                <default>false</default>
+                <label>Buyout</label>
+            </value>
+            <value>
+                <fullName>Debt Raise</fullName>
+                <default>false</default>
+                <label>Debt Raise</label>
+            </value>
+            <value>
+                <fullName>Equity Raise</fullName>
+                <default>false</default>
+                <label>Equity Raise</label>
+            </value>
+            <value>
+                <fullName>Leveraged Buyout</fullName>
+                <default>false</default>
+                <label>Leveraged Buyout</label>
+            </value>
+            <value>
+                <fullName>Venture Capital</fullName>
+                <default>false</default>
+                <label>Venture Capital</label>
+            </value>
+            <value>
+                <fullName>Growth Capital</fullName>
+                <default>false</default>
+                <label>Growth Capital</label>
+            </value>
+            <value>
+                <fullName>Distressed Investment</fullName>
+                <default>false</default>
+                <label>Distressed Investment</label>
+            </value>
+            <value>
+                <fullName>Mezzanine Capital</fullName>
+                <default>false</default>
+                <label>Mezzanine Capital</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
+    <visibleLines>5</visibleLines>
+</CustomField>

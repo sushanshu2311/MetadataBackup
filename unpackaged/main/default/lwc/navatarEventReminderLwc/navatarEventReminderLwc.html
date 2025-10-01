@@ -1,0 +1,18 @@
+<template>
+    <div class="slds-modal__content slds-p-vertical_large" style="height:206px;display: flex;
+         align-items: center;justify-content: center;">
+        <lightning-layout class="slds-p-horizontal_large slds-p-bottom_x-small">
+            <lightning-layout-item size="12" flexibility="auto" class="yourText">
+                <p class="slds-text-heading_small slds-text-align_center font_18"> Meeting <span>{eventData.Subject}</span> has started. Do you want to take notes?</p>
+            </lightning-layout-item>
+        </lightning-layout>
+    </div>
+    <footer class="slds-modal__footer cutomFooter">
+        <lightning-button label="No" title="No" onclick={closeModal} class="slds-m-left_x-small">
+        </lightning-button>
+        <lightning-button label="Yes" variant="brand" title="Yes" onclick={yesModal} class="slds-m-left_x-small">
+        </lightning-button>
+    </footer>
+
+
+</template>

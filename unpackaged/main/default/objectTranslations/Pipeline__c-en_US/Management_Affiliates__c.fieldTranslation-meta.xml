@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomFieldTranslation xmlns="http://soap.sforce.com/2006/04/metadata">
+        <label><!-- Management Affiliates --></label>
+        <name>Management_Affiliates__c</name>
+        <picklistValues>
+            <masterLabel>Affiliate 1</masterLabel>
+            <translation><!-- Affiliate 1 --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Affiliate 2</masterLabel>
+            <translation><!-- Affiliate 2 --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Affiliate 3</masterLabel>
+            <translation><!-- Affiliate 3 --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>None</masterLabel>
+            <translation><!-- None --></translation>
+        </picklistValues>
+    </CustomFieldTranslation>

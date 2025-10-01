@@ -1,0 +1,73 @@
+<template>
+    <div class="slds-grid slds-gutters main-Container" style="align-items: end;">
+        <div style="width:2%;align-self: center;" class="headers">
+            <p>
+                <lightning-formatted-number value={index}></lightning-formatted-number>
+            </p>
+        </div>
+        <div style="width: 31%;" class="headers">
+            <template if:true={fieldStruct}>
+                <c-navatar-research-combobox-with-search-lwc onoptionsearch={handleOptionSearch} onoptionselect={handleOptionSelect}
+                    fieldstructure={fieldStruct} input-variant="label-hidden" call-from-theme-email="true">
+                </c-navatar-research-combobox-with-search-lwc>
+            </template>
+        </div>
+        <div style="width: 31%;" class="headers">
+            <lightning-combobox placeholder={optionPlaceHolder} disabled={isFieldSelected} variant="label-hidden"
+                style="display: grid;margin: auto;" name="" label="" value={compData.filter}
+                options={compData.filterOptions} onchange={handleFilterChange} class="z_index_css">
+            </lightning-combobox>
+        </div>
+        <div style="width: 31%;display:contents" class="headers">
+            <template if:true={compData.isDateType}>
+                <div style="width:27%;align-self: center;margin-top: 3px;" class="headers datefield">
+                    <lightning-input disabled={isFieldSelected} type={curType} variant="label-hidden" date-style="short"
+                        time-style="short" onchange={handleUpdateSearch} label="" value={compData.filterVal}>
+                    </lightning-input>
+                </div>
+            </template>
+            <template if:false={compData.isDateType}>
+                <div style="width:27%;align-self: center;" class="headers">
+                    <lightning-input disabled={isFieldSelected} style="display:grid" type={curType} variant="label-hidden"
+                        value={compData.filterVal} label="" onchange={handleUpdateSearch}>
+                    </lightning-input>
+                </div>
+                <template if:true={compData.isSearchable}>
+                    <div style="width:auto;align-self: center;" class="headers">
+                        <lightning-icon icon-name="utility:search" alternative-text="search" title="search"
+                            size="x-small" onclick={handlePicklistSearch}>
+                        </lightning-icon>
+                    </div>
+                </template>
+                <template if:true={showPickList}>
+                    <c-navatar-exp-builder-lookup-pop-up-lwc onclosemodal={handleCloseModal} oninsertvalues={handlePicklistPopupSave}
+                        objectname={compData.objName} pickval={compData.fieldName} fieldtype={compData.fDataType}
+                        operation="search" isopenmodal={showPickList} existingvalues={compData.filterVal}>
+                    </c-navatar-exp-builder-lookup-pop-up-lwc>
+                </template>
+
+            </template>
+            <template if:true={enableAddRow}>
+                <div style="width:auto;align-self: center;" class="headers">
+                    <lightning-icon icon-name="utility:add" alternative-text="Add Row" title="Add Row" class="back" size="xx-small"
+                        onclick={handleAddRow}>
+                    </lightning-icon>
+                </div>
+            </template>
+            <template if:true={enableDelete}>
+                <div style="width:auto;align-self: center;" class="headers">
+                    <lightning-icon icon-name="utility:close" alternative-text="Remove Row" title="Remove Row" class="back" size="xx-small"
+                        onclick={handleDelete}>
+                    </lightning-icon>
+                </div>
+            </template>
+            <template if:true={enableAnd}>
+                <div style="width:auto;align-self: center;" class="headers">
+                    <p>
+                        <lightning-formatted-text value="AND" class="slds-form-element__label"></lightning-formatted-text>
+                    </p>
+                </div>
+            </template>
+        </div>
+    </div>
+</template>

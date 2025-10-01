@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Stage__c</fullName>
+    <label>Stage</label>
+    <required>false</required>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Picklist</type>
+    <valueSet>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>Prospect</fullName>
+                <default>false</default>
+                <label>Prospect</label>
+            </value>
+            <value>
+                <fullName>Sent PPM</fullName>
+                <default>false</default>
+                <label>Sent PPM</label>
+            </value>
+            <value>
+                <fullName>Interested</fullName>
+                <default>false</default>
+                <label>Interested</label>
+            </value>
+            <value>
+                <fullName>Initial Meeting</fullName>
+                <default>false</default>
+                <label>Initial Meeting</label>
+            </value>
+            <value>
+                <fullName>Second Meeting</fullName>
+                <default>false</default>
+                <label>Second Meeting</label>
+            </value>
+            <value>
+                <fullName>Follow up Diligence</fullName>
+                <default>false</default>
+                <label>Follow up Diligence</label>
+            </value>
+            <value>
+                <fullName>Soft Circle</fullName>
+                <default>false</default>
+                <label>Soft Circle</label>
+            </value>
+            <value>
+                <fullName>Verbal Commitment</fullName>
+                <default>false</default>
+                <label>Verbal Commitment</label>
+            </value>
+            <value>
+                <fullName>Legal Closed</fullName>
+                <default>false</default>
+                <label>Legal Closed</label>
+            </value>
+            <value>
+                <fullName>Declined</fullName>
+                <default>false</default>
+                <label>Declined</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
+</CustomField>

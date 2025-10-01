@@ -1,0 +1,33 @@
+<template>
+    <div>
+        <div class="slds-form-element">
+            <div class="slds-form-element__control">
+                <div class="slds-combobox_container">
+                    <div id="box" class={boxClass} aria-expanded="true" aria-haspopup="listbox" role="combobox">
+                        <div class="slds-combobox__form-element slds-input-has-icon slds-input-has-icon_right" role="none">
+                            <div class="slds-p-top_none">
+                                <lightning-input class={inputClass} type="search" id="input" value={searchTerm}
+                                                    onblur={onBlur} onchange={onChange}
+                                                    variant="label-hidden" autocomplete="off" placeholder={searchPlaceholder}>    <!-- onclick={handleClick} -->
+                                </lightning-input>
+                            </div>
+                        </div>
+                        <template if:true={isRecordsFound}>
+                            <ul class="drop_ul">
+                                <template for:each={records} for:item="record">
+                                    <!-- Code Changed By Sudhanshu for Display account name of contact record ; 47979 -->
+                                    <div key={record.Id} class="slds-p-horizontal_x-small slds-p-vertical_xx-small dropLists"  onclick={onSelect} data-id={record.Id} data-name={record.Name}>
+                                        <lightning-icon  icon-name={record.iconName} size="small" ></lightning-icon>
+                                        <li class="slds-nav-vertical__item for_desk clsFontStyle" role="listitem" onclick={itemSelect}>{record.Name} <br/><template if:true={record.isContact}> <span class="clsFontSize">{record.actName}</span></template></li>
+                                        <li class="slds-nav-vertical__item for_mob clsFontStyle" role="listitem">{record.Name} <br/> <template if:true={record.isContact}><span class="clsFontSize">{record.actName}</span></template></li>
+                                    </div>
+
+                                </template>
+                            </ul>
+                        </template>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</template>

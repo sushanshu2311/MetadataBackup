@@ -1,0 +1,17 @@
+<apex:page standardController="Account" extensions="Investor_Portal_Institution_Enabled_cls" showHeader="false" sidebar="false">
+    
+    <script> 
+        var ipurl = ''; 
+        var erromsg = '{!JSENCODE(error)}';
+        if(erromsg == 'msg')   
+        ipurl = '{!$Label.navpeII_dev18__IP_Url}'+'Show_Error_onfund_Page1?Errorpage=Institution&recordtypename={!JSENCODE(recordtypename)}';    
+        else if(erromsg == 'false' || erromsg == false)                     
+        ipurl = '{!$Label.navpeII_dev18__IP_Url}'+'apex/Gateway?startURL=/apex/PE_Institution_Enabled?id={!JSENCODE(session)}_@_{!JSENCODE(passhost)}_@_{!JSENCODE(foraccountid)}_@_{!JSENCODE(orgid)}_@_{!JSENCODE(recordtypename)}';
+        else if(erromsg == 'true' || erromsg == true)
+        ipurl = '{!$Label.navpeII_dev18__IP_Url}'+'Show_Error_onfund_Page?Errorpage=Institution&recordtypename={!JSENCODE(recordtypename)}';        
+                
+        window.location=ipurl ;
+       
+    </script>
+    
+</apex:page>

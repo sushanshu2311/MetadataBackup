@@ -1,0 +1,1904 @@
+<!--
+Project: PE 3.5
+Start: 09-June-2016
+Module: Individual_Investor_setup
+Class use: IndividualInvestorSetup_Ctlr
+Common Class use: NA
+Standard Controller: NA
+Developer: Faiz 
+Last Modified: Sachin Kumar (11-Nov-2016)
+-->
+<apex:page docType="html-5.0" contentType="text/html; charset=utf-8" sidebar="false" standardStylesheets="false" tabstyle="Navatar_Setup__tab" controller="IndividualInvestorSetup_Ctlr" title="Individual Investor Setup">
+        
+        <div id="statusDiv" style="display:none;">      
+            <apex:actionStatus id="counterStatus">
+                <apex:facet name="start">
+                    <div style="width:100%; height:100%; display:block; background:#fff; text-align:center; vertical-align:middle; opacity:0.7; position:fixed; top:0; left:0; z-index:9999999; display:none;">
+                    <div style="width:100px; height:100%; position:relative;top:41%; background:url({!URLFOR($Resource.PE_35, 'PE_3.5/images/icon_loading.gif')}) no-repeat top left; margin:0 auto;"></div></div>
+                </apex:facet>
+            </apex:actionStatus>
+        </div>
+        <script src="{!URLFOR($Resource.PE_35,'PE_3.5/AutoComp/jquery-2.2.4.js')}" type="text/javascript"></script>
+        <script src="{!URLFOR($Resource.PE_35,'PE_3.5/AutoComp/jquery-ui.js')}" type="text/javascript"></script>
+        <link rel="stylesheet" href="{!URLFOR($Resource.PE_35,'PE_3.5/AutoComp/jquery-ui.css')}" type="text/css" />
+        <style>
+        
+            .ui-autocomplete {
+            max-height: 100px;
+            overflow-y: auto;
+            overflow-x: hidden;
+            max-width: 252px !important
+            }
+            html {
+                overflow: initial !important;
+            } 
+            .ui-menu .ui-menu-item .mycontactacc{
+                background: url({!accountIconUrl}) no-repeat scroll 0 0;
+                background-size: 24px 24px;
+                font-weight: 400;
+                line-height: 1.5;
+                height: 37px;
+                padding: 0px 2.4em;
+                text-decoration: none;
+            }
+
+            .ui-menu .ui-menu-item .mycontactclass{
+                background: url({!contactIconUrl}) no-repeat scroll 0 0;
+                background-size: 24px 24px;
+                font-weight: 400;
+                line-height: 1.5;
+                height: 37px;
+                padding: 0px 2.4em;
+                text-decoration: none;
+            }
+
+            
+            /* IE 6 doesn't support max-height
+            * we use height instead, but this forces the menu to always be this tall
+            */
+            * html .ui-autocomplete {
+            height: 100px;
+            }  
+            .icon_33LightCon { background:url({!contactIconUrl}) 0px #fff no-repeat; padding: 1px 8px 0px 32px !important; background-size: 24px 24px; }
+            .icon_33LightAcc { background:url({!accountIconUrl}) 0px #fff no-repeat; padding: 1px 8px 0px 32px !important; background-size: 24px 24px; }
+             
+            .optionImg{}
+            
+            ::-webkit-input-placeholder { /* WebKit, Blink, Edge */
+                color:    #909;
+            }
+            :-moz-placeholder { /* Mozilla Firefox 4 to 18 */
+               color:    #909;
+               opacity:  1;
+            }
+            ::-moz-placeholder { /* Mozilla Firefox 19+ */
+               color:    #909;
+               opacity:  1;
+            }
+            :-ms-input-placeholder { /* Internet Explorer 10-11 */
+               color:    #909 !important;
+            }
+
+        </style>
+
+         <script type="text/javascript"> 
+            var j$ = jQuery.noConflict();
+            var apexAccountList =[];
+            <apex:repeat value="{!FieldLabelVsApi}" var="lst">            
+                apexAccountList.push('{!JSENCODE(FieldLabelVsApi[lst])}');            
+            </apex:repeat>
+            
+                        
+            /*parameter1: pass array; parameter2: pass object you want to search in an array.*/
+            function contains(arr, obj) 
+            {
+                var i = arr.length;
+                while (i--) 
+                {
+                   if (arr[i] === obj)
+                       return true;
+                }
+                return false;
+            }
+
+            var arrIdVsName = [];                                       /*It contains objectLabel and FieldLabel*/
+            var idOfClickedInput;
+            var selectedValueAtLast;
+            var iisSavedValues = '{!JSENCODE(iisSavedValues)}';         /*It gets all the fields saved at the backend, that is Navatar Setup.*/
+            var stringToMaintainSectionLeft = '';
+            var strAccountLabel = '{!JSENCODE(strAccountLabel)}';
+        var strContactLabel = '{!JSENCODE(strContactLabel)}';
+            var stringToMaintainSectionRight = '';
+            
+            /*@Description: This function will execute onLoad, it will load all the values of Detail & Edit Mode.*/
+            //window.onload = onBodyLoadFun;
+            
+            function onBodyLoadFun()
+            {
+                var arrGetLRvalues = iisSavedValues.split(';');
+                var arrGetLftValues = [];
+                var arrGetLftValuesTemp = [];
+                var arrGetRytValues = [];
+                var arrGetRytValuesTemp = [];
+                if(arrGetLRvalues.length > 0)
+                {
+                    
+                    arrGetLftValues = arrGetLRvalues[0].split(',');
+                    if(arrGetLRvalues.length > 1)
+                        arrGetRytValues = arrGetLRvalues[1].split(',');
+                    
+                    /*Get FieldLabels on basis of API Names, For Left Side.*/
+                    for(var i=0; i<arrGetLftValues.length; i++)
+                    {
+                        <apex:repeat value="{!FieldLabelVsApi}" var="lst"> 
+                            if('{!JSENCODE(lst)}' == arrGetLftValues[i])
+                                arrGetLftValuesTemp.push("{!JSENCODE(FieldLabelVsApi[lst])}");
+                        </apex:repeat>
+                    }
+                    
+                    /*Get FieldLabels on basis of API Names, For Right Side.*/
+                    for(var i=0; i<arrGetRytValues.length; i++)
+                    {
+                        <apex:repeat value="{!FieldLabelVsApi}" var="lst"> 
+                            if('{!JSENCODE(lst)}' == arrGetRytValues[i])
+                                arrGetRytValuesTemp.push("{!JSENCODE(FieldLabelVsApi[lst])}");
+                        </apex:repeat>
+                    }
+                }
+                arrGetLftValues = arrGetLftValuesTemp;  /*This array hold values in a proper sequence. */
+                arrGetRytValues = arrGetRytValuesTemp;
+                bindFieldInDetailEditMode(arrGetLftValues, arrGetRytValues);
+            }
+            </script>
+            <script>
+            
+            // (SK: 1Nov2017)
+            function HTMLEncode1(str)
+            {
+                str = str.split("amp;").join("");
+                str = str.split("&#39;").join("'");
+                var i = str.length,
+                aRet = [];
+            
+                while (i--) 
+                {
+                    var iC = str[i].charCodeAt();
+                    if (iC < 65 || iC > 127 || (iC>90 && iC<97)) 
+                    {
+                        aRet[i] = '&#'+iC+';';
+                    } 
+                    else 
+                    {
+                        aRet[i] = str[i];
+                    }
+                }
+                return aRet.join('');    
+            }
+            
+            /*
+                @Description: This function will bind the data of Detail & Edit Mode accordingly.
+                @Parameter1: arrGetLftValues, it holds all the values in Left Panel, which is saved at the backend.
+                @Parameter2: arrGetRytValues, it holds all the values in Right Panel, which is saved at the backend.
+            */
+            function bindFieldInDetailEditMode(arrGetLftValues, arrGetRytValues)
+            {
+                /*Bind data for LEFT panel, in Detail & Edit Mode.*/
+                for(var i=0; i<arrGetLftValues.length; i++)         /*Value in this array is in actual sequence, so we will maintin the index in order to track which indexes are occupied. */
+                {
+                    if(stringToMaintainSectionLeft == '')
+                        stringToMaintainSectionLeft = (i+1).toString();
+                    else
+                        stringToMaintainSectionLeft = stringToMaintainSectionLeft + '@' + (i+1).toString();
+                    
+                    /*When i=0, it will bind data for static fields.*/
+                    if( i == 0 )  
+                    {
+                        var showSelected = arrGetLftValues[i];
+                        if(showSelected.indexOf(strContactLabel+':') > -1)
+                        {
+                            document.getElementById("hitFirstt").value = showSelected.substring(showSelected.indexOf(strContactLabel+':')+strContactLabel.length+1, showSelected.length);
+                            jQuery('#hitFirstt').removeClass( "icon_33LightAcc" ).addClass( "icon_33LightCon" );
+                            document.getElementById("leftStaticLabel1").innerText = showSelected.substring(showSelected.indexOf(strContactLabel+':')+strContactLabel.length+1, showSelected.length);
+                            arrIdVsName.push('hitFirstt#¤#'+showSelected);
+                        }
+                        else if(showSelected.indexOf(strAccountLabel+':') > -1)
+                        {
+                            document.getElementById("hitFirstt").value = showSelected.substring(showSelected.indexOf(strAccountLabel+':')+strAccountLabel.length+1, showSelected.length);
+                            jQuery('#hitFirstt').removeClass( "icon_33LightCon" ).addClass( "icon_33LightAcc" );
+                            document.getElementById("leftStaticLabel1").innerText = showSelected.substring(showSelected.indexOf(strAccountLabel+':')+strAccountLabel.length+1, showSelected.length);
+                            arrIdVsName.push('hitFirstt#¤#'+showSelected);
+                        }
+                    }
+                    /*It will bind data for Dynamic fields.*/  
+                    else    
+                    {
+                        var showSelected = arrGetLftValues[i];
+                        
+                        if(showSelected.indexOf(strContactLabel+':') > -1) /*Block to create & display Contact's Fields.*/
+                        {
+                            /*Edit mode Logic for Left Panel.*/
+                            rowCountLft++; 
+                            var getName = showSelected.substring(showSelected.indexOf(strContactLabel+':')+strContactLabel.length+1, showSelected.length);
+                            var recRow = '<p style="margin-top:20px;"><table border="0" cellpadding="0" cellspacing="0" width="100%" id="rowCountLft'+rowCountLft+'"><tbody><tr><td class="td1" style="display:none;padding-right:0 !important;"></td><td class="td2"><div class="select-editable float_l"><select  size="0" disabled="disabled"><input id="addLftRow'+rowCountLft+'" type="text" onkeydown="fixedFieldsFun(this);" placeholder="None" class="apexaccountautocomplete icon_33LightCon" name="leftText'+rowCountLft+'[]" style="width:237px; padding-left:9px; height:29px;"" /></select></div><a id="Auto_rowCountLft'+rowCountLft+'" onclick="addMoreRows(this.id);" class="btn_icon_add" title="Add" style="position:relative !important; top:5px !important;"></a>&nbsp;<a name="addLftRow" onclick="removeRowLft('+rowCountLft+', this);" class="btn_icon_delete" title="Delete" style="position:relative !important; top:5px !important;"></a><div id="addedRows"></div></td></tr></tbody></table></p>'; 
+                            jQuery('#addedRows').append(recRow);
+                            var nameIs = 'leftText'+rowCountLft;
+                            jQueryUtilityOfAutoComplete(nameIs);
+                            document.getElementById("addLftRow"+rowCountLft+"").value = getName;
+                            arrIdVsName.push("addLftRow"+rowCountLft+"#¤#"+showSelected);
+                            /*Detail mode Logic for Left Panel.*/
+                            var recOutputRow = '<table border="0" cellpadding="5" cellspacing="0" width="100%" class="TopBottomSpace"><tbody><tr><td class="td1" style="width:250px;"><label style="white-space: nowrap;" class="slds-form-element__label" for="text-input-01">'+HTMLEncode1(getName)+'</label></td><td class="td2"></td></tr></tbody></table>'; 
+                            jQuery('#leftOutputColumn').append(recOutputRow);
+                        }
+                        else /*Block to create & display Institution's Fields.*/
+                        {
+                            /*Edit mode Logic for Left Panel.*/
+                            rowCountLft++; 
+                            var getName = showSelected.substring(showSelected.indexOf(strAccountLabel+':')+strAccountLabel.length+1, showSelected.length);
+                            var recRow = '<p style="margin-top:20px;"><table border="0" cellpadding="0" cellspacing="0" width="100%" id="rowCountLft'+rowCountLft+'"><tbody><tr><td class="td1" style="display:none;padding-right:0 !important;"></td><td class="td2"><div class="select-editable float_l"><select  size="0" disabled="disabled"></select><input id="addLftRow'+rowCountLft+'" type="text" onkeydown="fixedFieldsFun(this);" placeholder="None" class="apexaccountautocomplete icon_33LightAcc" name="leftText'+rowCountLft+'[]" style="width:237px; padding-left:9px; height:29px;"" /></div><a id="Auto_rowCountLft'+rowCountLft+'" onclick="addMoreRows(this.id);" class="btn_icon_add" title="Add" style="position:relative !important; top:5px !important;"></a>&nbsp;<a name="addLftRow" onclick="removeRowLft('+rowCountLft+', this);" class="btn_icon_delete" title="Delete" style="position:relative !important; top:5px !important;"></a><div id="addedRows"></div></td></tr></tbody></table></p>'; 
+                            jQuery('#addedRows').append(recRow);
+                            var nameIs = 'leftText'+rowCountLft;
+                            jQueryUtilityOfAutoComplete(nameIs);
+                            document.getElementById("addLftRow"+rowCountLft+"").value = getName;
+                            arrIdVsName.push("addLftRow"+rowCountLft+"#¤#"+showSelected);
+                            /*Detail mode Logic for Left Panel.*/
+                            var recOutputRow = '<table border="0" cellpadding="5" cellspacing="0" width="100%" class="TopBottomSpace"><tbody><tr><td class="td1" style="width:250px;"><label style="white-space: nowrap;" class="slds-form-element__label" for="text-input-01">'+HTMLEncode1(getName)+'</label></td><td class="td2"></td></tr></tbody></table>'; 
+                            jQuery('#leftOutputColumn').append(recOutputRow);
+                        }
+                    }
+                }
+                
+                /*Bind data for Right panel, in Detail & Edit mode.*/
+                for(var i=0; i<arrGetRytValues.length; i++)
+                {
+                    if(stringToMaintainSectionRight == '')
+                        stringToMaintainSectionRight = (i+1).toString();
+                    else
+                        stringToMaintainSectionRight = stringToMaintainSectionRight + '@' + (i+1).toString(); ;
+                    if( i == 0 )
+                    {
+                        var showSelected = arrGetRytValues[i];
+                        if(showSelected.indexOf(strContactLabel+':') > -1)
+                        {
+                            document.getElementById("HitSecondd").value = showSelected.substring(showSelected.indexOf(strContactLabel+':')+strContactLabel.length+1, showSelected.length);
+                            jQuery('#HitSecondd').removeClass( "icon_33LightAcc" ).addClass( "icon_33LightCon" );
+                            document.getElementById("rightStaticLabel1").innerText = showSelected.substring(showSelected.indexOf(strContactLabel+':')+strContactLabel.length+1, showSelected.length);
+                            arrIdVsName.push('HitSecondd#¤#'+showSelected);
+                            
+                        }
+                        else if(showSelected.indexOf(strAccountLabel+':') > -1)
+                        {
+                            document.getElementById("HitSecondd").value = showSelected.substring(showSelected.indexOf(strAccountLabel+':')+strAccountLabel.length+1, showSelected.length);
+                            jQuery('#HitSecondd').removeClass( "icon_33LightCon" ).addClass( "icon_33LightAcc" );
+                            document.getElementById("rightStaticLabel1").innerText = showSelected.substring(showSelected.indexOf(strAccountLabel+':')+strAccountLabel.length+1, showSelected.length);
+                            arrIdVsName.push('HitSecondd#¤#'+showSelected);
+                        }
+                    }
+                    else
+                    {
+                        var showSelected = arrGetRytValues[i];
+                        if(showSelected.indexOf(strContactLabel+':') > -1)
+                        {
+                            rowCountRyt++; 
+                            var getName = showSelected.substring(showSelected.indexOf(strContactLabel+':')+strContactLabel.length+1, showSelected.length);
+                            var recRow = '<p style="margin-top:20px;"><table border="0" cellpadding="0" cellspacing="0" width="100%" id="rowCountRyt'+rowCountRyt+'"><tbody><tr><td class="td1" style="display:none;padding-right:0 !important;"></td><td class="td2"><div class="select-editable float_l"><select  size="0" disabled="disabled"></select><input id="addRytRow'+rowCountRyt+'" type="text" placeholder="None" onkeydown="fixedFieldsFun(this);" class="apexaccountautocomplete icon_33LightCon" name="rightText'+rowCountRyt+'[]" style="width:237px; padding-left:9px; height:29px;" " /></div><a id="Auto_rowCountRyt'+rowCountRyt+'" onclick="addMoreRows_4(this.id);" class="btn_icon_add" title="Add" style="position:relative !important; top:5px !important;"></a>&nbsp;<a name="addRytRow" onclick="removeRowRyt('+rowCountRyt+', this);" class="btn_icon_delete" title="Delete" style="position:relative !important; top:5px !important;"></a><div id="addedRows_4"></div></td></tr></tbody></table></p>'; 
+                            jQuery('#addedRows_4').append(recRow).autocomplete({source: apexAccountList});
+                            var nameIs = 'rightText'+rowCountRyt;
+                            jQueryUtilityOfAutoComplete(nameIs);
+                            document.getElementById("addRytRow"+rowCountRyt+"").value = getName;
+                            arrIdVsName.push("addRytRow"+rowCountRyt+"#¤#"+showSelected);
+                            /*Detail mode Logic for Right Panel.*/
+                            var recOutputRow = '<table border="0" cellpadding="5" cellspacing="0" width="100%" class="TopBottomSpace"><tbody><tr><td class="td1" style="width:250px;"><label style="white-space: nowrap;" class="slds-form-element__label" for="text-input-01">'+HTMLEncode1(getName)+'</label></td><td class="td2"></td></tr></tbody></table>'; 
+                            jQuery('#rightOutputColumn').append(recOutputRow);
+                        }
+                        else 
+                        {
+                            rowCountRyt++; 
+                            var getName = showSelected.substring(showSelected.indexOf(strAccountLabel+':')+strAccountLabel.length+1, showSelected.length)
+                            var recRow = '<p style="margin-top:20px;"><table border="0" cellpadding="0" cellspacing="0" width="100%" id="rowCountRyt'+rowCountRyt+'"><tbody><tr><td class="td1" style="display:none;padding-right:0 !important;"></td><td class="td2"><div class="select-editable float_l"><select  size="0" disabled="disabled"></select><input id="addRytRow'+rowCountRyt+'" type="text" onkeydown="fixedFieldsFun(this);" placeholder="None" class="apexaccountautocomplete icon_33LightAcc" name="rightText'+rowCountRyt+'[]" style="width:237px; padding-left:9px; height:29px;"" /></div><a id="Auto_rowCountRyt'+rowCountRyt+'" onclick="addMoreRows_4(this.id);" class="btn_icon_add" title="Add" style="position:relative !important; top:5px !important;"></a>&nbsp;<a name="addRytRow" onclick="removeRowRyt('+rowCountRyt+', this);" class="btn_icon_delete" title="Delete" style="position:relative !important; top:5px !important;"></a><div id="addedRows_4"></div></td></tr></tbody></table></p>'; 
+                            jQuery('#addedRows_4').append(recRow).autocomplete({source: apexAccountList});
+                            var nameIs = 'rightText'+rowCountRyt;
+                            jQueryUtilityOfAutoComplete(nameIs);
+                            document.getElementById("addRytRow"+rowCountRyt+"").value = getName;
+                            arrIdVsName.push("addRytRow"+rowCountRyt+"#¤#"+showSelected);
+                            /*Detail mode Logic for Right Panel.*/ 
+                            var recOutputRow = '<table border="0" cellpadding="5" cellspacing="0" width="100%" class="TopBottomSpace"><tbody><tr><td class="td1" style="width:250px;"><label style="white-space: nowrap;" class="slds-form-element__label" for="text-input-01">'+HTMLEncode1(getName)+'</label></td><td class="td2"></td></tr></tbody></table>'; 
+                            jQuery('#rightOutputColumn').append(recOutputRow);
+                        }
+                    }
+                }
+                
+            }
+            
+            /*@Description: It will work for left side field which is static on page.*/
+            j$(document).ready(function()
+            {
+                $("input[name^='mytext']").autocomplete({
+                minLength: 0,
+                source: apexAccountList,
+                select: function( event, ui )
+                {
+                    var showSelected = ui.item.value;
+                    var labell = ui.item.label;
+                    $(this).each(function() 
+                    {
+                        $.each(this.attributes, function() 
+                        {
+                            if(this.name == 'id')    /*It will give you thge value of clicked input text fields.*/
+                                idOfClickedInput = this.value;
+                        });
+                    });
+                    if(showSelected.indexOf(strContactLabel+':') > -1)
+                    {
+                        selectedValueAtLast = showSelected.substring(showSelected.indexOf(strContactLabel+':')+strContactLabel.length+1, showSelected.length);
+                        jQuery('#'+idOfClickedInput).removeClass( "icon_33LightAcc" ).addClass( "icon_33LightCon" );
+                        ui.item.value = selectedValueAtLast;
+                    }
+                    else
+                    {
+                        selectedValueAtLast = showSelected.substring(showSelected.indexOf(strAccountLabel+':')+strAccountLabel.length+1, showSelected.length);
+                        jQuery('#'+idOfClickedInput).removeClass( "icon_33LightCon" ).addClass( "icon_33LightAcc" );
+                        ui.item.value = selectedValueAtLast;
+                    }
+                    if(contains(arrIdVsName ,idOfClickedInput+'#¤#'+ui.item.label) == false)
+                    {
+                        for(var i = arrIdVsName.length - 1; i >= 0; i--) {
+                            var getArrVal = arrIdVsName[i];
+                            if(getArrVal.indexOf( idOfClickedInput+'#¤#' ) > -1)
+                               arrIdVsName.splice(i, 1);
+                        }
+                        arrIdVsName.push(idOfClickedInput+'#¤#'+ui.item.label);
+                    }
+                    
+                }
+            }).focus(function ()    /*focus: it works on click of input text.*/
+            {                  
+               $(this).autocomplete("search", "");
+            }).data("ui-autocomplete")._renderItem = function (ul, item) 
+            {   
+                var myItem = item.value;
+                if(myItem.indexOf(strContactLabel+':') > -1 )
+                {
+                    var str = myItem.substring(myItem.indexOf(strContactLabel+':')+strContactLabel.length+1, myItem.length);
+                    var listItem = $("<li></li>").data("item.autocomplete", item).append("<a class='mycontactclass'>" + "<input type=hidden />" + HTMLEncode1(str) + "</a>").appendTo(ul);
+                }
+                else
+                {
+                    var str = myItem.substring(myItem.indexOf(strAccountLabel+':')+strAccountLabel.length+1, myItem.length);
+                    var listItem = $("<li></li>").data("item.autocomplete", item).append("<a class='mycontactacc'>" + "<input type=hidden />" + HTMLEncode1(str) + "</a>").appendTo(ul);
+                }
+                return listItem;
+            };
+            
+        });  
+        
+        /*@Description: It will work for right side field which is static on page.*/
+        j$(document).ready(function()
+        {
+            $("input[name^='yourtext']").autocomplete({
+                minLength: 0,
+                source: apexAccountList,
+                
+                select: function( event, ui )
+                {
+                    var showSelected = ui.item.value;
+                    var labell = ui.item.label;
+                    $(this).each(function() 
+                    {
+                        $.each(this.attributes, function() 
+                        {
+                            if(this.name == 'id')    /*It will give you thge value of clicked input text fields.*/
+                                idOfClickedInput = this.value;
+                        });
+                    });
+                    if(showSelected.indexOf(strContactLabel+':') > -1)
+                    {
+                        selectedValueAtLast = showSelected.substring(showSelected.indexOf(strContactLabel+':')+strContactLabel.length+1, showSelected.length);
+                        jQuery('#'+idOfClickedInput).removeClass( "icon_33LightAcc" ).addClass( "icon_33LightCon" );
+                        ui.item.value = selectedValueAtLast;
+                    }
+                    else
+                    {
+                        selectedValueAtLast = showSelected.substring(showSelected.indexOf(strAccountLabel+':')+strAccountLabel.length+1, showSelected.length);
+                        jQuery('#'+idOfClickedInput).removeClass( "icon_33LightCon" ).addClass( "icon_33LightAcc" );
+                        ui.item.value = selectedValueAtLast;
+                    }
+                    if(contains(arrIdVsName ,idOfClickedInput+'#¤#'+ui.item.label) == false)
+                    {
+                        for(var i = arrIdVsName.length - 1; i >= 0; i--) {
+                            var getArrVal = arrIdVsName[i];
+                            if(getArrVal.indexOf( idOfClickedInput+'#¤#' ) > -1)
+                               arrIdVsName.splice(i, 1);
+                        }
+                        arrIdVsName.push(idOfClickedInput+'#¤#'+ui.item.label);
+                    }
+                }
+            }).focus(function () 
+            {                  /*focus: it works on click of input text.*/
+               $(this).autocomplete("search", "");
+            }).data("ui-autocomplete")._renderItem = function (ul, item) 
+            {   
+                var myItem = item.value;
+                if(myItem.indexOf(strContactLabel+':') > -1 )
+                {
+                    var str = myItem.substring(myItem.indexOf(strContactLabel+':')+strContactLabel.length+1, myItem.length);
+                    var listItem = $("<li></li>").data("item.autocomplete", item).append("<a class='mycontactclass'>" + "<input type=hidden />" + HTMLEncode1(str) + "</a>").appendTo(ul);
+                }
+                else
+                {
+                    var str = myItem.substring(myItem.indexOf(strAccountLabel+':')+strAccountLabel.length+1, myItem.length);
+                    var listItem = $("<li></li>").data("item.autocomplete", item).append("<a class='mycontactacc'>" + "<input type=hidden />" + HTMLEncode1(str) + "</a>").appendTo(ul);
+                }
+                return listItem;
+            };
+        });   
+            
+        /*
+            @Description: Its a Utility function which create dynamic input element with dynamic Names in the name attribute of Input Text box, when user clicks on Add row icon.
+            @Parameter: Recieve dynamic Names (Name of input text) as parameter, and create complete element on the event of AddRows icon.
+        */
+        function jQueryUtilityOfAutoComplete(nameIs)
+        { 
+            var getLocalId='';
+            j$(document).ready(function()
+            {
+                $("input[name^='"+nameIs+"']").autocomplete({
+                    minLength: 0,
+                    source: apexAccountList,
+                              
+                    focus: function( event, ui )
+                    {
+                      if(event.keyCode ==38 || event.keyCode ==40 || event.keyCode ==13)
+                       {
+                        var showSelected = ui.item.value;
+                        var labell = ui.item.label;
+                        $(this).each(function() 
+                        {
+                            $.each(this.attributes, function() 
+                            {
+                                if(this.name == 'id')    /*It will give you the value of clicked input text fields.*/
+                                    getLocalId = this.value;
+                            });
+                        });
+                        if(showSelected.indexOf(strContactLabel+':') > -1)
+                        {
+                            selectedValueAtLast = showSelected.substring(showSelected.indexOf(strContactLabel+':')+strContactLabel.length+1, showSelected.length);
+                            jQuery('#'+getLocalId).removeClass( "icon_33LightAcc" ).addClass( "icon_33LightCon" );
+                            ui.item.value = selectedValueAtLast;
+                        }
+                        else
+                        {
+                            selectedValueAtLast = showSelected.substring(showSelected.indexOf(strAccountLabel+':')+strAccountLabel.length+1, showSelected.length);
+                            jQuery('#'+getLocalId).removeClass( "icon_33LightCon" ).addClass( "icon_33LightAcc" );
+                            ui.item.value = selectedValueAtLast;
+                        }
+                        if(contains(arrIdVsName ,getLocalId+'#¤#'+ui.item.label) == false)
+                        {
+                            for(var i = arrIdVsName.length - 1; i >= 0; i--) {
+                                var getArrVal = arrIdVsName[i];
+                                if(getArrVal.indexOf( getLocalId+'#¤#' ) > -1)
+                                   arrIdVsName.splice(i, 1);
+                            }
+                            arrIdVsName.push(getLocalId+'#¤#'+ui.item.label);
+                        }
+                      } 
+                    },
+                    select: function( event, ui )
+                    {
+                      
+                        var showSelected = ui.item.value;
+                        var labell = ui.item.label;
+                        $(this).each(function() 
+                        {
+                            $.each(this.attributes, function() 
+                            {
+                                if(this.name == 'id')    /*It will give you the value of clicked input text fields.*/
+                                    getLocalId = this.value;
+                            });
+                        });
+                        if(showSelected.indexOf(strContactLabel+':') > -1)
+                        {
+                            selectedValueAtLast = showSelected.substring(showSelected.indexOf(strContactLabel+':')+strContactLabel.length+1, showSelected.length);
+                            jQuery('#'+getLocalId).removeClass( "icon_33LightAcc" ).addClass( "icon_33LightCon" );
+                            ui.item.value = selectedValueAtLast;
+                        }
+                        else
+                        {
+                            selectedValueAtLast = showSelected.substring(showSelected.indexOf(strAccountLabel+':')+strAccountLabel.length+1, showSelected.length);
+                            jQuery('#'+getLocalId).removeClass( "icon_33LightCon" ).addClass( "icon_33LightAcc" );
+                            ui.item.value = selectedValueAtLast;
+                        }
+                        if(contains(arrIdVsName ,getLocalId+'#¤#'+ui.item.label) == false)
+                        {
+                            for(var i = arrIdVsName.length - 1; i >= 0; i--) {
+                                var getArrVal = arrIdVsName[i];
+                                if(getArrVal.indexOf( getLocalId+'#¤#' ) > -1)
+                                   arrIdVsName.splice(i, 1);
+                            }
+                            arrIdVsName.push(getLocalId+'#¤#'+ui.item.label);
+                        }
+                        
+                    }
+                }).focus(function ()  /*focus: it works on click of input text.*/
+                {                 
+                    $(this).autocomplete("search", "");
+                }).data("ui-autocomplete")._renderItem = function (ul, item) 
+                {   
+                    var myItem = item.value;
+                    if(myItem.indexOf(strContactLabel+':') > -1 )
+                    {
+                        var str = myItem.substring(myItem.indexOf(strContactLabel+':')+strContactLabel.length+1, myItem.length);
+                        var listItem = $("<li></li>").data("item.autocomplete", item).append("<a class='mycontactclass'>" + "<input type=hidden  />" + HTMLEncode1(str) + "</a>").appendTo(ul);
+                    }
+                    else
+                    {
+                        var str = myItem.substring(myItem.indexOf(strAccountLabel+':')+strAccountLabel.length+1, myItem.length);
+                        var listItem = $("<li></li>").data("item.autocomplete", item).append("<a class='mycontactacc'>" + "<input type=hidden  />" + HTMLEncode1(str) + "</a>").appendTo(ul);
+                    }
+                    return listItem;
+                };
+            });
+        }
+        
+        /*
+            @Description: Executes for an onkeydown event of static fields, for both Left & Right panel.
+            @Parameter: Passing this, which includes value, id & all attributes of clicked event.
+        */
+        function fixedFieldsFun( thisIs ) 
+        {
+            if(arrIdVsName.length > 0)
+            {
+                /*clear array if fields has no value*/
+                /*LHS*/
+                if(thisIs.id == 'hitFirstt' && document.getElementById('hitFirstt').value == '' )
+                {
+                    for(var i = arrIdVsName.length - 1; i >= 0; i--) {
+                        var getArrVal = arrIdVsName[i];
+                        if(getArrVal.indexOf( 'hitFirstt#¤#' ) > -1)
+                           arrIdVsName.splice(i, 1);
+                    }
+                    jQuery('#hitFirstt').removeClass( "icon_33LightAcc" ).removeClass( "icon_33LightCon" );
+                }
+                /*RHS*/
+                if(thisIs.id == 'HitSecondd' && document.getElementById('HitSecondd').value == '')
+                {
+                    for(var i = arrIdVsName.length - 1; i >= 0; i--) {
+                        var getArrVal = arrIdVsName[i];
+                        if(getArrVal.indexOf( 'HitSecondd#¤#' ) > -1)
+                           arrIdVsName.splice(i, 1);
+                    }
+                    jQuery('#HitSecondd').removeClass( "icon_33LightAcc" ).removeClass( "icon_33LightCon" );
+                }
+                /*Dynamic Fields*/
+                var vall = document.getElementById(thisIs.id).value;
+                if(document.getElementById(thisIs.id).value == '')
+                {
+                    for(var i = arrIdVsName.length - 1; i >= 0; i--) {
+                        var getArrVal = arrIdVsName[i];
+                        if(getArrVal.indexOf( thisIs.id+'#¤#' ) > -1)
+                           arrIdVsName.splice(i, 1);
+                    }
+                    jQuery('#'+thisIs.id).removeClass( "icon_33LightAcc" ).removeClass( "icon_33LightCon" );
+                }
+            }
+        }
+        function CreateTextFocus(rowId)
+            { 
+             document.getElementById(rowId).focus();
+            }
+        </script>
+    <apex:form id="form" >    
+       
+        <apex:pageMessages ></apex:pageMessages>
+        <html >
+        <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        <title>Individual Investor Creation Setup</title>
+
+        <script src="{!URLFOR($Resource.PE_35,'PE_3.5/js/jquery.js')}" type="text/javascript"></script>
+        <link rel="stylesheet" href="{!URLFOR($Resource.PE_35,'PE_3.5/AutoComp/css.css')}" type="text/css" />
+
+        <!-- Start FancyBox -->
+        <script src="{!URLFOR($Resource.PE_35,'PE_3.5/js/jquery-ui.js')}"></script>
+        <script>
+        $(function() {
+        $( ".FancyboxContainer" ).draggable({ cancel: ".PopupContentStart" });
+        });
+        </script>
+        <link rel="stylesheet" type="text/css" href="{!URLFOR($Resource.PE_35,'PE_3.5/css/fancybox.css')}" media="screen" />
+        <script type="text/javascript">
+        var popupStatus = 0;
+                
+                function InsufficientPermissions_Fancybox() 
+                {
+                    loadPopupnew('fancybox_background','InsufficientPermissions_Fancybox');
+                    centerPopupnew('InsufficientPermissions_Fancybox');
+                }
+                
+                function Warning_Fancybox() 
+                {
+                    loadPopupnew('fancybox_background','Warning_Fancybox');
+                    centerPopupnew('Warning_Fancybox');
+                }
+                
+                function Error_Fancybox() 
+                {
+                    loadPopupnew('fancybox_background','Error_Fancybox');
+                    centerPopupnew('Error_Fancybox');
+                }
+                                                            
+                function loadPopupnew(cid1,cid2)
+                {
+                    if(popupStatus==0){
+                        $('.'+cid1).css({
+                            "opacity": "0.5"
+                        });
+                        $('.'+cid1).fadeIn("slow");
+                        $('.'+cid2).fadeIn("slow");
+                        popupStatus = 1;
+                    }
+                };
+                function centerPopupnew(cid)
+                {
+                    //request data for centering
+                    var windowWidth = document.documentElement.clientWidth;
+                    var windowHeight = document.documentElement.clientHeight;
+                    var popupHeight = $('.'+cid).height();
+                    var popupWidth = $('.'+cid).width();
+                    //centering
+                    $('.'+cid).css({
+                        "position": "fixed",
+                        "top": windowHeight/2-popupHeight/2,
+                        "left": windowWidth/2-popupWidth/2
+                    });
+                };
+                
+                function closepopup(bgdivid,popupdivid)
+                {
+                    disablePopupnew(bgdivid);
+                    $('.'+popupdivid).fadeOut("slow");
+                } 
+                
+                function disablePopupnew(cid){
+                    if(popupStatus==1){
+                        $('.'+cid).fadeOut("slow");
+                        popupStatus = 0;
+                    }   
+                };
+        </script>
+        <!-- End FancyBox -->
+
+
+        <!-- Add Remove Row -->        
+        <script type="text/javascript"> 
+            var rowCountLft = 1;                             /*Maintain row count for left section globally.*/
+            var rowCountRyt = 1;                             /*Maintain row count for right section globally.*/
+            var trackNewAddedRowSequenceLeft = new Array();  /*It will track Which row is added after which row. First Id will be the value onclick of which new row is added at the immediate position. */
+            var trackNewAddedRowSequenceRight = new Array();  /*It will track Which row is added after which row. First Id will be the value onclick of which new row is added at the immediate position. */
+            
+            /*@Description: Add Rows dynamically for LEFT side.*/
+            function addMoreRows(passedId)
+            {
+                rowCountLft++;        
+                passedId = passedId.substring(5,passedId.length );
+                var rowSequence = '';
+                
+                /*Logic to maintain indexing, Starts.*/
+                if(passedId.indexOf('rowCountLft') > -1)            /*Check to skip this action for firstRow, which has hardcoded id.*/
+                {
+                    rowSequence = passedId.substring(passedId.indexOf('rowCountLft')+11, passedId.length);
+                    trackNewAddedRowSequenceLeft.push('addLftRow'+rowSequence+'#¤#addLftRow'+rowCountLft);
+                    stringToMaintainSectionLeft = splitToPlaceNewCharInArrayJS(stringToMaintainSectionLeft, rowSequence , rowCountLft);
+                     
+                }
+                else
+                {
+                    trackNewAddedRowSequenceLeft.push(passedId+'#¤#addLftRow'+rowCountLft);
+                    stringToMaintainSectionLeft = splitToPlaceNewCharInArrayJS(stringToMaintainSectionLeft, '1', rowCountLft);
+                }
+                while(stringToMaintainSectionLeft.indexOf('@@') > -1)
+                    stringToMaintainSectionLeft = stringToMaintainSectionLeft.replace("@@", "@"); 
+                if( stringToMaintainSectionLeft.substring(stringToMaintainSectionLeft.length-1, stringToMaintainSectionLeft.length ) == '@')
+                    stringToMaintainSectionLeft = stringToMaintainSectionLeft.substring(0, stringToMaintainSectionLeft.length-1 );
+                /*Logic to maintain indexing, Ends.*/
+                
+                var recRow = '<p style="margin-top:20px;"><table border="0" cellpadding="0" cellspacing="0" width="100%" id="rowCountLft'+rowCountLft+'"><tbody><tr><td class="td1" style="display:none;padding-right:0 !important;"></td><td class="td2"><div class="select-editable float_l"><select  size="0" disabled="disabled"></select><input id="addLftRow'+rowCountLft+'" style="width:237px; padding-left:9px; height:29px;" type="text" onkeydown="fixedFieldsFun(this);" placeholder="None" class="apexaccountautocomplete" name="leftText'+rowCountLft+'[]" value="{!selField}" /></div><a id="Auto_rowCountLft'+rowCountLft+'" onclick="addMoreRows(this.id);" class="btn_icon_add" title="Add" style="position:relative !important; top:5px !important;"></a>&nbsp;<a name="addLftRow" onclick="removeRowLft('+rowCountLft+', this);" class="btn_icon_delete" title="Delete" style="position:relative !important; top:5px !important;"></a><div id="addedRows"></div></td></tr></tbody></table></p>'; 
+                $(recRow).insertAfter('#'+passedId);
+                var nameIs = 'leftText'+rowCountLft;
+                jQueryUtilityOfAutoComplete(nameIs);
+            }
+            
+            /*@Description: Add Rows dynamically for RIGHT side.*/
+            function addMoreRows_4(passedId) 
+            {
+                rowCountRyt++; 
+                passedId = passedId.substring(5,passedId.length );
+                var rowSequence = '';
+                
+                /*Logic to maintain indexing, Starts.*/
+                if(passedId.indexOf('rowCountRyt') > -1)            /*Check to skip this action for firstRow, which has hardcoded id.*/
+                {
+                    rowSequence = passedId.substring(passedId.indexOf('rowCountRyt')+11, passedId.length);
+                    stringToMaintainSectionRight = splitToPlaceNewCharInArrayJS(stringToMaintainSectionRight, rowSequence , rowCountRyt);
+                }
+                else
+                {
+                    stringToMaintainSectionRight = splitToPlaceNewCharInArrayJS(stringToMaintainSectionRight, '1', rowCountRyt);
+                }
+                while(stringToMaintainSectionRight.indexOf('@@') > -1)
+                    stringToMaintainSectionRight = stringToMaintainSectionRight.replace("@@", "@"); 
+                if( stringToMaintainSectionRight.substring(stringToMaintainSectionRight.length-1, stringToMaintainSectionRight.length ) == '@')
+                    stringToMaintainSectionRight = stringToMaintainSectionRight.substring(0, stringToMaintainSectionRight.length-1 );
+                /*Logic to maintain indexing, Ends.*/
+                
+                var recRow = '<p style="margin-top:20px;"><table border="0" cellpadding="0" cellspacing="0" width="100%" id="rowCountRyt'+rowCountRyt+'"><tbody><tr><td class="td1" style="display:none;padding-right:0 !important;"></td><td class="td2"><div class="select-editable float_l"><select  size="0" disabled="disabled"></select><input id="addRytRow'+rowCountRyt+'" type="text" onkeydown="fixedFieldsFun(this);" placeholder="None" class="apexaccountautocomplete" name="rightText'+rowCountRyt+'[]" style="width:237px; padding-left:9px; height:29px;" value="{!selField}" /></div><a  id="Auto_rowCountRyt'+rowCountRyt+'" onclick="addMoreRows_4(this.id);" class="btn_icon_add" title="Add" style="position:relative !important; top:5px !important;"></a>&nbsp;<a name="addRytRow" onclick="removeRowRyt('+rowCountRyt+', this);" class="btn_icon_delete" title="Delete" style="position:relative !important; top:5px !important;"></a><div id="addedRows_4"></div></td></tr></tbody></table></p>'; 
+                $(recRow).insertAfter('#'+passedId);
+                var nameIs = 'rightText'+rowCountRyt;
+                jQueryUtilityOfAutoComplete(nameIs);
+            } 
+            
+            /*@Description: Remove Rows of LEFT side.*/
+            function removeRowLft(removeNum, thisIs) 
+            { 
+                jQuery('#rowCountLft'+removeNum).remove(); 
+                for(var i = arrIdVsName.length - 1; i >= 0; i--) 
+                {
+                    var getArrVal = arrIdVsName[i];
+                    if(getArrVal.indexOf( thisIs.name+removeNum+'#¤#' ) > -1) 
+                    {
+                       arrIdVsName.splice(i, 1);
+                    }
+                }
+                stringToMaintainSectionLeft = splitToRemoveCharFromArrayJS(stringToMaintainSectionLeft, removeNum);
+                while(stringToMaintainSectionLeft.indexOf('@@') > -1)   /*Remove double occurance.*/
+                    stringToMaintainSectionLeft = stringToMaintainSectionLeft.replace("@@", "@"); 
+                if(stringToMaintainSectionLeft.substring(stringToMaintainSectionLeft.length -1 , stringToMaintainSectionLeft.length) == '@')     /*Remove Special Char from end.*/
+                    stringToMaintainSectionLeft = stringToMaintainSectionLeft.substring(0, stringToMaintainSectionLeft.length - 1);
+            }
+            
+            /*
+            @Description: It will return updated array after insertion of new element at a left place.
+            @Parameter1: passedStringOfArray; its string that holds positions occupied.
+            @Parameter2: splitAfterChar; character after which new position needs to be insert.
+            @Parameter3: insertChar; Character that needs to be inserted in between of an array.
+            */
+            function splitToPlaceNewCharInArrayJS(passedStringOfArray, insertAfterThisChar, insertingChar)
+            {
+                var arrOfTwoSplitTemp = passedStringOfArray.split('@');
+                var arrOfTwoSplitTempUpdated = new Array();
+                for(var i = 0; i < arrOfTwoSplitTemp.length; i++)
+                {
+                    if(arrOfTwoSplitTemp[i].toString() == insertAfterThisChar.toString() )
+                    {
+                        arrOfTwoSplitTempUpdated.push( arrOfTwoSplitTemp[i].toString() );                       
+                        arrOfTwoSplitTempUpdated.push( insertingChar.toString() );                      
+                    }
+                    else
+                    {
+                        arrOfTwoSplitTempUpdated.push( arrOfTwoSplitTemp[i].toString() ); 
+                    }
+                }
+                return arrOfTwoSplitTempUpdated.toString().replace( /,/g, "@" );
+            }
+            
+            
+            /*
+            @Description: It will return updated array after removal of new element at a right place.
+            @Parameter1: passedStringOfArray; its string that holds positions occupied.
+            @Parameter2: removingChar; the character which needs to be removed from string.
+            */
+            function splitToRemoveCharFromArrayJS(passedStringOfArray, removingChar)
+            {
+                var arrOfTwoSplitTemp = passedStringOfArray.split('@');
+                var arrOfTwoSplitTempUpdated = new Array();
+                for(var i = 0; i < arrOfTwoSplitTemp.length; i++)
+                {
+                    if(arrOfTwoSplitTemp[i] != undefined && arrOfTwoSplitTemp[i].toString() == removingChar.toString() )
+                    {
+                        //Do Nothing in this case, for now.             
+                    }
+                    else if( arrOfTwoSplitTemp[i] != undefined )
+                    {
+                        arrOfTwoSplitTempUpdated.push( arrOfTwoSplitTemp[i].toString() ); 
+                    }
+                }
+                return arrOfTwoSplitTempUpdated.toString().replace( /,/g, "@" );
+            }
+            
+            
+            /*@Description: Remove Rows of Right side.*/
+            function removeRowRyt(removeNum, thisIs) 
+            { 
+                jQuery('#rowCountRyt'+removeNum).remove(); 
+                for(var i = arrIdVsName.length - 1; i >= 0; i--) 
+                {
+                    var getArrVal = arrIdVsName[i];
+                    if(getArrVal.indexOf( thisIs.name+removeNum+'#¤#' ) > -1) 
+                    {
+                       arrIdVsName.splice(i, 1);
+                    }
+                }
+                
+                stringToMaintainSectionRight = splitToRemoveCharFromArrayJS(stringToMaintainSectionRight, removeNum);
+                while(stringToMaintainSectionRight.indexOf('@@') > -1)   /*Remove double occurance.*/
+                    stringToMaintainSectionRight = stringToMaintainSectionRight.replace("@@", "@"); 
+                
+                if(stringToMaintainSectionRight.substring(stringToMaintainSectionRight.length -1 , stringToMaintainSectionRight.length) == '@')  /*Remove Special Char from end.*/
+                    stringToMaintainSectionRight = stringToMaintainSectionRight.substring(0, stringToMaintainSectionRight.length - 1);
+                }
+            
+            Array.prototype.insert = function (index, item) {
+              this.splice(index, 0, item);
+            };
+            
+            var arrOfIndexLft = [];                         /*Left index array with their values.*/
+            var arrOfIndexRyt = [];                         /*Right index array with their values.*/
+            
+            /*@Description: This method will execute on Click of Save button.*/
+            function saveIISetup()
+            {
+              
+                document.getElementById('loadingDiv').style.display = '';
+                var APIsOfSelectedValues = [];              /*Hold API names of selected values.*/  
+                var mapFieldIndexVsValueLft = {};           /*Map to hold all left values against the index as a key.*/
+                var mapFieldIndexVsValueRyt = {};           /*Map to hold all right values against the index as a key.*/
+                var finalStringB4Save='';                   /*Final string just before save.*/
+                var finalStringB4SaveLft='';                /*Final string for left panel.*/
+                var finalStringB4SaveRyt='';                /*Final string for right panel*/
+                arrOfIndexLft = [];                         
+                arrOfIndexRyt = [];                         
+                var isShowErr = false;                      /*Show Duplicate error.*/
+                var count = 0;                              /*Count of multiple values to show error of duplicay.*/
+                /*@Logic: Get API names of selected values*/
+                for(var i = 0; i < arrIdVsName.length; i++) 
+                {
+                    var arrVal = arrIdVsName[i].substring( arrIdVsName[i].indexOf('#¤#') + 3, arrIdVsName[i].length );
+                    var arrValId = arrIdVsName[i].substring( 0, arrIdVsName[i].indexOf('#¤#') + 3 );
+                    var arrValIndex = arrIdVsName[i].substring( 9, arrIdVsName[i].indexOf('#¤#'));
+                    if( arrValId.indexOf('hitFirstt') > -1 || arrValId.indexOf('HitSecondd') > -1 )
+                        arrValIndex = '0';
+                        var fieldId = arrValId.split('#¤#').join('');
+                        var inputFieldValue = document.getElementById(fieldId).value;
+                        if(inputFieldValue != '' && inputFieldValue != null)
+                          {
+                            <apex:repeat value="{!FieldLabelVsApi}" var="lst"> 
+                            if('{!JSENCODE(FieldLabelVsApi[lst])}' == arrVal)
+                            {
+                               var abc = '{!JSENCODE(FieldLabelVsApi[lst])}';
+                               /*--- Code Added by sachin Date- 8-Nov-2016---*/
+                               var fieldValue = abc.split(strAccountLabel+':').join('').split(strContactLabel+':').join('');
+                               if(inputFieldValue == fieldValue)
+                               {
+                                 
+                                APIsOfSelectedValues.push('{!JSENCODE(lst)}');
+                                if( arrValId.indexOf('hitFirstt') > -1 || arrValId.indexOf('addLftRow') > -1 )
+                                {
+                                    mapFieldIndexVsValueLft[""+parseInt(arrValIndex)+""] = "{!JSENCODE(lst)}";
+                                    arrOfIndexLft.push(parseInt(arrValIndex));
+                                }
+                                else 
+                                {
+                                    mapFieldIndexVsValueRyt[""+parseInt(arrValIndex)+""] = "{!JSENCODE(lst)}";
+                                    arrOfIndexRyt.push(parseInt(arrValIndex));
+                                }
+                              } 
+                            }
+                           </apex:repeat>
+                          } 
+                }
+                insertionSort(arrOfIndexLft.sort());
+                insertionSort(arrOfIndexRyt.sort());
+                
+                /*@Logic: Create MAP of Left Selected values; IndexVsValues. */
+                var arrForFinalInsertLeft = stringToMaintainSectionLeft.split('@');
+                for(var i=0; i <= arrForFinalInsertLeft.length; i++)
+                {
+                    if(i == 0) /*arrForFinalInsertLeft; this array doesn't have zero(0), so we need to extract value from Map, which has a key 0.*/
+                        finalStringB4SaveLft = mapFieldIndexVsValueLft[ "0" ]; 
+                    if(arrForFinalInsertLeft[i] != undefined && mapFieldIndexVsValueLft[ arrForFinalInsertLeft[i] ] != undefined)
+                    {
+                        if(finalStringB4SaveLft == '')
+                            finalStringB4SaveLft = mapFieldIndexVsValueLft[ arrForFinalInsertLeft[i] ];
+                        else
+                            finalStringB4SaveLft =  finalStringB4SaveLft + ',' + mapFieldIndexVsValueLft[ arrForFinalInsertLeft[i] ];
+                    }
+                }
+                
+                /*@Logic: Create MAP of Right Selected values; IndexVsValues. */
+                var arrForFinalInsertRight = stringToMaintainSectionRight.split('@');
+                for(var i=0; i <arrForFinalInsertRight.length; i++)
+                {
+                    if(i == 0) /*arrForFinalInsertLeft; this array doesn't have zero(0), so we need to extract value from Map, which has a key 0.*/
+                        finalStringB4SaveRyt = mapFieldIndexVsValueRyt[ "0" ]; 
+                    if(arrForFinalInsertRight[i] != undefined && mapFieldIndexVsValueRyt[ arrForFinalInsertRight[i] ] != undefined)
+                    {
+                        if(finalStringB4SaveRyt == '')
+                            finalStringB4SaveRyt = mapFieldIndexVsValueRyt[ arrForFinalInsertRight[i] ];
+                        else
+                            finalStringB4SaveRyt =  finalStringB4SaveRyt + ',' + mapFieldIndexVsValueRyt[ arrForFinalInsertRight[i] ];
+                    }
+                }
+                
+                /*@Logic to check Duplicate API Names before save.*/
+                var sorted_arr = APIsOfSelectedValues.slice().sort(); 
+                var results = [];
+                for (var i = 0; i < APIsOfSelectedValues.length - 1; i++) 
+                {
+                    if (sorted_arr[i + 1] == sorted_arr[i]) {
+                        results.push(sorted_arr[i]);
+                    }
+                }
+                /*Execute if duplicate value found.*/
+                if( results.length > 0 )
+                {
+                    document.getElementById('duplicateErr').style.display = 'block';
+                    document.getElementById('blurred').style.display = 'block';
+                    document.getElementById('loadingDiv').style.display = 'none';
+                }
+                else /*get Api name and save in backend*/
+                {
+                    finalStringB4Save = finalStringB4SaveLft + ';' + finalStringB4SaveRyt;
+                    saveIISetupAF(finalStringB4Save)
+                }
+            }
+            
+            /*@Description: This method is use to sort the Array(Integers), which is passed as a parameter; Insertion Sort. */
+            function insertionSort(unsortedList) 
+            {
+                var len = unsortedList.length;
+                for(var i = 0; i < len; i++) 
+                {
+                    var tmp = unsortedList[i];
+                    for(var j = i - 1; j >= 0 && (unsortedList[j] > tmp); j--) 
+                        unsortedList[j+1] = unsortedList[j];
+                    unsortedList[j+1] = tmp;
+                }
+            }
+        
+            /*@Description: Called on click od Edit Button in View Mode, and perform further actions according to profile permissions. */
+            function checkPermission()
+            {
+                var userProfile = '{!$Profile.Name}';
+                if( userProfile == 'System Administrator' )
+                {
+                
+                    $('.div_a').hide();
+                    $('.div_b').show();
+                }
+                else
+                {
+                    InsufficientPermissions_Fancybox();
+                }
+            }
+        </script>
+        
+        <!-- Start Yellow Tooltip -->
+        <link rel="stylesheet" href="{!URLFOR($Resource.PE_35,'PE_3.5/css/tip-yellow.css')}" type="text/css" />
+        <script type="text/javascript" src="{!URLFOR($Resource.PE_35,'PE_3.5/js/jquery.poshytip.js')}"></script>
+        <script type="text/javascript">
+            $(function(){
+                $('.YellowTooltip').poshytip();
+            });
+        </script>
+        <style>
+        .tip-yellow { padding:15px !important; box-shadow:#ccc 0px 0px 5px !important; }
+        </style>
+        <!-- End Yellow Tooltip -->
+        <script>
+            $(document).ready(function()
+            {
+                $('.div_a').show();
+                $('.div_b').hide();
+                $(".click_one").click(function(){
+                    $('.div_a').hide();
+                    $('.div_b').show();
+                });
+
+                $(".click_Two").click(function(){
+                    $('.div_a').show();
+                    $('.div_b').hide();
+                });
+            }); 
+            
+            //Jquery for toggle I
+            $(document).ready(function(){
+                $(".RequiredInfoToggleA").hide();
+                $(".clickCollapseBI").hide();
+                
+                $(".clickCollapseAI").click(function(){
+                     getLayoutNameAccountCompId('Account');
+                     getLayoutNameContactCompId('Contact');
+                    $(".clickCollapseAI").hide();
+                    $(".clickCollapseBI").show();
+                    $(".RequiredInfoToggleA").slideToggle(500);
+                });
+                
+                $(".clickCollapseBI").click(function(){
+                    $(".clickCollapseBI").hide();
+                    $(".clickCollapseAI").show();
+                    $(".RequiredInfoToggleA").slideToggle(500);
+                });
+                
+            });
+            
+        </script>
+
+        <style>
+            fieldset {border:1px solid #e2e6ef; text-align:center !important; border-radius:3px; /*background:#f7f9fb;*/ background:#fafafa;}
+            @-moz-document url-prefix() {
+            fieldset legend {
+                margin-left:45% !important;
+            }
+        }
+        .select_box_view {background: #FAFAFA; float: right; padding: 3px 10px; position: absolute; right: 20px; top: 14px; border: 1px solid #EEEEEE; border-radius: 5px; color: #5D7193;}
+        .select_box_edit {background: #FAFAFA; float: right; padding: 3px 10px; position: absolute; right: 20px; top: 14px; border: 1px solid #EEEEEE; border-radius: 5px; color: #5D7193;}
+        .select_box_option {padding: 0px ! important; width: 90px; height: 25px; margin-left: 10px;}
+
+        .select-editable {
+        position:relative;
+        width: 260px;
+        height: 32px;
+        padding: 0px;
+        border: #c7cede 1px solid;
+        /*font-family: 'Ubuntu Condensed', sans-serif;*/
+        font-size: 14px;
+        border-radius: 4px;     
+
+     }
+     .select-editable select {
+         position:absolute;
+         top:0px;
+         left:0px;
+         font-size:14px;
+         /*font-family: 'Ubuntu Condensed', sans-serif;*/
+         border:none;
+         width:258px;
+         height:30px;
+         padding-right:20px !important;
+         margin:0;
+         color:#16325c;
+         padding-left:12px;
+         -webkit-appearance: none;
+        -moz-appearance: none; appearance: none;  -webkit-transition: border .1s linear,background-color .1s linear; transition: border .1s linear,background-color .1s linear; 
+        background-position:97% !important;
+     }
+     
+     
+    .select-editable input {
+         position:absolute;
+         top:0px;
+         left:1px;
+         width:255px;
+         /*font-family: 'Ubuntu Condensed', sans-serif;*/
+         padding:1px;
+         font-size:14px;
+         height: 30px;
+         border:none;
+         /*color:#16325c !important;*/ 
+     }
+         .select-editable select:focus, .select-editable input:focus {
+             outline:none;
+         }
+        .btn_icon_add, .btn_icon_delete {position:relative !important; top:10px !important; left:3px !important;}
+
+        .select-editable select option {padding-left:11px !important;}
+        .select-editable select.icon_3 option {padding-left:30px !important;}
+        /*a:hover {color:#333435 !important;}*/
+        </style>
+
+        <!---start script error, warning, suceess msg---->
+        <script type="text/javascript" src="{!URLFOR($Resource.PE_35,'PE_3.5/js/common.js')}"></script>        
+        <!---end script error, warning, suceess msg---->
+        
+        <!---start lightning css---->
+        <apex:stylesheet value="{!URLFOR($Resource.SLDS100, 'assets/styles/salesforce-lightning-design-system-vf.css')}" />
+        <link href = "{!URLFOR($Resource.PE_35, 'PE_3.5/css/PeLightning.css')}" rel = "stylesheet" type = "text/css" />
+        <link href = "{!URLFOR($Resource.PE_35, 'PE_3.5/css/Navatar-Yellow-Theme-Setup-Left-Section.css')}" rel = "stylesheet" type = "text/css" />
+        <link href = "{!URLFOR($Resource.PE_35, 'PE_3.5/css/Navatar-Yellow-Theme.css')}" rel = "stylesheet" type = "text/css"/>        
+        <style>
+            .contentBox_shadow {box-shadow:none !important; border:#eee 1px solid !important}
+        </style>
+        <!---end lighting css--->
+
+        </head>
+        <body onload="onBodyLoadFun();">
+        <!---Loading Div-->
+        <div id="loadingDiv" style="width:100%; height:100%; display:none; background:#fff; text-align:center; vertical-align:middle; opacity:0.7; position:fixed; top:0; left:0; z-index:9999999;">
+            <div style="width:100px; height:100%; position:relative;top:41%; background:url({!URLFOR($Resource.PE_35, 'PE_3.5/images/icon_loading.gif')}) no-repeat top left; margin:0 auto;"></div>
+        </div>
+        <!-- Start REQUIRED SLDS WRAPPER -->
+        <div class="slds">
+        
+        <!-- Start PRIMARY CONTENT WRAPPER -->
+        <div class="myapp">
+
+        <div id="temp" style="padding-bottom:0px !important;">
+
+        <div id="blurred" class="fancybox_background"></div>
+        <!-- Start InsufficientPermissions_Fancybox -->
+        <div id="inSuffPermit" class="InsufficientPermissions_Fancybox FancyboxContainer Popup">
+            <div class="slds-modal__header">
+                <div class="close_white_60" >
+                    <a title="Close" onclick="closepopup('fancybox_background','FancyboxContainer');return false;" ><img src="{!URLFOR($Resource.PE_35, 'PE_3.5/images/close_white_60.png')}" /></a>
+                </div>
+                <h2 class="slds-text-heading--medium">Insufficient Permission</h2>
+            </div>
+            <div class="PopupContentStart" style="text-align:center; padding:15px 25px !important">
+                You do not have permission to edit this information. <br />Please contact your Navatar Administrator.
+                <div class="cl"></div> 
+            </div>
+            <div class="slds-modal__footer">
+                <input type="button" title="OK" value="OK" class="slds-button slds-button--neutral" onclick="closepopup('fancybox_background','FancyboxContainer');return false;" />
+            </div>                  
+        </div>
+        <!-- End InsufficientPermissions_Fancybox -->
+        
+        <!-- Start Duplicate MSG -->
+        <div id="duplicateErr" style="position: fixed; top: 200px; left: 463.5px;display:none;width:400px;" class="FancyboxContainer Popup ui-draggable">
+            <div class="slds-modal__header">
+                <div class="close_white_60" >
+                    <a title="Close" onclick="document.getElementById('duplicateErr').style.display = 'none';document.getElementById('blurred').style.display = 'none';" ><img src="{!URLFOR($Resource.PE_35, 'PE_3.5/images/close_white_60.png')}" /></a>
+                </div>
+                <h2 class="slds-text-heading--medium">Error</h2>
+            </div>
+            <div class="PopupContentStart" style="text-align:center; padding:15px 25px !important">
+                You cannot save duplicate fields.
+                <div class="cl"></div> 
+            </div>
+            <div class="slds-modal__footer">
+                <input type="button" title="OK" value="OK" class="slds-button slds-button--neutral" onclick="document.getElementById('duplicateErr').style.display = 'none';document.getElementById('blurred').style.display = 'none';" />
+            </div>                  
+        </div>
+        <!-- End Duplicate MSG -->
+
+        <!-- Start Warning_Fancybox -->         
+        <div class="Warning_Fancybox FancyboxContainer Popup">
+            <div class="slds-modal__header">
+                <div class="close_white_60" >
+                    <a title="Close" onclick="closepopup('fancybox_background','FancyboxContainer');return false;" ><img src="{!URLFOR($Resource.PE_35, 'PE_3.5/images/close_white_60.png')}" /></a>
+                </div>
+                <h2 class="slds-text-heading--medium">Warning</h2>
+            </div>
+            <div class="PopupContentStart" style="padding:15px 25px !important">
+               <table cellpadding="0" cellspacing="20" border="0" width="100%">
+                    <tr>
+                        <!--<td width="42">
+                            <div class="slds-icon slds-icon-text-warning slds-icon--x-large">
+                               <img src="{!URLFOR($Resource.SLDS100, '/assets/icons/utility/warning_60.png')}" />
+                            </div>
+                        </td>-->
+                        <td>
+                            Any layout change made will be rolled back to the default setting.<br/> Are you sure you want to proceed?<br />
+                        </td>
+                    </tr>
+               </table>
+                <div class="cl"></div> 
+            </div>
+            
+            <div class="slds-modal__footer">
+                 <apex:commandButton value="No" style="width:60px;height:40px;" styleClass="slds-button slds-button--neutral" onclick="closepopup('fancybox_background','FancyboxContainer');return false;" />
+                <apex:commandButton value="Yes" style="width:60px;height:38px;" onclick="document.getElementById('loadingDiv').style.display = '';" styleClass="slds-button slds-button--brand click_for_step_2" action="{!revertToDefaultAct}" />
+            </div>  
+            
+        </div>
+        <!-- End Warning_Fancybox -->
+            
+
+        <table width="100%" border="0" cellpadding="0" cellspacing="0">
+            <tr>
+                <td style="width:240px; padding:0 !important;" valign="top" class="Left_bgcolor">  
+                            <div id="LeftMenuSection" class="float_l">                            
+                                <div class="ContentStart">
+                                <ul>
+                                    <li><apex:outputLink title="Deal Creation" value="/apex/Deal_Creation_Setup" target="_parent">Deal Creation</apex:outputLink></li>
+                                    <li><apex:outputLink title="Individual Investor Creation" value="/apex/Individual_Investor_Setup"  styleClass="selected" target="_parent">Individual Investor Creation</apex:outputLink></li>
+                                    <li><apex:outputLink title="Commitment Creation" value="/apex/Commitment_Creation_Setup" target="_parent">Commitment Creation</apex:outputLink></li>
+                                    <li><apex:outputLink title="Contact Transfer" value="/apex/ContactTransfer_Settings_Setup" target="_parent">Contact Transfer</apex:outputLink></li>
+                                    <li><apex:outputLink title="Account Associations" value="/apex/ProductSetting" target="_parent">Account Associations</apex:outputLink></li>
+                                    <li><apex:outputLink title="Bulk Email" value="/apex/Bulk_Email_Setup" target="_parent">Bulk Email</apex:outputLink></li>
+                                    <li><apex:outputLink title="Office Locations" value="/apex/Office_Locations_Setup" target="_parent">Office Locations</apex:outputLink></li>
+                                    <li><apex:outputLink title="Co-investment Settings" value="/apex/CoInvestment_Settings_Setup" target="_parent">Co-investment Settings</apex:outputLink></li>
+                                    <li><apex:outputLink title="Pipeline Stage Log" value="/apex/Pipeline_Stage_Log" target="_parent">Pipeline Stage Log</apex:outputLink></li>
+                                </ul>
+                                </div>
+                            </div>
+                        </td>
+            
+            <td valign="top">
+            <div id="adminIDCheck" class="slds-box slds-theme--error" style="display:{!IF((isAdminSettingOn),'none','block')}">
+                <img src="{!URLFOR($Resource.PE_35,'PE_3.5/images/Cancel-32.png')}" style="position: relative;top: -4px;"/>
+                <p style="margin-left:40px; margin-top:-26px">
+                Error Code: 12355. Please contact Navatar Support. System setup improperly.
+                </p>
+            </div>
+            <div id="RightMenuContentSection" class="float_r" style="padding-bottom:10px !important; display:{!IF((isAdminSettingOn),'block','none')};" >
+                
+                <!-- Start Div A -->
+                <div class="ContentStart div_a" >                                
+                    <div class="slds-page-header" role="banner">
+                      <div class="slds-media" style="padding-bottom:10px;">
+                        <div class="slds-media__figure float_l">
+                          <div class="slds-icon slds-icon-custom-3 slds-icon--large">
+                            <img src="{!URLFOR($Resource.SLDS100, '/assets/icons/custom/custom67_60.png')}" />
+                          </div>
+                        </div>
+                        <div class="slds-media__body float_l">
+                          <p class="slds-page-header__title slds-truncate slds-align-middle" style="padding-top:8px">Individual Investor Creation
+                            <span class="YellowTooltip" title="Use this setting to quickly create Individual Investors (both Institution and Contact) in the system.">
+                               <span class="slds-icon icon-utility-info slds-icon-text-default">
+                                <img src="{!URLFOR($Resource.SLDS100, '/assets/icons/utility/info_60_white.png')}" style="width:22px; height:22px; position:relative; top:-7px" />
+                               </span>   
+                            </span>  
+                          </p>                        
+                        </div>
+                        
+                        <div class="slds-button-group float_r">
+                          <input type="button" value="Edit" title="Edit" class="slds-button slds-button--neutral" onclick="checkPermission();"/>
+                        </div>                                          
+                        </div>
+                     <div class="cl"></div> 
+                    </div>
+                    
+                  <apex:outputpanel id="CheckboxPanelFirst">
+                  <div class="popupLayoutHeading_Top" style="margin:15px 15px 0 15px;padding:6px 8px;">
+                       <label class="slds-checkbox">
+                        <apex:inputcheckbox id="isinstanceDis" styleclass="slds-input" value="{!isIICreation}" disabled="true" />
+                        <span class="slds-checkbox--faux"></span>                               
+                      </label>
+                      <span data-aura-rendered-by="23510:1;0" class="title primaryPaletteBorder">Enable Individual Investor Creation</span>   
+                    </div>
+                    </apex:outputpanel>
+                   <div class="cl"></div>
+                  
+                  
+                   <div class="cl"></div>
+                    <!-- Start Content Box -->
+                    <div class="ContentBox" style="margin-top:20px;">
+                        <div class="popupLayoutHeading">
+                            <h4 data-aura-rendered-by="23510:1;0" class="title primaryPaletteBorder">Page Layout</h4>    
+                        </div>
+                        
+                        <!-- Start-->
+                        <div class="ContentBox contentBox_shadow" style="margin:0 !important; margin-top:10px !important;">
+                        
+                        <h2 style="border-bottom:#fcb141 1px solid !important">
+                            <table border="0" cellpadding="0" cellspacing="0" width="100%" class="table">
+                                <tr>
+                                    <td><span class="slds-section__title" style="border-bottom:0 !important; color:#5c7d87 !important; background:none !important; padding:0 !important">Contact Information</span></td>
+                                </tr>
+                            </table>
+                        </h2>
+                        
+                        <div class="cl"></div>
+                        <table border="0" cellpadding="0" cellspacing="0" width="100%" class="table" style="margin-top:17px; ">
+                            <tr>
+                                <td valign="top" width="50%">
+                                    <table border="0" cellpadding="5" cellspacing="0" width="100%" class="TopBottomSpace"> 
+                                        <tbody>
+                                            <tr>
+                                                <td class="td1" style="width:250px;">
+                                                    <label style="white-space: nowrap;" class="slds-form-element__label" for="text-input-01">{!$ObjectType.Contact.fields.FirstName.Label}</label></td>
+                                                <td class="td2"></td>
+                                            </tr>
+                                            <tr>
+                                                <td class="td1"><label class="slds-form-element__label" for="text-input-01">{!$ObjectType.Contact.fields.lastName.Label}</label></td>
+                                                <td class="td2"></td>
+                                            </tr>
+                                            
+                                            <tr>
+                                                <td class="td1"><label style="white-space: nowrap;" class="slds-form-element__label" for="text-input-01">{!$ObjectType.Contact.fields.Description.Label}</label></td>
+                                                <td class="td2"></td>
+                                            </tr>   
+                                        </tbody>
+                                    </table>
+                                
+                                </td>
+                                <td valign="top">
+                                    <table border="0" cellpadding="5" cellspacing="0" width="100%" class="TopBottomSpace">
+                                        <tbody>
+                                            <tr>
+                                                <td class="td1" style="width:250px;"><label style="white-space: nowrap;" class="slds-form-element__label" for="text-input-01">{!$ObjectType.Contact.fields.Phone.Label}</label></td>
+                                                <td class="td2"></td>
+                                            </tr>
+                                            <tr>
+                                                <td class="td1"><label style="white-space: nowrap;" class="slds-form-element__label" for="text-input-01">{!$ObjectType.Contact.fields.fax.Label}</label></td>
+                                                <td class="td2"></td>
+                                            </tr>
+                                            <tr>
+                                                <td class="td1"><label style="white-space: nowrap;" class="slds-form-element__label" for="text-input-01">{!$ObjectType.Contact.fields.MobilePhone.Label}</label></td>
+                                                <td class="td2"></td>
+                                            </tr>
+                                            <tr>
+                                                <td class="td1"><label style="white-space: nowrap;" class="slds-form-element__label" for="text-input-01">{!$ObjectType.Contact.fields.email.Label}</label></td>
+                                                <td class="td2"></td>
+                                            </tr>
+                                            
+                                        </tbody>
+                                    </table>
+                                </td>
+                            </tr>
+                        </table>
+                        </div>  
+                    </div>
+                    <!-- End Content Box -->
+                    <div class="cl"></div>
+                    
+                    <!-- Start Content Box -->
+                    <div class="ContentBox" style="margin-top:20px;">
+                       
+                       <h2 style="border-bottom:#fcb141 1px solid !important">
+                            <table border="0" cellpadding="0" cellspacing="0" width="100%" class="table">
+                                <tr>
+                                    <td><span class="slds-section__title" style="border-bottom:0 !important; color:#5c7d87 !important; background:none !important; padding:0 !important">Address Information</span></td>
+                                </tr>
+                            </table>
+                        </h2>
+                        
+                        <div class="cl"></div>
+                        <table border="0" cellpadding="0" cellspacing="0" width="100%" class="table" style="margin-top:17px; ">
+                            <tr>
+                                <td valign="top" width="50%">
+                                    <table border="0" cellpadding="5" cellspacing="0" width="100%" class="TopBottomSpace"> 
+                                        <tbody>
+                                            <tr>
+                                                <td class="td1" style="width:250px;">
+                                                    <label style="white-space: nowrap;" class="slds-form-element__label" for="text-input-01">{!$ObjectType.Contact.fields.MailingStreet.Label}</label></td>
+                                                <td class="td2"></td>
+                                            </tr>
+                                            <tr>
+                                                <td class="td1"><label style="white-space: nowrap;" class="slds-form-element__label" for="text-input-01">{!$ObjectType.Contact.fields.MailingCity.Label}</label></td>
+                                                <td class="td2"></td>
+                                            </tr>                                            
+                                            <tr>
+                                                <td class="td1"><label style="white-space: nowrap;" class="slds-form-element__label" for="text-input-01">{!$ObjectType.Contact.fields.MailingState.Label}</label></td>
+                                                <td class="td2"></td>
+                                            </tr>
+                                            <tr>
+                                                <td class="td1"><label style="white-space: nowrap;" class="slds-form-element__label" for="text-input-01">{!$ObjectType.Contact.fields.MailingPostalCode.Label}</label></td>
+                                                <td class="td2"></td>
+                                            </tr>
+                                            <tr>
+                                                <td class="td1"><label style="white-space: nowrap;"  class="slds-form-element__label" for="text-input-01">{!$ObjectType.Contact.fields.MailingCountry.Label}</label></td>
+                                                <td class="td2"></td>
+                                            </tr>                                           
+                                            
+                                        </tbody>
+                                    </table>
+                                
+                                </td>
+                                <td valign="top">
+                                    <table border="0" cellpadding="5" cellspacing="0" width="100%" class="TopBottomSpace">
+                                        <tbody>
+                                            <tr>
+                                                <td class="td1" style="width:250px;"><label style="white-space: nowrap;" class="slds-form-element__label" for="text-input-01">{!$ObjectType.Contact.fields.OtherStreet.Label}</label></td>
+                                                <td class="td2"></td>
+                                            </tr>
+                                            <tr>
+                                                <td class="td1"><label style="white-space: nowrap;" class="slds-form-element__label" for="text-input-01">{!$ObjectType.Contact.fields.OtherCity.Label}</label></td>
+                                                <td class="td2"></td>
+                                            </tr>
+                                            <tr>
+                                                <td class="td1"><label style="white-space: nowrap;" class="slds-form-element__label" for="text-input-01">{!$ObjectType.Contact.fields.OtherState.Label}</label></td>
+                                                <td class="td2"></td>
+                                            </tr>
+                                            <tr>
+                                                <td class="td1"><label style="white-space: nowrap;" class="slds-form-element__label" for="text-input-01">{!$ObjectType.Contact.fields.OtherPostalCode.Label}</label></td>
+                                                <td class="td2"></td>
+                                            </tr>
+                                            <tr>
+                                                <td class="td1"><label style="white-space: nowrap;" class="slds-form-element__label" for="text-input-01">{!$ObjectType.Contact.fields.OtherCountry.Label}</label></td>
+                                                <td class="td2"></td>
+                                            </tr>   
+                                            
+                                        </tbody>
+                                    </table>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                    <!-- End Content Box -->                    
+                    
+                   <div class="cl"></div>
+                    
+                    <!-- Start Content Box -->
+                    <div class="ContentBox" style="margin-top:20px;">
+                        <h2 style="border-bottom:#fcb141 1px solid !important">
+                            <table border="0" cellpadding="0" cellspacing="0" width="100%" class="table">
+                                <tr>
+                                    <td><span class="slds-section__title" style="border-bottom:0 !important; color:#5c7d87 !important; background:none !important; padding:0 !important">Additional Information</span></td>
+                                </tr>
+                            </table>
+                        </h2>
+                        <div class="cl"></div>
+                        <table border="0" cellpadding="0" cellspacing="0" width="100%" class="table" style="margin-top:17px; ">
+                            <tr>
+                                <td valign="top" width="50%">
+                                    <table border="0" cellpadding="5" cellspacing="0" width="100%" class="TopBottomSpace"> 
+                                        <tbody>
+                                            <tr>
+                                                <td class="td1" style="width:250px;">
+                                                    <label style="white-space: nowrap;" class="slds-form-element__label" id="leftStaticLabel1" for="text-input-01"></label></td>
+                                                <td class="td2"></td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                    <div id="leftOutputColumn"></div>
+                                    
+                                </td>
+                                <td valign="top">
+                                    <table border="0" cellpadding="5" cellspacing="0" width="100%" class="TopBottomSpace">
+                                        <tbody>
+                                            <tr>
+                                                <td class="td1" style="width:250px;"><label style="white-space: nowrap;" class="slds-form-element__label"  id="rightStaticLabel1" for="text-input-01"></label></td>
+                                                <td class="td2"></td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                    <div id="rightOutputColumn"></div>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                    <!-- End Content Box -->
+                    
+                </div>
+                <!-- End Div A -->
+                
+                
+                <!-- Start Div B -->
+                <div class="ContentStart div_b">                
+                    <div class="slds-page-header" role="banner">
+                      <div class="slds-media" style="padding-bottom:10px;">
+                        <div class="slds-media__figure float_l">
+                          <div class="slds-icon slds-icon-custom-3 slds-icon--large">
+                            <img src="{!URLFOR($Resource.SLDS100, '/assets/icons/custom/custom67_60.png')}" />
+                          </div>
+                        </div>
+                        <div class="slds-media__body float_l">
+                          <p class="slds-page-header__title slds-truncate slds-align-middle" style="padding-top:8px">Individual Investor Creation
+                            <span class="YellowTooltip" title="Use this setting to quickly create Individual Investors (both Institution and Contact) in the system.">
+                               <span class="slds-icon icon-utility-info slds-icon-text-default">
+                                <img src="{!URLFOR($Resource.SLDS100, '/assets/icons/utility/info_60_white.png')}" style="width:22px; height:22px; position:relative; top:-7px" />
+                               </span>
+                            </span>  
+                          </p>                        
+                        </div>                     
+                      </div>
+                    <div class="cl"></div>  
+                    </div>
+                    
+                    <div style="margin:15px 17px 0 30px;" class="float_r">
+                        <apex:commandButton value="Cancel" title="Cancel"  action="{!onCancel}"  onclick="document.getElementById('loadingDiv').style.display = 'block';" styleClass="slds-button slds-button--neutral" />
+                        <apex:commandButton value="Revert to Defaults" title="Revert to Defaults" styleClass="slds-button slds-button--neutral" onclick="Warning_Fancybox();return false;" />
+                        <input type="button" value="Save" style="width:70px;" title="Save" onclick="saveIISetup();" Class="slds-button slds-button--brand click_for_step_2" />  
+                    </div>
+                    <div class="cl"></div>
+                    <apex:outputpanel id="CheckboxPanelScoend">
+                    <div class="popupLayoutHeading_Top" style="margin:15px 15px 0 15px;padding:6px 8px;">
+                     <label class="slds-checkbox">
+                        <apex:inputcheckbox id="isinstance" styleclass="slds-input" value="{!isIICreation}" />
+                        <span class="slds-checkbox--faux"></span>                               
+                      </label>
+                      <span data-aura-rendered-by="23510:1;0" class="title primaryPaletteBorder">Enable Individual Investor Creation</span>                         
+                    <div class="cl"></div>                  
+                   </div>
+                    </apex:outputpanel>
+                    <div class="cl"></div>
+                    
+                    <!-- Start Content Box -->
+                    <div class="ContentBox" style="margin-top:20px;">
+                        
+                        <div class="popupLayoutHeading">
+                            <h4 data-aura-rendered-by="23510:1;0" class="title primaryPaletteBorder">Page Layout</h4>   
+                        </div>
+                        <div class="cl"></div>
+                       
+                        <!-- Start-->
+                        <div class="ContentBox contentBox_shadow" style="margin:0 !important; margin-top:10px !important;">
+                        <h2 style="border-bottom:#fcb141 1px solid !important">
+                            <table border="0" cellpadding="0" cellspacing="0" width="100%" class="table">
+                                <tr>
+                                    <td><span class="slds-section__title" style="border-bottom:0 !important; color:#5c7d87 !important; background:none !important; padding:0 !important">Contact Information</span></td>
+                                </tr>
+                            </table>
+                        </h2>
+                        <div class="cl"></div>
+                        
+                        <table border="0" cellpadding="0" cellspacing="0" width="100%" class="table" style="margin-top:24px;">
+                            <tr>
+                                <td valign="top" width="50%">
+                                    <table border="0" cellpadding="5" cellspacing="0" class="" width="100%">
+                                        <tbody>
+                                            <tr>
+                                                <td class="td1" style="width:18%;"></td>
+                                                <td class="td2">
+                                                    <div class="slds-form-element">
+                                                        <div class="slds-form-element__control" style="width:260px;">
+                                                          <div class="slds-select_container">
+                                                            <apex:selectList size="1" styleClass="slds-select icon_33LightCon" disabled="true">
+                                                                <apex:selectOption itemValue="{!$ObjectType.Contact.fields.firstname.Label}" itemLabel="{!$ObjectType.Contact.fields.firstname.Label}" />
+                                                            </apex:selectList>
+                                                          </div>
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td class="td1"></td>
+                                                <td class="td2">
+                                                    <div class="slds-form-element">
+                                                        <div class="slds-form-element__control" style="width:260px;">
+                                                          <div class="slds-select_container">
+                                                             <apex:selectList size="1" styleClass="slds-select icon_33LightCon" disabled="true">
+                                                                <apex:selectOption itemValue="{!$ObjectType.Contact.fields.lastname.Label}" itemLabel="{!$ObjectType.Contact.fields.lastname.Label}" />
+                                                            </apex:selectList>
+                                                          </div>
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td class="td1"></td>
+                                                <td class="td2">
+                                                    <div class="slds-form-element">
+                                                        <div class="slds-form-element__control" style="width:260px;">
+                                                          <div class="slds-select_container">
+                                                             <apex:selectList size="1" styleClass="slds-select icon_33LightCon" disabled="true">
+                                                                <apex:selectOption itemValue="{!$ObjectType.Contact.fields.Description.Label}" itemLabel="{!$ObjectType.Contact.fields.Description.Label}" />
+                                                            </apex:selectList>
+                                                          </div>
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                            </tr>                                            
+                                        </tbody>
+                                    </table>                                
+                                </td>
+                                <td valign="top">
+                                    <table border="0" cellpadding="5" cellspacing="0" width="100%">
+                                        <tbody>
+                                            <tr>
+                                                <td class="td1" style="width:18%;"></td>
+                                                <td class="td2">
+                                                    <div class="slds-form-element">
+                                                        <div class="slds-form-element__control" style="width:260px;">
+                                                          <div class="slds-select_container">
+                                                             <apex:selectList size="1" styleClass="slds-select icon_33LightCon" disabled="true">
+                                                                <apex:selectOption itemValue="{!$ObjectType.Contact.fields.Phone.Label}" itemLabel="{!$ObjectType.Contact.fields.Phone.Label}" />
+                                                            </apex:selectList>
+                                                          </div>
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td class="td1"></td>
+                                                <td class="td2">
+                                                    <div class="slds-form-element">
+                                                        <div class="slds-form-element__control" style="width:260px;">
+                                                          <div class="slds-select_container">
+                                                             <apex:selectList size="1" styleClass="slds-select icon_33LightCon" disabled="true">
+                                                                <apex:selectOption itemValue="{!$ObjectType.Contact.fields.fax.Label}" itemLabel="{!$ObjectType.Contact.fields.fax.Label}" />
+                                                            </apex:selectList>
+                                                          </div>
+                                                        </div>
+                                                    </div>
+                                                </td>                                        
+                                            </tr>
+                                            
+                                            <tr>
+                                                <td class="td1"></td>
+                                                <td class="td2">
+                                                    <div class="slds-form-element">
+                                                        <div class="slds-form-element__control" style="width:260px;">
+                                                          <div class="slds-select_container">
+                                                             <apex:selectList size="1" styleClass="slds-select icon_33LightCon" disabled="true">
+                                                                <apex:selectOption itemValue="{!$ObjectType.Contact.fields.MobilePhone.Label}" itemLabel="{!$ObjectType.Contact.fields.MobilePhone.Label}" />
+                                                            </apex:selectList>
+                                                          </div>
+                                                        </div>
+                                                    </div>
+                                                </td>                                        
+                                            </tr>
+                                             <tr>
+                                                <td class="td1"></td>
+                                                <td class="td2">
+                                                    <div class="slds-form-element">
+                                                        <div class="slds-form-element__control" style="width:260px;">
+                                                          <div class="slds-select_container">
+                                                             <apex:selectList size="1" styleClass="slds-select icon_33LightCon" disabled="true">
+                                                                <apex:selectOption itemValue="{!$ObjectType.Contact.fields.email.Label}" itemLabel="{!$ObjectType.Contact.fields.email.Label}" />
+                                                            </apex:selectList>
+                                                          </div>
+                                                        </div>
+                                                    </div>
+                                                </td>                                        
+                                            </tr>                                                
+                                        </tbody>
+                                    </table>                                    
+                                </td>
+                            </tr>
+                        </table>
+                     </div>     
+                    </div>
+                    <!-- End Content Box -->
+                    <div class="cl"></div>                        
+                    
+                    <!-- Start Content Box -->
+                    <div class="ContentBox" style="margin-top:20px;">
+                        <h2 style="border-bottom:#fcb141 1px solid !important">
+                            <table border="0" cellpadding="0" cellspacing="0" width="100%" class="table">
+                                <tr>
+                                    <td><span class="slds-section__title" style="border-bottom:0 !important; color:#5c7d87 !important; background:none !important; padding:0 !important">Address Information</span></td>
+                                </tr>
+                            </table>
+                        </h2>                        
+                        <div class="cl"></div>
+                        <table border="0" cellpadding="0" cellspacing="0" width="100%" class="table" style="margin-top:24px;">
+                            <tr>
+                                <td valign="top" width="50%">
+                                    <table border="0" cellpadding="5" cellspacing="0" class="" width="100%">
+                                        <tbody>
+                                            <tr>
+                                                <td class="td1" style="width:18%;"></td>
+                                                <td class="td2">
+                                                    <div class="slds-form-element">
+                                                        <div class="slds-form-element__control" style="width:260px;">
+                                                          <div class="slds-select_container">
+                                                              <apex:selectList size="1" styleClass="slds-select icon_33LightCon" disabled="true">
+                                                                <apex:selectOption itemValue="{!$ObjectType.Contact.fields.MailingStreet.Label}" itemLabel="{!$ObjectType.Contact.fields.MailingStreet.Label}" />
+                                                            </apex:selectList>
+                                                          </div>
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td class="td1"></td>
+                                                <td class="td2">
+                                                    <div class="slds-form-element">
+                                                        <div class="slds-form-element__control" style="width:260px;">
+                                                          <div class="slds-select_container">
+                                                             <apex:selectList size="1" styleClass="slds-select icon_33LightCon" disabled="true">
+                                                                <apex:selectOption itemValue="{!$ObjectType.Contact.fields.MailingCity.Label}" itemLabel="{!$ObjectType.Contact.fields.MailingCity.Label}" />
+                                                            </apex:selectList>
+                                                          </div>
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td class="td1"></td>
+                                                <td class="td2">
+                                                    <div class="slds-form-element">
+                                                        <div class="slds-form-element__control" style="width:260px;">
+                                                          <div class="slds-select_container">
+                                                            <apex:selectList size="1" styleClass="slds-select icon_33LightCon" disabled="true">
+                                                                <apex:selectOption itemValue="{!$ObjectType.Contact.fields.MailingState.Label}" itemLabel="{!$ObjectType.Contact.fields.MailingState.Label}" />
+                                                            </apex:selectList>
+                                                          </div>
+                                                        </div>
+                                                    </div>
+                                                </td>  
+                                            </tr>
+                                            <tr>
+                                                <td class="td1"></td>
+                                                <td class="td2">
+                                                    <div class="slds-form-element">
+                                                        <div class="slds-form-element__control" style="width:260px;">
+                                                          <div class="slds-select_container">
+                                                             <apex:selectList size="1" styleClass="slds-select icon_33LightCon" disabled="true">
+                                                                <apex:selectOption itemValue="{!$ObjectType.Contact.fields.MailingPostalCode.Label}" itemLabel="{!$ObjectType.Contact.fields.MailingPostalCode.Label}" />
+                                                            </apex:selectList>
+                                                          </div>
+                                                        </div>
+                                                    </div>
+                                                </td>  
+                                            </tr>
+                                            <tr>
+                                                <td class="td1"></td>
+                                                <td class="td2">
+                                                    <div class="slds-form-element">
+                                                        <div class="slds-form-element__control" style="width:260px;">
+                                                          <div class="slds-select_container">
+                                                            <apex:selectList size="1" styleClass="slds-select icon_33LightCon" disabled="true">
+                                                                <apex:selectOption itemValue="{!$ObjectType.Contact.fields.MailingCountry.Label}" itemLabel="{!$ObjectType.Contact.fields.MailingCountry.Label}" />
+                                                            </apex:selectList>
+                                                          </div>
+                                                        </div>
+                                                    </div>
+                                                </td>  
+                                            </tr>   
+                                        </tbody>
+                                    </table>                                
+                                </td>
+                                <td valign="top">
+                                    <table border="0" cellpadding="5" cellspacing="0" width="100%">
+                                        <tbody>
+                                            <tr>
+                                                <td class="td1" style="width:18%;"></td>
+                                                <td class="td2">
+                                                    <div class="slds-form-element">
+                                                        <div class="slds-form-element__control" style="width:260px;">
+                                                          <div class="slds-select_container">
+                                                             <apex:selectList size="1" styleClass="slds-select icon_33LightCon" disabled="true">
+                                                                <apex:selectOption itemValue="{!$ObjectType.Contact.fields.Otherstreet.Label}" itemLabel="{!$ObjectType.Contact.fields.Otherstreet.Label}" />
+                                                            </apex:selectList>
+                                                          </div>
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td class="td1"></td>
+                                                <td class="td2">
+                                                    <div class="slds-form-element">
+                                                        <div class="slds-form-element__control" style="width:260px;">
+                                                          <div class="slds-select_container">
+                                                             <apex:selectList size="1" styleClass="slds-select icon_33LightCon" disabled="true">
+                                                                <apex:selectOption itemValue="{!$ObjectType.Contact.fields.OtherCity.Label}" itemLabel="{!$ObjectType.Contact.fields.OtherCity.Label}" />
+                                                            </apex:selectList>
+                                                          </div>
+                                                        </div>
+                                                    </div>
+                                                </td>                                        
+                                            </tr>
+                                            
+                                            <tr>
+                                                <td class="td1"></td>
+                                                <td class="td2">
+                                                    <div class="slds-form-element">
+                                                        <div class="slds-form-element__control" style="width:260px;">
+                                                          <div class="slds-select_container">
+                                                            <apex:selectList size="1" styleClass="slds-select icon_33LightCon" disabled="true">
+                                                                <apex:selectOption itemValue="{!$ObjectType.Contact.fields.OtherState.Label}" itemLabel="{!$ObjectType.Contact.fields.OtherState.Label}" />
+                                                            </apex:selectList>
+                                                          </div>
+                                                        </div>
+                                                    </div>
+                                                </td>                                        
+                                            </tr>
+                                             <tr>
+                                                <td class="td1"></td>
+                                                <td class="td2">
+                                                    <div class="slds-form-element">
+                                                        <div class="slds-form-element__control" style="width:260px;">
+                                                          <div class="slds-select_container">
+                                                             <apex:selectList size="1" styleClass="slds-select icon_33LightCon" disabled="true">
+                                                                <apex:selectOption itemValue="{!$ObjectType.Contact.fields.OtherPostalCode.Label}" itemLabel="{!$ObjectType.Contact.fields.OtherPostalCode.Label}" />
+                                                            </apex:selectList>
+                                                          </div>
+                                                        </div>
+                                                    </div>
+                                                </td>                                        
+                                            </tr>
+                                            <tr>
+                                                <td class="td1"></td>
+                                                <td class="td2">
+                                                    <div class="slds-form-element">
+                                                        <div class="slds-form-element__control" style="width:260px;">
+                                                          <div class="slds-select_container">
+                                                            <apex:selectList size="1" styleClass="slds-select icon_33LightCon" disabled="true">
+                                                                <apex:selectOption itemValue="{!$ObjectType.Contact.fields.OtherCountry.Label}" itemLabel="Other Country" />
+                                                            </apex:selectList>
+                                                          </div>
+                                                         </div>
+                                                    </div>
+                                                </td>                                        
+                                            </tr>   
+                                        </tbody>
+                                    </table>                                    
+                                </td>
+                            </tr>
+                        </table>                        
+                    </div>
+                    <!-- End Content Box -->
+                    
+                    <!-- Start Content Box -->
+                    <div class="ContentBox" style="margin-top:20px; padding-bottom:37px !important;">
+                        <h2 style="border-bottom:#fcb141 1px solid !important">
+                            <table border="0" cellpadding="0" cellspacing="0" width="100%" class="table">
+                                <tr>
+                                    <td><span class="slds-section__title" style="border-bottom:0 !important; color:#5c7d87 !important; background:none !important; padding:0 !important">Additional Information</span></td>
+                                </tr>
+                            </table>
+                        </h2>                        
+                        <div class="cl"></div>
+                        <table border="0" cellpadding="0" cellspacing="0" width="100%" class="table" style="margin-top:24px;">
+                            <tr>
+                                <td valign="top" width="50%">
+                                    <table border="0" cellpadding="5" cellspacing="0" class="" width="100%">
+                                        <tbody>
+                                            <tr>
+                                                <td class="td1" style="width:18%;"></td>
+                                                <td class="td2">
+                                                        <div class="select-editable float_l " style="margin-top:10px; margin-bottom:20px">
+                                                        &nbsp;<select  size="0" disabled="disabled"></select>
+                                                        <input type="text" onkeydown="fixedFieldsFun(this);" placeholder="None" name="mytext[]" id="hitFirstt" style="width:237px; padding-left:9px; height:29px;" class="apexaccountautocomplete" value="{!selField}" ><span onclick="jQueryUtilityOfAutoComplete('mytext');" class="optionImg apexaccountautocomplete"></span></input>
+                                                        
+                                                        </div>
+                                                        <a class="btn_icon_add" id="Auto_hitFirsttaddedRows" onclick="addMoreRows(this.id);" title="Add" style="line-height:35px;"></a>
+                                                        <div id="hitFirsttaddedRows" style="margin-bottom:20px;"></div>
+                                                        <div id="addedRows" style="margin-bottom:20px;"></div>  
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td class="td1"></td>
+                                            </tr>
+                                        </tbody>
+                                    </table>                                
+                                </td>
+                                <td valign="top">
+                                    <table border="0" cellpadding="5" cellspacing="0" width="100%">
+                                        <tbody>
+                                            <tr>
+                                                <td class="td1" style="width:18%;"></td>
+                                                <td class="td2">
+                                                    <div class="select-editable float_l" style="margin-top:10px; margin-bottom:20px">
+                                                    <select  size="0" disabled="disabled"></select>
+                                                        <input type="Text" onkeydown="fixedFieldsFun(this);" id="HitSecondd" placeholder="None" name="yourtext[]" style="width:237px; padding-left:9px; height:29px;" class="apexaccountautocomplete" value="{!selField}"/>
+                                                        
+                                                    </div>
+                                                    <a class="btn_icon_add" id="Auto_HitSeconddaddedRows_4" onclick="addMoreRows_4(this.id);" title="Add" style="line-height:35px;"></a>
+                                                    <div id="HitSeconddaddedRows_4" style="margin-bottom:20px;"></div>
+                                                    <div id="addedRows_4" style="margin-bottom:20px;"></div>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td class="td1"></td>
+                                            </tr>   
+                                        </tbody>
+                                    </table>                                    
+                                </td>
+                            </tr>
+                        </table>
+                        <span style="display:inline; padding:10px 0" class="clickCollapseAI"><span class="clsA float_l"><img src="{!URLFOR($Resource.PE_35, 'PE_3.5/images/icon_left_thin_arrow.png')}" style="position:relative; top:-1px; left:2px;" /></span><a title="Required Fields List" class="float_l" style="font-size:13px;">Required Fields List</a><abbr class="slds-required float_l" style="text-decoration:none;">*</abbr></span>
+                        <span style="display:inline; padding:10px 0" class="clickCollapseBI"><span class="clsB float_l"><img src="{!URLFOR($Resource.PE_35, 'PE_3.5/images/icon_down_thin_arrow.png')}" style="position:relative; top:-1px;" /></span><a title="Required Fields List" class="float_l" style="font-size:13px;">Required Fields List</a><abbr class="slds-required float_l" style="text-decoration:none;">*</abbr></span>
+                       
+                       <div class="cl"></div>
+                       <!------Start Toggle Section----->
+                       <div style="margin-top:12px;" class="RequiredInfoToggleA"> 
+                            Following are the required fields on the page layout:
+                            <c:RequireFieldComp id="RFAccount" ObjectName="Account" ComponentId="AccountCompId"></c:RequireFieldComp>
+                            <c:RequireFieldComp id="RFContact" ObjectName="Contact" ComponentId="ContactCompId"></c:RequireFieldComp>
+                       </div>
+                       <!------End Toggle Section----->
+                        
+                    </div>
+                    <!-- End Content Box -->
+                                        
+                    <!-- End Content Box -->             
+                    <div class="float_r" style="margin:8px 17px 0 0px;">                    
+                        <apex:commandButton value="Cancel" action="{!onCancel}" title="Cancel" styleClass="slds-button slds-button--neutral" onclick="document.getElementById('loadingDiv').style.display = 'block';"/>
+                        <apex:commandButton value="Revert to Defaults" title="Revert to Defaults" styleClass="slds-button slds-button--neutral" onclick="Warning_Fancybox();return false;" />
+                        <input type="button" value="Save" style="width:70px;" title="Save" onclick="saveIISetup();" Class="slds-button slds-button--brand click_for_step_2" /> 
+                    </div>
+                    <div class="cl"></div> <br/>
+                </div>
+                <!-- End Div B -->                
+            </div>
+            <div class="cl"></div>
+            </td>
+            </tr>
+        </table>    
+        </div>
+        
+        </div>
+        <!-- Start PRIMARY CONTENT WRAPPER -->
+        
+        </div>
+        <!-- End REQUIRED SLDS WRAPPER -->
+        <script>
+         onBodyLoadFun();
+        </script>
+        </body>
+        </html>
+        
+        <!--ActionFunction called on click of SAVE button.-->
+        <apex:actionFunction name="saveIISetupAF" action="{!saveIISetupAct}" oncomplete="document.getElementById('loadingDiv').style.display = 'none';" rerender="" >
+            <apex:param name="paramOne" value="ApiValues" assignTo="{!APIsOfSelectedValues}" />
+        </apex:actionFunction>
+        <apex:actionFunction name="redirectpageActFn" action="{!redirectpage}" reRender="false" immediate="true">
+                <apex:param name="pgname" assignTo="{!strPageName}"  value=""/>
+            </apex:actionFunction>
+    </apex:form>        
+    </apex:page>

@@ -1,0 +1,26 @@
+<!--****************************************************************************************************
+
+** Module Name : Clips
+
+** Description : Used open navatarClipsLWC
+
+** Throws : NA
+
+** Calls : NA
+
+** Organization : Navatar Group
+
+** Product Name & Version : Acuity
+
+** Revision History:-
+
+** Version    Date(YYYY-MM-DD)    Author         Description of Action
+
+** 1.0        2022-08-02          Keyur
+
+****************************************************************************************************/ -->
+<aura:component implements="force:appHostable,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId,forceCommunity:availableForAllPageTypes,force:lightningQuickAction" access="global" >
+    <lightning:overlayLibrary aura:id="overlayLib"/>
+    <c:navatarClipsLWC onopensaveclipmodal="{!c.handelopenmodalclip}"></c:navatarClipsLWC>
+    <c:navatarEventSubscribeLwc onevtdatareceived = "{!c.navigateToEventScreen}"></c:navatarEventSubscribeLwc>
+</aura:component>

@@ -1,0 +1,40 @@
+<apex:page standardController="Commitment__c" extensions="Commitment_Transfer_Deletion">
+    <div class="bPageTitle">
+        <div class="ptBody secondaryPalette">
+            <div class="content">
+                <img src="/s.gif" alt="Commitment" class="pageTitleIcon" title="Commitment"/>
+                <h1 class="pageType">Commitment</h1>
+                <h2 class="pageDescription"><apex:outputText value="{!Commitment__c.name}"/></h2>
+            </div>
+        </div>
+    </div>
+    <apex:form >
+        <apex:pageMessages />
+            <apex:outputPanel rendered="{!NOT(buttonView)}">
+                <table width="100%" border="0" cellspacing="0" cellpadding="0" align="center">
+                    <tbody>
+                      <tr align="center">
+                        <td width="100%">
+                            <apex:commandButton value="OK" action="{!cmt_Cancel}"/>
+                        </td>
+                      </tr>
+                    </tbody>
+                </table>
+            </apex:outputPanel>
+        <apex:pageBlock rendered="{!buttonView}">
+            The Commitment once deleted cannot be undeleted from Recycle Bin.
+            <br/>
+            <br/>
+            <table width="100%" border="0" cellspacing="0" cellpadding="0" align="center">
+                <tbody>
+                  <tr align="center">
+                    <td width="100%">
+                        <apex:commandButton value="OK" action="{!cmt_Delete}" />&nbsp;
+                        <apex:commandButton value="Cancel" action="{!cmt_Cancel}" />
+                    </td>
+                  </tr>
+                </tbody>
+            </table>
+        </apex:pageBlock>
+    </apex:form>
+</apex:page>

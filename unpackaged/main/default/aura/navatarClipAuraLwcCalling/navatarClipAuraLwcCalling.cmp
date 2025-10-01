@@ -1,0 +1,34 @@
+<!--/****************************************************************************************************
+
+** Module Name : Clips
+
+** Description : Used open save clips popup
+
+** Throws : NA
+
+** Calls : NA
+
+** Organization : Navatar Group
+
+** Product Name & Version : Acuity
+
+** Revision History:-
+
+** Version    Date(YYYY-MM-DD)    Author         Description of Action
+
+** 1.0        2022-08-02          Keyur
+
+****************************************************************************************************/ -->
+<aura:component access="global">
+    <aura:attribute name="objInfo" type="String" default=""/>
+    <aura:attribute name="clipName" type="String" default=""/> 
+    <aura:attribute name="clipSummary" type="String" default=""/> 
+    <aura:attribute name="clipId" type="String" default=""/> 
+    <lightning:overlayLibrary aura:id="overlayLib1"/>
+    <aura:html tag="style">        
+        .slds-p-around--medium {
+        padding: 0rem !important;
+        }
+    </aura:html>
+    <c:navatarClipsSavePopupLwc clipId = "{!v.clipId}" clipName = "{!v.clipName}" clipSummary = "{!v.clipSummary}" objInfo="{!v.objInfo}"  onclosemodal = "{!c.handleModalClose}" ></c:navatarClipsSavePopupLwc>
+</aura:component>

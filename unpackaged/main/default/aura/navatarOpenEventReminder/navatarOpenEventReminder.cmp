@@ -1,0 +1,16 @@
+<aura:component implements="force:appHostable,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId,forceCommunity:availableForAllPageTypes,force:lightningQuickAction" access="global">
+    <aura:attribute name ="evtData" type="Object"/>
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
+    <lightning:navigation aura:id="navService"/>
+    
+    <lightning:overlayLibrary aura:id="overlayLib"/>
+    <aura:html tag="style">
+        .slds-p-around--medium {
+        padding: 0rem !important;
+        }
+        .slds-modal__container{
+            width:30rem !important;
+        }
+    </aura:html>
+    <c:navatarEventReminderLwc eventData="{!v.evtData}" onclosemodal = "{!c.handleModalClose}" />
+</aura:component>

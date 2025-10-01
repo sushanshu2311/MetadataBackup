@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomFieldTranslation xmlns="http://soap.sforce.com/2006/04/metadata">
+        <label><!-- Our Role --></label>
+        <name>Our_Role__c</name>
+        <picklistValues>
+            <masterLabel>Co-Lead</masterLabel>
+            <translation><!-- Co-Lead --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Co-investment</masterLabel>
+            <translation><!-- Co-investment --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Lead</masterLabel>
+            <translation><!-- Lead --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Other</masterLabel>
+            <translation><!-- Other --></translation>
+        </picklistValues>
+    </CustomFieldTranslation>

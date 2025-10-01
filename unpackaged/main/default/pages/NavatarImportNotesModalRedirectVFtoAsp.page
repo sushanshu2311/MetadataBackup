@@ -1,0 +1,54 @@
+<!--  
+** Module Name : Import Note
+
+** Description : Redirect to Asp page
+
+** Throws : NA
+
+** Calls : NA
+
+** Organization : Navatar Group
+
+** Product Name & Version : Acuity 3.0
+
+** Revision History:-
+
+** Version    Date(YYYY-MM-DD)    Author         Description of Action
+       
+** 2.0        2024-02-02          Sudhanshu      Call asp page inside IFrame
+
+
+ -->
+
+<apex:page id="pg" controller="NavatarImportNotesModalVFtoASPCtrl"  showHeader="false" >    
+    <base target="_parent" /> 
+    {!ResponseMsg}    
+ 	<!-- form used for post the data into hidden format to asp.net page -->
+    <form id="frm" action="https://acuitype-phase3-patch-importfile-g8gkghd7a4e4atab.eastus-01.azurewebsites.net/ImportFile.aspx"  method="post" target="output_frame" >
+        <input type="hidden" id="sessionid_var" name="sessionid_var" value="{!$Api.Session_ID}"/>
+        <input type="hidden" id="serverurl_var" name="serverurl_var" value='{!$Api.Partner_Server_URL_250}'/> 
+        <input type="hidden" id="importID" name="importID" value="{!param1}"/>  
+        <input type="hidden" id="nameSpace" name="nameSpace" value="{!param2}"/> 
+    </form> 
+
+    <!-- <form id="frm" action="https://localhost:44304/ImportFile.aspx"  method="post" target="output_frame" >
+        <input type="hidden" id="sessionid_var" name="sessionid_var" value="{!$Api.Session_ID}"/>
+        <input type="hidden" id="serverurl_var" name="serverurl_var" value='{!$Api.Partner_Server_URL_250}'/> 
+        <input type="hidden" id="importID" name="importID" value="{!param1}"/>  
+        <input type="hidden" id="nameSpace" name="nameSpace" value="{!param2}"/>
+    </form> -->
+   
+   <!-- outputPanel Start here -->
+    <apex:outputPanel id="panelupdatedata_var"> 
+        <!-- iframe for opening the asp.net page -->
+        <apex:iframe height="100px" src="" scrolling="false" id="output_frame" frameborder="false">  </apex:iframe>  
+    </apex:outputPanel>
+    <!-- outputPanel End here -->
+  
+    <!--Script for submit for on page load -->
+    <script>
+        window.onload = ()=>{
+         document.getElementById('frm').submit();    
+        }
+    </script>
+</apex:page>

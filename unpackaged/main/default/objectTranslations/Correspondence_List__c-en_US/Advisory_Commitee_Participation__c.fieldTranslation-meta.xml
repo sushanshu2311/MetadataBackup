@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomFieldTranslation xmlns="http://soap.sforce.com/2006/04/metadata">
+        <label><!-- Advisory Commitee Participation --></label>
+        <name>Advisory_Commitee_Participation__c</name>
+        <picklistValues>
+            <masterLabel>Advisory Committee Member</masterLabel>
+            <translation><!-- Advisory Committee Member --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Advisory Committee Observer</masterLabel>
+            <translation><!-- Advisory Committee Observer --></translation>
+        </picklistValues>
+    </CustomFieldTranslation>

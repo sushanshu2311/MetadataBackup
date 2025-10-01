@@ -1,0 +1,42 @@
+<!--
+** Module Name : Acuity 1.0 - Acuity
+** Description : Displays the Acuity information of Acuity 1.0 including Referenced, Contacts/Connections, Interactions Section.
+** Throws : NA
+** Calls : NA
+** Organization : Navatar Group
+** Product Name & Version : Acuity 1.0
+** Revision History:-
+** Version    Date(YYYY-MM-DD)    Author         Description of Action
+** 1.0        2022-12-04          Lakshya        Acuity Phase 2
+** 2.0        2024-03-20          Lakshya        Sharing Model Implementation/Acuity Phase 3
+-->
+<template>
+    <!--Commented div by LK on 2024-05-27 to fix 00045957-->
+    <!-- <div onmouseleave={closePicklist}>      -->
+    <div class="picklistSection main-Container" id="picklist">
+        <div if:true={showPicklist} class="picklist-section picklistSection_css">
+            <lightning-combobox name="picklist" label={label} value={value} placeholder={placeholder} options={options} variant='label-hidden'
+            onchange={handleChange} onblur={closePicklist} class="slds-popover slds-popover_edit slds-popover__body"  dropdown-alignment="auto"></lightning-combobox>
+        </div>
+        <!--00045900 fixed by raju on dated 21-05-2024-->
+        <div if:false={showPicklist} class="slds-table_edit_container slds-is-relative clsRoleSectionWidth">
+            <span class="slds-grid slds-grid_align-spread slds-cell-edit">
+                <span class="slds-truncate" title={value} style="margin-left: 0.5rem;">{value}</span>
+                <!--Commented below code by LK on 2023-03-20 to revert the Sharing Model-->
+                <!--Reverted below code by LK on 2024-05-06 to fix 00045321 ; 00045719-->
+                <template if:true={showEditButton}>
+                    <button data-id={context} class="slds-button slds-button_icon slds-cell-edit__button slds-m-left_x-small" tabindex="-1" title="Edit" name="tes"
+                        onclick={handleClick} data-name="myButtonName" >
+                        <svg class="slds-button__icon slds-button__icon_hint slds-button__icon_lock slds-button__icon_small slds-button__icon_edit slds-icon slds-icon-text-default slds-icon_xx-small"
+                            aria-hidden="true">
+                            <use xlink:href="/_slds/icons/utility-sprite/svg/symbols.svg?cache=9.37.1#edit"></use>
+                        </svg>
+                        <span class="slds-assistive-text">Edit</span>
+                    </button>
+                </template>
+            </span>
+        </div>
+    </div>
+    <!--Commented div by LK on 2024-05-27 to fix 00045957-->
+    <!-- </div> -->
+</template>

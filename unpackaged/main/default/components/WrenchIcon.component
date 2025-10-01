@@ -1,0 +1,2743 @@
+<apex:component id="wrenchComponent"  allowDML="true">
+
+    <apex:attribute required="true" name="Objects" type="String" description="Name of the object."/>
+    <apex:attribute required="true" name="PopUpHeader" type="String" description="Header value of pop up."/>
+    <apex:attribute required="true" name="FixedSelectedFieldsApiName" type="String" description="Api Names of fixed selected Fields."/>
+    <apex:attribute required="true" name="UsingPageName" type="String" description="Name of the page using wrench icon"/>
+    <apex:attribute required="true" type="String" name="componentID" description="ID of Component from page"/>
+   
+    <script type="text/javascript">
+    var __sfdcSessionId = '{!GETSESSIONID()}';
+    </script>
+    <style>
+   
+    #msgBlankId{color:#c23934;   font-size:12px; }
+    </style>
+
+    <script>         
+        $(function() {
+        $( ".FancyboxContainer" ).draggable({ cancel: ".PopupContentStart" });
+
+        });
+        $(document).on("keydown", function (e) {
+            if (e.which === 8 && !$(e.target).is("input:not([readonly]):not([type=radio]):not([type=checkbox]), textarea, [contentEditable], [contentEditable=true]")) {
+                e.preventDefault();
+            }
+        });
+            
+    </script>
+        
+    <style>
+        .FancyboxContainer {cursor:move; }
+        .PopupContentStart{cursor:text; }
+    </style> 
+       
+<!-- Start ColumnstoDisplay_Fancybox -->
+<div class="slds"> 
+    <div class="WrenchInsufficientPrivlagesError{!componentID} FancyboxContainer Popup" id="wrenchfields{!componentID}">
+            <div class="slds-modal__header">
+            <div class="close_white_60" >
+            <a onclick="closepopup('fancybox_background','FancyboxContainer');return false;" title="Close"><img src="{!URLFOR($Resource.PE_35, 'PE_3.5/images/close_white_60.png')}" /></a>
+            </div>
+            <h2 class="slds-text-heading--medium">Insufficient Permission</h2>
+            </div>
+
+        <div class="PopupContentStart" style="min-width: 365px;max-width: 365px; overflow:hidden; overflow-y:auto; padding:16px 25px 25px;">
+            You do not have sufficient privilege to perform this action.Please contact your System Administrator.
+        </div>
+
+        <div class="slds-modal__footer">
+        <!--<button class="slds-button slds-button--neutral click_one" onclick="closepopup('fancybox_background','FancyboxContainer');return false;">Close</button>-->
+        <apex:commandButton value="OK" title="OK" styleClass="slds-button slds-button--neutral click_one" onclick="closepopup('fancybox_background','FancyboxContainer');return false;" />
+        </div>
+    </div>
+    
+<div id="wrenchpopup1{!componentID}" class="ColumnstoDisplay_Fancybox{!componentID} FancyboxContainer">
+
+            <div class="slds-modal__header">
+               <div class="close_white_60">
+                    <a onclick="closepopupwrench{!componentID}('fancybox_background','FancyboxContainer');return false;" title="Close"><img src="{!URLFOR($Resource.PE_35, 'PE_3.5/images/close_white_60.png')}" /></a>
+                </div>
+                <h2 class="slds-text-heading--medium"><div id="getnameonclick{!componentID}"></div> </h2>
+            </div>
+
+            <div class="PopupContentStart" style="min-width: 600px;max-width: 600px; max-height:450px; overflow:hidden; overflow-y:auto; padding:16px 25px 25px;">
+                  <span id="idSlctFld{!componentID}" style="display:none">Select the Fields:</span>      
+                  <table id="objectPicklist{!componentID}" class="table" cellpadding="0" cellspacing="0">
+                      <tr>
+                          <td class="td1" width="40" style="padding-left:0;">View</td>
+                          <td class="td2">
+                         
+                              <div class="slds-select_container" style="width:203px; float:left;">
+                                <select id="objectSelected{!componentID}" class="slds-select" onchange="setAvilabelFields{!componentID}(this.options[this.selectedIndex].value,false);blnkSearch('btn');">
+                                  <option value="all">All Fields</option>
+                                  
+                                </select>
+                                
+                              </div>
+                          </td>
+                      </tr>
+                  </table>
+                  
+                  
+                
+                <hr style="margin:5px 0 10px 0; border-top: 1px solid #f5f5f5;" />
+                    <!-- Start Search Section -->
+                    <script>
+                    function getEnterEvent2{!componentID}(e,th)
+                        {
+                           
+                            if(e.keyCode == 13){
+                                //searchcon_grid();
+                                search_flds{!componentID}();
+                                document.getElementById('clearsearchdsb1{!componentID}').style.display = 'none';
+                                document.getElementById('clearsearchenb1{!componentID}').style.display = 'block';
+                            }
+                            else if(e.keyCode ==8 || e.keyCode ==46)
+                            {
+                                if(th.value != '')
+                                 {
+                                    document.getElementById('clearsearchdsb1{!componentID}').style.display = 'none';
+                                    document.getElementById('clearsearchenb1{!componentID}').style.display = 'block';
+                                 }
+                            
+                                 if(th.value == '')
+                                 {
+                                    document.getElementById('clearsearchdsb1{!componentID}').style.display = 'block';
+                                    document.getElementById('clearsearchenb1{!componentID}').style.display = 'none';
+                                    deselectName{!componentID}('Current_Selected_Fields{!componentID}');
+                                    deselectName{!componentID}('All_Available_Fields{!componentID}');
+                                    resetAvailablelist{!componentID}();
+                                    var searchtxt=document.getElementById('searchcon_grid1{!componentID}').value; 
+                                    searchtxt=searchtxt.trim();
+                                    var len=localAvlArray{!componentID}.length; 
+                                    
+                                    for (var count=len-1; count>=0; count--) 
+                                    {    
+                                        if (localAvlArray{!componentID}[count][2].toLowerCase().indexOf(searchtxt.toLowerCase())==-1) 
+                                        {
+                                            localAvlArray{!componentID}.splice(count,1);
+                                        }
+                                    }
+                                    if(localAvlArray{!componentID}.length == 0)
+                                    {
+                                        localAvlArray{!componentID}.push(['','','No match found.']);
+                                    }
+                                    createAvlSelList{!componentID}(localAvlArray{!componentID}); 
+                                                       
+                                    document.getElementById('searchcon_grid1{!componentID}').value=searchtxt;
+                                    
+                                 }
+                            }
+                            else if(document.getElementById('searchcon_grid1{!componentID}').value!='')
+                            {
+                                if(e.keyCode!=8)
+                                {
+                                document.getElementById('clearsearchdsb1{!componentID}').style.display = 'none';
+                                document.getElementById('clearsearchenb1{!componentID}').style.display = 'block';
+                                }
+                            } 
+                        }
+                    
+                    function clear_grid2{!componentID}(obj)
+                        {
+                           
+                            //clearAll();
+                            document.getElementById('searchcon_grid1{!componentID}').value='';
+                            document.getElementById('searchcon_grid1{!componentID}').placeholder = 'Search'; 
+                            
+                            document.getElementById('clearsearchdsb1{!componentID}').style.display = 'block';
+                            document.getElementById('clearsearchenb1{!componentID}').style.display = 'none';
+                            resetAvailablelist{!componentID}();
+                        }
+                    </script>
+                    <div class="slds-form-element__control slds-input-has-icon slds-input-has-icon--right" style="width:240px;">
+                        <a href="" class="slds-input__icon slds-icon-text-default" style="left: 12px; top: 18px;">
+                            <img src="{!URLFOR($Resource.SLDS100, 'assets/icons/utility/search_60.png')}" onClick="search_flds{!componentID}();" title="Search"/>
+
+                        </a>
+                        <input onkeyup="getEnterEvent2{!componentID}(event,this)" class="slds-input" type="text" aria-autocomplete="list" placeholder="Search" role="combobox" aria-expanded="true" aria-activedescendant="" style="padding-left: 32px; padding-right: 16px;" id="searchcon_grid1{!componentID}" onblur="Add_placeholder_onblur{!componentID}(this);" maxlength="255" onclick="document.getElementById('searchcon_grid1{!componentID}').placeholder = '';"/>
+                        <span class="slds-icon_container" id="clearsearchenb1{!componentID}" style="display: none;" onclick="clear_grid2{!componentID}('btnReset');">
+                        <div  class="slds-icon icon-utility-clear slds-icon-text-default" style="width:13px; height:13px;position: absolute;top: 11px;right: 10px;cursor:pointer" title="Clear">
+                            <img src="{!URLFOR($Resource.SLDS100, 'assets/icons/utility/clear_60.png')}" style="margin-bottom: 5px"/><!--change for alignment by qadir khan-->
+                        </div>
+                         
+                        </span>
+                        <span class="slds-icon_container" id="clearsearchdsb1{!componentID}" style="display: block;">
+                        
+                         <div class="slds-icon icon-utility-clear slds-icon-text-default" style="width:13px; height:13px;position: absolute;top: 11px;right: 10px;cursor:pointer=none; opacity:0.3" title="Clear">
+                            <img src="{!URLFOR($Resource.SLDS100, 'assets/icons/utility/clear_60.png')}" style="margin-bottom: 5px" /><!--change for alignment by qadir khan-->
+                        </div>
+                        </span>
+                    </div>
+                    <div id="msgBlankId"></div>
+                    <!-- End Search Section -->
+               
+                <div class="cl" style="margin-bottom:5px;"></div>
+                
+                <div class="slds-picklist--draggable slds-grid">
+                    
+                    <div class="slds-form-element">
+                    <style>
+                        .slds-form-element .aw-list-control {border:none !important;}
+                        .slds-form-element .aw-list-box {border: 1px solid #d8dde6 !important; border-radius: 4px;}
+                        .slds-form-element .aw-item-text { text-transform: capitalize !important; font-size: .85rem !important;}
+                    </style>
+                    <span class="slds-form-element__label" aria-label="select-1">Available Fields</span>
+                    <div class="slds-picklist slds-picklist--multi">
+                        
+                            <span id="All_Available_Fields{!componentID}"></span>
+                        
+                        
+                      </div>
+                      
+                    </div>
+                    <div class="slds-grid slds-grid--vertical"  style="position:relative; top:54px; height: 140px;">
+                      <a href="" class="slds-button slds-button--icon-container" style="margin-left:5px;">
+                        <div class="slds-button__icon">
+                          <img src="{!URLFOR($Resource.SLDS100, 'assets/icons/utility/left_60.png')}" style="margin-left:8px; margin-top: 9px; opacity:0.3" id="righttoleftdisable{!componentID}"/>
+                          <img src="{!URLFOR($Resource.SLDS100, 'assets/icons/utility/left_60.png')}" style="margin-left:8px; margin-top: 9px;" onclick="removefld{!componentID}();return false;" id="righttoleftenable{!componentID}"/>
+                        </div>
+                        <span class="slds-assistive-text">Arrow left</span>
+                      </a>
+                      <a href="" class="slds-button slds-button--icon-container" style="margin-left:5px;">
+                        <div class="slds-button__icon">
+                          <img src="{!URLFOR($Resource.SLDS100, 'assets/icons/utility/right_60.png')}" style="margin-left:10px; margin-top: 8px; opacity:0.3" id="lefttorightdisable{!componentID}"/>
+                          <img src="{!URLFOR($Resource.SLDS100, 'assets/icons/utility/right_60.png')}" style="margin-left:10px; margin-top: 8px;" id="lefttorightenable{!componentID}" onclick="addfld{!componentID}(); return false;"/>
+                        </div>
+                        <span class="slds-assistive-text">Arrow right</span>
+                      </a>
+                    </div>
+                    <div class="slds-form-element">
+                        <span class="slds-form-element__label" aria-label="select-2">Selected Fields (<span id="fieldCount{!componentID}"/>/20)</span>
+                            <div class="slds-picklist slds-picklist--multi">
+                                <span id="Current_Selected_Fields{!componentID}"></span>
+                            </div>
+                    </div>
+                    <div class="slds-grid slds-grid--vertical" style="position:relative; top:40px; height: 140px;">
+                        <a href="" class="slds-button slds-button--icon-container" style="margin-left: 9px;">
+                           <img src="{!URLFOR($Resource.PE_35, 'PE_3.5/images/superTopArrow.png')}" alt="" style="margin-left:11px; margin-top: 4px; opacity:0.3" id="topdisable{!componentID}"/>
+                           <img src="{!URLFOR($Resource.PE_35, 'PE_3.5/images/superTopArrow.png')}" alt="" style="margin-left:11px; margin-top: 4px;"  onclick="moveTop_Bottom{!componentID}('Top');enablebuttonsotherdetailselectlist{!componentID}(1,0,1);return false;" id="topenable{!componentID}"/>
+                        </a>
+                      <a href="" class="slds-button slds-button--icon-container" style="margin-left: 9px;">
+                        <div class="slds-button__icon">
+                          <img src="{!URLFOR($Resource.SLDS100, 'assets/icons/utility/up_60.png')}" style="margin-left:10px; margin-top: 2px; opacity:0.3" id="moveupdisable{!componentID}"/>
+                          <img src="{!URLFOR($Resource.SLDS100, 'assets/icons/utility/up_60.png')}" style="margin-left:10px; margin-top: 2px;" onclick="moveUp_Down{!componentID}('Top');enablebuttonsotherdetailselectlist{!componentID}(1,1,0);return false;" id="moveupenable{!componentID}"/>
+                        </div>
+                        <span class="slds-assistive-text">Arrow up</span>
+                      </a>
+                      <a href="" class="slds-button slds-button--icon-container" style="margin-left: 9px;">
+                        <div class="slds-button__icon">
+                          <img src="{!URLFOR($Resource.SLDS100, 'assets/icons/utility/down_60.png')}" style="margin-left:10px; margin-top: 3px; opacity:0.3" id="movedowndisable{!componentID}"/>
+                          <img src="{!URLFOR($Resource.SLDS100, 'assets/icons/utility/down_60.png')}" style="margin-left:10px; margin-top: 3px;" onclick="moveUp_Down{!componentID}('Bottom');enablebuttonsotherdetailselectlist{!componentID}(1,2,0);return false;" id="movedownenable{!componentID}" />
+                        </div>
+                        <span class="slds-assistive-text">Arrow down</span>
+                      </a>
+                      <a href="" class="slds-button slds-button--icon-container" style="margin-left: 9px;">
+                           <img src="{!URLFOR($Resource.PE_35, 'PE_3.5/images/superBottomArrow.png')}" alt="" style="margin-left:11px; margin-top: 5px; opacity:0.3" id="bottomdisable{!componentID}"/>
+                           <img src="{!URLFOR($Resource.PE_35, 'PE_3.5/images/superBottomArrow.png')}" alt="" style="margin-left:11px; margin-top: 5px;" onclick="moveTop_Bottom{!componentID}('Bottom');enablebuttonsotherdetailselectlist{!componentID}(1,0,2);return false;" id="bottomenable{!componentID}"/>
+                        </a>
+                    </div>
+                  </div>
+                
+                  <div class="slds-modal__footer" style="margin: 24px -24px -24px;">
+                   <button class="slds-button slds-button--neutral"  onclick="closepopupwrench{!componentID}('fancybox_background','FancyboxContainer');return false;" title="Cancel">Cancel</button>
+                    
+                    <a href="#" id="_rtde{!componentID}" class="slds-button slds-button--neutral" style="display:none;" onclick="defaultfields{!componentID}();" title="Revert to Defaults" >Revert to Defaults</a>
+                    <a href="#" id="_rtdeactive{!componentID}" class="slds-button slds-button--neutral" style="opacity:0.3;cursor: default;color:#5c7d87 !important;" disabled="disabled"  title="Revert to Defaults" >Revert to Defaults</a>
+                    <a id="_apply{!componentID}" href="" class="slds-button slds-button--neutral slds-button--brand" style="display:none;" onclick="applyWrenchSettings{!componentID}();" title="Apply">Apply</a>
+                    <a id="_applydeactve{!componentID}" href="" style="opacity:0.3;display: inline-block;cursor: context-menu;color:#fff !important" class="slds-button slds-button--neutral slds-button--brand" title="Apply">Apply</a>
+                    <!--<apex:commandButton id="_apply{!componentID}" value="Apply"   styleClass="slds-button slds-button--neutral slds-button--brand" onclick="applyWrenchSettings(); closepopupWrench('fancybox_background','FancyboxContainer'); return false;"/>-->
+                    
+                  </div>
+            </div>
+        </div>
+   
+</div>
+   <!-- End ColumnstoDisplay_Fancybox -->
+    <div id="blurred1" style="display:none; position:fixed; background-color:white; height:100%; width:100%; z-index:9999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999; opacity:0.6; top:0; left:0;">
+
+        <div style="width:100px; height:100%; position:relative;top:41%; background:url({!URLFOR($Resource.PE_35, 'PE_3.5/images/icon_loading.gif')}) no-repeat top left; margin:0 auto;"></div>
+    </div>
+    <script>
+
+        var popupStatus = 0;
+        var fixedFields{!componentID} = '{!JSENCODE(FixedSelectedFieldsApiName)}'.split('_@_');  // SK: 11Dec2017
+        var objects{!componentID} = '{!JSENCODE(Objects)}'.split(':');  // SK: 11Dec2017
+        var Accdes{!componentID};
+        var Fundraisingdes{!componentID};
+        var FundraisingContactdes{!componentID};
+        var Commitmentdes{!componentID};
+        var Partnershipdes{!componentID};
+        var InvstrDstrbtndes{!componentID};
+        var Contactdes{!componentID};
+        var CapitalCalldes{!componentID};
+        var MrktngPrspctdes{!componentID};
+        var localAvlArray{!componentID} = [];
+        var localSltArray{!componentID} = [];
+        var comboSltobj{!componentID};
+        var comboAvlobj{!componentID};
+        var MainGridFildsTemp{!componentID};
+        var isRestore{!componentID}=0;
+        var flag{!componentID}=false;
+        
+        function ColumnstoDisplay_Fancybox{!componentID}() 
+        {   
+            if("{!UsingPageName}" == "CMF_PFC" || "{!UsingPageName}" == "CMF_PFA")
+            {
+                closepopup('fancybox_background','FancyboxContainer');
+            }
+            loadPopupnew{!componentID}('fancybox_background','ColumnstoDisplay_Fancybox{!componentID}');
+            centerPopupnew{!componentID}('ColumnstoDisplay_Fancybox{!componentID}');
+        }
+        /*function closepopup(bgdivid,popupdivid)
+        {
+            disablePopupnew(bgdivid);
+            $('.'+popupdivid).fadeOut("slow");
+        }
+        function disablePopupnew(cid){
+            if(popupStatus==1){
+                $('.'+cid).fadeOut("slow");
+                popupStatus = 0;
+            }   
+            
+        };*/
+        function loadPopupnew{!componentID}(cid1,cid2)
+        {
+            if(popupStatus==0){
+                $('.'+cid1).css({
+                    "opacity": "0.5"
+                });
+                $('.'+cid1).fadeIn("slow");
+                $('.'+cid2).fadeIn("slow");
+                popupStatus= 1;
+            }
+        };
+        function centerPopupnew{!componentID}(cid)
+        {
+            //request data for centering
+            var windowWidth = document.documentElement.clientWidth;
+            var windowHeight = document.documentElement.clientHeight;
+            var popupHeight = $('.'+cid).height();
+            var popupWidth = $('.'+cid).width();
+            //centering
+            $('.'+cid).css({
+                "position": "fixed",
+                "top": windowHeight/2-popupHeight/2,
+                "left": windowWidth/2-popupWidth/2
+            });
+        };
+        function blnkSearch(obj)
+        {
+            document.getElementById('searchcon_grid1{!componentID}').value='';
+            document.getElementById('searchcon_grid1{!componentID}').placeholder = 'Search'; 
+            document.getElementById('clearsearchdsb1{!componentID}').style.display = 'block';
+            document.getElementById('clearsearchenb1{!componentID}').style.display = 'none';
+        }
+        var wrenchiconId='';
+        function show_wrenchpopup_page{!componentID}()
+        {
+            try
+            {   
+               
+                if("{!UsingPageName}" == "CMF_PFC" || "{!UsingPageName}" == "CMF_PFA")
+                {
+                    MainGridFilds = MainGridFildsPFC;
+                    MainGridFildsDefalut = MainGridFildsDefalutPFC;
+                }
+                else if("{!UsingPageName}" == "CMF" )
+                {
+                    MainGridFilds = MainGridFildsAC;
+                    MainGridFildsDefalut = MainGridFildsDefalutAC;
+                }
+               
+                wrenchiconId = '{!JSENCODE(componentID)}';           // SK: 11Dec2017
+                var objList = '{!JSENCODE(Objects)}'.split(':');    // SK: 11Dec2017
+                var blankOption = document.getElementById('objectSelected{!componentID}').innerHTML = '';  
+                var sel = document.getElementById('objectSelected{!componentID}');
+                opt = document.createElement('option');
+                opt.innerHTML = 'All Fields';
+                opt.value = 'all';
+                sel.appendChild(opt);
+                for(var i = 0; i < objList.length; i++) {
+                    if(objList[i].indexOf('__c') > -1 ){
+                    }
+                    opt = document.createElement('option');
+                    if(objList[i] == 'Commitment__c'){
+                        opt.innerHTML = 'Commitment Fields';
+                        opt.value = Namespaceprefix1+'Commitment__c';
+                    }
+                    else if(objList[i] == 'Partnership__c'){
+                        opt.innerHTML = 'Partnership Fields';
+                        opt.value = Namespaceprefix1+'Partnership__c';
+                    }
+                    else if(objList[i] == 'Fundraising_Contact__c'){
+                        opt.innerHTML = 'Fundraising Contact Fields';
+                        opt.value = Namespaceprefix1+'Fundraising_Contact__c';
+                    }
+                    else if(objList[i] == 'Fundraising__c'){
+                        opt.innerHTML = 'Fundraising Fields';
+                        opt.value = Namespaceprefix1+'Fundraising__c';
+                    }
+                    else if(objList[i] == 'Account'){
+                        opt.innerHTML = 'Account Fields';
+                        opt.value = objList[i];
+                    }
+                    else if(objList[i] == 'Contact'){
+                        opt.innerHTML = 'Contact Fields';
+                        opt.value = objList[i];
+                    }
+                    else if(objList[i] == 'Investor_Distribution__c'){
+                        opt.innerHTML = 'Investor Distribution Fields';
+                        opt.value = Namespaceprefix1+'Investor_Distribution__c';
+                    }
+                    else if(objList[i] == 'Capital_Call__c'){
+                        opt.innerHTML = 'Capital Call Fields';
+                        opt.value = Namespaceprefix1+'Capital_Call__c';
+                    }
+                    else if(objList[i] == 'Marketing_Prospect__c'){
+                        opt.innerHTML = 'Marketing Prospect Fields';
+                        opt.value = Namespaceprefix1+'Marketing_Prospect__c';
+                    }
+                    sel.appendChild(opt);
+                }
+                
+                var results = sforce.connection.describeSObject(Namespaceprefix1+"Navatar_Setup__c");
+               
+                if((results.createable != "false") &&  (results.updateable != "false"))
+                {
+                    for (var i=0; i<results.fields.length; i++) 
+                    {
+                        var field = results.fields[i];
+                        // Added a Logic to check all the security properties of object and related fields
+                        if((field.name == Namespaceprefix1+"CMF_Setting__c") && ("{!UsingPageName}" == "CMF")){
+                            if(field.createable=='false') {
+                                InsufficientPrivlagesError{!componentID}();
+                                return null;
+                            }
+                            else if(checkWrenchIcon_field('CMF')){
+                                InsufficientPrivlagesError{!componentID}();
+                                return null;
+                            }
+                        }
+                        //Sumitab added Code Start.
+                        if((field.name == Namespaceprefix1+"CMF_PFC_Setting__c") && ("{!UsingPageName}" == "CMF_PFC")){
+                            if(field.createable=='false') {
+                                InsufficientPrivlagesError{!componentID}();
+                                return null;
+                            }
+                            else if(checkWrenchIcon_field('CMF_PFC')){
+                                InsufficientPrivlagesError{!componentID}();
+                                return null;
+                            }
+                        }
+                        if((field.name == Namespaceprefix1+"CMF_PFA_Setting__c") && ("{!UsingPageName}" == "CMF_PFA")){
+                            if(field.createable=='false') {
+                                InsufficientPrivlagesError{!componentID}();
+                                return null;
+                            }
+                            else if(checkWrenchIcon_field('CMF_PFA')){
+                                InsufficientPrivlagesError{!componentID}();
+                                return null;
+                            }
+                        }
+                        //Sumitab Code Ended.
+                        
+                        else if((field.name == Namespaceprefix1+"MMF_Results_Settings__c") && ("{!UsingPageName}" == "MEF")){
+                           
+                            if(field.createable=='false')
+                            {
+                                InsufficientPrivlagesError{!componentID}();
+                                return null;
+                            }
+                          
+                            else if(checkWrenchIcon_field())
+                             {
+                                InsufficientPrivlagesError{!componentID}();
+                                return null;
+                            }
+                        }
+                         else if((field.name == Namespaceprefix1+"Add_Prospect_Setting__c") && ("{!UsingPageName}" == "AP")){
+                            if(field.createable=='false')
+                            {
+                                InsufficientPrivlagesError{!componentID}();
+                                return null;
+                            }
+                          
+                            else if(checkWrenchIcon_field())
+                            {
+                                InsufficientPrivlagesError{!componentID}();
+                                return null;
+                            }
+                        }
+                        else if((field.name == Namespaceprefix1+"IFC_Setting__c") && ("{!UsingPageName}" == "ICG")){
+                            if(field.createable=='false')
+                            {
+                                InsufficientPrivlagesError{!componentID}();
+                                return null;
+                            }
+                          
+                            else if(checkWrenchIcon_field())
+                            {
+                                InsufficientPrivlagesError{!componentID}();
+                                return null;
+                            }
+                        }
+                        else if((field.name == Namespaceprefix1+"Email_FD_Setting__c") && ("{!UsingPageName}" == "bulkEmailFD")){
+                            if(field.createable=='false')
+                            {
+                                InsufficientPrivlagesError{!componentID}();
+                                return null;
+                            }
+                          
+                            /*else if(checkWrenchIcon_field())
+                             {
+                                InsufficientPrivlagesError{!componentID}();
+                                return null;
+                            }*/
+                        }
+                        else if((field.name == Namespaceprefix1+"Email_ID_Setting__c") && ("{!UsingPageName}" == "bulkEmailID")){
+                            if(field.createable=='false')
+                            {
+                                InsufficientPrivlagesError{!componentID}();
+                                return null;
+                            }
+                          
+                            /*else if(checkWrenchIcon_field())
+                             {
+                                InsufficientPrivlagesError{!componentID}();
+                                return null;
+                            }*/
+                        }
+                        else if((field.name == Namespaceprefix1+"Email_CC_Setting__c") && ("{!UsingPageName}" == "bulkEmailCC")){
+                            if(field.createable=='false')
+                            {
+                                InsufficientPrivlagesError{!componentID}();
+                                return null;
+                            }
+                          
+                            /*else if(checkWrenchIcon_field())
+                             {
+                                InsufficientPrivlagesError{!componentID}();
+                                return null;
+                            }*/
+                        }
+                        else if((field.name == Namespaceprefix1+"Email_DD_Setting__c") && ("{!UsingPageName}" == "bulkEmailDD")){
+                            if(field.createable=='false')
+                            {
+                                InsufficientPrivlagesError{!componentID}();
+                                return null;
+                            }
+                          
+                            /*else if(checkWrenchIcon_field())
+                             {
+                                InsufficientPrivlagesError{!componentID}();
+                                return null;
+                            }*/
+                        }
+                        else if((field.name == Namespaceprefix1+"Email_Prospect_Setting__c") && ("{!UsingPageName}" == "MEP")){
+                            if(field.createable=='false')
+                            {
+                                InsufficientPrivlagesError{!componentID}();
+                                return null;
+                            }
+                          
+                            /*else if(checkWrenchIcon_field())
+                             {
+                                InsufficientPrivlagesError{!componentID}();
+                                return null;
+                            }*/
+                        }
+                    }
+                    $("#blurred").show();
+                    myVar = setTimeout(hidePopup, 2000);
+                   
+                        MainGridFildsTemp{!componentID}=MainGridFilds;
+
+                    
+                    if("{!UsingPageName}" == "CMF")
+                    {
+                        //document.getElementById('objectPicklist').style.display = 'none';  
+                        Accdes{!componentID} = describeobj_method_main{!componentID}('Account'); 
+                        Contactdes{!componentID} = describeobj_method_main{!componentID}('Contact'); 
+                            
+                        setAvilabelFields{!componentID}('all',true);      // true means set current seleted list as well.
+                    }
+                    //Sumitab Added Code Start
+                    else if("{!UsingPageName}" == "MEF" || "{!UsingPageName}" == "CMF_PFC")
+                    {
+                         
+                        Fundraisingdes{!componentID} = describeobj_method_main{!componentID}(Namespaceprefix1+'Fundraising__c'); 
+                        FundraisingContactdes{!componentID} = describeobj_method_main{!componentID}(Namespaceprefix1+'Fundraising_Contact__c');
+                        setAvilabelFields{!componentID}('all',true);
+                    }
+                    else if("{!UsingPageName}" == "CMF_PFA")
+                    {
+                        Fundraisingdes{!componentID} = describeobj_method_main{!componentID}(Namespaceprefix1+'Fundraising__c'); 
+                        setAvilabelFields{!componentID}(Namespaceprefix1+'Fundraising__c',true);
+                    }
+                    //Sumitab Added Code END
+                    else if("{!UsingPageName}" == "ICG")
+                    {
+                        Commitmentdes{!componentID} = describeobj_method_main{!componentID}(Namespaceprefix1+'Commitment__c'); 
+                        
+                        Partnershipdes{!componentID} = describeobj_method_main{!componentID}(Namespaceprefix1+'Partnership__c');
+                        setAvilabelFields{!componentID}('all',true);
+                    }
+                    else if("{!UsingPageName}" == "bulkEmailFD" || "{!UsingPageName}" == "bulkEmailID")
+                    {
+                        Contactdes{!componentID} = describeobj_method_main{!componentID}('Contact'); 
+                        Commitmentdes{!componentID} = describeobj_method_main{!componentID}(Namespaceprefix1+'Commitment__c');
+                        InvstrDstrbtndes{!componentID} = describeobj_method_main{!componentID}(Namespaceprefix1+'Investor_Distribution__c');
+                        setAvilabelFields{!componentID}('all',true);
+                    }
+                    else if("{!UsingPageName}" == "bulkEmailCC" || "{!UsingPageName}" == "bulkEmailDD")
+                    {
+                        Contactdes{!componentID} = describeobj_method_main{!componentID}('Contact'); 
+                        Commitmentdes{!componentID} = describeobj_method_main{!componentID}(Namespaceprefix1+'Commitment__c');
+                        CapitalCalldes{!componentID} = describeobj_method_main{!componentID}(Namespaceprefix1+'Capital_Call__c');
+                        setAvilabelFields{!componentID}('all',true);
+                    }
+                    else if("{!UsingPageName}" == "MEP")
+                    {
+                        Contactdes{!componentID} = describeobj_method_main{!componentID}('Contact'); 
+                        MrktngPrspctdes{!componentID} = describeobj_method_main{!componentID}(Namespaceprefix1+'Marketing_Prospect__c');
+                        setAvilabelFields{!componentID}('all',true);
+                    }
+                    else if("{!UsingPageName}" == "AP")
+                    {
+                        //document.getElementById('objectPicklist').style.display = 'none';  
+                        Accdes{!componentID} = describeobj_method_main{!componentID}('Account'); 
+                        Contactdes{!componentID} = describeobj_method_main{!componentID}('Contact'); 
+                            
+                        setAvilabelFields{!componentID}('all',true);      // true means set current seleted list as well.
+                    }
+                    for(var i=0;i<objects{!componentID}.length;i++)
+                    {
+                        if(objects{!componentID}[i] == 'Fundraising_Contact__c' || objects{!componentID}[i] == 'Fundraising__c' || objects{!componentID}[i] == 'Investor_Distribution__c' || objects{!componentID}[i] == 'Capital_Call__c' || objects{!componentID}[i] == 'Commitment__c' || objects{!componentID}[i] == 'Partnership__c' || objects{!componentID}[i] == 'Marketing_Prospect__c'){
+                            objects{!componentID}[i] = Namespaceprefix1+objects{!componentID}[i];
+                        }
+                        setTabImageURLWrenchIconMain{!componentID}(objects{!componentID}[i]);
+                    }  
+                    document.getElementById('getnameonclick{!componentID}').innerHTML = '{!JSENCODE(PopUpHeader)}';   // SK: 11Dec2017
+                    ColumnstoDisplay_Fancybox{!componentID}();
+                    document.getElementById('_applydeactve{!componentID}').style.display ='inline-block'; 
+                    document.getElementById('_apply{!componentID}').style.display ='none';                    
+                    //document.getElementById('_apply{!componentID}').style.pointerEvents = 'none';
+                    document.getElementById('clearsearchdsb1{!componentID}').style.display = 'block';
+                    document.getElementById('clearsearchenb1{!componentID}').style.display = 'none';
+                    }
+                    else{
+                        InsufficientPrivlagesError{!componentID}();
+                        return null;
+                    }
+            }
+            catch(err){             
+                if(err.faultcode == 'sf:INVALID_SESSION_ID')
+                    sessionError('61');
+                else
+                    alert('show_wrenchpopup_page  '+err);
+            }
+                
+        }
+        
+            // draggable pop up.
+        $(document).ready(function () {
+            $("#pageid:frm:Main_wrench").draggable({ 
+                cancel: "div.fields_box,div.popup_div_search_box,#searchcon_grid1{!componentID},#objectPicklist{!componentID}",
+                containment: "#temp", scroll: false
+            });
+        });
+    
+        function describeobj_method_main{!componentID}(getobjectname)
+        {
+            try
+            {
+
+               
+                var tempobj={};
+                var result = sforce.connection.describeSObject(getobjectname);
+               
+                for (var i=0; i<result.fields.length; i++) 
+                {
+                    var field = result.fields[i];
+                    var fieldarray=new Array();
+                    if(field.length == '' || field.length <= 255 || field.type == 'multipicklist' || field.type == 'picklist' || (field.length == 1300 && field.type == 'string')){
+                        fieldarray.push(getobjectname);
+                        fieldarray.push(field.name);
+                        var label1=field.label;
+                        var fldtype=field.type;
+                        
+                        //changing label of Assigned To Id field
+                        if(getobjectname.toLowerCase()=='ActivityHistory'.toLowerCase() || getobjectname.toLowerCase()=='OpenActivity'.toLowerCase())
+                        {
+                            if(field.name.toLowerCase()=='OwnerId'.toLowerCase())
+                            label1='Assigned To';
+                        }
+                        
+                        fieldarray.push(label1);
+                        fieldarray.push(field.type); 
+                        var element1=field.name;
+                        tempobj[element1]=fieldarray;   
+                    }   
+                }  
+               
+                return tempobj;
+            }
+            catch(ex){
+                if(ex.faultcode == 'sf:INVALID_SESSION_ID'  ){
+                    alert('Your session has expired. Please refresh your page.');
+                }
+                else
+                    alert('describeobj_method_main  '+ex);
+            }
+        }
+        
+        function InsufficientPrivlagesError{!componentID}() 
+        {   
+            loadPopupnew{!componentID}('fancybox_background','WrenchInsufficientPrivlagesError{!componentID}');
+            centerPopupnew{!componentID}('WrenchInsufficientPrivlagesError{!componentID}');
+        }
+        
+        function setAvilabelFields{!componentID}(objects,flag)  // flag = true then create current list.
+        {   
+            try
+            {
+                var obj = objects;
+                var selectlist = document.getElementById("All_Available_Fields{!componentID}");        
+                selectlist.innerHTML = "";
+                localAvlArray{!componentID} = [];  
+             // add fields for current selected list.
+                if(flag)
+                {
+                    var currentSelectedlist = document.getElementById("Current_Selected_Fields{!componentID}");
+                    currentSelectedlist.innerHTML = "";
+                    localSltArray{!componentID} = [];
+                   
+                    for(var currentFids = 0; currentFids<MainGridFilds.length; currentFids++)
+                    {   
+                        var objectName = MainGridFilds[currentFids].split(':')[0];
+                        var MainfieldName = MainGridFilds[currentFids].split(':')[1];               
+                        if(objectName == 'Account' && "{!UsingPageName}" != "MEF")   
+                        {
+                            if(("{!UsingPageName}" == "CMF" || "{!UsingPageName}" == "AP") && Accdes{!componentID}[MainfieldName][1]=='Name')
+                            {
+                                localSltArray{!componentID}.push([Accdes{!componentID}[MainfieldName][0],'Account:'+ Accdes{!componentID}[MainfieldName][1]+ ':Account Name:'+Accdes{!componentID}[MainfieldName][3],'Account Name']);
+                            }
+                            else
+                            {
+                                localSltArray{!componentID}.push([Accdes{!componentID}[MainfieldName][0],'Account:'+ Accdes{!componentID}[MainfieldName][1]+ ':' + Accdes{!componentID}[MainfieldName][2]+ ':'+Accdes{!componentID}[MainfieldName][3],Accdes{!componentID}[MainfieldName][2]]);
+                            }
+                        }
+                       else if(objectName == "Contact" && ("{!UsingPageName}" == "CMF" || "{!UsingPageName}" == "bulkEmailFD" || "{!UsingPageName}" == "bulkEmailID" || "{!UsingPageName}" == "bulkEmailCC" || "{!UsingPageName}" == "bulkEmailDD" || "{!UsingPageName}" == "MEP" || "{!UsingPageName}" == "AP")){
+                            
+                            if(("{!UsingPageName}" == "CMF" ||  "{!UsingPageName}" == "AP") && Contactdes{!componentID}[MainfieldName][2]=='Full Name' && Contactdes{!componentID}[MainfieldName][1]=='Name')
+                            {
+                                    localSltArray{!componentID}.push([Contactdes{!componentID}[MainfieldName][0],'Contact:'+ Contactdes{!componentID}[MainfieldName][1]+ ':Contact Name:'+Contactdes{!componentID}[MainfieldName][3],'Contact Name']);
+                            }
+                            else if("{!UsingPageName}" == "AP" || "{!UsingPageName}" == "CMF" )
+                            {
+                                if(Contactdes{!componentID}[MainfieldName][1]!='AccountId'){
+                                    localSltArray{!componentID}.push([Contactdes{!componentID}[MainfieldName][0],'Contact:'+ Contactdes{!componentID}[MainfieldName][1]+ ':' + Contactdes{!componentID}[MainfieldName][2]+ ':'+Contactdes{!componentID}[MainfieldName][3],Contactdes{!componentID}[MainfieldName][2]]);
+                                }
+                            }
+                            else{
+                                localSltArray{!componentID}.push([Contactdes{!componentID}[MainfieldName][0],'Contact:'+ Contactdes{!componentID}[MainfieldName][1]+ ':' + Contactdes{!componentID}[MainfieldName][2]+ ':'+Contactdes{!componentID}[MainfieldName][3],Contactdes{!componentID}[MainfieldName][2]]);
+                            }
+                            
+                            
+                        }
+                        else                
+                        {
+                            if(objectName == 'Account')
+                            {
+                                localSltArray{!componentID}.push(['Account','Account:Name:Account Name:string','Account Name']);
+                            }
+                            else if(objectName == 'Contact')
+                            {
+                                if(MainfieldName == 'Name')
+                                {
+                                    localSltArray{!componentID}.push(['Contact','Contact:Name:Contact Name:string','Contact Name']);
+                                }
+                                else
+                                {
+                                    localSltArray{!componentID}.push(['Contact','Contact:Email:Email:string','Email']);
+                                }
+                            }
+                            else if(objectName == Namespaceprefix1+'Fundraising__c')
+                            {
+                                localSltArray{!componentID}.push([Fundraisingdes{!componentID}[MainfieldName][0],Namespaceprefix1+'Fundraising__c:'+ Fundraisingdes{!componentID}[MainfieldName][1]+ ':' + Fundraisingdes{!componentID}[MainfieldName][2]+ ':'+Fundraisingdes{!componentID}[MainfieldName][3],Fundraisingdes{!componentID}[MainfieldName][2]]);
+                            }
+                            else if(objectName == Namespaceprefix1+'Fundraising_Contact__c')
+                            {                               
+                                localSltArray{!componentID}.push([FundraisingContactdes{!componentID}[MainfieldName][0],Namespaceprefix1+'Fundraising_Contact__c:'+ FundraisingContactdes{!componentID}[MainfieldName][1]+ ':' + FundraisingContactdes{!componentID}[MainfieldName][2]+ ':'+FundraisingContactdes{!componentID}[MainfieldName][3],FundraisingContactdes{!componentID}[MainfieldName][2]]);
+                            }
+                            else if(objectName == Namespaceprefix1+'Commitment__c')
+                            {
+                                localSltArray{!componentID}.push([Commitmentdes{!componentID}[MainfieldName][0],Namespaceprefix1+'Commitment__c:'+ Commitmentdes{!componentID}[MainfieldName][1]+ ':' + Commitmentdes{!componentID}[MainfieldName][2]+ ':'+Commitmentdes{!componentID}[MainfieldName][3],Commitmentdes{!componentID}[MainfieldName][2]]);
+                            }
+                            else if(objectName == Namespaceprefix1+'Partnership__c')
+                            {
+                                localSltArray{!componentID}.push([Partnershipdes{!componentID}[MainfieldName][0],Namespaceprefix1+'Partnership__c:'+ Partnershipdes{!componentID}[MainfieldName][1]+ ':' + Partnershipdes{!componentID}[MainfieldName][2]+ ':'+Partnershipdes{!componentID}[MainfieldName][3],Partnershipdes{!componentID}[MainfieldName][2]]);
+                            }
+                            else if(objectName == Namespaceprefix1+'Investor_Distribution__c')
+                            {
+                                localSltArray{!componentID}.push([InvstrDstrbtndes{!componentID}[MainfieldName][0],Namespaceprefix1+'Investor_Distribution__c:'+ InvstrDstrbtndes{!componentID}[MainfieldName][1]+ ':' + InvstrDstrbtndes{!componentID}[MainfieldName][2]+ ':'+InvstrDstrbtndes{!componentID}[MainfieldName][3],InvstrDstrbtndes{!componentID}[MainfieldName][2]]);
+                            }
+                            else if(objectName == Namespaceprefix1+'Capital_Call__c')
+                            {
+                                localSltArray{!componentID}.push([CapitalCalldes{!componentID}[MainfieldName][0],Namespaceprefix1+'Capital_Call__c:'+ CapitalCalldes{!componentID}[MainfieldName][1]+ ':' + CapitalCalldes{!componentID}[MainfieldName][2]+ ':'+CapitalCalldes{!componentID}[MainfieldName][3],CapitalCalldes{!componentID}[MainfieldName][2]]);
+                            }
+                            else if(objectName == Namespaceprefix1+'Marketing_Prospect__c')
+                            {
+                                localSltArray{!componentID}.push([MrktngPrspctdes{!componentID}[MainfieldName][0],Namespaceprefix1+'Marketing_Prospect__c:'+ MrktngPrspctdes{!componentID}[MainfieldName][1]+ ':' + MrktngPrspctdes{!componentID}[MainfieldName][2]+ ':'+MrktngPrspctdes{!componentID}[MainfieldName][3],MrktngPrspctdes{!componentID}[MainfieldName][2]]);
+                            }
+
+                        }
+                    }
+                    
+                    var newPos = localSltArray{!componentID}.length;
+                    for(var i=0;i<newPos;i++)
+                    {
+                            $('#sellist{!componentID}-item-'+i).removeClass('aw-items-selected');
+                            $('#sellist{!componentID}-item-'+i).removeClass('aw-items-current');
+                            $('#sellist{!componentID}-item-'+i).addClass('aw-items-normal');
+                       
+                    }
+                    
+                    createSeltList{!componentID}(localSltArray{!componentID});
+                    document.getElementById('fieldCount{!componentID}').innerHTML=localSltArray{!componentID}.length;   
+                }
+                
+                if(localSltArray{!componentID} == null || localSltArray{!componentID}.length == 0)  // first time value
+                {   
+                    tempGridFields = MainGridFilds.toString();
+                }
+                else{
+                    tempGridFields = localSltArray{!componentID}.toString();
+                }   
+                if(objects == 'all')
+                {                    
+                    
+                    for(flds in Fundraisingdes{!componentID})
+                    {                 
+                        if( (Fundraisingdes{!componentID}[flds][3].toLowerCase()!='ENCRYPTEDSTRING'.toLowerCase())
+                            && (Fundraisingdes{!componentID}[flds][1].toLowerCase() != 'id') && ( Fundraisingdes{!componentID}[flds][1].toLowerCase() != 'systemmodstamp')
+                            && ( Fundraisingdes{!componentID}[flds][3].toLowerCase() !='jigsawcompanyid') && (Fundraisingdes{!componentID}[flds][3].toLowerCase() != 'id')
+                            && (tempGridFields.indexOf(Namespaceprefix1+'Fundraising__c:'+Fundraisingdes{!componentID}[flds][1]) == -1))
+                        {  
+                          
+                                localAvlArray{!componentID}.push([Fundraisingdes{!componentID}[flds][0],Namespaceprefix1+'Fundraising__c:'+ Fundraisingdes{!componentID}[flds][1]+ ':' + Fundraisingdes{!componentID}[flds][2]+ ':'+Fundraisingdes{!componentID}[flds][3],Fundraisingdes{!componentID}[flds][2]]);
+                                                         
+                                //localAvlArray{!componentID}.push([Fundraisingdes{!componentID}[flds][0],Namespaceprefix1+'Fundraising__c:'+ Fundraisingdes{!componentID}[flds][1]+ ':' + Fundraisingdes{!componentID}[flds][2]+ ':'+Fundraisingdes{!componentID}[flds][3],Fundraisingdes{!componentID}[flds][2]]);
+                        }
+                    }
+                    for(flds in FundraisingContactdes{!componentID})
+                    {                 
+                        if( (FundraisingContactdes{!componentID}[flds][3].toLowerCase()!='ENCRYPTEDSTRING'.toLowerCase()) 
+                            && (FundraisingContactdes{!componentID}[flds][1].toLowerCase() != 'id') && ( FundraisingContactdes{!componentID}[flds][1].toLowerCase() != 'systemmodstamp') 
+                            && ( FundraisingContactdes{!componentID}[flds][3].toLowerCase() !='jigsawcompanyid') && (FundraisingContactdes{!componentID}[flds][3].toLowerCase() != 'id')
+                            && ( FundraisingContactdes{!componentID}[flds][1].toLowerCase() != Namespaceprefix1.toLowerCase()+'contact_name__c') && (tempGridFields.indexOf(Namespaceprefix1+'Fundraising_Contact__c:'+FundraisingContactdes{!componentID}[flds][1]) == -1))
+                        {
+                            if("{!UsingPageName}" == "CMF_PFC")
+                            {
+                                if(FundraisingContactdes{!componentID}[flds][1] != Namespaceprefix1+"Fundraising__c")
+                                {
+                                    localAvlArray{!componentID}.push([FundraisingContactdes{!componentID}[flds][0],Namespaceprefix1+'Fundraising_Contact__c:'+ FundraisingContactdes{!componentID}[flds][1]+ ':' + FundraisingContactdes{!componentID}[flds][2]+ ':'+FundraisingContactdes{!componentID}[flds][3],FundraisingContactdes{!componentID}[flds][2]]);
+                                }
+                            }
+                            else if("{!UsingPageName}" == "MEF")
+                            {                                
+                                if(FundraisingContactdes{!componentID}[flds][1] != Namespaceprefix1+"Contact__c" && FundraisingContactdes{!componentID}[flds][1] != Namespaceprefix1+"Fundraising__c")
+                                {               
+                                    localAvlArray{!componentID}.push([FundraisingContactdes{!componentID}[flds][0],Namespaceprefix1+'Fundraising_Contact__c:'+ FundraisingContactdes{!componentID}[flds][1]+ ':' + FundraisingContactdes{!componentID}[flds][2]+ ':'+FundraisingContactdes{!componentID}[flds][3],FundraisingContactdes{!componentID}[flds][2]]);
+                                }
+                            }
+                            else
+                            {  
+                                localAvlArray{!componentID}.push([FundraisingContactdes{!componentID}[flds][0],Namespaceprefix1+'Fundraising_Contact__c:'+ FundraisingContactdes{!componentID}[flds][1]+ ':' + FundraisingContactdes{!componentID}[flds][2]+ ':'+FundraisingContactdes{!componentID}[flds][3],FundraisingContactdes{!componentID}[flds][2]]);
+                            }
+                        }
+                    }
+                    
+                    for(flds in Commitmentdes{!componentID})
+                    { 
+                        
+                        if("{!UsingPageName}" == "ICG" || "{!UsingPageName}" == "bulkEmailFD" || "{!UsingPageName}" == "bulkEmailID" || "{!UsingPageName}" == "bulkEmailDD" || "{!UsingPageName}" == "bulkEmailCC")
+                        {                   
+                            if( (Commitmentdes{!componentID}[flds][3].toLowerCase()!='ENCRYPTEDSTRING'.toLowerCase()) 
+                                && (Commitmentdes{!componentID}[flds][1].toLowerCase() != 'id') && ( Commitmentdes{!componentID}[flds][1].toLowerCase() != 'systemmodstamp')
+                                && ( Commitmentdes{!componentID}[flds][3].toLowerCase() !='jigsawcompanyid') && (Commitmentdes{!componentID}[flds][3].toLowerCase() != 'id')
+                                && (tempGridFields.indexOf(Namespaceprefix1+'Commitment__c:'+Commitmentdes{!componentID}[flds][1]) == -1))
+                            {
+                                localAvlArray{!componentID}.push([Commitmentdes{!componentID}[flds][0],Namespaceprefix1+'Commitment__c:'+ Commitmentdes{!componentID}[flds][1]+ ':' + Commitmentdes{!componentID}[flds][2]+ ':'+Commitmentdes{!componentID}[flds][3],Commitmentdes{!componentID}[flds][2]]);
+                            }
+                        }
+                    }
+                    for(flds in Partnershipdes{!componentID})
+                    { 
+                        if("{!UsingPageName}" == "ICG")
+                        {                   
+                            if( (Partnershipdes{!componentID}[flds][3].toLowerCase()!='ENCRYPTEDSTRING'.toLowerCase())
+                                && (Partnershipdes{!componentID}[flds][1].toLowerCase() != 'id') && ( Partnershipdes{!componentID}[flds][1].toLowerCase() != 'systemmodstamp') 
+                                && ( Partnershipdes{!componentID}[flds][3].toLowerCase() !='jigsawcompanyid') && (Partnershipdes{!componentID}[flds][3].toLowerCase() != 'id')
+                                && (tempGridFields.indexOf(Namespaceprefix1+'Partnership__c:'+Partnershipdes{!componentID}[flds][1]) == -1))
+                            {
+                                if(Partnershipdes{!componentID}[flds][1]!='Name'){
+                                    localAvlArray{!componentID}.push([Partnershipdes{!componentID}[flds][0],Namespaceprefix1+'Partnership__c:'+ Partnershipdes{!componentID}[flds][1]+ ':' + Partnershipdes{!componentID}[flds][2]+ ':'+Partnershipdes{!componentID}[flds][3],Partnershipdes{!componentID}[flds][2]]);
+                                }
+                            }
+                        }
+                    }
+                    
+                    for(flds in InvstrDstrbtndes{!componentID})
+                    {
+                        if("{!UsingPageName}" == "bulkEmailFD" || "{!UsingPageName}" == "bulkEmailID"){
+                            if( (InvstrDstrbtndes{!componentID}[flds][3].toLowerCase()!='ENCRYPTEDSTRING'.toLowerCase())
+                                && (InvstrDstrbtndes{!componentID}[flds][1].toLowerCase() != 'id') && ( InvstrDstrbtndes{!componentID}[flds][1].toLowerCase() != 'systemmodstamp') 
+                                && ( InvstrDstrbtndes{!componentID}[flds][3].toLowerCase() !='jigsawcompanyid') && (InvstrDstrbtndes{!componentID}[flds][3].toLowerCase() != 'id')
+                                && (tempGridFields.indexOf(Namespaceprefix1+'Investor_Distribution__c:'+InvstrDstrbtndes{!componentID}[flds][1]) == -1))
+                            {
+                                localAvlArray{!componentID}.push([InvstrDstrbtndes{!componentID}[flds][0],Namespaceprefix1+'Investor_Distribution__c:'+ InvstrDstrbtndes{!componentID}[flds][1]+ ':' + InvstrDstrbtndes{!componentID}[flds][2]+ ':'+InvstrDstrbtndes{!componentID}[flds][3],InvstrDstrbtndes{!componentID}[flds][2]]);
+                            }
+                        }
+                    }
+                    for(flds in Accdes{!componentID})
+
+                    {   
+                       
+                        if( (Accdes{!componentID}[flds][3].toLowerCase()!='ENCRYPTEDSTRING'.toLowerCase()) 
+                            && (Accdes{!componentID}[flds][1].toLowerCase() != 'id') && ( Accdes{!componentID}[flds][1].toLowerCase() != 'systemmodstamp') 
+                            && ( Accdes{!componentID}[flds][3].toLowerCase() !='jigsawcompanyid') && (Accdes{!componentID}[flds][3].toLowerCase() != 'id') && ( Accdes{!componentID}[flds][1].toLowerCase() != 'masterrecordid') && ( Accdes{!componentID}[flds][1] != Namespaceprefix1+'External_System_ID__c') && (tempGridFields.indexOf('Account:'+Accdes{!componentID}[flds][1]) == -1)&& (Accdes{!componentID}[flds][3].toLowerCase() != 'address'))
+                        {  
+                            if( Accdes{!componentID}[flds][1]=='Name')
+                            {
+                                
+                                 localAvlArray{!componentID}.push([Accdes{!componentID}[flds][0],'Account:'+ Accdes{!componentID}[flds][1]+ ':Account Name:'+Accdes{!componentID}[flds][3],'Account Name']);
+                            }
+                            else{
+                                 localAvlArray{!componentID}.push([Accdes{!componentID}[flds][0],'Account:'+ Accdes{!componentID}[flds][1]+ ':' + Accdes{!componentID}[flds][2]+ ':'+Accdes{!componentID}[flds][3],Accdes{!componentID}[flds][2]]);
+                            }
+                        }
+                    }
+                    for(flds in Contactdes{!componentID})
+                    {    
+                        
+                        if( (Contactdes{!componentID}[flds][3].toLowerCase()!='ENCRYPTEDSTRING'.toLowerCase())
+                            && (Contactdes{!componentID}[flds][1].toLowerCase() != 'id') && ( Contactdes{!componentID}[flds][1].toLowerCase() != 'systemmodstamp') && ( Contactdes{!componentID}[flds][1] != Namespaceprefix1+'External_System_ID__c') && (Contactdes{!componentID}[flds][1].toLowerCase() != 'masterrecordid')
+                            && ( Contactdes{!componentID}[flds][3].toLowerCase() !='jigsawcompanyid') && (Contactdes{!componentID}[flds][3].toLowerCase() != 'id' ) && ( Contactdes{!componentID}[flds][1].toLowerCase() !='jigsaw')
+                            && (tempGridFields.indexOf('Contact:'+Contactdes{!componentID}[flds][1]) == -1) && (Contactdes{!componentID}[flds][3].toLowerCase() != 'address' ))
+                        {  
+                                if("{!UsingPageName}" == "AP" || "{!UsingPageName}" == "CMF"  ){
+                                    if(Contactdes{!componentID}[flds][1]!='AccountId'){
+                                        localAvlArray{!componentID}.push([Contactdes{!componentID}[flds][0],'Contact:'+ Contactdes{!componentID}[flds][1]+ ':' + Contactdes{!componentID}[flds][2]+ ':'+Contactdes{!componentID}[flds][3],Contactdes{!componentID}[flds][2]]);
+                                    }
+                                }
+                                else{
+                                    localAvlArray{!componentID}.push([Contactdes{!componentID}[flds][0],'Contact:'+ Contactdes{!componentID}[flds][1]+ ':' + Contactdes{!componentID}[flds][2]+ ':'+Contactdes{!componentID}[flds][3],Contactdes{!componentID}[flds][2]]);
+                                }
+                        }
+                    }
+                    for(flds in CapitalCalldes{!componentID})
+                    {    
+                        if( (CapitalCalldes{!componentID}[flds][3].toLowerCase()!='ENCRYPTEDSTRING'.toLowerCase())
+                            && (CapitalCalldes{!componentID}[flds][1].toLowerCase() != 'id') && ( CapitalCalldes{!componentID}[flds][1].toLowerCase() != 'systemmodstamp') 
+                            && ( CapitalCalldes{!componentID}[flds][3].toLowerCase() !='jigsawcompanyid') && (CapitalCalldes{!componentID}[flds][3].toLowerCase() != 'id')
+                            && (tempGridFields.indexOf(Namespaceprefix1+'Capital_Call__c:'+CapitalCalldes{!componentID}[flds][1]) == -1))
+                        {  
+                                localAvlArray{!componentID}.push([CapitalCalldes{!componentID}[flds][0],Namespaceprefix1+'Capital_Call__c:'+ CapitalCalldes{!componentID}[flds][1]+ ':' + CapitalCalldes{!componentID}[flds][2]+ ':'+CapitalCalldes{!componentID}[flds][3],CapitalCalldes{!componentID}[flds][2]]);
+                        }
+                    }
+                    for(flds in MrktngPrspctdes{!componentID})
+                    {    
+                        if( (MrktngPrspctdes{!componentID}[flds][3].toLowerCase()!='ENCRYPTEDSTRING'.toLowerCase())
+                            && (MrktngPrspctdes{!componentID}[flds][1].toLowerCase() != 'id') && ( MrktngPrspctdes{!componentID}[flds][1].toLowerCase() != 'systemmodstamp') 
+                            && ( MrktngPrspctdes{!componentID}[flds][3].toLowerCase() !='jigsawcompanyid') && (MrktngPrspctdes{!componentID}[flds][3].toLowerCase() != 'id')
+                            && (tempGridFields.indexOf(Namespaceprefix1+'Marketing_Prospect__c:'+MrktngPrspctdes{!componentID}[flds][1]) == -1))
+                        {  
+                                localAvlArray{!componentID}.push([MrktngPrspctdes{!componentID}[flds][0],Namespaceprefix1+'Marketing_Prospect__c:'+ MrktngPrspctdes{!componentID}[flds][1]+ ':' + MrktngPrspctdes{!componentID}[flds][2]+ ':'+MrktngPrspctdes{!componentID}[flds][3],MrktngPrspctdes{!componentID}[flds][2]]);
+                        }
+                    }
+                
+                }
+                else if(objects == Namespaceprefix1+'Fundraising__c')
+                {       
+                    if("{!UsingPageName}" == "CMF_PFA")
+                    {
+                        document.getElementById("objectPicklist{!componentID}").style.display='none';
+                        document.getElementById("idSlctFld{!componentID}").style.display='';
+                    }
+                    for(flds in Fundraisingdes{!componentID})
+                    {   
+
+                       
+                        if( (Fundraisingdes{!componentID}[flds][3].toLowerCase()!='ENCRYPTEDSTRING'.toLowerCase()) 
+                            && (Fundraisingdes{!componentID}[flds][1].toLowerCase() != 'id') && ( Fundraisingdes{!componentID}[flds][1].toLowerCase() != 'systemmodstamp') 
+                            && ( Fundraisingdes{!componentID}[flds][3].toLowerCase() !='jigsawcompanyid') && (Fundraisingdes{!componentID}[flds][3].toLowerCase() != 'id')
+                            && (tempGridFields.indexOf(Namespaceprefix1+'Fundraising__c:'+Fundraisingdes{!componentID}[flds][1]) == -1))
+                        {
+                            localAvlArray{!componentID}.push([Fundraisingdes{!componentID}[flds][0],Namespaceprefix1+'Fundraising__c:'+ Fundraisingdes{!componentID}[flds][1]+ ':' + Fundraisingdes{!componentID}[flds][2]+ ':'+Fundraisingdes{!componentID}[flds][3],Fundraisingdes{!componentID}[flds][2]]);
+                                                      
+                                
+                        }
+                    }                     
+                }
+                else if(objects == Namespaceprefix1+'Fundraising_Contact__c')
+                {   
+                    for(flds in FundraisingContactdes{!componentID})
+                    { 
+                        if( (FundraisingContactdes{!componentID}[flds][3].toLowerCase()!='ENCRYPTEDSTRING'.toLowerCase())
+                            && (FundraisingContactdes{!componentID}[flds][1].toLowerCase() != 'id') && ( FundraisingContactdes{!componentID}[flds][1].toLowerCase() != 'systemmodstamp') 
+                            && ( FundraisingContactdes{!componentID}[flds][3].toLowerCase() !='jigsawcompanyid') && (FundraisingContactdes{!componentID}[flds][3].toLowerCase() != 'id')&& ( FundraisingContactdes{!componentID}[flds][1].toLowerCase() != Namespaceprefix1.toLowerCase()+'contact_name__c') 
+                         && (tempGridFields.indexOf(Namespaceprefix1+'Fundraising_Contact__c:'+FundraisingContactdes{!componentID}[flds][1]) == -1))
+                        {
+                            if("{!UsingPageName}" == "CMF_PFC")
+                            {
+                                if(FundraisingContactdes{!componentID}[flds][1] != Namespaceprefix1+"Fundraising__c")
+                                {
+                                    localAvlArray{!componentID}.push([FundraisingContactdes{!componentID}[flds][0],Namespaceprefix1+'Fundraising_Contact__c:'+ FundraisingContactdes{!componentID}[flds][1]+ ':' + FundraisingContactdes{!componentID}[flds][2]+ ':'+FundraisingContactdes{!componentID}[flds][3],FundraisingContactdes{!componentID}[flds][2]]);
+                                }
+                            }
+                            else if("{!UsingPageName}" == "MEF")
+                            {
+                                if(FundraisingContactdes{!componentID}[flds][1] != Namespaceprefix1+"Contact__c" && FundraisingContactdes{!componentID}[flds][1] != Namespaceprefix1+"Fundraising__c")
+                                {
+                                    localAvlArray{!componentID}.push([FundraisingContactdes{!componentID}[flds][0],Namespaceprefix1+'Fundraising_Contact__c:'+ FundraisingContactdes{!componentID}[flds][1]+ ':' + FundraisingContactdes{!componentID}[flds][2]+ ':'+FundraisingContactdes{!componentID}[flds][3],FundraisingContactdes{!componentID}[flds][2]]);
+                                }
+                            }
+                            else
+                            {
+                                localAvlArray{!componentID}.push([FundraisingContactdes{!componentID}[flds][0],Namespaceprefix1+'Fundraising_Contact__c:'+ FundraisingContactdes{!componentID}[flds][1]+ ':' + FundraisingContactdes{!componentID}[flds][2]+ ':'+FundraisingContactdes{!componentID}[flds][3],FundraisingContactdes{!componentID}[flds][2]]);
+                            } 
+                        }
+                    }                     
+                }
+                else if(objects == 'Account')
+                {   
+                    for(flds in Accdes{!componentID})
+                    {    
+                        if( (Accdes{!componentID}[flds][3].toLowerCase()!='ENCRYPTEDSTRING'.toLowerCase())
+                            && (Accdes{!componentID}[flds][1].toLowerCase() != 'id') && ( Accdes{!componentID}[flds][1].toLowerCase() != 'systemmodstamp') && ( Accdes{!componentID}[flds][1].toLowerCase() != 'masterrecordid') && ( Accdes{!componentID}[flds][1] != Namespaceprefix1+'External_System_ID__c') && ( Accdes{!componentID}[flds][3].toLowerCase() !='jigsawcompanyid') && (Accdes{!componentID}[flds][3].toLowerCase() != 'id')
+                            && (tempGridFields.indexOf('Account:'+Accdes{!componentID}[flds][1]) == -1))
+                        {  
+                                if( "{!UsingPageName}" == "AP" && (Accdes{!componentID}[flds][1]=='Name'))
+                                {
+                                     localAvlArray{!componentID}.push([Accdes{!componentID}[flds][0],'Account:'+ Accdes{!componentID}[flds][1]+ ':Account Name:'+Accdes{!componentID}[flds][3],'Account Name']);
+                                }
+                                else{
+                                    localAvlArray{!componentID}.push([Accdes{!componentID}[flds][0],'Account:'+ Accdes{!componentID}[flds][1]+ ':' + Accdes{!componentID}[flds][2]+ ':'+Accdes{!componentID}[flds][3],Accdes{!componentID}[flds][2]]);
+                                }       
+                        }
+                    }
+                    
+                }
+                else if(objects == 'Contact')
+                {   
+                    for(flds in Contactdes{!componentID})
+                    {    
+                        if( (Contactdes{!componentID}[flds][3].toLowerCase()!='ENCRYPTEDSTRING'.toLowerCase())
+                            && (Contactdes{!componentID}[flds][1].toLowerCase() != 'id') && ( Contactdes{!componentID}[flds][1].toLowerCase() != 'systemmodstamp') && ( Contactdes{!componentID}[flds][1] != Namespaceprefix1+'External_System_ID__c') && (Contactdes{!componentID}[flds][1].toLowerCase() != 'masterrecordid') && ( Contactdes{!componentID}[flds][3].toLowerCase() !='jigsawcompanyid') && (Contactdes{!componentID}[flds][3].toLowerCase() != 'id') && ( Contactdes{!componentID}[flds][1].toLowerCase() !='jigsaw')
+                            && (tempGridFields.indexOf('Contact:'+Contactdes{!componentID}[flds][1]) == -1))
+                        {
+                                if("{!UsingPageName}" == "AP" || "{!UsingPageName}" == "CMF"){
+                                    if(Contactdes{!componentID}[flds][1]!='AccountId'){
+                                        localAvlArray{!componentID}.push([Contactdes{!componentID}[flds][0],'Contact:'+ Contactdes{!componentID}[flds][1]+ ':' + Contactdes{!componentID}[flds][2]+ ':'+Contactdes{!componentID}[flds][3],Contactdes{!componentID}[flds][2]]);
+                                    }
+                                }
+                                else{
+                                    localAvlArray{!componentID}.push([Contactdes{!componentID}[flds][0],'Contact:'+ Contactdes{!componentID}[flds][1]+ ':' + Contactdes{!componentID}[flds][2]+ ':'+Contactdes{!componentID}[flds][3],Contactdes{!componentID}[flds][2]]);
+                                }
+                        }
+                    }
+                    
+                }
+                else if(objects == Namespaceprefix1+'Commitment__c'){
+                    
+                    for(flds in Commitmentdes{!componentID})
+                    {
+                        if( (Commitmentdes{!componentID}[flds][3].toLowerCase()!='ENCRYPTEDSTRING'.toLowerCase()) 
+                            && (Commitmentdes{!componentID}[flds][1].toLowerCase() != 'id') && ( Commitmentdes{!componentID}[flds][1].toLowerCase() != 'systemmodstamp') 
+                            && ( Commitmentdes{!componentID}[flds][3].toLowerCase() !='jigsawcompanyid') && (Commitmentdes{!componentID}[flds][3].toLowerCase() != 'id')
+                            && (tempGridFields.indexOf(Namespaceprefix1+'Commitment__c:'+Commitmentdes{!componentID}[flds][1]) == -1))
+                        {
+                            localAvlArray{!componentID}.push([Commitmentdes{!componentID}[flds][0],Namespaceprefix1+'Commitment__c:'+ Commitmentdes{!componentID}[flds][1]+ ':' + Commitmentdes{!componentID}[flds][2]+ ':'+Commitmentdes{!componentID}[flds][3],Commitmentdes{!componentID}[flds][2]]);
+                        }
+                    }
+                }
+                else if(objects == Namespaceprefix1+'Partnership__c'){
+                    for(flds in Partnershipdes{!componentID})
+                    {
+                        if( (Partnershipdes{!componentID}[flds][3].toLowerCase()!='ENCRYPTEDSTRING'.toLowerCase())
+                            && (Partnershipdes{!componentID}[flds][1].toLowerCase() != 'id') && ( Partnershipdes{!componentID}[flds][1].toLowerCase() != 'systemmodstamp') 
+                            && ( Partnershipdes{!componentID}[flds][3].toLowerCase() !='jigsawcompanyid') && (Partnershipdes{!componentID}[flds][3].toLowerCase() != 'id')
+                            && (tempGridFields.indexOf(Namespaceprefix1+'Partnership__c:'+Partnershipdes{!componentID}[flds][1]) == -1))
+                        {
+                            if(Partnershipdes{!componentID}[flds][1]!='Name'){
+                                localAvlArray{!componentID}.push([Partnershipdes{!componentID}[flds][0],Namespaceprefix1+'Partnership__c:'+ Partnershipdes{!componentID}[flds][1]+ ':' + Partnershipdes{!componentID}[flds][2]+ ':'+Partnershipdes{!componentID}[flds][3],Partnershipdes{!componentID}[flds][2]]);
+                            }
+                        }
+                    }
+                }
+                else if(objects == Namespaceprefix1+'Investor_Distribution__c'){
+                    for(flds in InvstrDstrbtndes{!componentID})
+                    {
+                        if( (InvstrDstrbtndes{!componentID}[flds][3].toLowerCase()!='ENCRYPTEDSTRING'.toLowerCase())
+                            && (InvstrDstrbtndes{!componentID}[flds][1].toLowerCase() != 'id') && ( InvstrDstrbtndes{!componentID}[flds][1].toLowerCase() != 'systemmodstamp') 
+                            && ( InvstrDstrbtndes{!componentID}[flds][3].toLowerCase() !='jigsawcompanyid') && (InvstrDstrbtndes{!componentID}[flds][3].toLowerCase() != 'id')
+                            && (tempGridFields.indexOf(Namespaceprefix1+'Investor_Distribution__c:'+InvstrDstrbtndes{!componentID}[flds][1]) == -1))
+                        {
+                            localAvlArray{!componentID}.push([InvstrDstrbtndes{!componentID}[flds][0],Namespaceprefix1+'Investor_Distribution__c:'+ InvstrDstrbtndes{!componentID}[flds][1]+ ':' + InvstrDstrbtndes{!componentID}[flds][2]+ ':'+InvstrDstrbtndes{!componentID}[flds][3],InvstrDstrbtndes{!componentID}[flds][2]]);
+                        }
+                    }
+                }
+                else if(objects == Namespaceprefix1+'Capital_Call__c'){
+                    for(flds in CapitalCalldes{!componentID})
+                    {    
+                        if( (CapitalCalldes{!componentID}[flds][3].toLowerCase()!='ENCRYPTEDSTRING'.toLowerCase())
+                            && (CapitalCalldes{!componentID}[flds][1].toLowerCase() != 'id') && ( CapitalCalldes{!componentID}[flds][1].toLowerCase() != 'systemmodstamp') 
+                            && ( CapitalCalldes{!componentID}[flds][3].toLowerCase() !='jigsawcompanyid') && (CapitalCalldes{!componentID}[flds][3].toLowerCase() != 'id')
+                            && (tempGridFields.indexOf(Namespaceprefix1+'Capital_Call__c:'+CapitalCalldes{!componentID}[flds][1]) == -1))
+                        {  
+                                localAvlArray{!componentID}.push([CapitalCalldes{!componentID}[flds][0],Namespaceprefix1+'Capital_Call__c:'+ CapitalCalldes{!componentID}[flds][1]+ ':' + CapitalCalldes{!componentID}[flds][2]+ ':'+CapitalCalldes{!componentID}[flds][3],CapitalCalldes{!componentID}[flds][2]]);
+                        }
+                    }
+                }
+                else if(objects == Namespaceprefix1+'Marketing_Prospect__c'){
+                    for(flds in MrktngPrspctdes{!componentID})
+                    {    
+                        if( (MrktngPrspctdes{!componentID}[flds][3].toLowerCase()!='ENCRYPTEDSTRING'.toLowerCase())
+                            && (MrktngPrspctdes{!componentID}[flds][1].toLowerCase() != 'id') && ( MrktngPrspctdes{!componentID}[flds][1].toLowerCase() != 'systemmodstamp') 
+                            && ( MrktngPrspctdes{!componentID}[flds][3].toLowerCase() !='jigsawcompanyid') && (MrktngPrspctdes{!componentID}[flds][3].toLowerCase() != 'id')
+                            && (tempGridFields.indexOf(Namespaceprefix1+'Marketing_Prospect__c:'+MrktngPrspctdes{!componentID}[flds][1]) == -1))
+                        {  
+                                localAvlArray{!componentID}.push([MrktngPrspctdes{!componentID}[flds][0],Namespaceprefix1+'Marketing_Prospect__c:'+ MrktngPrspctdes{!componentID}[flds][1]+ ':' + MrktngPrspctdes{!componentID}[flds][2]+ ':'+MrktngPrspctdes{!componentID}[flds][3],MrktngPrspctdes{!componentID}[flds][2]]);
+                        }
+                    }
+                }
+                var newPos = localSltArray{!componentID}.length;
+                for(var i=0;i<newPos;i++)
+                {
+                    $('#sellist{!componentID}-item-'+i).removeClass('aw-items-selected');
+                    $('#sellist{!componentID}-item-'+i).removeClass('aw-items-current');
+                    $('#sellist{!componentID}-item-'+i).addClass('aw-items-normal');
+                }
+                
+                
+                createAvlSelList{!componentID}(localAvlArray{!componentID});  
+                document.getElementById('righttoleftdisable{!componentID}').style.display='block';
+                document.getElementById('lefttorightdisable{!componentID}').style.display='block';
+                document.getElementById('lefttorightenable{!componentID}').style.display='none';
+                document.getElementById('righttoleftenable{!componentID}').style.display='none';
+                document.getElementById('topenable{!componentID}').style.display='none';
+                document.getElementById('moveupenable{!componentID}').style.display='none';
+                document.getElementById('movedownenable{!componentID}').style.display='none';
+                document.getElementById('bottomenable{!componentID}').style.display='none';
+                document.getElementById('topdisable{!componentID}').style.display='block'; 
+                document.getElementById('moveupdisable{!componentID}').style.display='block';
+                document.getElementById('movedowndisable{!componentID}').style.display='block';
+                document.getElementById('bottomdisable{!componentID}').style.display='block';
+            }
+            catch(ex){
+                alert('Error123 :'+ex);
+            }
+            
+        }
+        
+        function createSeltList{!componentID}(SelectedFields)
+        {
+            try
+            {
+            comboSltobj{!componentID} = new AW.UI.List;
+            for(i=0;i<SelectedFields.length;i++)
+             {      
+                    comboSltobj{!componentID}.setItemImage(SelectedFields[i][0],i);
+                    comboSltobj{!componentID}.setItemValue(SelectedFields[i][1],i);
+                    /*if(SelectedFields[i][2] == 'Record Type ID'){
+                        comboSltobj.setItemText('Record Type',i);
+                    }*/
+                    
+                    if(SelectedFields[i][2] == 'Full Name' && ("{!UsingPageName}" == "MEP" || "{!UsingPageName}" == "AP")){
+                        comboSltobj{!componentID}.setItemText('Contact Name',i);
+                        //alert('comboSltobj{!componentID}.getItemValue(selectedIndex)' +(comboSltobj{!componentID}.getItemValue(i)));
+                    }
+                    /* Rajnish 06oct
+                    else if((SelectedFields[i][2] == 'Account Name' || SelectedFields[i][2] == 'Legal Name') && "{!UsingPageName}" == "MEF")
+                    {
+                       // comboSltobj{!componentID}.setItemText('Institution',i); 30 Aug Chnage
+                       comboSltobj{!componentID}.setItemText('Account',i); //change According to review 
+                    }
+                    Rajnish 06oct */
+                    //************Change Fundraising Contact ID to Fundraising Contact******Start****
+                    else if((SelectedFields[i][2] == 'Fundraising Contact ID' && "{!UsingPageName}" == "MEF"))
+                    {
+                        comboSltobj{!componentID}.setItemText('Fundraising Contact',i);
+                    }
+                    //************Change Fundraising Contact ID to Fundraising Contact******End****
+                    
+                    else if(SelectedFields[i][2] == 'Account'  && "{!UsingPageName}" == "CMF"){
+                       //alert('SelectedFields[i][2]   '+SelectedFields[i][2]);
+                       comboSltobj{!componentID}.setItemText('Account Name',i);
+                    }
+                    else if(SelectedFields[i][2] == 'Last Email Sent'){
+                        comboSltobj{!componentID}.setItemText('Email Sent',i);
+                    }
+                    else
+                    {
+                        comboSltobj{!componentID}.setItemText( HTMLEncode1(SelectedFields[i][2]), i);
+                    }
+            }
+            comboSltobj{!componentID}.setItemCount(SelectedFields.length);
+            comboSltobj{!componentID}.setId("sellist{!componentID}");  
+            comboSltobj{!componentID}.setSize(240,206);
+            
+            
+            comboSltobj{!componentID}.onKeyUp  = function(event){
+                return 'disabled';
+            }
+            
+            comboSltobj{!componentID}.onKeyDown  = function(event){
+                return 'disabled';
+            }
+            
+            comboSltobj{!componentID}.onKeyLeft  = function(event){
+                return 'disabled';
+            }
+            
+            comboSltobj{!componentID}.onKeyRight = function(event){
+                return 'disabled';
+            }
+            
+            
+            comboSltobj{!componentID}.onItemClicked = function(event, index){
+                //alert('CHECk'+this.getItemText(index));
+                var newPos = localSltArray{!componentID}.length;
+
+                
+                for(var i=0;i<newPos;i++){
+                    if(i != index){
+                        $('#sellist{!componentID}-item-'+i).removeClass('aw-items-selected');
+                        $('#sellist{!componentID}-item-'+i).removeClass('aw-items-current');
+                        $('#sellist{!componentID}-item-'+i).addClass('aw-items-normal');
+                    }
+                    else{
+                        $('#sellist{!componentID}-item-'+i).addClass('aw-items-selected');
+                        $('#sellist{!componentID}-item-'+i).addClass('aw-items-current');
+                        $('#sellist{!componentID}-item-'+i).removeClass('aw-items-normal');
+                    }
+                }
+                enablebuttonsotherdetailselectlist{!componentID}(0,0,0);
+                var newPos1 = localAvlArray{!componentID}.length;
+                for(var i=0;i<newPos1;i++){
+                    $('#avllist{!componentID}-item-'+i).removeClass('aw-items-selected');
+                    $('#avllist{!componentID}-item-'+i).removeClass('aw-items-current');
+                    $('#avllist{!componentID}-item-'+i).addClass('aw-items-normal');
+                }
+            }
+           
+            document.getElementById("Current_Selected_Fields{!componentID}").innerHTML=comboSltobj{!componentID};  
+            checkForRestoreButton{!componentID}();    
+            $("#searchcon_grid1{!componentID}").focus();
+            $("#searchcon_grid1{!componentID}").blur();
+            $("#blurred1").hide();
+            }
+            catch(ex)
+            {
+                alert('Error234 :'+ex);
+            }
+        }
+        
+        var moveto=10;
+    
+        function enablebuttonsotherdetailselectlist{!componentID}(doscroll,upDown,topBottom)
+        {   
+            try
+            {
+           
+            var selectedIndex = comboSltobj{!componentID}.getSelectedItems();
+            //alert('selectedIndex  '+comboSltobj{!componentID}.getItemValue(selectedIndex));
+            var newPos = localSltArray{!componentID}.length;
+            for(var i=0;i<newPos;i++){
+                if($('#sellist{!componentID}-item-'+i).hasClass("aw-items-selected")){
+                    selectedIndex = i;
+                    break;
+                }
+            }
+                
+            var len = comboSltobj{!componentID}.getItemCount() - 1;                        
+            
+            if(comboAvlobj{!componentID}.getSelectedItems() >= 0)// if other list is selected then deselect other list
+            {
+                deselectName{!componentID}('All_Available_Fields{!componentID}');
+                comboSltobj{!componentID}.setSelectedItems(selectedIndex);
+            }
+            
+            if((selectedIndex == '' || selectedIndex == -1) && (selectedIndex != 0)){
+                return false;    
+            }
+            
+            document.getElementById('righttoleftenable{!componentID}').style.display='block';
+            document.getElementById('righttoleftdisable{!componentID}').style.display='none';
+            
+
+            if(selectedIndex == 0 )
+            {   
+                if("{!UsingPageName}" == "ICG"){
+                    document.getElementById('topenable{!componentID}').style.display='none';
+                    document.getElementById('moveupenable{!componentID}').style.display='none';
+                    document.getElementById('topdisable{!componentID}').style.display='block'; 
+                    document.getElementById('moveupdisable{!componentID}').style.display='block';              
+                    document.getElementById('movedownenable{!componentID}').style.display='none';
+                    document.getElementById('bottomenable{!componentID}').style.display='none';               
+                    document.getElementById('movedowndisable{!componentID}').style.display='block';
+                    document.getElementById('bottomdisable{!componentID}').style.display='block';
+                }
+                else{
+                    document.getElementById('topenable{!componentID}').style.display='none';
+                    document.getElementById('moveupenable{!componentID}').style.display='none';
+                    document.getElementById('topdisable{!componentID}').style.display='block'; 
+                    document.getElementById('moveupdisable{!componentID}').style.display='block';              
+                    document.getElementById('movedownenable{!componentID}').style.display='block';
+                    document.getElementById('bottomenable{!componentID}').style.display='block';               
+                    document.getElementById('movedowndisable{!componentID}').style.display='none';
+                    document.getElementById('bottomdisable{!componentID}').style.display='none';
+                }
+               
+                
+                // check for fixed fields
+                
+                if(fixedFields{!componentID} != null && fixedFields{!componentID} != '')
+                {
+                   for(var i=0; i<fixedFields{!componentID}.length; i++)
+                   {
+                        
+                       if(comboSltobj{!componentID}.getItemValue(selectedIndex).indexOf(fixedFields{!componentID}[i]) > -1)
+                       {
+                        
+                            document.getElementById('righttoleftenable{!componentID}').style.display='none';
+                            document.getElementById('righttoleftdisable{!componentID}').style.display='block';
+                            
+                       }
+                   }
+                }
+                // check list size.
+                if(len == 0)
+                {
+                    deselectName{!componentID}('All_Available_Fields{!componentID}');
+                    deselectName{!componentID}('Current_Selected_Fields{!componentID}');
+                }
+                return false;
+            }
+              if(selectedIndex == 1 )
+            {   
+                if("{!UsingPageName}" == "ICG")
+                {
+                    document.getElementById('topenable{!componentID}').style.display='none';
+                    document.getElementById('moveupenable{!componentID}').style.display='none';
+                    document.getElementById('topdisable{!componentID}').style.display='block'; 
+                    document.getElementById('moveupdisable{!componentID}').style.display='block';              
+                    document.getElementById('movedownenable{!componentID}').style.display='block';
+                    document.getElementById('bottomenable{!componentID}').style.display='block';               
+                    document.getElementById('movedowndisable{!componentID}').style.display='none';
+                    document.getElementById('bottomdisable{!componentID}').style.display='none';
+                    if(fixedFields{!componentID} != null && fixedFields{!componentID} != '')
+                    {
+                       for(var i=0; i<fixedFields{!componentID}.length; i++)
+                       {
+                           if(comboSltobj{!componentID}.getItemValue(selectedIndex).indexOf(fixedFields{!componentID}[i]) > -1)
+                           {
+                           
+                               document.getElementById('righttoleftenable{!componentID}').style.display='none';
+                               document.getElementById('righttoleftdisable{!componentID}').style.display='block';
+                           }
+                       }
+                    }
+                    
+                    return false;
+                }
+            }                  
+            
+            
+            document.getElementById('topenable{!componentID}').style.display='block';
+            document.getElementById('moveupenable{!componentID}').style.display='block';
+            document.getElementById('movedownenable{!componentID}').style.display='block';
+            document.getElementById('bottomenable{!componentID}').style.display='block';
+            document.getElementById('topdisable{!componentID}').style.display='none'; 
+            document.getElementById('moveupdisable{!componentID}').style.display='none';
+            document.getElementById('movedowndisable{!componentID}').style.display='none';
+            document.getElementById('bottomdisable{!componentID}').style.display='none'; 
+                         
+            if(selectedIndex == len)
+            {
+                
+                document.getElementById('bottomenable{!componentID}').style.display='none';
+                document.getElementById('bottomdisable{!componentID}').style.display='block';
+                document.getElementById('movedownenable{!componentID}').style.display='none';
+                document.getElementById('movedowndisable{!componentID}').style.display='block';
+                
+            } 
+            
+            // check for fixed fields
+            if(fixedFields{!componentID} != null && fixedFields{!componentID} != '')
+            {
+               for(var i=0; i<fixedFields{!componentID}.length; i++)
+               {                    
+                                      
+                   if(comboSltobj{!componentID}.getItemValue(selectedIndex).indexOf(fixedFields{!componentID}[i]) > -1)
+                   {
+                   
+                       document.getElementById('righttoleftenable{!componentID}').style.display='none';
+                       document.getElementById('righttoleftdisable{!componentID}').style.display='block';
+                   }
+               }
+            }
+            
+            if(doscroll==1){
+               var pos =  document.getElementById("sellist{!componentID}-item-"+selectedIndex).offsetTop;
+               if(upDown==2){
+                   if(pos>=174 && pos<=(29*len)){
+                       
+                       moveto=moveto+29;
+                       $("#sellist{!componentID}-box").scrollTop(moveto);
+                   }
+                   else
+                    moveto=10;
+               }
+               if(upDown==1){
+                   if(pos>=174 && pos<=(29*len)){
+                       
+                       moveto=moveto-29;
+                       $("#sellist{!componentID}-box").scrollTop(moveto);
+                   }
+                   
+               }
+               if(topBottom==1){
+                        moveto=10;
+                       $("#sellist{!componentID}-box").scrollTop(29);
+               }
+               if(topBottom==2){
+                      moveto=29*len;
+                       $("#sellist{!componentID}-box").scrollTop(29*len);
+               }
+               
+            }
+            selectedIndex == ''
+            return false;
+        }
+            catch(ex){
+                alert('Error345 :'+ex);
+            }
+            
+        }
+        
+        function Add_placeholder_onblur{!componentID}(th){
+         
+            if(th.value == ''){
+                document.getElementById(th.id).value='';
+                document.getElementById(th.id).placeholder = 'Search';
+            }
+        }
+        
+        function setTabImageURLWrenchIconMain{!componentID}(ObjectName) 
+        {
+            try{
+               /* var result = sforce.connection.describeTabs();
+                
+                var tabURL = '';
+                for (var i=0; i<result.length; i++) 
+                {
+                    var resulttabs = result[i].tabs;
+                    if(resulttabs != null)
+                    {
+                        for(j=0;j<resulttabs.length;j++)
+                        {
+                            if(resulttabs[j].sobjectName != '' && resulttabs[j].sobjectName == ObjectName)
+                            {
+                                tabURL = resulttabs[j].iconUrl;   
+                                break;
+                            }
+                        }             
+                    }
+                }*/
+                
+                var result = sforce.connection.describeAllTabs();                
+                var tabURL = '';
+                
+                for (var i=0; i<result.length; i++) 
+                {
+                    if(result[i].sobjectName != '' && result[i].sobjectName == ObjectName)
+                    {
+                        tabURL = result[i].iconUrl;   
+                        break;
+                    }
+                
+                }
+                
+                var urlN;
+                
+                if(tabURL != null && tabURL != '')
+                    urlN = tabURL;
+                else{           
+                    //urlN = "{!URLFOR($Resource.PEhtml,'PEhtml/IP1.5/images/contact_FR_icon.png')}"          
+                }
+                createStyleForTab{!componentID}(urlN,ObjectName);    
+                if("{!UsingPageName}" == "MEF" && ObjectName == Namespaceprefix1+"Fundraising_Contact__c"){
+                    createStyleForTab{!componentID}(urlN,"Account");
+                    createStyleForTab{!componentID}(urlN,"Contact");
+                }
+            }
+            catch(ex){
+                if(ex.faultcode == 'sf:INVALID_SESSION_ID'  ){
+                    alert('Your session has expired. Please refresh your page.');
+                }
+                else
+                    alert('setTabImageURLWrenchIconMain  '+ex);
+            }   
+        }
+        
+        function createStyleForTab{!componentID}(urlN,ObjectName)
+        {
+            var ss1 = document.createElement('style');
+            var def = ".aw-image-"+ObjectName+"{background:url(\'"+urlN+"\') no-repeat;background-size: 100%;}";
+            ss1.setAttribute("type", "text/css");
+            var hh1 = document.getElementsByTagName('head')[0];
+            hh1.appendChild(ss1);
+            if (ss1.styleSheet) {   // IE
+                ss1.styleSheet.cssText = def;
+            } 
+            else {                // the world
+                var tt1 = document.createTextNode(def);
+                ss1.appendChild(tt1);
+            } 
+        }
+
+        function createAvlSelList{!componentID}(AvailableFields)
+        { 
+            comboAvlobj{!componentID} = new AW.UI.List;
+            for(i=0;i<AvailableFields.length;i++)
+            {
+                /*if(AvailableFields[i][2] == 'Record Type ID'){
+                    AvailableFields[i][2] = 'Record Type';
+                }*/
+                //alert('AvailableFields[i][2]  '+AvailableFields[i][2]);
+                
+            //Rajnish 6oct
+            /*  if((AvailableFields[i][2] == 'Account Name' || AvailableFields[i][2] == 'Legal Name') && "{!UsingPageName}" == "MEF")
+                {
+                   // AvailableFields[i][2] = 'Institution'; //Rajnish 6oct
+                   
+                }
+                */
+                //Rajnish 6oct
+               /* else if(AvailableFields[i][2] == 'Account'  && "{!UsingPageName}" == "AP"){
+                    AvailableFields[i][2] = 'Account Name';
+                }*/
+                if(AvailableFields[i][2] == 'Last Email Sent'){
+                    AvailableFields[i][2] = 'Email Sent';
+                }
+            }
+            AvailableFields=wrenchsortarraydata{!componentID}(AvailableFields,2,'ASC');
+            
+            for(i=0;i<AvailableFields.length;i++)
+            {
+                comboAvlobj{!componentID}.setItemImage(AvailableFields[i][0],i);
+                comboAvlobj{!componentID}.setItemValue(AvailableFields[i][1],i);
+                comboAvlobj{!componentID}.setItemText( HTMLEncode1(AvailableFields[i][2]), i); 
+            }
+            comboAvlobj{!componentID}.setItemCount(AvailableFields.length);
+            comboAvlobj{!componentID}.setId("avllist{!componentID}");  
+            comboAvlobj{!componentID}.setSize(240,206);
+            
+            comboAvlobj{!componentID}.onKeyUp  = function(event){
+                return 'disabled';
+            }
+            
+            comboAvlobj{!componentID}.onKeyDown  = function(event){
+                return 'disabled';
+            }
+            
+            comboAvlobj{!componentID}.onKeyLeft = function(event){
+                return 'disabled';
+            }
+            
+            comboAvlobj{!componentID}.onKeyRight  = function(event){
+                return 'disabled';
+            }
+                    
+            comboAvlobj{!componentID}.onItemClicked = function(event, index){
+                var newPos = localAvlArray{!componentID}.length;
+                for(var i=0;i<newPos;i++){
+                    if(i != index){
+                        $('#avllist{!componentID}-item-'+i).removeClass('aw-items-selected');
+                        $('#avllist{!componentID}-item-'+i).removeClass('aw-items-current');
+                        $('#avllist{!componentID}-item-'+i).addClass('aw-items-normal');
+                    }
+                    else{
+                        $('#avllist{!componentID}-item-'+i).addClass('aw-items-selected');
+                        $('#avllist{!componentID}-item-'+i).addClass('aw-items-current');
+                        $('#avllist{!componentID}-item-'+i).removeClass('aw-items-normal');
+                    }
+                }
+                
+                deselectName{!componentID}('Current_Selected_Fields{!componentID}');
+                var newPos1 = localSltArray{!componentID}.length;
+                for(var i=0;i<newPos1;i++){
+                    $('#sellist{!componentID}-item-'+i).removeClass('aw-items-selected');
+                    $('#sellist{!componentID}-item-'+i).removeClass('aw-items-current');
+                    $('#sellist{!componentID}-item-'+i).addClass('aw-items-normal');
+                }  
+                
+                enablebuttonsAvilable{!componentID}();
+            };
+            
+            
+            document.getElementById("All_Available_Fields{!componentID}").innerHTML= comboAvlobj{!componentID};  
+            $("#searchcon_grid1{!componentID}").focus();
+            $("#searchcon_grid1{!componentID}").blur();
+        }
+        
+        
+        // (SK: 1Nov2017)
+        function HTMLEncode1(str)
+        {
+            str = str.split("amp;").join("");
+            str = str.split("&#39;").join("'");
+            var i = str.length,
+            aRet = [];
+
+            while (i--) 
+            {
+                var iC = str[i].charCodeAt();
+                if (iC < 65 || iC > 127 || (iC>90 && iC<97)) 
+                {
+                    aRet[i] = '&#'+iC+';';
+                } 
+                else 
+                {
+                    aRet[i] = str[i];
+                }
+            }
+            return aRet.join('');    
+        }
+        
+        
+        function wrenchsortarraydata{!componentID}(getarray,sortingcloumn,sortingdirection)
+        {  
+            if(sortingdirection=='ASC')
+            {
+                getarray.sort(function (a,b){
+                    var x = a[sortingcloumn].toLowerCase(), y = b[sortingcloumn].toLowerCase();
+                 
+                    if (x > y) return  1;
+                    if (x< y) return -1;
+                    return 0;
+                }); 
+            }
+            else{
+              
+                    getarray.sort(function (a,b) {
+                    var x = a[sortingcloumn].toLowerCase(), y = b[sortingcloumn].toLowerCase();
+                 
+                    if (x< y) return  1;
+                    if (x > y) return -1;
+                    return 0;
+                    }); 
+                }  
+                return getarray;
+        }
+        
+        
+        function deselectName{!componentID}(deselect_Name)
+        {   
+            try
+            {
+                if(deselect_Name == 'Current_Selected_Fields{!componentID}')
+                {
+                    comboSltobj{!componentID}.setSelectedItems(-1);  // make all avilable list other list unselected
+                    document.getElementById('righttoleftenable{!componentID}').style.display='none';          
+                    document.getElementById('righttoleftdisable{!componentID}').style.display='block';
+                    document.getElementById('topenable{!componentID}').style.display='none';
+                    document.getElementById('moveupenable{!componentID}').style.display='none';
+                    document.getElementById('movedownenable{!componentID}').style.display='none';
+                    document.getElementById('bottomenable{!componentID}').style.display='none';
+                    document.getElementById('topdisable{!componentID}').style.display='block'; 
+                    document.getElementById('moveupdisable{!componentID}').style.display='block';
+                    document.getElementById('movedowndisable{!componentID}').style.display='block';
+                    document.getElementById('bottomdisable{!componentID}').style.display='block';  
+                    var newPos = localSltArray{!componentID}.length;
+                   
+                    for(var i=1;i<=newPos;i++){
+                        try{
+                            $('#sellist{!componentID}-item-'+i).removeClass('aw-items-selected');
+                            $('#sellist{!componentID}-item-'+i).addClass('aw-items-normal');
+                        }
+                        catch(ex){
+                            if(ex.faultcode == 'sf:INVALID_SESSION_ID'  ){
+                                alert('Your session has expired. Please refresh your page.');
+                            }
+                            else
+                                alert('deselectName 1 '+ex);
+                        }
+                    }
+                }
+                else
+                {
+                    document.getElementById('lefttorightenable{!componentID}').style.display='none';
+                    document.getElementById('lefttorightdisable{!componentID}').style.display='block'; 
+                    var newPos = localAvlArray{!componentID}.length;
+                   
+                    for(var i=1;i<=newPos;i++){
+                        try{
+                            $('#avllist{!componentID}-item-'+i).removeClass('aw-items-selected');
+                            $('#avllist{!componentID}-item-'+i).addClass('aw-items-normal');
+                        }
+                        catch(ex){
+                            if(ex.faultcode == 'sf:INVALID_SESSION_ID'  ){
+                                alert('Your session has expired. Please refresh your page.');
+                            }
+                            else
+                                alert('deselectName2  '+ex);
+                        }
+                    }
+                }
+            }
+            catch(err){             
+               alert('deselectName  '+err);
+            }
+        }
+        
+        function checkForRestoreButton{!componentID}()    
+        {  
+            var MainGridFildsDefalut_new='';
+            var MainGridFildsTemp_new='';
+            var presentGrid = [];
+            for(var i=0; i<localSltArray{!componentID}.length; i++)
+            {        
+                presentGrid.push(localSltArray{!componentID}[i][1]);
+            }
+            
+            var tt = presentGrid.toString().split(",");
+            
+            for(var i=0;i<tt.length;i++){
+                var ff=tt[i].split(":");
+                var ff1 = ff[0]+':'+ff[1];
+                MainGridFildsTemp_new +=ff1;
+            }
+            
+            var tt1=MainGridFildsDefalut.toString().split(",");
+            
+            for(var i=0;i<tt1.length;i++){
+              var ff=tt1[i].split(":");
+              var ff1 = ff[0]+':'+ff[1];
+              MainGridFildsDefalut_new +=ff1;
+            }
+            
+            if(MainGridFildsTemp_new.toString().toLowerCase() == MainGridFildsDefalut_new.toString().toLowerCase())
+            {
+                
+                document.getElementById('_rtdeactive{!componentID}').style.display = 'inline-block'; 
+                //document.getElementById('_rtde{!componentID}').style.pointerEvents = 'none'; 
+                document.getElementById('_rtde{!componentID}').style.display = 'none';
+            }
+            else
+            {
+                document.getElementById('_rtde{!componentID}').style.display = 'inline-block';
+                //document.getElementById('_rtde{!componentID}').style.pointerEvents = 'auto';
+                document.getElementById('_rtdeactive{!componentID}').style.display = 'none';
+            }
+            
+        } 
+        
+        function enablebuttonsAvilable{!componentID}()
+        {
+            document.getElementById('lefttorightenable{!componentID}').style.display='none';
+            document.getElementById('lefttorightdisable{!componentID}').style.display='block';
+            
+            var selectedIndex = comboAvlobj{!componentID}.getSelectedItems();
+        
+            // validation for field count check.
+            if(comboSltobj{!componentID}.getItemCount() == 20){
+                deselectName{!componentID}('Current_Selected_Fields{!componentID}');
+                return false;
+            }
+            
+            var newPos = localAvlArray{!componentID}.length;
+            for(var i=0;i<newPos;i++){
+                if($('#avllist{!componentID}-item-'+i).hasClass("aw-items-selected")){
+                    selectedIndex = i;
+                    break;
+                }
+            }
+            
+            if(localAvlArray{!componentID}[selectedIndex][2] == 'No match found.')
+                return false;
+                
+            if(selectedIndex >= 0)    // goes inside if there is an option selected,prevent active on blank space click
+            {
+                comboAvlobj{!componentID}.setSelectedItems(selectedIndex);
+                if(comboSltobj{!componentID}.getSelectedItems() >= 0) // if other list is selected then deselect other list
+                {  
+                    deselectName{!componentID}('Current_Selected_Fields{!componentID}');
+                }
+                document.getElementById('lefttorightenable{!componentID}').style.display='block';
+                document.getElementById('lefttorightdisable{!componentID}').style.display='none';
+                
+            }
+        }
+        
+        // method call on restore click
+        function defaultfields{!componentID}()
+        {     
+            clear_grid2{!componentID}('btnReset');
+            flag{!componentID}=false;
+            isRestore{!componentID} = 1;         
+            
+            if("{!UsingPageName}" == "CMF_PFC" || "{!UsingPageName}" == "CMF_PFA")
+            {
+                MainGridFilds = MainGridFildsDefalutPFC;
+            }            
+            else
+            {
+                MainGridFilds = MainGridFildsDefalut;
+            }        
+           
+           if("{!Objects}" == 'Account'){  
+                setAvilabelFields{!componentID}('account',true);               
+            }
+            if("{!Objects}" == 'Contact'){  
+                setAvilabelFields{!componentID}('Contact',true);               
+            }
+            //Sumitab Added COde Start
+            if("{!Objects}" == 'Fundraising__c'){
+                var objPFCC = Namespaceprefix1+'Fundraising__c';
+                setAvilabelFields{!componentID}(Namespaceprefix1+'Fundraising__c',true);
+            }
+            if("{!Objects}" == 'Fundraising_Contact__c'){
+                var objPFACC = Namespaceprefix1+'Fundraising_Contact__c';
+                setAvilabelFields{!componentID}(objPFACC,true);
+            }
+            //Sumitab Added COde END
+            if("{!Objects}" == 'Commitment__c'){ 
+                var objCom = Namespaceprefix1+'Commitment__c';
+                setAvilabelFields{!componentID}(objCom,true);               
+            }
+            if("{!Objects}" == 'Partnership__c'){  
+                var objPartnrshp = Namespaceprefix1+'Partnership__c';
+                setAvilabelFields{!componentID}(objPartnrshp,true);              
+            }
+            if("{!Objects}" == 'Investor_Distribution__c'){
+                var objInvstrDist = Namespaceprefix1+'Investor_Distribution__c';
+                setAvilabelFields{!componentID}(objInvstrDist,true);
+            }
+            if("{!Objects}" == 'Capital_Call__c'){
+                var objCC = Namespaceprefix1+'Capital_Call__c';
+                setAvilabelFields{!componentID}(objCC,true);
+            }
+            if("{!Objects}" == 'Marketing_Prospect__c'){
+                var objMEP = Namespaceprefix1+'Marketing_Prospect__c';
+                setAvilabelFields{!componentID}(objMEP,true);
+            }
+            else{          
+                setAvilabelFields{!componentID}('all',true);         
+            }
+            
+           
+            document.getElementById('_apply{!componentID}').style.display ='inline-block';
+            document.getElementById('_applydeactve{!componentID}').style.display ='none';            
+            //document.getElementById('_apply{!componentID}').style.pointerEvents = 'auto';
+            
+            deselectName{!componentID}('Current_Selected_Fields{!componentID}');
+            deselectName{!componentID}('All_Available_Fields{!componentID}');
+            
+            document.getElementById('fieldCount{!componentID}').innerHTML = localSltArray{!componentID}.length;
+            
+            document.getElementById('righttoleftenable{!componentID}').style.display='none';            
+            document.getElementById('righttoleftdisable{!componentID}').style.display='block';
+            document.getElementById('topenable{!componentID}').style.display='none';
+            document.getElementById('moveupenable{!componentID}').style.display='none';
+            document.getElementById('movedownenable{!componentID}').style.display='none';
+            document.getElementById('bottomenable{!componentID}').style.display='none';
+            document.getElementById('topdisable{!componentID}').style.display='block'; 
+            document.getElementById('moveupdisable{!componentID}').style.display='block';
+            document.getElementById('movedowndisable{!componentID}').style.display='block';
+            document.getElementById('bottomdisable{!componentID}').style.display='block'; 
+            document.getElementById('_apply{!componentID}').style.display ='inline-block';   
+            document.getElementById('_applydeactve{!componentID}').style.display ='none';             
+            //document.getElementById('_apply{!componentID}').style.pointerEvents = 'auto';
+            document.getElementById('moveupdisable{!componentID}').style.display='block';
+            document.getElementById('movedowndisable{!componentID}').style.display='block';   
+            
+            checkForRestoreButton{!componentID}();
+            //document.getElementById('objectSelected').value='all';
+        }
+        
+        function resetAvailablelist{!componentID}()
+        { 
+            if("{!UsingPageName}" == "CMF" || "{!UsingPageName}" == "AP")
+            {
+                var objCMF = document.getElementById("objectSelected{!componentID}").value;
+                setAvilabelFields{!componentID}(objCMF,false);
+            }
+            else if("{!UsingPageName}" == "CMF_PFA"){
+                var obj = document.getElementById("objectSelected{!componentID}").value;
+                if(obj == 'Fundraising__c'){
+                    obj = Namespaceprefix1+obj;
+                }
+                setAvilabelFields{!componentID}(obj,false);
+            }
+            else if("{!UsingPageName}" == "MEF" || "{!UsingPageName}" == "CMF_PFC"){
+                var obj = document.getElementById("objectSelected{!componentID}").value;
+                if(obj == 'Fundraising__c' || obj == 'Fundraising_Contact__c'){
+                    obj = Namespaceprefix1+obj;
+                }
+                setAvilabelFields{!componentID}(obj,false);
+            }
+            else if("{!UsingPageName}" == "ICG"){
+                var objICG = document.getElementById("objectSelected{!componentID}").value;
+                if(objICG == 'Commitment__c' || objICG == 'Partnership__c'){
+                    objICG = Namespaceprefix1+objICG;
+                }
+                setAvilabelFields{!componentID}(objICG,false);
+            }
+            else if("{!UsingPageName}" == "MEP"){
+                var objICG = document.getElementById("objectSelected{!componentID}").value;
+                if(objICG == 'Marketing_Prospect__c'){
+                    objICG = Namespaceprefix1+objICG;
+                }
+                setAvilabelFields{!componentID}(objICG,false);
+            }
+            else if("{!UsingPageName}" == "bulkEmailFD" || "{!UsingPageName}" == "bulkEmailID"){
+                var objICG = document.getElementById("objectSelected{!componentID}").value;
+                if(objICG == 'Commitment__c' || objICG == 'Investor_Distribution__c'){
+                    objICG = Namespaceprefix1+objICG;
+                }
+                setAvilabelFields{!componentID}(objICG,false);
+            }
+            else if("{!UsingPageName}" == "bulkEmailCC" || "{!UsingPageName}" == "bulkEmailDD"){
+                var objICG = document.getElementById("objectSelected{!componentID}").value;
+                if(objICG == 'Commitment__c' || objICG == 'Capital_Call__c'){
+                    objICG = Namespaceprefix1+objICG;
+                }
+                setAvilabelFields{!componentID}(objICG,false);
+            }
+            deselectName{!componentID}('All_Available_Fields{!componentID}');
+        } 
+        
+        function getEnterEvent_select_contact{!componentID}(e,th)
+        {
+            if(e.keyCode == 13)
+            {
+                search_flds{!componentID}();
+                document.getElementById('clearsearchdsb1{!componentID}').style.display = 'none';
+                document.getElementById('clearsearchenb1{!componentID}').style.display = 'block';
+            }
+            else if(e.keyCode ==8 || e.keyCode ==46)
+            {
+                if(th.value != '')
+                 {
+                    document.getElementById('clearsearchdsb1{!componentID}').style.display = 'none';
+                    document.getElementById('clearsearchenb1{!componentID}').style.display = 'block';
+                 }
+            
+                 if(th.value == '')
+                 {
+                    document.getElementById('clearsearchdsb1{!componentID}').style.display = 'block';
+                    document.getElementById('clearsearchenb1{!componentID}').style.display = 'none';
+                    deselectName{!componentID}('Current_Selected_Fields{!componentID}');
+                    deselectName{!componentID}('All_Available_Fields{!componentID}');
+                    resetAvailablelist{!componentID}();
+                    var searchtxt=document.getElementById('searchcon_grid1{!componentID}').value; 
+                    searchtxt=searchtxt.trim();
+                    var len=localAvlArray{!componentID}.length; 
+                    
+                    for (var count=len-1; count>=0; count--) 
+                    {    
+                        if (localAvlArray{!componentID}[count][2].toLowerCase().indexOf(searchtxt.toLowerCase())==-1) 
+                        {
+                            localAvlArray{!componentID}.splice(count,1);
+                        }
+                    }
+                    if(localAvlArray{!componentID}.length == 0)
+                    {
+                        localAvlArray{!componentID}.push(['','','No match found.']);
+                    }
+                    createAvlSelList{!componentID}(localAvlArray{!componentID}); 
+                                       
+                    document.getElementById('searchcon_grid1{!componentID}').value=searchtxt;
+                    
+                 }
+            }
+            else if(document.getElementById('searchcon_grid1{!componentID}').value!='')
+            {
+                if(e.keyCode!=8)
+                {
+                document.getElementById('clearsearchdsb1{!componentID}').style.display = 'none';
+                document.getElementById('clearsearchenb1{!componentID}').style.display = 'block';
+                }
+            }   
+        }
+        
+        function moveTop_Bottom{!componentID}(direction)
+        {
+            try
+            {
+                isRestore{!componentID} = 0;
+                document.getElementById('_apply{!componentID}').style.display ='inline-block';  
+                document.getElementById('_applydeactve{!componentID}').style.display ='none';         
+                //document.getElementById('_apply{!componentID}').style.pointerEvents = 'auto';
+                var SlectedIndex = parseInt(comboSltobj{!componentID}.getSelectedItems());
+                
+                if(direction=='Top')
+                {   
+                    if("{!UsingPageName}" == "ICG"){
+                      //  document.getElementById('_apply{!componentID}').style.display ='inline';  
+                       // document.getElementById('_applydeactve{!componentID}').style.display ='none'; 
+                        
+                        localSltArray{!componentID}.unshift( localSltArray{!componentID}[SlectedIndex] );
+                        localSltArray{!componentID}.splice( ++SlectedIndex,1 );
+                        var value = localSltArray{!componentID}[0];
+                        localSltArray{!componentID}.splice( 0,1 );
+                        
+                        localSltArray{!componentID}.splice(1,0,value); 
+                        createSeltList{!componentID}(localSltArray{!componentID}); 
+                          
+                        // change seleted css.
+                        comboSltobj{!componentID}.setSelectedItems(1);
+                        $('#sellist{!componentID}-item-1').removeClass('aw-items-normal');
+                        $('#sellist{!componentID}-item-1').addClass('aw-items-selected');
+                    
+                    }
+                    else{
+                        localSltArray{!componentID}.unshift( localSltArray{!componentID}[SlectedIndex] );
+                        localSltArray{!componentID}.splice( ++SlectedIndex,1 );
+                        createSeltList{!componentID}(localSltArray{!componentID}); 
+                          
+                        // change seleted css.
+                        comboSltobj{!componentID}.setSelectedItems(0);
+                        $('#sellist{!componentID}-item-0').removeClass('aw-items-normal');
+                        $('#sellist{!componentID}-item-0').addClass('aw-items-selected');
+                    }
+                }
+                else if(direction=='Bottom')
+                {           
+                    localSltArray{!componentID}.push( localSltArray{!componentID}[SlectedIndex] );
+                    localSltArray{!componentID}.splice( SlectedIndex,1 );
+                    createSeltList{!componentID}(localSltArray{!componentID}); 
+                    
+                    // change seleted css.
+                    var newPos = localSltArray{!componentID}.length-1;
+                    comboSltobj{!componentID}.setSelectedItems(newPos);
+                    
+                    $('#sellist{!componentID}-item-'+newPos).removeClass('aw-items-normal');
+                    $('#sellist{!componentID}-item-'+newPos).addClass('aw-items-selected'); 
+                }
+                enablebuttonsotherdetailselectlist{!componentID}(0,0,0);
+                checkForRestoreButton{!componentID}();
+            }
+            catch(ex){
+                alert('moveTop_Bottom  '+ex);
+            }
+        }
+        
+        // move up and down.
+        function moveUp_Down{!componentID}(direction)
+        {   
+            try
+            {
+                flag{!componentID}=true;
+                isRestore{!componentID} = 0;
+                document.getElementById('_apply{!componentID}').style.display ='inline-block';   
+                document.getElementById('_applydeactve{!componentID}').style.display ='none';             
+                //document.getElementById('_apply{!componentID}').style.pointerEvents = 'auto';
+                var SlectedIndex = parseInt(comboSltobj{!componentID}.getSelectedItems());
+                var newPos;
+                 
+                if(direction=='Top')
+                {                      
+                    newPos = SlectedIndex-1;
+                    var value = localSltArray{!componentID}[SlectedIndex];
+                    localSltArray{!componentID}.splice( SlectedIndex,1 );
+                    if("{!UsingPageName}" == "ICG" && SlectedIndex == 1){
+                        newPos = newPos+1;
+                    }
+                    localSltArray{!componentID}.splice(newPos,0,value);            
+                }
+                else
+                {  
+                    newPos = SlectedIndex+1;
+                    var value = localSltArray{!componentID}[SlectedIndex];
+                    localSltArray{!componentID}.splice( SlectedIndex,1 );
+                    localSltArray{!componentID}.splice(newPos,0,value);   
+                }        
+                createSeltList{!componentID}(localSltArray{!componentID});       
+
+                // change seleted css.
+                comboSltobj{!componentID}.setSelectedItems(newPos);
+                $('#sellist{!componentID}-item-'+newPos).removeClass('aw-items-normal');
+                $('#sellist{!componentID}-item-'+newPos).addClass('aw-items-selected');
+                
+                //enablebuttonsotherdetailselectlist(0,0,0); 
+                checkForRestoreButton{!componentID}();
+            }
+            catch(err){             
+               alert('moveUp_Down  '+err);
+            }
+        }
+        
+        /* To add the Selected field of Available Fields and remove from Selected Fields */
+        function addfld{!componentID}() 
+        {
+            isRestore{!componentID} = 0;
+            var AvlSldIndex = parseInt(comboAvlobj{!componentID}.getSelectedItems());        
+            localSltArray{!componentID}.push(localAvlArray{!componentID}[AvlSldIndex]);
+            var tempAllAvailableFields = new Array();
+            for(i=0;i<localAvlArray{!componentID}.length;i++)
+            {
+                if(i!=AvlSldIndex)
+                tempAllAvailableFields.push(localAvlArray{!componentID}[i]);
+            }
+            
+            localAvlArray{!componentID}=tempAllAvailableFields;
+            createAvlSelList{!componentID}(localAvlArray{!componentID});
+            createSeltList{!componentID}(localSltArray{!componentID});
+            
+            document.getElementById('fieldCount{!componentID}').innerHTML = localSltArray{!componentID}.length;   
+            document.getElementById('lefttorightenable{!componentID}').style.display='none';
+            document.getElementById('lefttorightdisable{!componentID}').style.display='block';
+            
+            document.getElementById('_apply{!componentID}').style.display ='inline-block'; 
+            document.getElementById('_applydeactve{!componentID}').style.display ='none';         
+            //document.getElementById('_apply{!componentID}').style.pointerEvents = 'auto';
+            enablebuttonsotherdetailselectlist{!componentID}(0,0,0);
+            deselectName{!componentID}('Current_Selected_Fields{!componentID}');
+            deselectName{!componentID}('All_Available_Fields{!componentID}');    
+            checkForRestoreButton{!componentID}();
+            return false;
+        }
+        
+        /* To remove the Selected field of Selected Fields and add to Available Fields */
+        function removefld{!componentID}()
+        {
+            isRestore{!componentID} = 0;
+            var SlectedIndex = parseInt(comboSltobj{!componentID}.getSelectedItems());
+            localAvlArray{!componentID}.push(localSltArray{!componentID}[SlectedIndex]);
+            var tempAllSelectedFields = new Array();
+            for(i=0;i<localSltArray{!componentID}.length;i++)
+            {
+                if(i!=SlectedIndex)
+                    tempAllSelectedFields.push(localSltArray{!componentID}[i]);
+            }
+            localSltArray{!componentID}=tempAllSelectedFields;
+            createSeltList{!componentID}(localSltArray{!componentID});
+            createAvlSelList{!componentID}(localAvlArray{!componentID});
+            
+            deselectName{!componentID}('Current_Selected_Fields{!componentID}');
+            deselectName{!componentID}('All_Available_Fields{!componentID}');
+            
+            document.getElementById('fieldCount{!componentID}').innerHTML = localSltArray{!componentID}.length;
+            
+            document.getElementById('righttoleftenable{!componentID}').style.display='none';            
+            document.getElementById('righttoleftdisable{!componentID}').style.display='block';
+            document.getElementById('topenable{!componentID}').style.display='none';
+            document.getElementById('moveupenable{!componentID}').style.display='none';
+            document.getElementById('movedownenable{!componentID}').style.display='none';
+            document.getElementById('bottomenable{!componentID}').style.display='none';
+            document.getElementById('topdisable{!componentID}').style.display='block'; 
+            document.getElementById('moveupdisable{!componentID}').style.display='block';
+            document.getElementById('movedowndisable{!componentID}').style.display='block';
+            document.getElementById('bottomdisable{!componentID}').style.display='block'; 
+            document.getElementById('_apply{!componentID}').style.display ='inline-block';      
+            document.getElementById('_applydeactve{!componentID}').style.display ='none';         
+            //document.getElementById('_apply{!componentID}').style.pointerEvents = 'auto';
+            checkForRestoreButton{!componentID}();
+            if(document.getElementById('searchcon_grid1{!componentID}').value!=''){
+                search_flds{!componentID}();
+            }
+        }
+        
+        function applyWrenchSettings{!componentID}()
+        {
+            flag{!componentID}=false;
+           // showImz1();
+            var currentSelectedlist = localSltArray{!componentID};
+            MainGridFilds = [];
+            
+            for(var i=0; i<currentSelectedlist.length; i++)
+            {        
+                MainGridFilds.push(currentSelectedlist[i][1]);
+            }   
+            
+            //  Method for Create/Update Navatar Setting Object.
+            MainGridFildsTemp{!componentID} = MainGridFilds;
+            if("{!UsingPageName}" == "CMF" || "{!UsingPageName}" == "CMF_PFC" || "{!UsingPageName}" == "CMF_PFA" || "{!UsingPageName}" == "MEP" || "{!UsingPageName}" == "AP")
+            {
+                SortAcc = 'true';
+            }
+            else if("{!UsingPageName}" == "MEF" || "{!UsingPageName}" == "bulkEmailCC" || "{!UsingPageName}" == "bulkEmailDD")
+            {
+             SortAcc = 'true';
+            }
+            else if("{!UsingPageName}" == "ICG" || "{!UsingPageName}" == "bulkEmailFD" || "{!UsingPageName}" == "bulkEmailID")
+            {
+             SortAcc = 'true';
+            }
+            updateSeting{!componentID}('wrench');
+            if("{!UsingPageName}" == "MEF" || "{!UsingPageName}" == "ICG" || "{!UsingPageName}" == "CMF_PFC" || "{!UsingPageName}" == "CMF_PFA" ||"{!UsingPageName}" == "CMF" ||"{!UsingPageName}" == "bulkEmailFD" || "{!UsingPageName}" == "bulkEmailID" || "{!UsingPageName}" == "bulkEmailCC" || "{!UsingPageName}" == "bulkEmailDD" || "{!UsingPageName}" == "AP")
+            {
+                if(document.getElementById('searchcon_grid1{!componentID}').value=="Search" || document.getElementById('searchcon_grid1{!componentID}').value=="")
+                {
+                 document.getElementById('searchcon_grid1{!componentID}').placeholder = 'Search';
+                 document.getElementById('clearsearchdsb1{!componentID}').style.display = 'block';
+                 document.getElementById('clearsearchenb1{!componentID}').style.display = 'none';
+                }
+                else
+                {
+                document.getElementById('clearsearchdsb1{!componentID}').style.display = 'none';
+                document.getElementById('clearsearchenb1{!componentID}').style.display = 'block';
+                }
+                document.getElementById('searchcon_grid1{!componentID}').focus();
+                document.getElementById('searchcon_grid1{!componentID}').blur();
+            }
+        }
+        
+        function updateSeting{!componentID}(opName)
+        { 
+            try
+            {
+                // get Navatar Setup setting 
+                var query="select id, "+Namespaceprefix1+"CMF_Setting__c, "+Namespaceprefix1+"MMF_Results_Settings__c, "+Namespaceprefix1+"IFC_Setting__c, "+Namespaceprefix1+"Email_FD_Setting__c, "+Namespaceprefix1+"CMF_PFA_Setting__c, "+Namespaceprefix1+"CMF_PFC_Setting__c, "+Namespaceprefix1+"Email_ID_Setting__c, "+Namespaceprefix1+"Email_Prospect_Setting__c, "+Namespaceprefix1+"Add_Prospect_Setting__c FROM "+Namespaceprefix1+"Navatar_Setup__c where OwnerId = '{!$User.Id}' "; 
+                          
+                var resultdesc = sforce.connection.query(query);         
+                var recsize = resultdesc.getArray("size");                  
+                    
+                //if Record exist previously.
+                
+                if(recsize == 0)       
+                {   
+                    // if new setting record created.
+                    var sett = new sforce.SObject(Namespaceprefix1+"Navatar_Setup__c");
+                    sett.OwnerId = '{!$User.Id}';
+                    
+                    if("{!UsingPageName}" == "CMF" || opName == "CMF")
+                    {
+                        sett.set(Namespaceprefix1+"CMF_Setting__c",'CMF:'+ MainGridFilds);
+                    }  
+                    else if("{!UsingPageName}" == "CMF_PFC")
+                    {
+                        sett.set(Namespaceprefix1+"CMF_PFC_Setting__c",'CMF_PFC:'+ MainGridFilds);
+                    }   
+                    else if("{!UsingPageName}" == "CMF_PFA")
+                    {
+                        sett.set(Namespaceprefix1+"CMF_PFA_Setting__c",'CMF_PFA:'+ MainGridFilds);
+                    }
+                    else if("{!UsingPageName}" == "ICG"){
+                        sett.set(Namespaceprefix1+"IFC_Setting__c",'fundview:'+ MainGridFilds);
+                    }
+                    else if("{!UsingPageName}" == "bulkEmailFD"){
+                        sett.set(Namespaceprefix1+"Email_FD_Setting__c",'bulkEmailFD:'+ MainGridFilds);
+                    }
+                    else if("{!UsingPageName}" == "bulkEmailID"){
+                        sett.set(Namespaceprefix1+"Email_FD_Setting__c",'bulkEmailID:'+ MainGridFilds);
+                    }
+                    else if("{!UsingPageName}" == "bulkEmailCC"){
+                        sett.set(Namespaceprefix1+"Email_CC_Setting__c",'bulkEmailCC:'+ MainGridFilds);
+                    }
+                    else if("{!UsingPageName}" == "bulkEmailDD"){
+                        sett.set(Namespaceprefix1+"Email_DD_Setting__c",'bulkEmailDD:'+ MainGridFilds);
+                    }
+                    else if("{!UsingPageName}" == "MEP"){
+                        sett.set(Namespaceprefix1+"Email_Prospect_Setting__c",'MEP:'+ MainGridFilds);
+                    }
+                    else if("{!UsingPageName}" == "AP"){
+                        sett.set(Namespaceprefix1+"Add_Prospect_Setting__c",'AP:'+ MainGridFilds);
+                    }
+                    else
+                    {
+                        
+                        sett.set(Namespaceprefix1+"MMF_Results_Settings__c",'massemail:'+ MainGridFilds);
+                    }                       
+                    result = sforce.connection.create([sett]);          
+                }
+                else
+                {
+                     // if record exist but blank
+                    var arrsetting = resultdesc.getArray("records");             
+                    var Setfields = '';
+                    
+                    if("{!UsingPageName}" == "CMF"|| opName == "CMF")
+                    {
+                        Setfields = arrsetting[0].get(Namespaceprefix1+'CMF__Setting__c');
+                    }
+                    else if("{!UsingPageName}" == "CMF_PFC")
+                    {
+                        Setfields = arrsetting[0].get(Namespaceprefix1+'CMF_PFC_Setting__c');
+                    }
+                    else if("{!UsingPageName}" == "CMF_PFA")
+                    {
+                        Setfields = arrsetting[0].get(Namespaceprefix1+'CMF_PFA_Setting__c');
+                    }
+                    else if("{!UsingPageName}" == "ICG"){
+                        Setfields = arrsetting[0].get(Namespaceprefix1+'IFC_Setting__c');
+                    }
+                    else if("{!UsingPageName}" == "bulkEmailFD"){
+                        Setfields = arrsetting[0].get(Namespaceprefix1+'Email_FD_Setting__c');
+                    }
+                    else if("{!UsingPageName}" == "bulkEmailID"){
+                        Setfields = arrsetting[0].get(Namespaceprefix1+'Email_ID_Setting__c');
+                    }
+                    else if("{!UsingPageName}" == "bulkEmailCC"){
+                        Setfields = arrsetting[0].get(Namespaceprefix1+'Email_CC_Setting__c');
+                    }
+                    else if("{!UsingPageName}" == "bulkEmailDD"){
+                        Setfields = arrsetting[0].get(Namespaceprefix1+'Email_DD_Setting__c');
+                    }
+                    else if("{!UsingPageName}" == "MEP"){
+                        Setfields = arrsetting[0].get(Namespaceprefix1+'Email_Prospect_Setting__c');
+                    }
+                    else if("{!UsingPageName}" == "AP"){
+                        Setfields = arrsetting[0].get(Namespaceprefix1+'Add_Prospect_Setting__c');
+                    }
+                    else{
+                        Setfields = arrsetting[0].get(Namespaceprefix1+'MMF_Results_Settings__c');                
+                    }          
+                    if(Setfields == '' || Setfields =='null'||Setfields == null)
+                    {
+                        if("{!UsingPageName}" == "CMF" || opName == "CMF")
+                        {
+                            Setfields = arrsetting[0].get(Namespaceprefix1+'CMF_Setting__c');
+                            Setfields = 'CMF:' + MainGridFilds; 
+                        }
+                        else if("{!UsingPageName}" == "CMF_PFC")
+                        {
+                            Setfields = arrsetting[0].get(Namespaceprefix1+'CMF_PFC_Setting__c');
+                            Setfields = 'CMF_PFC:' + MainGridFilds; 
+                        }
+                        else if("{!UsingPageName}" == "CMF_PFA")
+                        {
+                            Setfields = arrsetting[0].get(Namespaceprefix1+'CMF_PFA_Setting__c');
+                            Setfields = 'CMF_PFA:' + MainGridFilds; 
+                        }
+                        else if("{!UsingPageName}" == "ICG")
+                        {
+                            Setfields = arrsetting[0].get(Namespaceprefix1+'IFC_Setting__c');
+                            Setfields = 'fundview:' + MainGridFilds; 
+                        }
+                        else if("{!UsingPageName}" == "bulkEmailFD")
+                        {
+                            Setfields = arrsetting[0].get(Namespaceprefix1+'Email_FD_Setting__c');
+                            Setfields = 'bulkEmailFD:' + MainGridFilds; 
+                        }
+                        else if("{!UsingPageName}" == "bulkEmailID")
+                        {
+                            Setfields = arrsetting[0].get(Namespaceprefix1+'Email_ID_Setting__c');
+                            Setfields = 'bulkEmailID:' + MainGridFilds; 
+                        }
+                        else if("{!UsingPageName}" == "bulkEmailCC")
+                        {
+                            Setfields = arrsetting[0].get(Namespaceprefix1+'Email_CC_Setting__c');
+                            Setfields = 'bulkEmailCC:' + MainGridFilds; 
+                        }
+                        else if("{!UsingPageName}" == "bulkEmailDD")
+                        {
+                            Setfields = arrsetting[0].get(Namespaceprefix1+'Email_DD_Setting__c');
+                            Setfields = 'bulkEmailDD:' + MainGridFilds; 
+                        }
+                        else if("{!UsingPageName}" == "MEP")
+                        {
+                            Setfields = arrsetting[0].get(Namespaceprefix1+'Email_Prospect_Setting__c');
+                            Setfields = 'MEP:' + MainGridFilds; 
+                        }
+                        else if("{!UsingPageName}" == "AP")
+                        {
+                            Setfields = arrsetting[0].get(Namespaceprefix1+'Add_Prospect_Setting__c');
+                            Setfields = 'AP:' + MainGridFilds; 
+                        }
+                        else
+                        {
+                            Setfields = arrsetting[0].get(Namespaceprefix1+'MMF_Results_Settings__c');
+                            Setfields = 'massemail:' + MainGridFilds;
+                        }                              
+                    }
+                    else // update old record
+                    {   
+                        if("{!UsingPageName}" == "CMF"|| opName == "CMF")
+                        {
+                            if(Setfields.indexOf('CMF:') > -1)
+                            {
+                                var SetfieldSetting = Setfields.split('CMF:');
+                                var lasthalf = SetfieldSetting[1].substring(SetfieldSetting[1].indexOf(';'),SetfieldSetting[1].length);
+                                Setfields= SetfieldSetting[0] + 'CMF:'+ MainGridFilds;             
+                            }
+                            else{
+                                Setfields += 'CMF:' + MainGridFilds;  
+                            }
+                        }  
+                        else if("{!UsingPageName}" == "CMF_PFC")
+                        {
+                            if(Setfields.indexOf('CMF_PFC:') > -1)
+                            {
+                                var SetfieldSetting = Setfields.split('CMF_PFC:');
+                                var lasthalf = SetfieldSetting[1].substring(SetfieldSetting[1].indexOf(';'),SetfieldSetting[1].length);
+                                Setfields= SetfieldSetting[0] + 'CMF_PFC:'+ MainGridFilds;             
+                            }
+                            else{
+                                Setfields += 'CMF_PFC:' + MainGridFilds;  
+                            }
+                        } 
+                        else if("{!UsingPageName}" == "CMF_PFA")
+                        {
+                            if(Setfields.indexOf('CMF_PFA:') > -1)
+                            {
+                                var SetfieldSetting = Setfields.split('CMF_PFA:');
+                                var lasthalf = SetfieldSetting[1].substring(SetfieldSetting[1].indexOf(';'),SetfieldSetting[1].length);
+                                Setfields= SetfieldSetting[0] + 'CMF_PFA:'+ MainGridFilds;             
+                            }
+                            else{
+                                Setfields += 'CMF_PFA:' + MainGridFilds;  
+                            }
+                        }                       
+                        else if("{!UsingPageName}" == "ICG")
+                        {
+                            if(Setfields.indexOf('fundview:') > -1)
+                            {
+                                var SetfieldSetting = Setfields.split('fundview:');
+                                var lasthalf = SetfieldSetting[1].substring(SetfieldSetting[1].indexOf(';'),SetfieldSetting[1].length);
+                                Setfields= SetfieldSetting[0] + 'fundview:'+ MainGridFilds;             
+                            }
+                            else{
+                                Setfields += 'fundview:' + MainGridFilds;  
+                            }
+                        }
+                        else if("{!UsingPageName}" == "bulkEmailFD")
+                        {
+                            if(Setfields.indexOf('bulkEmailFD:') > -1)
+                            {
+                                var SetfieldSetting = Setfields.split('bulkEmailFD:');
+                                var lasthalf = SetfieldSetting[1].substring(SetfieldSetting[1].indexOf(';'),SetfieldSetting[1].length);
+                                Setfields= SetfieldSetting[0] + 'bulkEmailFD:'+ MainGridFilds;             
+                            }
+                            else{
+                                Setfields += 'bulkEmailFD:' + MainGridFilds;  
+                            }
+                        }
+                        else if("{!UsingPageName}" == "bulkEmailID")
+                        {
+                            if(Setfields.indexOf('bulkEmailID:') > -1)
+                            {
+                                var SetfieldSetting = Setfields.split('bulkEmailID:');
+                                var lasthalf = SetfieldSetting[1].substring(SetfieldSetting[1].indexOf(';'),SetfieldSetting[1].length);
+                                Setfields= SetfieldSetting[0] + 'bulkEmailID:'+ MainGridFilds;             
+                            }
+                            else{
+                                Setfields += 'bulkEmailID:' + MainGridFilds;  
+                            }
+                        }
+                        else if("{!UsingPageName}" == "bulkEmailCC")
+                        {
+                            if(Setfields.indexOf('bulkEmailCC:') > -1)
+                            {
+                                var SetfieldSetting = Setfields.split('bulkEmailCC:');
+                                var lasthalf = SetfieldSetting[1].substring(SetfieldSetting[1].indexOf(';'),SetfieldSetting[1].length);
+                                Setfields= SetfieldSetting[0] + 'bulkEmailCC:'+ MainGridFilds;             
+                            }
+                            else{
+                                Setfields += 'bulkEmailCC:' + MainGridFilds;  
+                            }
+                        }
+                        else if("{!UsingPageName}" == "bulkEmailDD")
+                        {
+                            if(Setfields.indexOf('bulkEmailDD:') > -1)
+                            {
+                                var SetfieldSetting = Setfields.split('bulkEmailDD:');
+                                var lasthalf = SetfieldSetting[1].substring(SetfieldSetting[1].indexOf(';'),SetfieldSetting[1].length);
+                                Setfields= SetfieldSetting[0] + 'bulkEmailDD:'+ MainGridFilds;             
+                            }
+                            else{
+                                Setfields += 'bulkEmailDD:' + MainGridFilds;  
+                            }
+                        }
+                        else if("{!UsingPageName}" == "MEP")
+                        {
+                            if(Setfields.indexOf('MEP:') > -1)
+                            {
+                                var SetfieldSetting = Setfields.split('MEP:');
+                                var lasthalf = SetfieldSetting[1].substring(SetfieldSetting[1].indexOf(';'),SetfieldSetting[1].length);
+                                Setfields= SetfieldSetting[0] + 'MEP:'+ MainGridFilds;             
+                            }
+                            else{
+                                Setfields += 'MEP:' + MainGridFilds;  
+                            }
+                        }
+                        else if("{!UsingPageName}" == "AP")
+                        {
+                            if(Setfields.indexOf('AP:') > -1)
+                            {
+                                var SetfieldSetting = Setfields.split('AP:');
+                                var lasthalf = SetfieldSetting[1].substring(SetfieldSetting[1].indexOf(';'),SetfieldSetting[1].length);
+                                Setfields= SetfieldSetting[0] + 'AP:'+ MainGridFilds;             
+                            }
+                            else{
+                                Setfields += 'AP:' + MainGridFilds;  
+                            }
+                        }
+                        else
+                        {   
+                            if(Setfields.indexOf('massemail:') > -1)
+                            {
+                                var SetfieldSetting = Setfields.split('massemail:');
+                                var lasthalf = SetfieldSetting[1].substring(SetfieldSetting[1].indexOf(';'),SetfieldSetting[1].length);
+                                Setfields= SetfieldSetting[0] + 'massemail:'+ MainGridFilds;             
+                            }
+                            else
+                            {
+                                Setfields += 'massemail:' + MainGridFilds;  
+                            }
+                        }           
+                    }   
+                    var updateRecord=[];
+                    var update_setting = new sforce.SObject(Namespaceprefix1+"Navatar_Setup__c");   
+                    update_setting.Id = arrsetting[0].get('Id');            
+                    if("{!UsingPageName}" == "CMF"|| opName == "CMF"){
+                        update_setting.set(Namespaceprefix1+'CMF_Setting__c',Setfields);
+                    }
+                    //Sumitab added Start
+                    else if("{!UsingPageName}" == "CMF_PFC"){
+                        update_setting.set(Namespaceprefix1+'CMF_PFC_Setting__c',Setfields);
+                    }
+                    else if("{!UsingPageName}" == "CMF_PFA"){
+                        update_setting.set(Namespaceprefix1+'CMF_PFA_Setting__c',Setfields);
+                    }
+                    //Sumitab added End
+                    else if("{!UsingPageName}" == "ICG"){
+                        update_setting.set(Namespaceprefix1+'IFC_Setting__c',Setfields);
+                    }
+                    else if("{!UsingPageName}" == "bulkEmailFD"){
+                        update_setting.set(Namespaceprefix1+'Email_FD_Setting__c',Setfields);
+                    }
+                    else if("{!UsingPageName}" == "bulkEmailID"){
+                        update_setting.set(Namespaceprefix1+'Email_ID_Setting__c',Setfields);
+                    }
+                    else if("{!UsingPageName}" == "bulkEmailCC"){
+                        update_setting.set(Namespaceprefix1+'Email_CC_Setting__c',Setfields);
+                    }
+                    else if("{!UsingPageName}" == "bulkEmailDD"){
+                        update_setting.set(Namespaceprefix1+'Email_DD_Setting__c',Setfields);
+                    }
+                    else if("{!UsingPageName}" == "MEP"){
+                        update_setting.set(Namespaceprefix1+'Email_Prospect_Setting__c',Setfields);
+                    }
+                    else if("{!UsingPageName}" == "AP"){
+                        update_setting.set(Namespaceprefix1+'Add_Prospect_Setting__c',Setfields);
+                    }
+                    else
+                    {
+                        update_setting.set(Namespaceprefix1+'MMF_Results_Settings__c',Setfields);
+                    }
+                    updateRecord.push(update_setting);
+                    sforce.connection.update(updateRecord);
+                }   
+                if("{!UsingPageName}" == "CMF" || opName == "CMF")
+                {                    
+                    getNavatarSetupData();
+                }
+                else if("{!UsingPageName}" == "CMF_PFC" || "{!UsingPageName}" == "CMF_PFA")
+                {
+                    MainGridFildsPFC=MainGridFilds;
+                }
+                
+                else if("{!UsingPageName}" == "ICG")
+                {
+                   
+                    executeQuery(MainGridFilds);
+                } 
+                else if("{!UsingPageName}" == "MEP")
+                {
+                   
+                    executeQuery(MainGridFilds);
+                }
+                else if("{!UsingPageName}" == "AP")
+                {                    
+                    if(seaarchfil=='' && advancefilterACID=='' && mpnewid=='')
+                    {
+                        Searchfilter(seaarchfil,false,true,1999);
+                        resetsecondgrid();
+                    }
+                    else if(seaarchfil!='' && advancefilterACID=='' && mpnewid=='')
+                    {
+                        Searchfilter(seaarchfil,false,true,1999);  
+                        resetsecondgrid();
+                    }       
+                    else if(seaarchfil=='' && advancefilterACID!='' && mpnewid=='')
+                    {
+                        Advance_filter_apply(advancefilterACID,true,1999);
+                        resetsecondgrid();
+                    }
+                    else if(seaarchfil=='' && advancefilterACID=='' && mpnewid!='')
+                    {
+                        Advance_filter_apply_MP(mpnewid,true,1999);
+                        resetsecondgrid();
+                    }
+                }               
+                // Rajnish coded** Start**
+               /* else if("{!UsingPageName}" == "MEF")
+                {
+                    //executeQuery(MainGridFilds);  
+                    MainGridFildsDefalut=MainGridFilds;          
+                } */
+                // Rajnish coded** Start**               
+                
+                else if("{!UsingPageName}" == "bulkEmailFD" || "{!UsingPageName}" == "bulkEmailID" || "{!UsingPageName}" == "bulkEmailCC" || "{!UsingPageName}" == "bulkEmailCC")
+                {
+                    
+                    onLoading();
+                }
+                
+                else
+                {
+                    
+                    executeQuery(MainGridFilds);  
+                } 
+                closepopupwrench{!componentID}('fancybox_background','FancyboxContainer');
+            }
+            catch(ex){
+                if(ex.faultcode == 'sf:INVALID_SESSION_ID'  ){
+                    alert('Your session has expired. Please refresh your page.');
+                }
+                else
+                    alert('updateSeting  '+ex);
+            }         
+        }
+        
+        function hidePopup1{!componentID}(){
+            $("#blurred1").hide();
+        }
+        
+        function disablePopupnewWrench{!componentID}(cid){
+           if(popupStatus==1){
+                $('.'+cid).fadeOut("slow");
+                popupStatus = 0;
+            }
+        };
+        
+        var myVar2;
+        function showImz1(){
+        
+            $("#blurred1").show();
+            if(navigator.userAgent.toLowerCase().indexOf('chrome') > -1){
+                myVar2 = setTimeout(hidePopup1{!componentID}, 3000);
+            }
+            else if(navigator.userAgent.toLowerCase().indexOf('firefox') > -1){
+                myVar2 = setTimeout(hidePopup1{!componentID}, 1000);
+            }
+            else
+                myVar2 = setTimeout(hidePopup1{!componentID}, 3000);
+        }
+        
+        function closepopupwrench{!componentID}(bgdivid,popupdivid)
+        {
+            $('#msgBlankId').val('');
+            $('#msgBlankId').text('');
+            flag{!componentID}=false;
+            if(typeof(findrecordDisabledid) !== 'undefined')
+               {
+                
+                 document.getElementById(findrecordDisabledid).disabled = false;
+               }
+            if(isRestore{!componentID}==1){
+              MainGridFilds=MainGridFildsTemp{!componentID};
+            }
+            isRestore{!componentID}=0;
+            
+            deselectName{!componentID}('Current_Selected_Fields{!componentID}');
+            deselectName{!componentID}('All_Available_Fields{!componentID}');
+            document.getElementById('searchcon_grid1{!componentID}').value='';
+            document.getElementById('searchcon_grid1{!componentID}').placeholder = 'Search';
+            disablePopupnewWrench{!componentID}(bgdivid);
+            $('.'+popupdivid).fadeOut("slow");
+            if("{!UsingPageName}" == "MEF" || "{!UsingPageName}" == "ICG" || "{!UsingPageName}" == "CMF" || "{!UsingPageName}" == "bulkEmailFD" || "{!UsingPageName}" == "bulkEmailID" || "{!UsingPageName}" == "bulkEmailCC" || "{!UsingPageName}" == "bulkEmailDD" || "{!UsingPageName}" == "MEP" || "{!UsingPageName}" == "AP" || "{!UsingPageName}" == "CMF_PFC" || "{!UsingPageName}" == "CMF_PFA")
+            {
+                document.getElementById('objectSelected{!componentID}').value='all';
+            }
+            
+            if("{!UsingPageName}" == "MEF" || "{!UsingPageName}" == "ICG" || "{!UsingPageName}" == "CMF" || "{!UsingPageName}" == "bulkEmailFD" || "{!UsingPageName}" == "bulkEmailID" || "{!UsingPageName}" == "bulkEmailCC" || "{!UsingPageName}" == "bulkEmailDD" || "{!UsingPageName}" == "MEP" || "{!UsingPageName}" == "AP" || "{!UsingPageName}" == "CMF_PFC" || "{!UsingPageName}" == "CMF_PFA")
+            {
+                if(document.getElementById('searchcon_grid1{!componentID}').value=="Search" || document.getElementById('searchcon_grid1{!componentID}').value=="")
+                {
+                 document.getElementById('searchcon_grid1{!componentID}').placeholder = 'Search';
+                 document.getElementById('clearsearchdsb1{!componentID}').style.display = 'block';
+                 document.getElementById('clearsearchenb1{!componentID}').style.display = 'none';
+                }
+                else
+                {
+                //document.getElementById('clearsearchdsb1{!componentID}').style.display = 'none';
+                document.getElementById('clearsearchdsb1{!componentID}').style.display = 'none';
+                document.getElementById('clearsearchenb1{!componentID}').style.display = 'block';
+                }
+                document.getElementById('searchcon_grid1{!componentID}').focus();
+                document.getElementById('searchcon_grid1{!componentID}').blur();
+            }
+            if("{!UsingPageName}" == "CMF_PFC" || "{!UsingPageName}" == "CMF_PFA"){
+                
+                MainGridFildsPFC=MainGridFilds;
+                if("{!UsingPageName}" == "CMF_PFC")
+                {
+                    Past_FundraisingsContact_PopUp(ContIdPF);
+                }
+                else
+                {   
+                    Past_Fundraisings_PopUp(ContIdPF);
+                }
+                
+            }
+            showImz();
+        }
+        
+        /*To search the field enter in the textbox */
+        function search_flds{!componentID}()
+        {    
+            var searchtxt=document.getElementById('searchcon_grid1{!componentID}').value;
+                    
+            searchtxt=searchtxt.trim();
+            if(searchtxt=="" || searchtxt==null)
+            {
+                //alert('Please enter a value.');
+                $('#msgBlankId').text('Please enter a value.');
+                return false;
+            }
+            else
+            {
+                $('#msgBlankId').val('');
+                $('#msgBlankId').text('');
+                deselectName{!componentID}('Current_Selected_Fields{!componentID}');
+                deselectName{!componentID}('All_Available_Fields{!componentID}');
+                resetAvailablelist{!componentID}();
+                var len=localAvlArray{!componentID}.length; 
+                    
+                for (var count=len-1; count>=0; count--) 
+                {    
+                    if (localAvlArray{!componentID}[count][2].toLowerCase().indexOf(searchtxt.toLowerCase())==-1) 
+                    {
+                        localAvlArray{!componentID}.splice(count,1);
+                    }
+                }
+                if(localAvlArray{!componentID}.length == 0)
+                {
+                    localAvlArray{!componentID}.push(['','','No match found.']);
+                }
+                createAvlSelList{!componentID}(localAvlArray{!componentID}); 
+                                   
+                document.getElementById('searchcon_grid1{!componentID}').value=searchtxt;
+            } 
+                          
+        }
+        
+        function stopRKey(evt) { 
+              var evt = (evt) ? evt : ((event) ? event : null); 
+              var node = (evt.target) ? evt.target : ((evt.srcElement) ? evt.srcElement : null);     
+              if ((evt.keyCode == 13) && (node.type=="text"))  {return false;} 
+            } 
+            document.onkeypress = stopRKey;
+        </script>
+        <style>
+            .aw-list-box .aw-item-template {height: 25px !important;}
+        </style>
+</apex:component>

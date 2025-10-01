@@ -1,0 +1,49 @@
+<!--
+** Module Name : Acuity 2.0 - Acuity
+** Description : To show the users dropdown for the corresponding To,CC,Bcc fields
+** Throws : NA
+** Calls : NA
+** Organization : Navatar Group
+** Product Name & Version : Acuity 2.0
+** Revision History:-
+** Version    Date(YYYY-MM-DD)    Author         Description of Action
+** 1.0        2022-11-22          Hema
+-->
+<template>
+    <div class="slds-combobox_container main-Container">
+        <div class={boxClass}>
+            <div class="slds-combobox__form-element">
+             
+                <lightning-input type="text" value={inputVal} id="to" class="input"  onchange={handleInputChange} onkeypress={handleKeyPress}
+                onblur={handleBlur} ></lightning-input>
+                <template for:each={items} for:item="selectedValue" for:index="index">
+                    <template if:true={selectedValue.isSelected}>
+                            <lightning-pill label={selectedValue.usermail} key={selectedValue.value} name={selectedValue.value}
+                                onremove={handleRemove} style="padding-right: 2px;"></lightning-pill>
+                    </template>
+                </template>
+                
+                <template if:true={isDropDownVisible}>
+                    <div class="emaildropbox">
+                        <template if:true={itemvisible}>
+                            <ul class="drop_ul">
+                                <template for:each={itemvisible} for:item='item'>
+                                    <template if:false={item.isSelected}>
+                                        <div key={item.value} class="slds-p-around_xxx-small dropLists "
+                                            onclick={itemSelect} data-value={item.value}>
+                                          
+                                            <li class="slds-nav-vertical__item slds-p-left_small" role="listitem">
+                                                <p>{item.label}</p>
+                                                <p style="font-size: 11px;">{item.value}</p>
+                                            </li>
+                                        </div>
+                                    </template>
+                                </template>
+                            </ul>
+                        </template>
+                    </div>
+                </template>
+            </div>
+        </div>
+    </div>
+</template>

@@ -1,0 +1,149 @@
+<apex:page controller="NavatarClipsPDFCtrl" renderAs="pdf" applyBodyTag="false" showHeader="false">    
+
+    <head>
+        <style type="text/css" media="print">
+            @page :first {
+                @top-center {
+                    content: element(header);
+                }
+            }
+
+            @page {
+                @bottom-left {
+                    content: element(footer);
+                }
+            }
+
+            * {
+                margin: 0px;
+                padding: 0px;
+            }
+            
+            body { 
+                font-family: sans-serif;
+                
+            }
+
+            div.header {
+                margin-top: 10px;
+                height: 130px;
+                width: 715px;
+                text-align: center;
+                position: running(header);
+            }
+            
+            div.footer {
+                display: block;
+                padding: 5px;
+                position: running(footer);
+            }
+
+            div.subfooter {
+                display: inline-block;
+            }
+
+            div.right {
+                float: right;
+            }
+
+            .pagenumber:before {
+                content: counter(page);
+            }
+
+            .pagecount:before {
+                content: counter(pages);
+            }
+
+            .stationName {
+                text-align: center;
+                font-weight: bold;
+                font-size: 20pt;
+                margin-bottom: 30px;
+            }
+
+            table {
+                width: 100%;
+            }
+
+            .centered {
+                text-align: center;
+            }
+
+            .right {
+                text-align: right;
+            }
+
+            .tableHeader {
+                border-top: 1px solid #4f4f4f;
+                border-bottom: 1px solid #4f4f4f;  
+                border-left: 1px solid #4f4f4f;
+                background-color: #5b9bd5;
+                color: #fff;
+                padding: 5px 5px 8px 5px;
+                font-weight:600;
+            }
+            .tableRows {
+                border-left: 1px solid #4f4f4f; 
+                border-bottom: 1px solid #4f4f4f;  
+                background-color: #fff;
+                color: #000;
+                padding: 5px 5px 8px 5px;
+                font-style: sans-serif;
+                font-size:14px;
+                vertical-align: top;
+            }
+            .sectionHeader {
+                padding: 5px;
+                margin-top:20px;
+                margin-bottom:10px;
+                color:#5b9bd5
+            }
+            .recContent {
+                padding: 5px;
+                margin: 20px 0px;
+            }
+            #totalCost {
+                margin-top: 15px;
+            }
+            #totalCostLabel {
+                font-weight: bold;
+                margin-right: 10px;
+            }
+        </style>
+    </head>
+    <apex:image url="{!$Resource.navatarClipImage}" width="100%" />
+    <div class="header"></div>
+    <div class="content">
+        <apex:pageBlock >
+            <div class="sectionHeader"><span style="font-size:18px;">{!clips.Name}</span>
+                <!--{!$ObjectType.Contact.labelPlural}-->
+            </div>
+            <div class="recContent">
+                <p style="font-size:14px;font-weight:bolder;">Brief Summary:</p> 
+                <p style="font-size:14px;padding-top:5px;padding-bottom:10px;font-weight:400;">{!clips.Summary}</p>
+                <!--{!$ObjectType.Contact.labelPlural}-->
+            </div>
+            <apex:pageBlockSection columns="1">
+                <apex:pageBlockTable value="{!clips}" var="clip" headerClass="tableHeader" style="border-right:1px solid #4f4f4f;">
+                    <!--<apex:column value="{!clip.Name}" headerValue="Name" width="15%" styleClass="tableRows"/>
+                    <apex:column value="{!clip.Summary}" headerValue="Summary" width="20%" styleClass="tableRows" />
+                    <apex:column value="{!clip.Notes}" headerValue="Notes" width="35%" styleClass="tableRows"/>-->
+                    <apex:column value="{!clip.createddate}" headerValue="Created Date" width="18%" styleClass="tableRows"/>
+                    <apex:column value="{!clip.ClipsTagsPDF}" headerValue="Tags" width="62%" styleClass="tableRows"/>
+                    <apex:column value="{!clip.createdBy}" headerValue="Created By" width="20%" styleClass="tableRows"/>
+                </apex:pageBlockTable>
+            </apex:pageBlockSection>
+        </apex:pageBlock>
+    </div>
+    <div class="recContent">
+        <p><span style="font-size:14px;font-weight:bold !important;"><b>Notes:</b></span></p>
+        <p style="font-size:14px;font-weight:400;padding-top:5px;padding-bottom:10px;">{!clips.Notes}</p>
+        <!--{!$ObjectType.Contact.labelPlural}-->
+    </div>
+   <!-- <div class="footer">
+        <div class="centered">Generated by {!$User.FirstName} {!$User.LastName}</div>
+            <div class="subfooter">{!NOW()}</div>
+            <div class="subfooter right">Page <span
+                    class="pagenumber" /> of <span class="pagecount" /></div> 
+            </div> --->
+</apex:page>

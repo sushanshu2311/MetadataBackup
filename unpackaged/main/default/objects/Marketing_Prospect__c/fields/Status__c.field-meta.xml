@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Status__c</fullName>
+    <label>Status</label>
+    <required>false</required>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Picklist</type>
+    <valueSet>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>Initial Call Made</fullName>
+                <default>false</default>
+                <label>Initial Call Made</label>
+            </value>
+            <value>
+                <fullName>Follow Up Call Made</fullName>
+                <default>false</default>
+                <label>Follow Up Call Made</label>
+            </value>
+            <value>
+                <fullName>Mass Email Sent</fullName>
+                <default>false</default>
+                <label>Mass Email Sent</label>
+            </value>
+            <value>
+                <fullName>Appointment Scheduled</fullName>
+                <default>false</default>
+                <label>Appointment Scheduled</label>
+            </value>
+            <value>
+                <fullName>Prospect Not Interested</fullName>
+                <default>false</default>
+                <label>Prospect Not Interested</label>
+            </value>
+            <value>
+                <fullName>Contact After 1 Year</fullName>
+                <default>false</default>
+                <label>Contact After 1 Year</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
+</CustomField>

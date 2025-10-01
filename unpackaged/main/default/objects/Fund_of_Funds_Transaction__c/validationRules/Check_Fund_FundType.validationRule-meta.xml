@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Check_Fund_FundType</fullName>
+    <active>true</active>
+    <errorConditionFormula>NOT(ISPICKVAL(Fund__r.Fund_Type__c, &quot;Fund of Funds&quot;))</errorConditionFormula>
+    <errorDisplayField>Fund__c</errorDisplayField>
+    <errorMessage>Please select a Fund of Funds instead of a Fund.</errorMessage>
+</ValidationRule>

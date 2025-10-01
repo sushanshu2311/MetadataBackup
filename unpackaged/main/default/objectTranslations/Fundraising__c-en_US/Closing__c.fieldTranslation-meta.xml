@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomFieldTranslation xmlns="http://soap.sforce.com/2006/04/metadata">
+        <label><!-- Closing --></label>
+        <name>Closing__c</name>
+        <picklistValues>
+            <masterLabel>1st Closing</masterLabel>
+            <translation><!-- 1st Closing --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>2nd Closing</masterLabel>
+            <translation><!-- 2nd Closing --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>3rd Closing</masterLabel>
+            <translation><!-- 3rd Closing --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>4th Closing</masterLabel>
+            <translation><!-- 4th Closing --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>5th Closing</masterLabel>
+            <translation><!-- 5th Closing --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>6th Closing</masterLabel>
+            <translation><!-- 6th Closing --></translation>
+        </picklistValues>
+    </CustomFieldTranslation>

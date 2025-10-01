@@ -1,0 +1,9 @@
+<aura:component implements="force:hasRecordId,lightning:actionOverride,force:lightningQuickAction" access="global" >
+    <aura:attribute name="recordId" type="String" default=""/>
+    <aura:attribute name="redirectId" type="String" default=""/>
+    <aura:attribute name="isRedirectToRecord" type="boolean" default="true"/>
+    <aura:attribute name="isUtilityBar" type="boolean" default="false"/>
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}" />
+    
+	<c:navatarNotesModalLwc recordId="{!v.recordId}" objectName="Event" redirectId="{!v.redirectId}" isRedirectToRecord="{!v.isRedirectToRecords}" isUtilityBar="{!v.isUtilityBar}"></c:navatarNotesModalLwc>
+</aura:component>

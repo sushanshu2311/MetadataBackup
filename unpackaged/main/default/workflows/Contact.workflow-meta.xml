@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Workflow xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fieldUpdates>
+        <fullName>Greetings</fullName>
+        <description>Greetings will be auto populated</description>
+        <field>Greeting__c</field>
+        <formula>FirstName</formula>
+        <name>Greetings</name>
+        <notifyAssignee>false</notifyAssignee>
+        <operation>Formula</operation>
+        <protected>false</protected>
+        <reevaluateOnChange>false</reevaluateOnChange>
+    </fieldUpdates>
+    <rules>
+        <fullName>Auto populate Greetings</fullName>
+        <actions>
+            <name>Greetings</name>
+            <type>FieldUpdate</type>
+        </actions>
+        <active>true</active>
+        <criteriaItems>
+            <field>Contact.Greeting__c</field>
+            <operation>equals</operation>
+        </criteriaItems>
+        <description>Auto populate Greetings field from the First Name of the contact</description>
+        <triggerType>onCreateOnly</triggerType>
+    </rules>
+</Workflow>

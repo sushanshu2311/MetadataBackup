@@ -1,0 +1,51 @@
+<aura:component implements="lightning:recordHomeTemplate" access="global" description="A main Header region with custom highlighted region and a footer region.">
+    <aura:attribute name="top" type="Aura.Component[]" access="global" />
+    <aura:attribute name="bottom" type="Aura.Component[]" access="global" />
+    <aura:attribute name="midFooter" type="Aura.Component[]" access="global" />
+    <aura:attribute name="leftBottom" type="Aura.Component[]" access="global" />
+    <aura:attribute name="rightBottom" type="Aura.Component[]" access="global"  />
+    
+    <aura:attribute name="header" type="Aura.Component[]" access="global"  />
+    <aura:handler event="aura:doneRendering" action="{!c.doneRendering}"/>
+    
+    <div id="headerDiv">
+        <lightning:layout aura:id="stickySection">
+            <lightning:layoutItem flexibility="grow" class="oneColumnCustom" >
+                {!v.header}
+            </lightning:layoutItem>
+        </lightning:layout>
+    </div>    
+    <div>
+        <lightning:layout>
+            <lightning:layoutItem flexibility="grow" class="oneColumnCustom">
+                {!v.top}
+            </lightning:layoutItem>
+        </lightning:layout>
+    </div>
+    
+    
+    <div>
+        <lightning:layout>
+            <lightning:layoutItem flexibility="grow" class="oneColumnCustom">
+                {!v.midFooter}
+            </lightning:layoutItem>            
+        </lightning:layout>
+        <lightning:layout>
+            <lightning:layoutItem flexibility="grow" class="twoColumnCustom">
+                {!v.leftBottom}
+            </lightning:layoutItem>
+            <lightning:layoutItem flexibility="grow" class="twoColumnCustomRight">
+                {!v.rightBottom}
+            </lightning:layoutItem>
+        </lightning:layout>
+    </div>
+    
+    
+    <div>
+        <lightning:layout>
+            <lightning:layoutItem flexibility="grow" class="oneColumnCustom">
+                {!v.bottom}
+            </lightning:layoutItem>
+        </lightning:layout>
+    </div>
+</aura:component>

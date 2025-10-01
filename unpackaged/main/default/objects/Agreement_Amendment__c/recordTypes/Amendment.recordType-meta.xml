@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<RecordType xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Amendment</fullName>
+    <active>true</active>
+    <description>An Amendment is a modification to an Agreement from a Limited Partner or an Institution towards a Partnership.</description>
+    <label>Amendment</label>
+</RecordType>

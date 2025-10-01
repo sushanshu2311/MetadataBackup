@@ -1,0 +1,18 @@
+<aura:component implements="force:lightningQuickAction,force:hasRecordId,force:hasSObjectName" >
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}" />
+	<lightning:navigation aura:id="navService"/>
+    <aura:attribute name="recordId" type="String" default=""/>
+    <aura:attribute name="redirectId" type="String" default=""/>
+    <aura:attribute name="taskType" type="String" default="Call"/>
+    <aura:attribute name="isRedirectToRecord" type="boolean" default="true"/>
+    <aura:attribute name="isCalledfromMobile" type="boolean" default="true"/>
+    <aura:attribute name="isRedirectToParent" type="boolean" default="true"/>
+    <aura:attribute name="isRedirectToRecords" type="boolean" default="true"/>
+    <aura:attribute name="isFollowup" type="boolean" default="false"/>
+    <aura:attribute name="isUtilityBar" type="boolean" default="false"/>
+    <aura:attribute name="sObjectName" type="String" default="" />
+    <aura:attribute name="isMobile" type="boolean" default="true"/>
+    <aura:if isTrue="{!v.isMobile}">
+        <c:navatarNotesMobileLwc isRedirectToParent = "{!v.isRedirectToParent}" isCalledfromMobile = "{!v.isCalledfromMobile}" objectName="Task" redirectId="{!v.redirectId}" isRedirectToRecord="{!v.isRedirectToRecords}" taskType="Call" isFollowup="{!v.isFollowup}" ></c:navatarNotesMobileLwc>
+    </aura:if>
+</aura:component>

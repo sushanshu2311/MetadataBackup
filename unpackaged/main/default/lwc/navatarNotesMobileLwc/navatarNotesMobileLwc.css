@@ -1,0 +1,293 @@
+.errorMsg{
+    color: red;
+}
+.slds-notify_alert{
+    justify-content: flex-start;
+}
+.errorCss{
+    border: 1px solid red;
+}
+.tag-icon{
+    --sds-c-icon-color-background: blue;
+}
+.tag-icon:hover{
+    cursor: pointer;
+}
+.slds-pill{
+    width: 100% !important;
+}
+
+:host {
+    --sds-c-textarea-sizing-min-height: 200px;
+}
+.topic2{
+    --sds-c-icon-color-foreground-default: #FFFFFF;
+    --sds-c-icon-color-background: #006DCC;
+}
+.pillClass{
+    --lwc-brandTextLink:#006DCC;
+    --slds-c-pill-line-height:20px;
+}
+.cutomFooter{
+    --slds-c-modal-footer-color-background:#F3F2F2;
+}
+.customBrandButton{
+    --slds-c-button-brand-color-background:#0070D2;
+}
+.accordation{
+    --slds-c-accordion-heading-text-color:var(--lwc-brandTextLink)
+}
+.cur_point {
+    cursor: pointer;
+}
+
+
+.dropLists{
+    display:flex;
+    gap:5px;   
+}
+.dropLists:hover{
+    background: #ecf4fe;
+    cursor: pointer;
+}
+.cur_point {
+    cursor: pointer;
+}
+.drop_ul{
+    box-shadow: 0px 2px 2px rgb(0 0 0 / 10%);
+    border: 1px solid #ddd;	
+    border-radius: 4px;
+}
+.hover {
+    height: auto;
+    width: 140px; /*Added by raju on dated 23-10-2024 (125px) @functionality ; 47979 */
+    background: #ffff;
+    box-shadow: -2px 5px 11px #ccc;
+    position: absolute;
+    border-radius: 4px;
+    position: absolute;
+    display: none;
+    overflow-y: auto;
+    overflow-x: auto;
+    max-height: 182px;
+
+}
+
+/*code by raju on dated 23-10-2024 ; 47979*/
+.hover ul li {
+    /* padding-top: 3px;
+    padding-left: 5px;
+    padding-right: 5px;
+    padding-bottom: 3px;
+    display: inherit; */
+    padding-top: 0.25rem;
+    padding-left: 0.75rem;
+    padding-right: 0.75rem;
+    padding-bottom: 0.25rem;
+    list-style-type: none;	
+    height: 45px;
+    line-height: 45px;
+    display: flex;
+}
+.hover li:hover {
+    background: #efeded;
+}
+/* UI-FIX scroller bar is visible on x-axis to remove that scroll bar */
+.mt_1 {
+    width: 100%;
+}
+/* UI-FIX bug id 31237,31669 and 31434 on 20-09-22 for calender get hide  */
+.slds-modal__content {
+    overflow: auto !important;
+}
+.slds-modal__content {
+    overflow: auto !important;
+}
+
+.header_text {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
+    margin-top:15px;
+}
+
+.image-upload>input {
+    display: none;
+}
+
+.cur_pointer {
+    cursor: pointer;
+}
+
+.cls_header {
+    font-size: 12px;
+    color: #3E3E3C;
+    font-weight: 700;
+}
+
+.slds-border_around {
+    padding: 5px 10px;
+}
+
+.align_center {
+    align-items: center;
+}
+
+.cls_Icon_lookupSearch {
+    display: flex;
+    align-items: center;
+}
+
+.cls_SearchIconPosition {
+    margin-left: -20px;
+}
+
+.slds-border_around {
+    padding: 5px 10px;
+}
+.min_32{
+    min-height:34px;
+}
+
+.red {
+    background: #f3f3f3;
+    border-top: 1px solid #e5e5e5 !important;
+    border-bottom: 1px solid #e5e5e5 !important;
+}
+.image-upload > input
+{
+    display: none;
+}
+.cur_pointer{
+    cursor:pointer;
+}
+.slds-modal{
+    z-index:101;
+}
+
+.slds-backdrop {
+    z-index: 100;
+    height: 95vh !important;
+}
+
+.cls_marginLeftMinus {
+    margin-left: -2px !important;
+}
+@media (max-width: 64em) {
+.slds-border_around{
+    padding: 1px 10px;
+}}
+
+.cls_leftSpace{
+    margin-left: 3px !important;
+}
+.mt15{
+    margin-top: 13px
+}
+
+.clrChange {
+    border-top: 1px solid #fff;
+    border-bottom: 1px solid #fff;
+}
+.slds-p-left_x-small_desk{
+    padding-left:0.5rem;
+}
+@media (max-width:600px){
+    .slds-p-left_x-small_desk{
+        padding-left:0px;
+    }
+    .disp_grid{
+        display: grid !important;
+    }
+    .clsMobileView{
+        display: none;
+    }
+}
+
+.clsSearch{
+    width: 55% !important;
+}
+
+
+.clsTagButton{
+    --slds-c-button-line-height: 2rem;
+}
+
+table.cusSuggestedTagTable tr:first-child {
+    background-color: #f3f3f3; 
+}
+
+table.cusSuggestedTagTable tr:nth-child(1){
+    background-color: #f3f3f3; 
+}
+
+table.cusSuggestedTagTable tr:nth-child(2){    
+    box-shadow: 0px -1px 0px #fff inset; 
+}
+
+table.cusSuggestedTagTable tr td strong {
+    color: #344147;
+}
+
+/* Added by Raju on 17-04-2024 */
+table.cusSuggestedTagTable tbody tr td:nth-child(1){
+    width: 12%;
+    padding-right: 3px;
+}
+table.cusSuggestedTagTable tbody tr td:nth-child(2){
+    width: 60%;
+}
+table.cusSuggestedTagTable tbody tr td:nth-child(3){
+   padding-left: 3px;
+}
+
+table.cusSuggestedTagTable tbody tr td span{
+    padding: 0 5px 0 2px;
+    display: inline-block;
+}
+
+
+
+
+.slds-textareaCls{   
+--slds-c-textarea-color-background: transparent !important;
+--slds-c-textarea-color-border: transparent !important;
+--slds-c-textarea-spacing-inline-end:0rem !important;
+--slds-c-textarea-spacing-inline-start:0rem !important;
+--slds-c-textarea-spacing-block-end: 0rem !important;
+--slds-c-textarea-spacing-block-start: 0rem !important;
+}
+
+ input[type=checkbox] {
+    width: 16px;
+    height: 16px;
+    border: 1px solid #ff0000;
+}
+
+.validateMsg{
+    top:50%; 
+    left:50%; 
+    transform:translate(-50%, -50%); 
+    font-size: 13px;
+    white-space: nowrap;
+}
+.clsMsgParentbox {
+    width: 100%;
+    height: 60px;
+}
+
+/* jagriti */
+
+/*@Added by raju on 23-10-2024 RTA ; 47979*/
+.clsFontStyle{
+    /* font-size: 0.8125rem !important; */
+    font-size: 0.8rem !important;
+    line-height: 1.5 !important;
+    color: rgb(24, 24, 24) !important;
+}
+
+.clsFontSize{
+    /* font-size: 0.8125rem !important; */
+    font-size: 11.6px !important;
+}

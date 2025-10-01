@@ -1,0 +1,93 @@
+<!--
+** Module Name : Acuity 1.0 - Acuity
+** Description : Displays the extra references of a tile of Interactions section of Acuity 1.0 Acuity.
+** Throws : NA
+** Calls : NA
+** Organization : Navatar Group
+** Product Name & Version : Acuity 1.0
+** Revision History:-
+** Version    Date(YYYY-MM-DD)    Author         Description of Action
+** 1.0        2022-09-07          Lakshya        Acuity Phase 1
+** 2.0        2022-12-04          Lakshya        Acuity Phase 2
+-->
+<template>
+    <template if:true={isModalOpen}>
+        <!-- Modal/Popup Box starts here -->
+        <section role="dialog"
+                 tabindex="-1"
+                 aria-labelledby="modal-heading-01"
+                 aria-modal="true"
+                 aria-describedby="modal-content-id-1"
+                 class="small_modal slds-modal slds-fade-in-open"
+                 style="z-index:15003">
+            <div class="slds-modal__container">
+                <!-- Modal/Popup Box header here -->
+                <header class="slds-modal__header">
+                    <button class="slds-button slds-button_icon slds-modal__close slds-button_icon-inverse"
+                            title="Close"
+                            onclick={closeModal}>
+                        <lightning-icon icon-name="utility:close"
+                                        alternative-text="close"
+                                        variant="inverse"
+                                        size="small"
+                                        title="Close">
+                        </lightning-icon>
+                        <span class="slds-assistive-text">
+                            Close
+                        </span>
+                    </button>
+                    <h2 id="modal-heading-01"
+                        class="slds-text-heading_medium slds-hyphenate">
+                        {headerName} <!--Modified by Anshika Ahuja W.R.To Critical_Bug #00035222/00035223-->
+                    </h2>
+                </header>
+                <!-- Modal/Popup Box body starts here -->
+                <div class="slds-modal__content slds-p-around_medium "
+                     id="modal-content-id-1">
+                    <template for:each={associatesWrapper}
+                              for:item="associateInfo">
+                        <div key={associateInfo.nameRef}>
+                            <lightning-layout class="slds-m-bottom_small gap_10">
+                                <lightning-layout-item>
+                                    <lightning-icon icon-name={associateInfo.iconName}
+                                                    size="small">
+                                    </lightning-icon>
+                                </lightning-layout-item>
+                                <lightning-layout-item>
+                                    <!--Added "target" on 2022-09-22 to fix record opening in same tab issue-->
+                                    <template if:true={associateInfo.nameRef}>
+                                        <a href={associateInfo.nameRef}
+                                           target="_blank"
+                                           class="no_underline tagsScreen"
+                                           title={associateInfo.name}>
+                                            {associateInfo.name}
+                                        </a>
+                                    </template>
+                                    <template if:false={associateInfo.nameRef}>
+                                        <p class="no_underline tagsScreen"
+                                           title={associateInfo.name}>
+                                            {associateInfo.name}
+                                        </p>
+                                    </template>
+                                </lightning-layout-item>
+                            </lightning-layout>
+                        </div>
+                    </template>
+                </div>
+              
+                <!-- Modal/Popup Box LWC footer starts here -->
+                <footer class="slds-modal__footer cutomFooter">
+                    <lightning-button variant="brand"
+                                      label="OK"
+                                      title="OK"
+                                      onclick={closeModal}
+                                      class="slds-m-left_x-small customBrandButton">
+                    </lightning-button>
+                </footer>
+            </div>
+        </section>
+        <div class="slds-backdrop slds-backdrop_open"
+             style="z-index:15002">
+        </div>
+    </template>
+</template>

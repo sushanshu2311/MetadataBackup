@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomFieldTranslation xmlns="http://soap.sforce.com/2006/04/metadata">
+        <label><!-- BCC me on one message --></label>
+        <name>BCC_me_on_one_message__c</name>
+    </CustomFieldTranslation>

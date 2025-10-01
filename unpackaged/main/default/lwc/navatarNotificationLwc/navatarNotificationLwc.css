@@ -1,0 +1,175 @@
+.closeIcon{
+    --sds-c-icon-color-foreground-default: #EDEBE9;;
+    --sds-c-icon-color-background: #B1B1B1;;
+}
+.iconShape{
+    --lwc-borderRadiusCircle:30%;
+}
+/* a.noti{
+    color: #000;
+} */
+.noti:hover,
+.noti:focus{
+    color:rgb(1 118 211);
+}
+/*phase 2*/
+.noti_back_clr{
+    background: #0176d314;
+    border-bottom:1px solid #ddd;
+}
+.white{
+    background:#fff;
+}
+.dynamicCSS{
+    display:none;
+}
+/* .hght{
+    min-height: 100px !important;
+    max-height: 285px !important;
+} */
+/* .notiSub{
+    max-width: 26%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+.notiSub_wbtn{
+    max-width: 35%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+} */
+
+.slds-backdrop{
+    z-index: 100;
+    height: 95vh !important;
+}
+/* BUG FIX 00032172 jagriti*/
+
+.fit-width-content {
+    width: fit-content;
+    white-space: nowrap;
+}
+.cur_point{
+    cursor: pointer;
+}
+
+.customButtonWidth {
+    width: 90px;
+    display: block;
+    margin: auto 0 0 auto;
+}
+.closeIcon{
+    --sds-c-icon-color-foreground-default: #EDEBE9;;
+    --sds-c-icon-color-background: #B1B1B1;;
+}
+.iconShape{
+    --lwc-borderRadiusCircle:30%;
+}
+/* a.noti{
+    color: #000;
+} */
+.noti:hover,
+.noti:focus{
+    color:rgb(1 118 211);
+}
+/*phase 2*/
+.noti_back_clr{
+    background: #0176d314;
+    border-bottom:1px solid #ddd;
+}
+.white{
+    background:#fff;
+}
+.dynamicCSS{
+    display:none;
+}
+.hght{
+    /*Updated CSS by LK on 2024-09-02 to fix 00047039*/
+    min-height: 100px;
+    max-height: 285px;
+    position:relative; 
+}
+
+.slds-modal{
+    z-index:101;
+}
+.slds-backdrop{
+    z-index: 100;
+    height: 95vh !important;
+}
+/* BUG FIX 00032172 jagriti*/
+
+.fit-width-content {
+    width: fit-content;
+    white-space: nowrap;
+}
+.cur_point{
+    cursor: pointer;
+}
+
+.customButtonWidth {
+    display: block;
+    margin: auto 0 0 auto;
+    
+}
+.ul_header_icon{
+    display:flex;
+    align-items: center;
+    justify-content: center;
+}
+.for_mob{
+    display:none;
+}
+.spinnerClass{
+    position:relative;
+    
+}
+.spinnerCSS{
+    position: absolute;
+}
+@media (max-width:600px){
+    /* Added by LK on 2024-08-01 to fix 00046981 */
+    .spinnerCSS{
+        position: fixed; 
+        height:100%;
+        width:100%;
+    }
+    .for_desk{
+        display:none;
+    }
+    .for_mob{
+        display:block;
+    }
+    .header_font{
+        font-size: 1.125rem !important;
+        font-weight:700;
+    }
+    .ul_header_icon{
+        justify-content: start;
+    }
+    .mob_font_12{
+        font-size:12px;
+    }
+    /*00038097 display white background in Mobile for Clip Info Notif*/
+    .clipInfoMob{
+        background: white!important;
+    }
+}			
+.for_mob{
+    display:none;
+}
+@media (max-width:600px){
+    .for_desk{
+        display:none;
+    }
+    .for_mob{
+        display:block;
+    }
+    .hght{
+        /*Updated CSS by LK on 2024-09-02 to fix 00047039*/
+        min-height: auto;
+        max-height: 460px;
+        /* max-height: fit-content !important; */
+    }
+}

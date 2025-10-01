@@ -1,0 +1,101 @@
+<!--
+** Module Name : Add To Fund
+** Description : Displays the filter in the Select Contacts page
+** Organization : Navatar Group
+** Product Name & Version : Acuity 3.0
+** Revision History:-
+** Version    Date(YYYY-MM-DD)    Author      Description of Action
+** 1.0        2024-03-08          Lakshya     Acuity Phase 3
+-->
+<template>
+
+    <div class="slds-grid slds-gutters main-searchlook slds-m-top_x-small main-Container-searchlook"
+        style="padding-left:7px;">
+        <!--fixes for bug #00041511 fixes by salauddin sheikh-->
+        <div style="width:2%;align-self: center;" if:true={fromSearchContact}>  
+            <p>
+                <lightning-formatted-number value={index}></lightning-formatted-number>
+            </p>
+        </div>
+        <div style="width: 31%;">
+            <template if:true={fieldStruct}>
+                <c-navatar-add-contacts-combobox-polymorphic-lwc onoptionsearch={handleOptionSearch}
+                    onoptionselect={handleOptionSelect} fieldstructure={fieldStruct} class="zIndex_Css">
+                </c-navatar-add-contacts-combobox-polymorphic-lwc>
+            </template>
+        </div>
+        <div style="width: 31%;">
+            <lightning-combobox placeholder={optionPlaceHolder} disabled={isFieldSelected}
+                style="display: grid;margin: auto;" name="" label="" value={compData.filter}
+                options={compData.filterOptions} onchange={handleFilterChange} class="zIndex_Css">
+            </lightning-combobox>
+        </div>
+        <div style="width: 32%;padding-left: 4px;display: inline-flex;">
+            <template if:true={compData.isDateType}>
+                <div class="headers datefield" style="width: 83%;"><!--#00042408, #	00042367 change for operator null check by salauddin sheikh-->
+                    <lightning-input disabled={isOperatorSelected} type={curType} variant="label-hidden" date-style="short"
+                        time-style="short" onchange={handleUpdateSearch} label="" value={compData.filterVal}>
+                    </lightning-input>
+                </div>
+            </template>
+            <template if:false={compData.isDateType}>
+                <div style="width: 83%;">
+                    <template if:true={onlyNumber}><!--#00042408, #	00042367 change for operator null check by salauddin sheikh-->
+                        <lightning-input disabled={isOperatorSelected} style="display:grid" type="text"
+                        value={compData.filterVal} label="" onchange={handleUpdateSearch}>
+                    </lightning-input>
+                    </template>
+                    <template if:false={onlyNumber}><!--#00042440 , #00042408, #00042367change for operator null check by salauddin sheikh-->
+                    <lightning-input disabled={isOperatorSelected} style="display:grid" type={curType}
+                        value={compData.filterVal} label="" onchange={handleUpdateSearch}>
+                    </lightning-input>
+                    </template>
+                </div>
+
+                <template if:true={showPickList}>
+                    <c-navatar-exp-builder-lookup-pop-up-lwc onclosemodal={handleCloseModal}
+                        oninsertvalues={handlePicklistPopupSave} objectname={compData.objName}
+                        pickval={compData.fieldName} fieldtype={compData.fDataType} operation="search"
+                        isopenmodal={showPickList} existingvalues={compData.filterVal}>
+                    </c-navatar-exp-builder-lookup-pop-up-lwc>
+                </template> 
+
+            </template>
+            <template if:true={compData.isSearchable}>
+                <template if:true={hideSearchIconAccordingToInnerFunctionality}> 
+                <div class="addMinus searchposition">
+                    <lightning-icon icon-name="utility:search" alternative-text="search" title="search"
+                        size="x-small" onclick={handlePicklistSearch}>
+                    </lightning-icon>
+                </div>
+                </template>
+            </template>
+            <template if:true={enableDelete}>
+                <div class="addMinus banpostion" if:true={fromSearchContact}>   <!--change for bug #00041444, #00041538 fixes by salauddin sheikh-->
+                 <!-- <lightning-icon icon-name="utility:add" alternative-text="Add Row" title="Add Row" class="back"
+                        size="xx-small">
+                    </lightning-icon>-->
+                    <!-- <lightning-icon icon-name="utility:close" alternative-text="Remove Row" title="Remove Row"
+                        class="back slds-p-left_xx-large" size="xx-small" onclick={handleDelete}>
+                    </lightning-icon> -->
+
+                    <lightning-icon icon-name="utility:close" alternative-text="Remove Row" onclick={handleDelete}
+                        title="Remove Row" size="xx-small" class="cur_point back"></lightning-icon>
+                </div>
+                <div if:false={fromSearchContact} class="addMinus banpostion1"><!--change for bug #00041444, 00041538 fixes by salauddin sheikh-->
+                    <lightning-icon icon-name="utility:ban"
+                    onclick={handleDelete} alternative-text="Remove" class="cur_point slds-m-left_small"
+                    title="Remove Row" size="x-small"></lightning-icon>
+                </div>
+            </template>
+            <template if:true={enableAnd}>
+               <div style="width:auto;align-self: center;">
+                    <p>
+                     <!--  <lightning-formatted-text value="OR" class="slds-form-element__label"></lightning-formatted-text>-->
+                    </p>
+                </div>
+            </template>
+        </div>
+    </div>
+   
+</template>

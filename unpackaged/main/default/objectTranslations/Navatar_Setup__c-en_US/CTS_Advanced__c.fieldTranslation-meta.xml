@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomFieldTranslation xmlns="http://soap.sforce.com/2006/04/metadata">
+        <label><!-- CTS Advanced --></label>
+        <name>CTS_Advanced__c</name>
+        <picklistValues>
+            <masterLabel>Contact Only</masterLabel>
+            <translation><!-- Contact Only --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Contact and Institution</masterLabel>
+            <translation><!-- Contact and Institution --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Contact, Institution and Custom Object</masterLabel>
+            <translation><!-- Contact, Institution and Custom Object --></translation>
+        </picklistValues>
+    </CustomFieldTranslation>

@@ -1,0 +1,27 @@
+.form {
+    background: white;
+}
+
+.popover {
+    left: -145px;
+    bottom: 52px;
+}
+
+.label_wdth {
+    width: 40px;
+    margin-bottom: 2px;
+}
+
+.dis_flex {
+    display: flex;
+}
+li.slds-nav-vertical__item.slds-p-left_x-small:hover{
+    background: #dbeafd73;
+}
+.dynamicCSS{
+    display: none;
+}
+.errorleft{
+    position: relative;
+    right:6.9rem;
+ }

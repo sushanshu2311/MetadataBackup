@@ -1,0 +1,767 @@
+<apex:page controller="DescribeSobjectTest" showHeader="false" sidebar="false" id="pageid" >
+
+    <apex:form id="formid">
+    <apex:outputPanel layout="block" style="height:521px">
+    <html >
+    <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Navatar</title>
+    <!--link href="{!URLFOR($Resource.RIAResource, 'RIAResource/css/main.css')}" rel="stylesheet" type="text/css" />
+        <script type="text/javascript" src="{!URLFOR($Resource.RIAResource, 'RIAResource/jquery/js/jquery.js')}"></script>
+        <script type="text/javascript" src="{!URLFOR($Resource.RIAResource, 'RIAResource/js/functions.js')}"></script-->
+        
+        
+     
+
+    </head>
+
+    <body style="overflow:auto;">
+    <div class="main" style="min-width:350px;">
+    <apex:pageMessages id="msgPanel"/> <!--Lookup icon img on top-->
+        <!--apex:image styleClass="fLeft" url="{!URLFOR($Resource.RIAResource, 'RIAResource/images/trans.gif')}" alt="" height="1" width="400" styleclass="fLeft"/--> 
+        <div class="clear"></div>
+        <style>
+            .odd0
+                    {
+                      background-color: #f5f5f5; 
+                    }
+                    .odd1
+                    {
+                      background-color: #ffffff; 
+                    }
+           
+           
+            
+              body button, body .x-btn, body .btn, body .btnDisabled, body .btnCancel, body .menuButton .menuButtonButton {
+                  
+                border-left-style-value: solid;
+                border-right-width-value: 1px;
+                border-top-color: #B5B5B5;
+                border-top-left-radius: 3px;
+                border-top-right-radius: 3px;
+                border-top-style: none;
+                border-top-width: 1px;
+                color: #333333;
+                font-size: 0.9em;
+                font-weight: bold;
+                margin-bottom: 1px;
+                margin-left: -3px;
+                margin-right: 1px;
+                margin-top: 1px;
+                padding-bottom: 0;
+                padding-left: 3px;
+                padding-right: 3px;
+                padding-top: 0;
+            }
+          
+            .main h2{float:left; min-width:100%; width:auto; display:block;margin:0; color:#4D4D4D; padding:0; font-size:14px; font-weight:bold; text-shadow:0 1px 0 #FFFFFF;  height:45px } <!--background:url("{!URLFOR($Resource.RIAResource, 'RIAResource/images/gridHeaderBg.jpg')}") repeat-x left top;-->
+    body {
+    background: url("/img/alohaSkin/lookup_bg.png") repeat-x scroll 0% 0% #FFF;
+    overflow: auto;
+    margin: 5px 8px;
+    }
+   </style>
+
+   <script>
+    var savedStates=new Array();
+    var savedStateCount=0;
+ 
+
+    /////////////////////////////////////////////////////
+    // This function takes an element as a parameter and 
+    //   returns an object which contain the saved state
+    //   of the element's background color.
+    /////////////////////////////////////////////////////
+    function saveBackgroundStyle(myElement)
+    {
+      saved=new Object();
+      saved.element=myElement;
+      saved.className=myElement.className;
+      saved.backgroundColor=myElement.style["backgroundColor"];
+      return saved;   
+    }
+
+    /////////////////////////////////////////////////////
+    // This function takes an element as a parameter and 
+    //   returns an object which contain the saved state
+    //   of the element's background color.
+    /////////////////////////////////////////////////////
+    function restoreBackgroundStyle(savedState)
+    {
+      savedState.element.style["backgroundColor"]=savedState.backgroundColor;
+      if (savedState.className)
+      {
+        savedState.element.className=savedState.className;    
+      }
+    }
+
+    /////////////////////////////////////////////////////
+    // This function is used by highlightTableRow() to find table cells (TD) node
+    /////////////////////////////////////////////////////
+    function findNode(startingNode, tagName)
+    {
+      // on Firefox, the TD node might not be the firstChild node of the TR node
+      myElement=startingNode;
+      var i=0;
+      while (myElement && (!myElement.tagName || (myElement.tagName && myElement.tagName!=tagName)))
+      {
+        myElement=startingNode.childNodes[i];
+        i++;
+      }  
+      if (myElement && myElement.tagName && myElement.tagName==tagName)
+      {
+        return myElement;
+      }
+      // on IE, the TD node might be the firstChild node of the TR node  
+      else if (startingNode.firstChild)
+        return findNode(startingNode.firstChild, tagName);
+      return 0;
+    }
+
+    /////////////////////////////////////////////////////
+    // Highlight table row.
+    // newElement could be any element nested inside the table
+    // highlightColor is the color of the highlight
+    /////////////////////////////////////////////////////
+    function highlightTableRow(myElement, highlightColor)
+    {
+      var i=0;
+      // Restore color of the previously highlighted row
+      for (i; i<savedStateCount; i++)
+      {
+        restoreBackgroundStyle(savedStates[i]);          
+      }
+      savedStateCount=0;
+
+      // To get the node to the row (ie: the <TR> element), 
+      // we need to traverse the parent nodes until we get a row element (TR)
+      // Netscape has a weird node (if the mouse is over a text object, then there's no tagName
+      while (myElement && ((myElement.tagName && myElement.tagName!="TR") || !myElement.tagName))
+      {
+        myElement=myElement.parentNode;
+      }
+
+      // If you don't want a particular row to be highlighted, set it's id to "header"
+      // If you don't want a particular row to be highlighted, set it's id to "header"
+      if (!myElement || (myElement && myElement.id && myElement.id=="header") )
+        return;
+              
+      // Highlight every cell on the row
+      if (myElement)
+      {
+        var tableRow=myElement;
+        
+        // Save the backgroundColor style OR the style class of the row (if defined)
+        if (tableRow)
+        {
+          savedStates[savedStateCount]=saveBackgroundStyle(tableRow);
+          savedStateCount++;
+        }
+
+        // myElement is a <TR>, then find the first TD
+        var tableCell=findNode(myElement, "TD");    
+
+        var i=0;
+        // Loop through every sibling (a sibling of a cell should be a cell)
+        // We then highlight every siblings
+        while (tableCell)
+        {
+          // Make sure it's actually a cell (a TD)
+          if (tableCell.tagName=="TD")
+          {
+            // If no style has been assigned, assign it, otherwise Netscape will 
+            // behave weird.
+            if (!tableCell.style)
+            {
+              tableCell.style={};
+            }
+            else
+            {
+              savedStates[savedStateCount]=saveBackgroundStyle(tableCell);        
+              savedStateCount++;
+            }
+            // Assign the highlight color
+            tableCell.style["backgroundColor"]=highlightColor;
+
+            // Optional: alter cursor
+            tableCell.style.cursor='default';
+            i++;
+          }
+          // Go to the next cell in the row
+          tableCell=tableCell.nextSibling;
+        }
+      }
+    }
+
+    /////////////////////////////////////////////////////
+    // This function is to be assigned to a <table> mouse event handler.
+    // If the element that fired the event is within a table row,
+    //   this function will highlight the row.
+    /////////////////////////////////////////////////////
+    function trackTableHighlight(mEvent, highlightColor)
+    {
+      if (!mEvent)
+        mEvent=window.event;
+            
+      // Internet Explorer
+      if (mEvent.srcElement)
+      {
+        highlightTableRow( mEvent.srcElement, highlightColor);
+      }
+      // Netscape and Firefox
+      else if (mEvent.target)
+      {
+        highlightTableRow( mEvent.target, highlightColor);      
+      }
+    }
+
+    /////////////////////////////////////////////////////
+    // Highlight table row.
+    // newElement could be any element nested inside the table
+    // highlightColor is the color of the highlight
+    /////////////////////////////////////////////////////
+    function highlightTableRowVersionA(myElement, highlightColor)
+    {
+        var i=0;
+        // Restore color of the previously highlighted row
+        for (i; i<savedStateCount; i++)
+        {
+            restoreBackgroundStyle(savedStates[i]);          
+        }
+        savedStateCount=0;
+
+        // If you don't want a particular row to be highlighted, set it's id to "header"
+        if (!myElement || (myElement && myElement.id && myElement.id=="header") )
+        return;
+              
+        // Highlight every cell on the row
+        if (myElement)
+        {
+            var tableRow=myElement;
+            // Save the backgroundColor style OR the style class of the row (if defined)
+            if (tableRow)
+            {
+              savedStates[savedStateCount]=saveBackgroundStyle(tableRow);
+              savedStateCount++;
+            }
+
+            // myElement is a <TR>, then find the first TD
+            var tableCell=findNode(myElement, "TD");    
+
+            var i=0;
+            // Loop through every sibling (a sibling of a cell should be a cell)
+            // We then highlight every siblings
+            while (tableCell)
+            {
+                // Make sure it's actually a cell (a TD)
+                if (tableCell.tagName=="TD")
+                {
+                    // If no style has been assigned, assign it, otherwise Netscape will 
+                    // behave weird.
+                    if (!tableCell.style)
+                    {
+                      tableCell.style={};
+                    }
+                    else
+                    {
+                      savedStates[savedStateCount]=saveBackgroundStyle(tableCell);        
+                      savedStateCount++;
+                    }
+                    // Assign the highlight color
+                    tableCell.style["backgroundColor"]=highlightColor;
+                    // Optional: alter cursor
+                    tableCell.style.cursor='default';
+                    i++;
+                }
+                // Go to the next cell in the row
+                tableCell=tableCell.nextSibling;
+            }
+        }
+    }
+    </script>
+            <!--h1><img src="images/img_header_lookup.jpg" alt="" title="" />Lookup</h1-->
+          <h1 style="font-Weight:bold; font-size: 1.8em; color: #333435; margin: 8px 0px 4px; display: block;" >
+          <style>
+              .pageTitleIcon {
+                background-image: url("https://na16.salesforce.com/img/sprites/master.png");
+                background-position: 2px -1203px;
+                width: 32px;
+                height: 32px;
+                }
+                .pageTitleIcon {
+                display: inline;
+                float: left;
+                width: 32px;
+                margin-right: 1px;
+            }
+          </style>
+          <img src="/s.gif" alt="" class="pageTitleIcon" title="" style="position: relative; top: -2px;" />
+          <!--<img src="https://na16.salesforce.com/img/sprites/master.png" alt="" border="0" />-->
+          <!--apex:image styleClass="fLeft" url="{!URLFOR($Resource, 'RIAResource/Hub/images/img_header_lookup.jpg')}" alt="" height="18" width="18" styleclass="fLeft"/-->&nbsp;Lookup</h1>
+          <apex:outputPanel rendered="{!isReferenceField}">
+              <apex:inputText style="margin:6px 7px 0px -23px; " html-placeholder="Search..." value="{!inputValue}" id="theTextInput"/>       
+              <apex:commandButton action="{!SearchItem}" value=" Go! " id="theButton" styleclass="btn"/><br/>
+          </apex:outputPanel><br/><br/>
+        <h2 style="margin-top:-22px; margin-left:8px; height:22px !important;"><span class="left"></span><span>Select the <apex:outputPanel rendered="{!isReferenceField}"> {!strQryobjName}(s)</apex:outputPanel><apex:outputPanel rendered="{!NOT(isReferenceField)}"> picklist value</apex:outputPanel> to add below.</span><span class="right"></span></h2>
+        
+        <style>
+            body button, body .x-btn, body .btn, body .btnDisabled, body .btnCancel, body .menuButton .menuButtonButton {
+            color: #333;
+            margin: 1px;
+            padding: 2px 3px;
+            border-width: 1px;
+            border-style: solid;
+            border-color: #B5B5B5 #B5B5B5 #7F7F7F;
+            -moz-border-top-colors: none;
+            -moz-border-right-colors: none;
+            -moz-border-bottom-colors: none;
+            -moz-border-left-colors: none;
+            border-image: none;
+            background: url("https://na16.salesforce.com/img/alohaSkin/btn_sprite.png") repeat-x scroll right top #E8E8E9;
+            font-weight: bold;
+            font-size: 0.9em;
+            border-radius: 3px;
+        }
+        </style>
+        
+        <center>
+        <div class="center_btns">
+            <input type="button" value="Insert Selected" name="" id="theButton4" onclick="return transfervalue1();" class="btn" />
+            <!--<apex:commandlink value="" id="theButton4" style="border:none;" onclick="return transfervalue1();" styleclass="btn"><span>Insert Selected</span></apex:commandlink>-->
+        </div>
+        </center>
+        
+        <apex:commandlink value="Deselect all" id="theButton1" onclick="return Deselect();" rendered="{!NOT(operation=='insert')}" style="position:relative; left:11px;"/>
+        
+        <div class="lookup" id="lookuppanel" >
+        <div class="listRelatedObject lookupBlock">
+                        <div class="bPageBlock secondaryPalette" style="border-radius: 4px; border-top: 3px solid #737E96 !important; border-style: solid!important;">
+                            <div class="pbHeader"></div>
+                            <div class="pbBody">
+        
+         <div  style="display:{!IF((datatype_f=='BOOLEAN' || operation=='insert'),'none','block')}"> 
+            
+            
+            <div class="box" style="background:#ffffff;">
+         
+             <!-- for not booleaen-->        
+            <div class="clear"></div>
+             <!--div class="box " style="background:#ffffff;margin-left:-10px;;width:100%"-->
+             <style>
+                 th.zen-deemphasize:first-child {
+                    border-left-width: 0px;
+                }
+                 th.zen-deemphasize {
+                    border-color: #E0E3E5;
+                    color: #000;
+                    font-size: 0.9em;
+                    font-weight: bold;
+                    padding: 5px 2px 4px 5px;
+                    border-width: 0px 0px 1px 1px;
+                    background: none repeat scroll 0% 0% #F2F3F3;
+                }
+                th.zen-deemphasize {
+                    border: 1px solid #EDEDED;
+                    color: #000;
+                    text-align: left;
+                }
+             </style>
+            <table width="100%" border="0" cellspacing="0" cellpadding="0" class="widget aw">
+                <tr>
+                  <th width="3%" align="left" class="zen-deemphasize" >&nbsp;</th>
+                  <th width="97%" align="left" class="zen-deemphasize"><apex:outputPanel rendered="{!isReferenceField}">{!strQryobjName}</apex:outputPanel><apex:outputPanel rendered="{!NOT(isReferenceField)}">Value</apex:outputPanel></th>
+                </tr>
+                </table>
+                <table width="100%"  border="0" cellspacing="0" cellpadding="0">
+                   <tr>
+                     <apex:variable var="call" value="{!0}" /> 
+                  <apex:repeat value="{!lookupvalue}" var="cc" id="pbtable"   >
+                   <apex:variable var="call" value="{!if(call==1,0,call+1)}"/>
+                  <tr>
+                <td class="odd{!floor(call)}" style="border-bottom:0.1em solid #eeeeee;  text-align:center !important" width="3%" onMouseOver="javascript:trackTableHighlight(event, '#daecfc')" onMouseOut="javascript:highlightTableRow(0)"><input type="checkbox" class="checkbox" name="{!cc}" onclick= "checkone(this)" id="checkedone"/></td>
+                <div id="{!cc}">
+                <td align="left" class="odd{!floor(call)}" style="border-bottom:0.1em solid #eeeeee;" width="97%" onMouseOver="javascript:trackTableHighlight(event, '#daecfc')" onMouseOut="javascript:highlightTableRow(0)"><label style="color:#666666;">{!cc}</label></td>
+                </div>
+              </tr>
+                  </apex:repeat>
+               </tr>  
+            </table>
+            <!--/div-->
+            <br/>
+            <!--<div class="center_btns"><apex:commandlink value="" id="theButton" style="border:none;" onclick="return transfervalue1();" styleclass="btn" target="_parent"><span>Insert Selected</span></apex:commandlink></div>-->
+        </div>
+    </div>
+    </div>
+    <div  style="display:{!IF((datatype_f=='BOOLEAN' || operation=='insert'),'block','none')}">
+       <div class="box " style="background:#ffffff;width:100%">
+          <p>
+            <apex:commandlink target="_parent" value="Deselect all" id="theButton2" rendered="{NOT(operation=='insert')}" onclick="return Deselect_boolean();"/>
+          </p>
+            <div class="clear"></div>
+              <table width="100%" border="0" cellspacing="0" cellpadding="0" class="widget aw">
+                <tr>
+                  <th width="3%" align="left">&nbsp;</th>
+                  <th width="97%" align="left">Value</th>
+                </tr>
+                </table>
+                <table width="100%" cellspacing="0" cellpadding="0" >
+                   <tr >
+                     <apex:variable var="call" value="{!0}" /> 
+                     <apex:repeat value="{!lookupvalue}" var="cc" id="pbtable1" >
+                     <apex:variable var="call" value="{!if(call==1,0,call+1)}"/>
+                     <tr >
+                          <td class="odd{!floor(call)}" style="border-bottom:0.2em solid #eeeeee" width="3%"  id="checkedtwo" onMouseOver="javascript:trackTableHighlight(event, '#daecfc')" onMouseOut="javascript:highlightTableRow(0)"><input type="radio" class="checkbox" value="{!cc}" onclick="javascript: selectOne(this)" name="group1"  /></td>
+                             <div id="{!cc}">
+                                <td align="left" class="odd{!floor(call)}" style="border-bottom:0.2em solid #eeeeee" width="97%" onMouseOver="javascript:trackTableHighlight(event, '#daecfc')" onMouseOut="javascript:highlightTableRow(0)"><label style="color:#666666;">{!cc}</label></td>
+                             </div>
+                     </tr>
+                     </apex:repeat>
+                   </tr>  
+                </table>
+            <br/>
+        </div>
+    </div>
+    </div>
+                                
+                                </div>
+                                </div>
+                
+    <center>            
+            <div class="center_btns">
+                <input type="button" target="_parent" value="Insert Selected" name="" id="theButton3" onclick="return transfervalue1();" class="btn" />
+                <!--<apex:commandlink target="_parent" value="" id="theButton3" style="border:none;" onclick="return transfervalue2(checkone(this));" styleclass="btn"><span>Insert Selected</span></apex:commandlink>-->
+            </div>
+    </center>
+              
+                </div>
+                
+                
+    <!--apex:pageMessages id="msgPanel"/-->
+            <apex:outputPanel id="panel1">
+            
+            <script>
+                // Javascript function to trim.
+                function trim(stringToTrim) 
+                {
+                    return stringToTrim.replace(/^\s+|\s+$/g,"");
+                }
+                 // Javascript function to left trim.
+                function ltrim(stringToTrim) {
+                    return stringToTrim.replace(/^\s+/,"");
+                }
+                 // Javascript function to Right trim.
+                function rtrim(stringToTrim) {
+                    return stringToTrim.replace(/\s+$/,"");
+                }
+        
+            
+                var SelectTempd1='';     
+                function selectOne(obj)  
+                {  
+                    var dataTypes = '{!JSENCODE(datatype_f)}';
+                    if(obj.checked)
+                    {       
+                        SelectTempd1=obj.value; 
+                        if(dataTypes == 'BOOLEAN'){
+                            SelectConId1 = SelectTempd1;
+                        }
+                    }
+                }                            
+                           
+                function transfervalue1() <!--when user click on insert button for not boolean-->
+                {
+                    var func = '{!JSENCODE(operation)}';
+                    if('{!JSENCODE(pagename)}'=='EmailProspectPage')
+                    {                                 
+                        var setname = '{!JSENCODE($CurrentPage.parameters.nameid)}';  
+                      
+                         if(trim(window.parent.opener.document.getElementById('pageid:frm:{!JSENCODE($CurrentPage.parameters.nameid)}').value).length == 0)
+                         {
+                       
+                                if(SelectConId1=='')
+                                {
+                                    window.parent.opener.document.getElementById('pageid:frm:{!JSENCODE($CurrentPage.parameters.nameid)}').value ='';
+                                }
+                                else
+                                {
+                                    window.parent.opener.document.getElementById('pageid:frm:{!JSENCODE($CurrentPage.parameters.nameid)}').value = SelectConId1;
+                                }
+                         }
+                         else
+                         {
+                         // alert('SelectConId1---2-'+SelectConId1);
+                               if(SelectConId1=='')
+                               {
+                            
+                                window.parent.opener.document.getElementById('pageid:frm:{!JSENCODE($CurrentPage.parameters.nameid)}').value =window.parent.opener.document.getElementById('pageid:frm:{!JSENCODE($CurrentPage.parameters.nameid)}').value+'';
+                               }
+                               else
+                               {
+                            
+                                window.parent.opener.document.getElementById('pageid:frm:{!JSENCODE($CurrentPage.parameters.nameid)}').value = window.parent.opener.document.getElementById('pageid:frm:{!JSENCODE($CurrentPage.parameters.nameid)}').value+', '+SelectConId1;
+                               }
+                         }
+                         
+                            window.parent.close();
+                       
+                    }     
+                    else  if('{!JSENCODE(pagename)}'=='riahub360component')
+                    { 
+                                  
+                        var setname = '{!JSENCODE($CurrentPage.parameters.nameid)}'; 
+                                  
+                        var getfldtxtvalue=window.parent.opener.document.getElementById("{!JSENCODE($CurrentPage.parameters.nameid)}").value;
+                        
+                        if(func == 'search')
+                        {
+                            var booleanChk = '{!JSENCODE(datatype_f)}';
+                            if(booleanChk == 'BOOLEAN'){
+                                trim(window.parent.opener.document.getElementById('{!JSENCODE($CurrentPage.parameters.nameid)}').value).length = 0;
+                            }
+                            if(trim(window.parent.opener.document.getElementById('{!JSENCODE($CurrentPage.parameters.nameid)}').value).length == 0)
+                            {
+                                if(SelectConId1=='')
+                                {
+                                    window.parent.opener.document.getElementById("{!JSENCODE($CurrentPage.parameters.nameid)}").value = '';
+                                }
+                                else
+                                {
+                                    window.parent.opener.document.getElementById("{!JSENCODE($CurrentPage.parameters.nameid)}").value = SelectConId1;
+                                }
+                            }
+                            else
+                            {
+                                if(getfldtxtvalue.trim().toLowerCase()=='Enter a Value'.trim().toLowerCase())
+                                {
+                                    if(SelectConId1=='')
+                                    {
+                                        window.parent.opener.document.getElementById("{!JSENCODE($CurrentPage.parameters.nameid)}").value ='';
+                                    }
+                                    else
+                                    {
+                                        window.parent.opener.document.getElementById("{!JSENCODE($CurrentPage.parameters.nameid)}").value =SelectConId1;
+                                    }
+                                }
+                                else
+                                {
+                                    if(SelectConId1=='')
+                                    {
+                                        window.parent.opener.document.getElementById("{!JSENCODE($CurrentPage.parameters.nameid)}").value = window.parent.opener.document.getElementById("{!JSENCODE($CurrentPage.parameters.nameid)}").value+'';
+                                    }
+                                    else
+                                    {
+                                        if(booleanChk == 'BOOLEAN'){
+                                            window.parent.opener.document.getElementById("{!JSENCODE($CurrentPage.parameters.nameid)}").value = SelectConId1;
+                                        }
+                                        else
+                                        window.parent.opener.document.getElementById("{!JSENCODE($CurrentPage.parameters.nameid)}").value =window.parent.opener.document.getElementById("{!JSENCODE($CurrentPage.parameters.nameid)}").value+', '+ SelectConId1;
+                                    }
+                                }
+                            }
+                        }
+                        else if(func == 'insert'){
+                            if(SelectTempd1=='')
+                            {
+                                window.parent.opener.document.getElementById("{!JSENCODE($CurrentPage.parameters.nameid)}").value = '';
+                            }
+                            else
+                            {
+                                window.parent.opener.document.getElementById("{!JSENCODE($CurrentPage.parameters.nameid)}").value = SelectTempd1;
+                            }
+                        }                       
+                        window.parent.close();
+                    }
+                    else
+                    {                   
+                        var setname = '{!JSENCODE($CurrentPage.parameters.nameid)}';  
+                       
+                        if(trim(window.parent.opener.document.getElementById('{!JSENCODE($CurrentPage.parameters.nameid)}').value).length == 0)
+                        {
+                            if(SelectConId1=='')
+                            {
+                                window.parent.opener.document.getElementById("{!JSENCODE($CurrentPage.parameters.nameid)}").value = '';
+                            }
+                            else
+                            {
+                                window.parent.opener.document.getElementById("{!JSENCODE($CurrentPage.parameters.nameid)}").value = SelectConId1;
+                            }
+                        }
+                        else
+                        {
+                            if(SelectConId1=='')
+                            {
+                                window.parent.opener.document.getElementById("{!JSENCODE($CurrentPage.parameters.nameid)}").value = window.parent.opener.document.getElementById("{!JSENCODE($CurrentPage.parameters.nameid)}").value+'';
+                            }
+                            else
+                            {
+                                window.parent.opener.document.getElementById("{!JSENCODE($CurrentPage.parameters.nameid)}").value =window.parent.opener.document.getElementById("{!JSENCODE($CurrentPage.parameters.nameid)}").value+', '+ SelectConId1;
+                            }
+                        }
+                        window.parent.close();
+                    }                   
+                    return false;
+                }
+                    
+                function transfervalue2(na) <!--when user click on insert button for boolean-->
+                {      
+                    var func = '{!JSENCODE(operation)}';
+                    if('{!JSENCODE(pagename)}'=='EmailProspectPage')
+                    {      
+                        var setname = "{!JSENCODE($CurrentPage.parameters.nameid)}"; 
+                        if(SelectTempd1!='')
+                        {
+                            window.parent.opener.document.getElementById('pageid:frm:{!JSENCODE($CurrentPage.parameters.nameid)}').value =SelectTempd1;
+                        }
+                        else if(SelectConId1!='')
+                        {
+                            window.parent.opener.document.getElementById('pageid:frm:{!JSENCODE($CurrentPage.parameters.nameid)}').value =SelectConId1;
+                        }
+                        else if(SelectTempd1=="")
+                        {
+                            window.parent.opener.document.getElementById('pageid:frm:{!JSENCODE($CurrentPage.parameters.nameid)}').value = '';
+                        }
+
+                        window.parent.close();                   
+                    }                
+                    else
+                    {
+                        var booleanChk = '{!JSENCODE(datatype_f)}';
+                        var setname = '{!JSENCODE($CurrentPage.parameters.nameid)}'; 
+                        var getfldtxtvalue=window.parent.opener.document.getElementById("{!JSENCODE($CurrentPage.parameters.nameid)}").value;
+                        
+                        if(func == 'search')
+                        {
+                            if(trim(window.parent.opener.document.getElementById('{!JSENCODE($CurrentPage.parameters.nameid)}').value).length == 0)
+                            {
+                                if(SelectConId1=='')
+                                {
+                                    window.parent.opener.document.getElementById("{!JSENCODE($CurrentPage.parameters.nameid)}").value = '';
+                                }
+                                else
+                                {
+                                    window.parent.opener.document.getElementById("{!JSENCODE($CurrentPage.parameters.nameid)}").value = SelectConId1;
+                                }
+                            }
+                            else
+                            {
+                                if(getfldtxtvalue.trim().toLowerCase()=='Enter a Value'.trim().toLowerCase())
+                                {
+                                    if(SelectConId1=='')
+                                    {
+                                        window.parent.opener.document.getElementById("{!JSENCODE($CurrentPage.parameters.nameid)}").value ='';
+                                    }
+                                    else
+                                    {
+                                        window.parent.opener.document.getElementById("{!JSENCODE($CurrentPage.parameters.nameid)}").value =SelectConId1;
+                                    }
+                                }
+                                else
+                                {
+                                    if(SelectConId1=='')
+                                    {
+                                        window.parent.opener.document.getElementById("{!JSENCODE($CurrentPage.parameters.nameid)}").value = window.parent.opener.document.getElementById("{!JSENCODE($CurrentPage.parameters.nameid)}").value+'';
+                                    }
+                                    else
+                                    {
+                                        if(booleanChk == 'BOOLEAN'){
+                                            window.parent.opener.document.getElementById("{!JSENCODE($CurrentPage.parameters.nameid)}").value = SelectConId1;
+                                        }
+                                        else
+                                            window.parent.opener.document.getElementById("{!JSENCODE($CurrentPage.parameters.nameid)}").value =window.parent.opener.document.getElementById("{!JSENCODE($CurrentPage.parameters.nameid)}").value+', '+ SelectConId1;
+                                    }
+                                }
+                            }
+                        }
+                        else if(func == 'insert'){
+                            if(SelectTempd1=='')
+                            {
+                                window.parent.opener.document.getElementById("{!JSENCODE($CurrentPage.parameters.nameid)}").value = '';
+                            }
+                            else
+                            {
+                                window.parent.opener.document.getElementById("{!JSENCODE($CurrentPage.parameters.nameid)}").value = SelectTempd1;
+                            }
+                        }
+                        window.parent.close();
+                    }
+                    return false;
+                }
+                var SelectConId1='';   
+                function checkone(cb)
+                { 
+                    var countchbox=0;
+                    if(cb.checked) //when user select the check box
+                    { 
+            
+                        if((SelectConId1.length)<=0)
+                        {                       
+                            SelectConId1=cb.name+', ';                            
+                        }
+                        else
+                        {                            
+                            SelectConId1=SelectConId1+', '+cb.name+', ';
+                        }
+                    }                    
+                    else if((cb.checked)!=true) //when user deselect the check box
+                    {
+                        if((SelectConId1.length)<=1)
+                        {
+                            SelectConId1=cb.name+', ';
+                        }
+                        else
+                        {
+                            var allids=SelectConId1.split(', ');
+                            var idarray='';
+                            for(var i=0;i<allids.length;i++)
+                            {
+                                if(allids[i]!=cb.name  && allids[i]!='')
+                                {
+                                    idarray=idarray+allids[i]+', ';
+                                }
+
+                            }
+                            SelectConId1=idarray;
+
+                        }
+                    }
+                    SelectConId1=SelectConId1.substring(0, SelectConId1.length-2);
+                    
+                }
+                    
+                function Deselect() //when user click on deselect link for picklist and recordtype datetype
+                {   
+                   
+                    var inputs = document.getElementsByTagName("input");                    
+                    for(var t = 0;t < inputs.length;t++)
+                    {
+                        if(inputs[t].type == "checkbox")
+                            inputs[t].checked = false;
+                    }  
+                    SelectConId1=''; 
+                    return false;                       
+                }
+                
+                function Deselect_boolean() //when user click on deselect link for boolean datatype
+                {
+                   var inputs = document.getElementsByTagName("input");
+                    for(var t = 0;t < inputs.length;t++)
+                    {
+                        if(inputs[t].type == "radio")
+                            inputs[t].checked = false;
+                    }  
+                    SelectTempd1=''; 
+                    return false;                   
+                }
+                    
+                    
+            </script>
+              <div id="norecord" style="display:none;">
+                 No Record Found
+                </div>
+            
+            </apex:outputPanel>
+             </body>
+    </html>
+      </apex:outputPanel>  
+        </apex:form>           
+    </apex:page>

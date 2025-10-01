@@ -1,0 +1,82 @@
+<!-- /****************************************************************************************************
+  
+    ** Module Name : Connections 2.0 - Custom Notification
+    ** Description : Used to handle notification popup to home page related funtionalities of Connections 2.0 Custom Notification.
+    ** Throws : NA
+    ** Calls : NA
+    ** Organization : Navatar Group
+    ** Product Name & Version : Connections 2.0
+    ** Revision History:-
+    ** Version    Date(YYYY-MM-DD)    Author         Description of Action
+    ** 1.0        2022-08-02          Priyank        fetch and update event's records
+    ** 2.0        2022-08-30          Priyank        merge with UI 2
+    ** 3.0        2022-09-26          Priyank        update as per new CR
+    ** 4.0        2022-11-14          Adil           update phase 2 UI
+
+****************************************************************************************************/ -->
+<template>
+    
+        <header class="slds-modal__header">
+            <ul class="slds-grid slds-wrap" style="align-items: center;display: flex;justify-content: center;">
+                <li>
+                    <h2 id="modal-heading-01" class="slds-text-heading_medium slds-hyphenate fit-width-content header_font"
+                        title="Notifications" style="margin: auto;">
+                        Notifications</h2>
+                </li>
+                <li style="position: absolute;right: 26px;">
+                    <lightning-icon icon-name="utility:refresh" size="x-small" alternative-text="Refresh!"
+                        title="Refresh" class="slds-text-link_reset" onclick={refreshNotification}>
+                    </lightning-icon>
+                </li>
+            </ul>
+        </header>
+        <!-- Modal/Popup Box body starts here -->
+        <div class="slds-modal__content hght" id="modal-content-id-1">
+            <div  class="spinnerClass">
+                <template if:true={isLoading}>
+                    <lightning-spinner 
+                    alternative-text="Loading" size="medium" variant="brand" class="spinnerCSS"></lightning-spinner>
+                </template>
+            <template for:each={notificationRecords} for:item="data" for:index="index">                
+            <lightning-layout vertical-align="center"
+                class={data.rowClass} key={data.id} data-index={index}>
+                <lightning-layout-item size="1" class="slds-text-align_center">
+                    <lightning-icon if:true={nnIsDeleteable} icon-name="utility:clear" class="cur_point" size="x-small"
+                        onclick={dismissNotification} title="Dismiss Notification" data-id={data.id}></lightning-icon>
+                </lightning-layout-item>
+                <lightning-layout-item padding="around-small" size="7">
+                    <p class="slds-truncate for_desk"><b><a onclick={viewNotificationClick} target="_blank" class="noti" title={data.subject} data-record-id={data.recordId}  data-id={data.id} data-index={index} data-type={data.recObjType}>{data.subject}</a></b>
+                    </p>
+                    <!--00038097 added to disable click for Clip info Notification-->
+                    <p if:false={data.isClipInfoRec} class="slds-truncate for_mob mob_font_12"><b><a onclick={viewNotificationClickMob} data-id={data.id} data-index={index} class="noti" title={data.Subject} data-record-id={data.recordId} data-type={data.recObjType}>{data.subject}</a></b></p>
+                    <p if:true={data.isClipInfoRec} class="slds-truncate for_mob mob_font_12"><b>{data.subject}</b></p>
+                    <p class="slds-line-clamp_x-small mob_font_12"
+                        title={data.description}>
+                        {data.description}</p>
+                </lightning-layout-item>
+                <lightning-layout-item padding="around-small" size="4" class="slds-text-align_right">
+                    <lightning-button variant="brand" label="Add Note" title="Add Note" class="customBrandButton for_desk" value={data.id} data-index={index} onclick={clickAddNote} if:true={data.isAddNote}></lightning-button>
+
+                    <lightning-button variant="brand" label="Add Note" title="Add Note" class="customBrandButton customButtonWidth for_mob" value={data.id} data-index={index} onclick={clickAddNoteMob} if:true={data.isAddNote}></lightning-button>
+
+                    <lightning-button variant="brand" label="Review Tag" title="Review Tag" class="customBrandButton customButtonWidthReviewdesk  for_desk" value={data.id} data-index={index} onclick={clickAddTag} if:true={data.isAddTag}></lightning-button>
+
+                   <!-- commenting as part of 00035220 bug--> 
+                   <!-- // Bug 46156 fixed by Sudhanshu on 17-06-2024 -->
+                    <lightning-button variant="brand" label="Review Tag" title="Review Tag" class="customBrandButton customButtonWidth for_mob" value={data.id} data-index={index} onclick={clickAddTagMob} if:true={data.isAddTag}></lightning-button>
+                </lightning-layout-item>
+            </lightning-layout>
+        </template>
+       
+        <template if:false={isShowModal}>
+            <lightning-layout>
+                <lightning-layout-item >
+                    <div style="margin: 18px;">
+                        <b>You don't have any notifications right now.</b>
+                    </div>
+                </lightning-layout-item>
+            </lightning-layout>
+        </template>
+    </div>
+    </div>
+</template>

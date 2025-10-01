@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Amount_of_Equity_Invested_FollowOn2__c</fullName>
+    <formula>Equity_Invested_FollowOn2__c  +  Total_Mgmt_Equity_Invested_FollowOn2__c  +  Total_Exe_Fund_Co_investment_FollowOn2__c  +  Total_Other_Equity_FollowOn2__c  +  Total_LP_Co_investments_FollowOn2__c</formula>
+    <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+    <label>Amount of Equity Invested - FollowOn2</label>
+    <precision>18</precision>
+    <required>false</required>
+    <scale>1</scale>
+    <type>Currency</type>
+</CustomField>

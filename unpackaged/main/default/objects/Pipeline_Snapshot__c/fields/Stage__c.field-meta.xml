@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Stage__c</fullName>
+    <label>Stage</label>
+    <required>false</required>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Picklist</type>
+    <valueSet>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>Idea Generation</fullName>
+                <default>false</default>
+                <label>Idea Generation</label>
+            </value>
+            <value>
+                <fullName>New/Initial Interest</fullName>
+                <default>false</default>
+                <label>New/Initial Interest</label>
+            </value>
+            <value>
+                <fullName>Significant Interest</fullName>
+                <default>false</default>
+                <label>Significant Interest</label>
+            </value>
+            <value>
+                <fullName>First Round Bid</fullName>
+                <default>false</default>
+                <label>First Round Bid</label>
+            </value>
+            <value>
+                <fullName>Second Round Bid</fullName>
+                <default>false</default>
+                <label>Second Round Bid</label>
+            </value>
+            <value>
+                <fullName>Serious Pursuit</fullName>
+                <default>false</default>
+                <label>Serious Pursuit</label>
+            </value>
+            <value>
+                <fullName>LOI</fullName>
+                <default>false</default>
+                <label>LOI</label>
+            </value>
+            <value>
+                <fullName>Moving toward Close</fullName>
+                <default>false</default>
+                <label>Moving toward Close</label>
+            </value>
+            <value>
+                <fullName>Closed</fullName>
+                <default>false</default>
+                <label>Closed</label>
+            </value>
+            <value>
+                <fullName>Declined/Dead</fullName>
+                <default>false</default>
+                <label>Declined/Dead</label>
+            </value>
+            <value>
+                <fullName>On Hold</fullName>
+                <default>false</default>
+                <label>On Hold</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
+</CustomField>

@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomFieldTranslation xmlns="http://soap.sforce.com/2006/04/metadata">
+        <label><!-- Correspondence Received --></label>
+        <name>Correspondence_Received__c</name>
+        <picklistValues>
+            <masterLabel>Advisory Board Meeting</masterLabel>
+            <translation><!-- Advisory Board Meeting --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Annual Meeting</masterLabel>
+            <translation><!-- Annual Meeting --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Capital Account Statements &amp; Financials</masterLabel>
+            <translation><!-- Capital Account Statements &amp; Financials --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Capital Calls</masterLabel>
+            <translation><!-- Capital Calls --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Distribution Notices</masterLabel>
+            <translation><!-- Distribution Notices --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Legal &amp; Amendments</masterLabel>
+            <translation><!-- Legal &amp; Amendments --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Legal Docs</masterLabel>
+            <translation><!-- Legal Docs --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Meeting Notifications</masterLabel>
+            <translation><!-- Meeting Notifications --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Press &amp; Announcements</masterLabel>
+            <translation><!-- Press &amp; Announcements --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Reports &amp; News</masterLabel>
+            <translation><!-- Reports &amp; News --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Tax Information</masterLabel>
+            <translation><!-- Tax Information --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>VCOC Certificate</masterLabel>
+            <translation><!-- VCOC Certificate --></translation>
+        </picklistValues>
+    </CustomFieldTranslation>

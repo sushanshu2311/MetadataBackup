@@ -1,0 +1,49 @@
+<!--
+** Module Name : Acuity 2.0 - Acuity
+** Description : Displays the Themes Description and Theme Teams details.
+** Throws : NA
+** Calls : NA
+** Organization : Navatar Group
+** Product Name & Version : Acuity 2.0
+** Revision History:-
+** Version    Date(YYYY-MM-DD)    Author         Description of Action
+** 1.0        2022-11-14          Anshika Ahuja  Acuity Phase 2
+** Added by Tejaswini- Naming Convention -->
+<template>
+    <div class="slds-p-right_small">
+        <lightning-layout class="slds-box slds-theme_shade">
+            <lightning-layout-item size="6">
+                    <ul class="slds-list_horizontal slds-has-block-links_space" style="align-items:center;">
+                        <li>
+                            <span class="slds-page-header__title slds-text-align_left slds-m-left_xx-small"
+                        title="Description">Description</span>
+                        </li>
+                        <li>
+                            <!--Modified by Hema - 00039512 Merged by Manonit-->
+                            <lightning-helptext content="Themes are logical groupings of related information, which can be dynamically created for any purpose or based on any criteria. An example would be an industry/sub-industry or a BD initiative, of interest to some deal professionals, where they may want to collaborate and manage all activity for relevant companies, bankers, deals and interactions. A theme has flexibility to add or remove companies or anything else as you see fit. Users can be added to a theme team and will be notified when a new interaction (email, meeting, call, etc.) is tagged to the theme. Additionally, tasks may be tagged to a theme so team members can help fill in any gaps and collaborate on the theme information." class="help_txt"></lightning-helptext>
+                        </li>
+                    </ul>
+            </lightning-layout-item>
+        </lightning-layout>
+        <div
+            class="slds-box_small slds-theme_shade slds-p-around_small slds-box slds-theme_shade description_height">
+            <ul>
+                <li class="desc_li_theme truncate_li multiline_truncate" >
+                    <template if:true={themeDescription} ><span title={themeDescription}>{themeDescription}</span> </template> <!--Modified by Hema 00039897 Merged by Manonit-->
+                    <template if:false={themeDescription}>{noDescriptinMsg}</template>  
+                </li>
+                <template if:true={expand}><a href="javascript:void(0)" onclick={showmoretext}>show more</a></template>
+                <template if:true={showless}><a href="javascript:void(0)" id="scrollToTopBtn" onclick={showlesstext}>show less</a></template>
+                <li class="slds-m-top_x-small p-top">
+                    <p class="slds-item" style="font-weight:500">Team</p>
+                    <ul class="slds-list_horizontal slds-has-inline-block-links_space">
+                        <li class="slds-item break_two_line " title={themeTeamMembers}>
+                            <template if:false={themeTeamMembers}>{noTeamMemberMsg}</template>
+                            <template if:true={themeTeamMembers}>{themeTeamMembers}</template>
+                        </li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+    </div> 
+</template>

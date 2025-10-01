@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Thematic__c</fullName>
+    <label>Thematic</label>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <type>Picklist</type>
+    <valueSet>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>Health &amp; Wellness</fullName>
+                <default>false</default>
+                <label>Health &amp; Wellness</label>
+            </value>
+            <value>
+                <fullName>Orphaned &amp; Underleveraged Brands</fullName>
+                <default>false</default>
+                <label>Orphaned &amp; Underleveraged Brands</label>
+            </value>
+            <value>
+                <fullName>Leisure Time as a Priority</fullName>
+                <default>false</default>
+                <label>Leisure Time as a Priority</label>
+            </value>
+            <value>
+                <fullName>Ageing Population</fullName>
+                <default>false</default>
+                <label>Ageing Population</label>
+            </value>
+            <value>
+                <fullName>Underleveraged Differentiated Media Content</fullName>
+                <default>false</default>
+                <label>Underleveraged Differentiated Media Content</label>
+            </value>
+            <value>
+                <fullName>Advertising Migration from Mass Media to Online &amp; Alternative Channels</fullName>
+                <default>false</default>
+                <label>Advertising Migration from Mass Media to Online &amp; Alternative Channels</label>
+            </value>
+            <value>
+                <fullName>Convergence of Communications &amp; Media</fullName>
+                <default>false</default>
+                <label>Convergence of Communications &amp; Media</label>
+            </value>
+            <value>
+                <fullName>Environmental Preservation</fullName>
+                <default>false</default>
+                <label>Environmental Preservation</label>
+            </value>
+            <value>
+                <fullName>Business Process Outsourcing/Support</fullName>
+                <default>false</default>
+                <label>Business Process Outsourcing/Support</label>
+            </value>
+            <value>
+                <fullName>Audit/Regulatory Oversight</fullName>
+                <default>false</default>
+                <label>Audit/Regulatory Oversight</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
+</CustomField>

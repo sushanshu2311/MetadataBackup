@@ -1,0 +1,70 @@
+<template>
+    
+    <div class="main-Container clip-section">
+
+        <template if:true={isLoading}>
+            <lightning-spinner alternative-text="Loading" size="large" variant="brand"></lightning-spinner>
+        </template>
+        
+        <lightning-layout>
+            <lightning-layout-item size="12">  
+                <lightning-textarea name="input1" class="slds-m-top_x-small slds-m-horizontal_medium heightonpop removeGrayPattern" value={commentStr} onpaste={handleDataPaste}  
+                    ondrop ={handleDataDrop} ondragover={allowDrop} onchange={handleChange} autofocus></lightning-textarea>
+            </lightning-layout-item>
+        </lightning-layout>
+        
+        <lightning-layout>
+            <lightning-layout-item size="12">
+                <lightning-helptext content="A clip is a useful tool that allows you to take snippets of information that you find relevant, when researching the system for a particular initiative or a meeting, and easily paste it on a clipboard. You can highlight important pieces of information from any company, deal, meeting, call, or any other record and drag and drop these into the clip notes. You can also add your own anecdotes, questions, or thoughts to round out the clip. Other information from outside Navatar can also be pasted here. As you tag each person on your team, they will be notified and can add comments and their anecdotes and intelligence to the notes. You can tag companies, people, deals and other records so that the clip can be easily discoverable by others." class="info helptext_css"></lightning-helptext>
+                </lightning-layout-item>
+        </lightning-layout>
+        
+        <lightning-layout-item size="12">
+            
+               
+            <lightning-layout > 
+                <lightning-layout-item size="1" class="slds-m-top_xx-small ">
+                    <lightning-icon icon-name="standard:quotes"
+                class="slds-m-top_xx-small topic2 cur_point pillClass  slds-m-left_medium"
+                variant="brand" size="small" onclick={handleTag} alternative-text="Tag" title="Tag">
+            </lightning-icon>
+                </lightning-layout-item>
+                <lightning-layout-item size="11">
+                    <div style="position:relative" class="slds-p-horizontal_medium">    
+                        <div if:true={isTag}>
+                            <div class="slds-p-left_x-small slds-m-top_xx-small fillgap_css">
+                                <c-navatar-Combobox-Polymorphic-Lwc obj-name={objectInfo} onlookupselected={handleSelectLookup} search-placeholder="Search"></c-navatar-Combobox-Polymorphic-Lwc>
+                            </div>            
+                        </div>
+                    </div>
+                </lightning-layout-item>
+            </lightning-layout>
+            
+        </lightning-layout-item>
+
+        <div class="slds-grid slds-m-top_xx-small">
+            <div class="slds-size_12-of-12 slds-p-horizontal_medium">
+                <ul>
+                    <template for:each={allTaggedRecords} for:item="obj">
+                        <lightning-pill label={obj.Name} key={obj.Id} name={obj.Id} data-id={obj.Name} class="pillClass slds-m-right_xx-small" onremove={removeRecord}>
+                            <lightning-icon icon-name={obj.iconName} alternative-text={obj.objectName} ></lightning-icon>
+                        </lightning-pill>
+                    </template>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+
+    <lightning-layout-item size="12">
+        
+        <div class="slds-m-top_small" style="text-align: right;">
+            
+          
+            <lightning-button label="Clear" title="Clear" onclick={handleClearNotes}></lightning-button>
+            <lightning-button variant="brand" label="Save" onclick={openClipPop} title="Save" class="slds-p-horizontal_small"></lightning-button>
+        </div>
+    </lightning-layout-item>
+    
+
+</template>

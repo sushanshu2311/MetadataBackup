@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomFieldTranslation xmlns="http://soap.sforce.com/2006/04/metadata">
+        <label><!-- Reason to Park --></label>
+        <name>Reason_to_Park__c</name>
+        <picklistValues>
+            <masterLabel>Broken Deal</masterLabel>
+            <translation><!-- Broken Deal --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Financial Distress</masterLabel>
+            <translation><!-- Financial Distress --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Not Profitable Yet</masterLabel>
+            <translation><!-- Not Profitable Yet --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Prove Business Model</masterLabel>
+            <translation><!-- Prove Business Model --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Short-Term Issues</masterLabel>
+            <translation><!-- Short-Term Issues --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Waiting to Scale</masterLabel>
+            <translation><!-- Waiting to Scale --></translation>
+        </picklistValues>
+    </CustomFieldTranslation>

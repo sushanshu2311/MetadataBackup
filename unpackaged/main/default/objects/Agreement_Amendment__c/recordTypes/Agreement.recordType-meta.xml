@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<RecordType xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Agreement</fullName>
+    <active>true</active>
+    <description>An Agreement is a legal contract indicating commitment from a Limited Partner or an Institution towards a Partnership.</description>
+    <label>Agreement</label>
+</RecordType>

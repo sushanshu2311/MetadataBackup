@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Check_Portfolio_Company_Change</fullName>
+    <active>false</active>
+    <description>To restrict the edit of Portfolio Company in a commitment record</description>
+    <errorConditionFormula>ISCHANGED( Portfolio_Company__c )</errorConditionFormula>
+    <errorDisplayField>Portfolio_Company__c</errorDisplayField>
+    <errorMessage>Cannot change this value once set.</errorMessage>
+</ValidationRule>

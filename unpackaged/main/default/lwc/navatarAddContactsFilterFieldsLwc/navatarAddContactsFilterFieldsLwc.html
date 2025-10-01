@@ -1,0 +1,56 @@
+<!--
+** Module Name : Add To Fund
+** Description : Displays the filter in the Select Contacts page
+** Throws : NA
+** Calls : NA
+** Organization : Navatar Group
+** Product Name & Version : Acuity 3.0
+** Revision History:-
+** Version    Date(YYYY-MM-DD)    Author      Description of Action
+** 1.0        2024-03-08          Lakshya     Acuity Phase 3
+-->
+<template>
+    <div class="slds-box slds-grid slds-wrap slds-m-bottom_medium cls_myTableContainer">
+        <div style="margin: 0px 0 0 4%;">
+        </div>
+        <div class="slds-p-left_none slds-form-element__label" style="width: 30%;">
+            <span class="marginLeftMinus">Field</span>
+        </div>
+        <div class="slds-p-left_xxx-small slds-form-element__label" style="width: 30%;">
+            Operator
+        </div>
+        <div class="slds-p-left_x-small slds-form-element__label" style="width: 31%;">
+            Value
+        </div>
+        <div class="slds-col slds-size_12-of-12" style="width: 100%;display: flex;justify-content: space-around;margin: auto;position:relative;">
+            <div style="width:96%;">
+                <template if:true={filterList}>
+                    <template for:each={filterList} for:item="filter">
+                        <div key={filter.index}><!--change for bug #00041444 fixes by salauddin sheikh-->
+                            <c-navatar-add-contacts-expression-builder-lwc index={filter.index} field-struct={fieldStruct} comp-data={filter.filterData}
+                                row-size={rowSize} ondeleterows={handleRowDeletion} from-search-contact='true'
+                                is-filter-logic-enabled={enableFilterLogic}>
+                            </c-navatar-add-contacts-expression-builder-lwc>
+                        </div>
+                    </template>
+                </template>
+            </div>
+            <div class="plusiconcss">
+                <!--Bug Fix- 00042807 By Harshwardhan Singh Karki, hide (+ icon) to remove multiple Filters options in Select Contacts Page Screen-->
+                <template if:true ={showAddRow}>
+                <template if:true={enableAddRow}>
+                    <!-- <a onclick={handleRowInsertion} title = "Add Row" aria-disabled={disableMoreRows}>Add Row </a>-->
+                    <!--Added changes for bug #00041598 fixes by salauddin sheikh-->
+                    <div style="width:auto;align-self: center;position:relative;" class="headers">
+                        <lightning-button-icon icon-name="utility:add" alternative-text="Add Row" title="Add Row" class="back add_pos"
+                            size="medium" onclick={handleRowInsertion} disabled={disableMoreRows} variant="bare">
+                        </lightning-button-icon>
+                    </div>
+                </template>
+                </template>
+            </div>
+        </div>
+    </div>
+    <lightning-formatted-text style="color: red;" value={filterErrMsg}>
+    </lightning-formatted-text>
+</template>

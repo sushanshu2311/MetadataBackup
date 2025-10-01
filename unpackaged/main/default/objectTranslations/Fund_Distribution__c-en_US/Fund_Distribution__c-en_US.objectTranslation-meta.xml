@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObjectTranslation xmlns="http://soap.sforce.com/2006/04/metadata">
+    <caseValues>
+        <plural>false</plural>
+        <value>Fund Distribution</value>
+    </caseValues>
+    <caseValues>
+        <plural>true</plural>
+        <value>Fund Distributions</value>
+    </caseValues>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <layouts>
+        <layout>Fund Distribution Layout</layout>
+        <sections>
+            <label><!-- Custom Links --></label>
+            <section>Custom Links</section>
+        </sections>
+        <sections>
+            <label><!-- Fund Distribution Information --></label>
+            <section>Fund Distribution Information</section>
+        </sections>
+        <sections>
+            <label><!-- Please do not remove this section. --></label>
+            <section>Please do not remove this section.</section>
+        </sections>
+    </layouts>
+    <startsWith>Consonant</startsWith>
+    <validationRules>
+        <errorMessage><!-- Value once set cannot be changed. --></errorMessage>
+        <name>FundNameChange</name>
+    </validationRules>
+    <webLinks>
+        <label><!-- Send_Distribution_Notices --></label>
+        <name>Send_Distribution_Notices</name>
+    </webLinks>
+</CustomObjectTranslation>

@@ -1,0 +1,14 @@
+.THIS .slds-backdrop {
+    background: 'rgba(43, 40, 38, 0) !important';
+    visibility: 'hidden !important';
+}
+
+.THIS .slds-backdrop {
+    background: 'rgba(43, 40, 38, 0) !important';
+    visibility: 'hidden !important';
+}
+
+.THIS .slds-modal .slds-fade-in-open{
+    display: 'none !important';
+    visibility: 'hidden !important';
+}

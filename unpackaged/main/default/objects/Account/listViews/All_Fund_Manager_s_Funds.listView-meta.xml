@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ListView xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>All_Fund_Manager_s_Funds</fullName>
+    <columns>ACCOUNT.NAME</columns>
+    <columns>ACCOUNT.RECORDTYPE</columns>
+    <columns>PARENT_NAME</columns>
+    <columns>Status__c</columns>
+    <columns>Fund_Strategy__c</columns>
+    <filterScope>Everything</filterScope>
+    <filters>
+        <field>ACCOUNT.RECORDTYPE</field>
+        <operation>equals</operation>
+        <value>Account.Fund_Manager_s_Fund</value>
+    </filters>
+    <label>All Fund Manager&#39;s Funds</label>
+</ListView>

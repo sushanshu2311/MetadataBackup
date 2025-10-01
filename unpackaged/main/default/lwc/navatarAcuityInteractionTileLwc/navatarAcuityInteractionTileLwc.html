@@ -1,0 +1,76 @@
+<!--
+** Module Name : Acuity 1.0 - Acuity
+** Description : Displays the single tile of Interactions section of Acuity 1.0 Acuity.
+** Throws : NA
+** Calls : NA
+** Organization : Navatar Group
+** Product Name & Version : Acuity 1.0
+** Revision History:-
+** Version    Date(YYYY-MM-DD)    Author         Description of Action
+** 1.0        2022-09-07          Lakshya        Acuity Phase 1
+** 2.0        2022-12-04          Lakshya        Acuity Phase 2
+-->
+<template>
+    <div class="cur_point_div main-Container">
+        <lightning-card>
+            <div class="col-grid">
+                <div class="slds-p-right_xx-small">
+                    <lightning-layout vertical-align="stretch">
+                        <lightning-layout-item>
+                            <div class="slds-p-right_xx-small">
+                                <template if:true={actDate}>
+                                    <lightning-badge label={actDate}
+                                                     class="dat_time_badge">
+                                    </lightning-badge>
+                                </template>
+                            </div>
+                        </lightning-layout-item>
+                        <lightning-layout-item>
+                            <div class="icon_div cur_def">
+                                <lightning-icon icon-name={actIconName}
+                                                size="xx-small"
+                                                alternative-text={actType}
+                                                title={actType}>
+                                </lightning-icon>
+                            </div>
+                        </lightning-layout-item>
+                    </lightning-layout>
+                </div>
+                <template if:true={displayEditButton}>
+                    <div>
+                        <lightning-layout>
+                            <lightning-layout-item>
+                                <template if:true={buttonTitle}>
+                                    <lightning-button variant={buttonVariant}
+                                                      label={buttonTitle}
+                                                      title={buttonTitle}
+                                                      icon-name={buttonIconName}
+                                                      onclick={handleNoteClick}
+                                                      class="cls_butonSize1">
+                                    </lightning-button>
+                                </template>
+                            </lightning-layout-item>
+                        </lightning-layout>                            
+                    </div>                         
+                </template>
+            </div>
+            <div class="slds-text-align_left slds-m-top_x-small interesttextcss"
+                 title={actSubject}>
+                <a href="javascript:void(0);"
+                   class="interaction_sub subject_text"
+                   onclick={meetingCallEmailViewpopup}>
+                    {actSubject}
+                </a>
+            </div>
+            <div class="slds-text-title slds-m-top_x-small text_detailCard slds-m-bottom_small text_detailCard des-css"
+                 title={actDetail}>
+                {actDetail}
+            </div>
+        </lightning-card>
+    </div>
+    <c-navatar-all-interactions-view-modal-lwc onchildmethod={handleNoteClick}><!--Modified by Anshika Ahuja W.R.To Naming Convention-->
+    </c-navatar-all-interactions-view-modal-lwc>
+    <template if:true={isShowNote}>
+        <c-navatar-notes-modal-lwc task-type={taskType} redirect-id = {recordId} record-id={actId} object-name={activityType} is-redirect-to-record={isRedirectToRecord} onclosemodal={handleCloseModal} oncancelchanges={noteModalClosed}></c-navatar-notes-modal-lwc><!--Modified by Anshika Ahuja W.R.To Naming Convention-->
+    </template>
+</template>

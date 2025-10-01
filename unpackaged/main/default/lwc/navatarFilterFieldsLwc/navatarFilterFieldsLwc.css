@@ -1,0 +1,8 @@
+a[aria-disabled="true"] {
+    display: inline-block; /* For IE11/ MS Edge bug */
+    pointer-events: none;
+    text-decoration: none;
+    opacity: 0.6;
+  }
+  
+  .marginLeftMinus {margin-left: -9px;}

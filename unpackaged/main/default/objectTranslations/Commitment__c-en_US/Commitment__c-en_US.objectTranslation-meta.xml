@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObjectTranslation xmlns="http://soap.sforce.com/2006/04/metadata">
+    <caseValues>
+        <plural>false</plural>
+        <value>Commitment</value>
+    </caseValues>
+    <caseValues>
+        <plural>true</plural>
+        <value>Commitments</value>
+    </caseValues>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <layouts>
+        <layout>Commitment Layout</layout>
+        <sections>
+            <label><!-- Capital Calls &amp; Distributions Information --></label>
+            <section>Capital Calls &amp; Distributions Information</section>
+        </sections>
+        <sections>
+            <label><!-- Co-investment Details --></label>
+            <section>Co-investment Details</section>
+        </sections>
+        <sections>
+            <label><!-- Commitment Information --></label>
+            <section>Commitment Information</section>
+        </sections>
+        <sections>
+            <label><!-- Custom Links --></label>
+            <section>Custom Links</section>
+        </sections>
+        <sections>
+            <label><!-- Fees --></label>
+            <section>Fees</section>
+        </sections>
+        <sections>
+            <label><!-- Legal Confirmations - Side Letter --></label>
+            <section>Legal Confirmations - Side Letter</section>
+        </sections>
+        <sections>
+            <label><!-- Legal Confirmations - Subscription Doc --></label>
+            <section>Legal Confirmations - Subscription Doc</section>
+        </sections>
+        <sections>
+            <label><!-- Please do not remove this section. --></label>
+            <section>Please do not remove this section.</section>
+        </sections>
+        <sections>
+            <label><!-- System Information --></label>
+            <section>System Information</section>
+        </sections>
+        <sections>
+            <label><!-- Verifications --></label>
+            <section>Verifications</section>
+        </sections>
+        <sections>
+            <label><!-- Workspace --></label>
+            <section>Workspace</section>
+        </sections>
+    </layouts>
+    <startsWith>Consonant</startsWith>
+    <validationRules>
+        <errorMessage><!-- The commitment amount cannot be edited because a transfer has been made from this commitment. Please first delete the transfer made from this commitment and then edit the commitment amount. --></errorMessage>
+        <name>Check_Allow_Change</name>
+    </validationRules>
+    <validationRules>
+        <errorMessage><!-- The commitment amount cannot be edited because it was created as a result of a transfer from a commitment. Please delete the transfer that created this commitment, which would delete the commitment too; then create a new transfer with the correct amount. --></errorMessage>
+        <name>Check_Allow_Changes_Child</name>
+    </validationRules>
+    <validationRules>
+        <errorMessage><!-- Commitment Amount cannot be less than zero. --></errorMessage>
+        <name>Check_Amount</name>
+    </validationRules>
+    <validationRules>
+        <errorMessage><!-- Please select a Limited Partner. --></errorMessage>
+        <name>Check_LP_is_Inst_and_Part_fund_Coint</name>
+    </validationRules>
+    <validationRules>
+        <errorMessage><!-- Cannot change this value once set. --></errorMessage>
+        <name>Check_Limited_Partner_Edit</name>
+    </validationRules>
+    <validationRules>
+        <errorMessage><!-- Cannot change this value once set. --></errorMessage>
+        <name>Check_Partnership_Change</name>
+    </validationRules>
+    <validationRules>
+        <errorMessage><!-- Cannot change this value once set. --></errorMessage>
+        <name>Check_Portfolio_Company_Change</name>
+    </validationRules>
+    <validationRules>
+        <errorMessage><!-- Please select a Portfolio Company. --></errorMessage>
+        <name>Check_Portfolio_Company_blank</name>
+    </validationRules>
+    <validationRules>
+        <errorMessage><!-- You cannot link a &quot;Portfolio Company&quot; to a Fund Commitment. In order to create a &quot;Co-investment Commitment&quot;, please first select a &quot;Co-investment Partnership&quot; and then select the &quot;Portfolio Company&quot;. --></errorMessage>
+        <name>Check_Portfolio_Company_blank_fund_fund</name>
+    </validationRules>
+    <webLinks>
+        <label><!-- Quick_Create_Commitments --></label>
+        <name>Quick_Create_Commitments</name>
+    </webLinks>
+</CustomObjectTranslation>

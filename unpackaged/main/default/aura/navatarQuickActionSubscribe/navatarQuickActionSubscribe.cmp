@@ -1,0 +1,18 @@
+<aura:component implements="force:appHostable,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId,forceCommunity:availableForAllPageTypes,force:lightningQuickAction"
+                access="global" >
+      <!--component attributs -->
+    <aura:attribute name="spinner" type="boolean" default="FALSE"/>
+
+     <!--loading spinner start-->
+    <aura:if isTrue="{!v.spinner}">
+        <lightning:spinner alternativeText="Loading" style="position: fixed;"/>
+    </aura:if>
+
+
+    <lightning:quickActionAPI aura:id="quickActionAPI" />
+    <lightning:messageChannel type="navpeII_dev18__navatarLwcChannel__c"
+            aura:id="lwcChannelIcon" onMessage="{!c.handleChanged}" scope="APPLICATION"/>
+
+
+
+</aura:component>

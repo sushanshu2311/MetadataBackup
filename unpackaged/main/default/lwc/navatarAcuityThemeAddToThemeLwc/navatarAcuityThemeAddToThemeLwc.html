@@ -1,0 +1,89 @@
+<!--
+** Module Name : Acuity 2.0 - Acuity
+** Description : Displays the Add to theme modal.
+** Throws : NA
+** Calls : NA
+** Organization : Navatar Group
+** Product Name & Version : Acuity 2.0
+** Revision History:-
+** Version    Date(YYYY-MM-DD)    Author         Description of Action
+** 1.0        2022-11-14          Anshika Ahuja  Acuity Phase 2
+** Added by Tejaswini - Naming Convention-->
+<template>
+    <template if:true={isModalOpen}>
+        <section role="dialog" tabindex="-1" aria-labelledby="modal-heading-01" aria-modal="true"
+            aria-describedby="modal-content-id-1" class="small_modal slds-modal slds-fade-in-open">
+            <div class="slds-modal__container">
+                <!-- Modal/Popup Box header here -->
+                <header class="slds-modal__header">
+                    <button class="slds-button slds-button_icon slds-modal__close slds-button_icon-inverse"
+                        title="Close" onclick={closeModal}>
+                        <lightning-icon icon-name="utility:close" alternative-text="close" variant="inverse"
+                            size="small" title="Close">
+                        </lightning-icon>
+                        <span class="slds-assistive-text">Close</span>
+                    </button>
+                    <h2 id="modal-heading-01" class="slds-text-heading_medium slds-hyphenate" title="Add To Theme">Add
+                        To Theme</h2>
+                </header>
+                <!-- Modal/Popup Box body starts here -->
+                <div class="slds-modal__content  slds-p-vertical_xx-large slds-p-horizontal_medium main-container"
+                    id="modal-content-id-1" style="overflow: initial !important;">
+
+                    <div class="slds-grid" style="justify-content: center;">
+                        <div class="slds-col slds-size_11-of-12 slds-m-left_x-small">
+                            <div class="slds-form-element hidelabel">
+                                <div class="slds-form-element__control">
+                                    <div class="slds-combobox-group">
+                                        <div class="slds-combobox_object-switcher slds-combobox-addon_start">
+                                            <div class="slds-form-element">
+                                                <div class="slds-form-element__control">
+                                                    <lightning-combobox name="progress" value={value}
+                                                        dropdown-alignment="auto" placeholder="Select Progress"
+                                                        options={options} onchange={handleChange}></lightning-combobox>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="slds-combobox_container slds-combobox-addon_end">
+                                            <div
+                                                class="slds-combobox slds-dropdown-trigger slds-dropdown-trigger_click">
+                                                <div class="slds-combobox__form-element slds-input-has-icon slds-input-has-icon_right"
+                                                    role="none">
+                                                    <c-navatar-acuity-add-to-theme-l-w-c icon-name={objIcon}
+                                                    s-object-api-name={value}
+                                                    label=""
+                                                    onlookupupdate={lookupRecord}
+                                                    placeholder={placeHolderVal}></c-navatar-acuity-add-to-theme-l-w-c>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="slds-grid main-Container slds-p-bottom_medium" style="justify-content: center;">
+
+                        <div
+                            class="slds-col slds-size_11-of-12 slds-m-top_x-small slds-m-left_x-small slds-text-align_right">
+                            <!-- <lightning-button variant="base" label="Advanced" class="advancedBadseBtn" title="Advanced" onclick={handleRedirect}></lightning-button> -->
+                            <a href="javascript:void(0)" onclick={handleRedirect} data-boolcheck="true"
+                                title="Advanced" target="_blank">Advanced</a>
+                        </div>
+                    </div>
+                </div>
+
+
+                <!-- Modal/Popup Box LWC footer starts here -->
+                <footer class="slds-modal__footer cutomFooter">
+                    <lightning-button variant="neutral" label="Cancel" title="Cancel" onclick={closeModal}
+                        class="slds-m-left_x-small customBrandButton"></lightning-button>
+                    <lightning-button variant="brand" label="Save" title="Save" onclick={saveThemeRelationRecord}
+                        class="slds-m-left_x-small customBrandButton"></lightning-button>
+                </footer>
+            </div>
+        </section>
+        <div class="slds-backdrop slds-backdrop_open"></div>
+    </template>
+</template>

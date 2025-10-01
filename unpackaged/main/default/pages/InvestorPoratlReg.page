@@ -1,0 +1,20 @@
+<apex:page controller="Cls_IP_Reg" sidebar="false" cache="true" standardStylesheets="false" tabStyle="Investor_Portal_Manager__tab"  >
+    
+      <apex:iframe src="{!JSENCODE(IFrameURL)}" scrolling="true" id="theIframe" height="475px"/>   
+       
+    <script>
+
+    function closeIframe()
+    {
+        var w = window.open('{!$Label.navpeII_dev18__IP_Url}'+'secur/logout.jsp','Logout','channelmode=0,directories=0,fullscreen=0,height=1,width=1,location=0,menubar=0,resizable=0,scrollbars=0,status=0,titlebar=0,toolbar=0');
+        setTimeout(function(){w.close()},2500);
+    }
+    //close if session available
+    var url = document.URL;
+    
+    if(url.indexOf("session") != -1)
+    {
+        closeIframe();
+    }
+    </script>
+</apex:page>

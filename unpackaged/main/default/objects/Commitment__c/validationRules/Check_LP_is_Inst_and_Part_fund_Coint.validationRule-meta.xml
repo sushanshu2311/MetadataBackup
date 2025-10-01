@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Check_LP_is_Inst_and_Part_fund_Coint</fullName>
+    <active>false</active>
+    <description>Handled in trigger.</description>
+    <errorConditionFormula>false</errorConditionFormula>
+    <errorDisplayField>Limited_Partner__c</errorDisplayField>
+    <errorMessage>Please select a Limited Partner.</errorMessage>
+</ValidationRule>

@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<WebLink xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Quick_Create_Commitments</fullName>
+    <availability>online</availability>
+    <description>Display in existing window with sidebar</description>
+    <displayType>massActionButton</displayType>
+    <encodingKey>UTF-8</encodingKey>
+    <height>600</height>
+    <linkType>url</linkType>
+    <masterLabel>Create Commitments</masterLabel>
+    <openType>sidebar</openType>
+    <protected>false</protected>
+    <requireRowSelection>true</requireRowSelection>
+    <url>/apex/navpeII_dev18__CommitmentCreation?Source={!IF( Account.Id!=null,&#39;Company&#39;,&#39;Fundraising&#39;)}&amp;id={!IF( Account.Id!=null, Account.Id , Fundraising__c.Id)}</url>
+</WebLink>

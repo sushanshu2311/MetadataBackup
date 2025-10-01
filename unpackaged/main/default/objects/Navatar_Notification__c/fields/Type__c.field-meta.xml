@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Type__c</fullName>
+    <label>Type</label>
+    <required>false</required>
+    <trackTrending>false</trackTrending>
+    <type>Picklist</type>
+    <valueSet>
+        <restricted>true</restricted>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>Add Note</fullName>
+                <default>false</default>
+                <label>Add Note</label>
+            </value>
+            <value>
+                <fullName>Add Tag</fullName>
+                <default>false</default>
+                <label>Add Tag</label>
+            </value>
+            <value>
+                <fullName>Clip Info</fullName>
+                <default>false</default>
+                <label>Clip Info</label>
+            </value>
+            <value>
+                <fullName>Account Info</fullName>
+                <default>false</default>
+                <label>Account Info</label>
+            </value>
+            <value>
+                <fullName>Deal Activity Info</fullName>
+                <default>false</default>
+                <label>Deal Activity Info</label>
+            </value>
+            <value>
+                <fullName>Theme Activity Info</fullName>
+                <default>false</default>
+                <label>Theme Activity Info</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
+</CustomField>

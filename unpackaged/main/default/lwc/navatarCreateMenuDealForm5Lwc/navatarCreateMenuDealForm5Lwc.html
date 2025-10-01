@@ -1,0 +1,61 @@
+<template>
+	<template if:true={contacts}>
+		<div style="display: none;">{fetchcontacts}{roleOptions}</div>
+		<template if:true={isContactExists}>
+			<div class="slds-modal__content slds-p-vertical_x-small mainContainer">
+				<div class="slds-form-element__control slds-grow ">
+					<div class="slds-text-heading_small slds-p-horizontal_large font_500">Select Contacts To Add To The Deal
+						Team</div>
+					<lightning-layout>
+						<lightning-layout-item size="12" class="mainDiv slds-p-horizontal_large slds-m-top_medium">
+							<div class="slds-border_around slds-theme_shade">
+								<lightning-layout>
+									<lightning-layout-item size="1">
+										<!-- Added "data-id="dealGlobalCheckId" checked = {globalCheck}" by LK on 2024-10-04 to fix 00047571-->
+										<lightning-input type="checkbox" name="input1" onchange={handleSelectAll} data-id="dealGlobalCheckId" checked = {globalCheck}></lightning-input>
+									</lightning-layout-item>
+									<lightning-layout-item size="5">
+										<p class="font_bold">Name</p>
+									</lightning-layout-item>
+									<lightning-layout-item size="6">
+										<p class="font_bold">Role</p>
+									</lightning-layout-item>
+								</lightning-layout>
+							</div>
+						</lightning-layout-item>
+					</lightning-layout>
+					<template  for:each={contacts} for:item="conRec">
+						<lightning-layout key={conRec.Id}>
+							<lightning-layout-item size="12" class="mainDiv slds-p-horizontal_large slds-m-top_medium">
+						<div class="slds-border_around clrChangeShade2">
+							<lightning-layout class="align_center ">
+								<lightning-layout-item size="1" style="margin-top: -20px;">
+									<lightning-input type="checkbox" value={conRec.Id} onchange={handleCheckbox} checked={handleSelectedContacts}>
+									</lightning-input>
+								</lightning-layout-item>
+								<lightning-layout-item size="5" style="margin-top: -22px;">
+									<p>{conRec.Name}</p>
+								</lightning-layout-item>
+								<lightning-layout-item size="6" style="margin-top: -14px;margin-bottom: -4px;">
+									<!-- Updated "placeholder" text by LK on 2024-10-11 to fix 00047789 -->
+									<lightning-combobox name={conRec.Id} value={value} placeholder="Select"
+										options={roleOptions} onchange={handleRoleChange}></lightning-combobox>
+								</lightning-layout-item>
+							</lightning-layout>
+						</div>
+						</lightning-layout-item>
+					</lightning-layout> 
+					</template>
+				</div>
+			</div>
+
+		<!-- Modal/Popup Box LWC footer starts here -->
+		<footer class="slds-modal__footer cutomFooter">
+			<lightning-button label="Cancel" title="Cancel" onclick={closeModal} class="slds-m-left_x-small">
+			</lightning-button>
+			<lightning-button variant="brand" label="Save" title="Save" onclick={handleSave}
+				class="slds-m-left_x-small customBrandButton"></lightning-button>
+		</footer>
+	</template>
+    </template>
+</template>

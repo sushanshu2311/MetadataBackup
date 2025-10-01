@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Check_Limited_Partner_Edit</fullName>
+    <active>true</active>
+    <description>To restrict the edit of a Limited Partner in a commitment record</description>
+    <errorConditionFormula>ISCHANGED(Limited_Partner__c )</errorConditionFormula>
+    <errorDisplayField>Limited_Partner__c</errorDisplayField>
+    <errorMessage>Cannot change this value once set.</errorMessage>
+</ValidationRule>

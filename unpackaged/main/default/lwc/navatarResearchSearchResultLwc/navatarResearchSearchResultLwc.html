@@ -1,0 +1,1302 @@
+<!--
+** Module Name : Acuity - Navatar Research
+** Description : Displays the search results of the Navatar Research
+** Throws : NA
+** Calls : NA
+** Organization : Navatar Group
+** Product Name & Version : Acuity 1.0
+** Revision History:-
+** Version    Date(YYYY-MM-DD)    Author      Description of Action
+** 1.0        2022-09-07          Ehatsham    Acuity Phase 1
+** 2.0        2022-12-04          Ehatsham    Acuity Phase 2
+** 3.0        2024-02-07          Lakshya     Acuity Phase 3
+-->
+<template>
+    <template if:true={loading}>
+    <div class="exampleHolder">
+        <lightning-spinner alternative-text="Loading" size="medium"></lightning-spinner>
+    </div>
+    </template>
+    <template if:true={loadFirstComp}>
+        <c-navatar-Research-Advance-Result-Lwc oncallnosearch={noSearchTermExecution} obj-option-list={specificOptionList}
+            theme-id-coming-from-theme-page-functionality={callFromRecId} theme-process-check={themeProcess}
+            advance-pop={advanceCheck} curr-id={currentId} curr-obj={currentObj} icon-object-list={iconListForObjects}
+            search-keyword={propertyValue} coming-selection-tabel-data-first-cmp={selectionTabelDataFull}
+            coming-whole-map-data-first-cmp={wholeMapDataFull} onadvanceclick={allCatogaries}
+            onnavatarresearchadvance={selectedLookupRecordHandler} oncomingfielddata={comingFieldData}
+            onpasskeyword={assignKeyWordMethod}
+            global-field-type-casting={exptGblFldTypeCast}
+            object-label-map={labelListForObjects} plural-label-map={pluralLabelMap} theme-des-label={themeDesLabel}></c-navatar-Research-Advance-Result-Lwc>
+    </template>
+    <!-- end -->
+    <!-- ////////////////////////-->
+    <!--Start-->
+    <div class="slds-grid slds-wrap main-Container-search slds-m-bottom_xx-small">
+        <!--Left Side Section-->
+        <div class="slds-col slds-size_2-of-12 slds-p-right_small">
+            <div class="slds-theme_shade clsFullHeight nav-brk-word">
+                <!--Added "removeLeftBlueBorder" for 00045746 by raju on 11-06-2024-->
+                <lightning-vertical-navigation selected-item="recent" class="removeHyperlink removeLeftBlueBorder" shaded>
+                    <lightning-vertical-navigation-section>
+                        <h2 id="entity-header" class="slds-nav-vertical__title">Search Results <lightning-helptext
+                                content="Research allows you to search through all data within Navatar, casting a wide net that can identify all relevant intelligence at the most detailed level. You can search data within the entire system or limit it to the page being viewed. The research can also be made actionable by saving/adding to a theme or exporting into Excel.
+
+                                View the search results organized and listed by category. Click on the category name to filter results by category. Click the record to view or edit details." class="help_txt"></lightning-helptext></h2>
+                        <lightning-vertical-navigation-item-badge label="All Categories" title="All Categories"
+                            class="all-category-for-active all_id" data-id="all_id" badge-count={totalSearchRecord}
+                            onclick={onClickAll}>
+                        </lightning-vertical-navigation-item-badge>
+                        <template if:true={accPermission}>
+                            <template if:true={isPrsntAccRecTypeNamesLft}>
+                                <template for:each={accRecTypeObjList} for:item="object" for:index="index">
+                                    <div key={object.name}>
+                                        <lightning-vertical-navigation-item-badge label={object.name}
+                                            title={object.name} name={object.name} badge-count={object.count}
+                                            data-name={object.name} data-value="Firms" onclick={onClickFirmTableChange}
+                                            class="all-category-for-active firm_id" data-id={object.name}
+                                            id={object.name}>
+                                        </lightning-vertical-navigation-item-badge>
+                                    </div>
+                                </template>
+                            </template>
+                            <template if:false={isPrsntAccRecTypeNamesLft}>
+                                <lightning-vertical-navigation-item-badge label={accountLabel} title={accountLabel}
+                                    name="Firms" badge-count={sizeAccountList} data-name="Firms"
+                                    onclick={OpenRelatedPage} class="all-category-for-active firm_id" data-id="firm_id"
+                                    id="firm_id"></lightning-vertical-navigation-item-badge>
+                            </template>
+                        </template>
+
+                        <template if:true={conPermission}>
+                            <template if:true={isPrsntConRecTypeNamesLft}>
+                                <template for:each={conRecTypeObjList} for:item="object" for:index="index">
+                                    <div key={object.name}>
+                                        <lightning-vertical-navigation-item-badge label={object.name}
+                                            title={object.name} name={object.name} badge-count={object.count}
+                                            data-name={object.name} data-value="Contacts"
+                                            onclick={onClickFirmTableChange} class="all-category-for-active contact_id"
+                                            data-id={object.name} id={object.name}>
+                                        </lightning-vertical-navigation-item-badge>
+                                    </div>
+                                </template>
+                            </template>
+                            <template if:false={isPrsntConRecTypeNamesLft}>
+                                <lightning-vertical-navigation-item-badge label={contactLabel} title={contactLabel}
+                                    name="Contacts" badge-count={sizeContactList} data-name="Contacts"
+                                    onclick={OpenRelatedPage} class="all-category-for-active contact_id"
+                                    data-id="contact_id" id="contact_id"></lightning-vertical-navigation-item-badge>
+                            </template>
+                        </template>
+
+                        <template if:true={dealPermission}>
+                            <template if:true={isPrsntDealRecTypeNamesLft}>
+                                <template for:each={dealRecTypeObjList} for:item="object" for:index="index">
+                                    <div key={object.name}>
+                                        <lightning-vertical-navigation-item-badge label={object.name}
+                                            title={object.name} name={object.name} badge-count={object.count}
+                                            data-name={object.name} data-value="Deals" onclick={onClickFirmTableChange}
+                                            class="all-category-for-active deal_id" data-id={object.name}
+                                            id={object.name}>
+                                        </lightning-vertical-navigation-item-badge>
+                                    </div>
+                                </template>
+                            </template>
+                            <template if:false={isPrsntDealRecTypeNamesLft}>
+                                <lightning-vertical-navigation-item-badge label={dealLabel} title={dealLabel}
+                                    name="deal" badge-count={sizeDealList} data-name="Deals" onclick={OpenRelatedPage}
+                                    class="all-category-for-active deal_id" data-id="deal_id"
+                                    id="deal_id"></lightning-vertical-navigation-item-badge>
+                            </template>
+                        </template>
+
+                        <template if:true={fundPermission}>
+                            <template if:true={isPrsntFundRecTypeNamesLft}>
+                                <template for:each={fundRecTypeObjList} for:item="object" for:index="index">
+                                    <div key={object.name}>
+                                        <lightning-vertical-navigation-item-badge label={object.name}
+                                            title={object.name} name={object.name} badge-count={object.count}
+                                            data-name={object.name} data-value="Funds" onclick={onClickFirmTableChange}
+                                            class="all-category-for-active fund_id" data-id={object.name}
+                                            id={object.name}>
+                                        </lightning-vertical-navigation-item-badge>
+                                    </div>
+                                </template>
+                            </template>
+                            <template if:false={isPrsntFundRecTypeNamesLft}>
+                                <lightning-vertical-navigation-item-badge label={fundLabel} title={fundLabel}
+                                    name="fund" badge-count={sizeFundList} data-name="Funds" onclick={OpenRelatedPage}
+                                    class="all-category-for-active fund_id" data-id="fund_id"
+                                    id="fund_id"></lightning-vertical-navigation-item-badge>
+                            </template>
+                        </template>
+
+                        <template if:true={fdrPermission}>
+                            <template if:true={isPrsntFdrRecTypeNamesLft}>
+                                <template for:each={fdrRecTypeObjList} for:item="object"
+                                    for:index="index">
+                                    <div key={object.name}>
+                                        <lightning-vertical-navigation-item-badge label={object.name}
+                                            title={object.name} name={object.name} badge-count={object.count}
+                                            data-name={object.name} data-value="FundRaising"
+                                            onclick={onClickFirmTableChange}
+                                            class="all-category-for-active fundraising_id" data-id={object.name}
+                                            id={object.name}>
+                                        </lightning-vertical-navigation-item-badge>
+                                    </div>
+                                </template>
+                            </template>
+                            <template if:false={isPrsntFdrRecTypeNamesLft}>
+                                <lightning-vertical-navigation-item-badge label={fdrLabel}
+                                    title={fdrLabel} name="fundraising" badge-count={sizeFdrList}
+                                    data-name="FundRaising" onclick={OpenRelatedPage}
+                                    class="all-category-for-active FundRaising_id" data-id="FundRaising_id"
+                                    id="FundRaising_id"></lightning-vertical-navigation-item-badge>
+                            </template>
+                        </template>
+
+                        <template if:true={themePermission}>
+                            <lightning-vertical-navigation-item-badge data-id="themes_id" label={themeLabel} name="rto1"
+                                data-name="Themes" badge-count={themeSize} onclick={OpenRelatedPage} title={themeLabel}
+                                class="all-category-for-active themes_id" id="themes_id">
+                            </lightning-vertical-navigation-item-badge>
+                        </template>
+
+                        <template if:true={clipPermission}>
+                            <lightning-vertical-navigation-item-badge data-id="clips_id" label={clipLabel} name="rto2"
+                                data-name="Clips" badge-count={clipSize} onclick={OpenRelatedPage} title={clipLabel}
+                                class="all-category-for-active clips_id" id="clips_id">
+                            </lightning-vertical-navigation-item-badge>
+                        </template>
+                        <lightning-vertical-navigation-item-badge data-id="files_id" label="File" name="rto3"
+                            data-name="Files" badge-count={sizeFileList} onclick={OpenRelatedPage} title="Files"
+                            class="all-category-for-active files_id" id="files_id">
+                        </lightning-vertical-navigation-item-badge>
+                        <lightning-vertical-navigation-item-badge label="Interaction" title="Interaction"
+                            name="Interactions" badge-count={sizeTaskList} data-name="Tasks" onclick={OpenRelatedPage}
+                            class="all-category-for-active interaction_id" data-id="interaction_id"
+                            id="interaction_id"></lightning-vertical-navigation-item-badge>
+                    </lightning-vertical-navigation-section>
+                </lightning-vertical-navigation>
+
+            </div>
+        </div>
+        <!--Left Side Section-->
+
+        <!--Right Side Section-->
+        <div class="slds-col  slds-size_10-of-12">
+            <template if:true={noRecordTempDisplay}>
+                <div class="slds-col  slds-p-left_small clsFullHeight">
+                    <div class="slds-page-header slds-page-header_record-home slds-p-horizontal_none clsFullRightColumnHeight">
+                        <div class="noResults slds-p-vertical--xx-large slds-m-top--large slds-align--absolute-center slds-grid--vertical slds-text-align--center slds-text-color--weak" data-aura-rendered-by="465:8941;a">
+                            <figure class="slds-p-bottom--xx-large" data-aura-rendered-by="466:8941;a"><span
+                                    data-aura-rendered-by="469:8941;a" class="uiImage" data-aura-class="uiImage"><img
+                                        data-aura-rendered-by="467:8941;a" src="/img/search/no-results.png" class=""
+                                        alt=""></span></figure>
+                            <div class="slds-text-heading--large noResultsTitle slds-p-bottom--large"
+                                data-aura-rendered-by="470:8941;a">No results for All Categories </div>
+                            <div class="slds-text-heading--small noResultsMessage" data-aura-rendered-by="472:8941;a">
+                                <div class="slds-hide" data-aura-rendered-by="473:8941;a"></div>
+                                <div class="tips" data-aura-rendered-by="476:8941;a">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </template>
+            <template if:true={showWarningMessage}>
+                <div class="slds-col  slds-p-left_small clsFullHeight">
+                    <div class="slds-page-header slds-page-header_record-home slds-p-horizontal_none clsFullRightColumnHeight">
+                        <div class="noResults slds-p-vertical--xx-large slds-m-top--large slds-align--absolute-center slds-grid--vertical slds-text-align--center slds-text-color--weak"
+                            data-aura-rendered-by="465:8941;a">
+                            <figure class="slds-p-bottom--xx-large" data-aura-rendered-by="466:8941;a"><span
+                                    data-aura-rendered-by="469:8941;a" class="uiImage" data-aura-class="uiImage"><img
+                                        data-aura-rendered-by="467:8941;a" src="/img/search/no-results.png" class=""
+                                        alt=""></span></figure>
+                            <div class="slds-text-heading--large noResultsTitle slds-p-bottom--large"
+                                data-aura-rendered-by="470:8941;a">No results for All Categories  </div>
+                            <div class="slds-text-heading--small noResultsMessage" data-aura-rendered-by="472:8941;a">
+                                <div class="slds-hide" data-aura-rendered-by="473:8941;a"></div>
+                                <div class="tips" data-aura-rendered-by="476:8941;a">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </template>
+
+            <!--Grid-->
+            <template if:true={isPrsntAccRecTypeNames}>
+                <template for:each={accRecTypeObjList} for:item="object" for:index="index">
+                    <div key={object.name}>
+                        <template if:true={accountListShow}>
+                            <template if:true={object.hasList}>
+                                <div class="slds-grid slds-wrap slds-box slds-theme_shade slds-theme_default slds-p-vertical_xx-small slds-p-horizontal_medium">
+                                    <div class="slds-col slds-size_1-of-1">
+                                        <div class="sep_border"></div>
+                                        <div class="slds-grid slds-wrap">
+                                            <div class="slds-col slds-size_6-of-12">
+                                                <ul class="slds-list_horizontal slds-has-block-links_space ">
+                                                    <li>
+                                                    </li>
+                                                    <li>
+                                                        <span class="slds-page-header__title slds-text-align_left slds-m-left_x-small slds-m-top_xx-small"
+                                                            title={object.name}>{object.name} ({object.count})</span>
+                                                    </li>
+                                                </ul>
+                                            </div>
+
+                                            <div class="slds-col slds-size_6-of-12">
+                                                <ul class="slds-list_horizontal slds-has-block-links_space slds-float_right">
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="slds-box slds-box_x-small slds-p-around_none tabhead  slds-m-bottom_small">
+                                    <div class="slds-grid slds-wrap">
+                                        <template if:true={innerAccountListShow}>
+                                            <div class="slds-col slds-size_1-of-1 slds-text-align_left">
+                                                <div>
+                                                    <lightning-datatable class="heightDataTable trucate-des"
+                                                        hide-checkbox-column="true" key-field="id"
+                                                        data={object.outerList} columns={lWCTblAccColList}>
+                                                    </lightning-datatable>
+                                                </div>
+                                            </div>
+                                        </template>
+                                        <div
+                                            class="slds-col slds-size_1-of-1 slds-text-align_right slds-p-right_small slds-theme_shade">
+                                            <div class="slds-page-header__col-actions">
+                                                <template if:true={object.veiwMore}>
+                                                    <lightning-button variant="base" label="View All" data-value="Firms"
+                                                        data-name={object.name} title="View All Firms search results"
+                                                        class="slds-m-left_x-small"
+                                                        onclick={onClickFirmTableChange}></lightning-button>
+                                                </template>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <template if:false={innerAccountListShow}>
+                                    <div class="slds-col  slds-p-left_small clsFullHeight">
+                                        <div class="slds-page-header slds-page-header_record-home slds-p-horizontal_none clsFullRightColumnHeight">
+                                            <div class="noResults slds-p-vertical--xx-large slds-m-top--large slds-align--absolute-center slds-grid--vertical slds-text-align--center slds-text-color--weak"
+                                                data-aura-rendered-by="465:8941;a">
+                                                <figure class="slds-p-bottom--xx-large"
+                                                    data-aura-rendered-by="466:8941;a"><span
+                                                        data-aura-rendered-by="469:8941;a" class="uiImage"
+                                                        data-aura-class="uiImage"><img
+                                                            data-aura-rendered-by="467:8941;a"
+                                                            src="/img/search/no-results.png" class="" alt=""></span>
+                                                </figure>
+                                                <div class="slds-text-heading--large noResultsTitle slds-p-bottom--large"
+                                                    data-aura-rendered-by="470:8941;a">No results for
+                                                    {outerNoRecordOBject}</div>
+                                                <div class="slds-text-heading--small noResultsMessage" data-aura-rendered-by="472:8941;a">
+                                                    <div class="slds-hide" data-aura-rendered-by="473:8941;a"></div>
+                                                    <div class="tips" data-aura-rendered-by="476:8941;a">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </template>
+                            </template>
+                        </template>
+                    </div>
+                </template>
+            </template>
+            <!-- After loop Account Firm Grid-->
+            <template if:false={isPrsntAccRecTypeNames}>
+                <template if:true={accountListShow}>
+                    <div class="slds-grid slds-wrap slds-box slds-theme_shade slds-theme_default slds-p-vertical_xx-small slds-p-horizontal_medium">
+                        <div class="slds-col slds-size_1-of-1">
+                            <div class="sep_border"></div>
+                            <template if:true={innerAccountListShow}>
+                                <div class="slds-grid slds-wrap">
+                                    <div class="slds-col slds-size_6-of-12">
+                                        <ul class="slds-list_horizontal slds-has-block-links_space ">
+                                            <li>
+                                                
+                                            </li>
+                                            <li>
+                                                <span
+                                                    class="slds-page-header__title slds-text-align_left slds-m-left_x-small slds-m-top_xx-small"
+                                                    title={accountTableName}>{accountTableName}
+                                                    ({sizeAccountList})</span>
+                                            </li>
+                                        </ul>
+                                    </div>
+
+                                    <div class="slds-col slds-size_6-of-12">
+                                        <ul class="slds-list_horizontal slds-has-block-links_space slds-float_right">
+                                        </ul>
+                                    </div>
+                                </div>
+                            </template>
+                        </div>
+                    </div>
+                    <div class="slds-box slds-box_x-small slds-p-around_none tabhead  slds-m-bottom_small">
+                        <div class="slds-grid slds-wrap">
+                            <template if:true={innerAccountListShow}>
+                                <div class="slds-col slds-size_1-of-1 slds-text-align_left">
+                                    <div>
+                                        <lightning-datatable class="heightDataTable trucate-des"
+                                            hide-checkbox-column="true" key-field="id" data={repsntAccList}
+                                            columns={lWCTblAccColList}>
+                                        </lightning-datatable>
+                                    </div>
+
+                                </div>
+                            </template>
+                            <div class="slds-col slds-size_1-of-1 slds-text-align_right slds-p-right_small slds-theme_shade">
+                                <div class="slds-page-header__col-actions">
+                                    <template if:true={viewMoreAccount}>
+                                        <lightning-button variant="base" label="View All"
+                                            title="View All Firms search results" data-name="Firms"
+                                            class="slds-m-left_x-small" onclick={OpenRelatedPage}></lightning-button>
+                                    </template>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <template if:false={innerAccountListShow}>
+                        <div class="slds-col  slds-p-left_small clsFullHeight">
+                            <div class="slds-page-header slds-page-header_record-home slds-p-horizontal_none clsFullRightColumnHeight">
+                                <div class="noResults slds-p-vertical--xx-large slds-m-top--large slds-align--absolute-center slds-grid--vertical slds-text-align--center slds-text-color--weak" data-aura-rendered-by="465:8941;a">
+                                    <figure class="slds-p-bottom--xx-large" data-aura-rendered-by="466:8941;a"><span
+                                            data-aura-rendered-by="469:8941;a" class="uiImage"
+                                            data-aura-class="uiImage"><img data-aura-rendered-by="467:8941;a"
+                                                src="/img/search/no-results.png" class="" alt=""></span></figure>
+                                    <div class="slds-text-heading--large noResultsTitle slds-p-bottom--large"
+                                        data-aura-rendered-by="470:8941;a">No results for {outerNoRecordOBject}</div>
+                                    <div class="slds-text-heading--small noResultsMessage" data-aura-rendered-by="472:8941;a">
+                                        <div class="slds-hide" data-aura-rendered-by="473:8941;a"></div>
+                                        <div class="tips" data-aura-rendered-by="476:8941;a">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </template>
+                </template>
+            </template>
+            <!--Grid-->
+            <!-- Contact recordtype grid start -->
+            <template if:true={isPrsntConRecTypeNames}>
+                <template for:each={conRecTypeObjList} for:item="object" for:index="index">
+                    <div key={object.name}>
+                        <template if:true={contactListShow}>
+                            <template if:true={object.hasList}>
+                                <div class="slds-grid slds-wrap slds-box slds-theme_shade slds-theme_default slds-p-vertical_xx-small slds-p-horizontal_medium">
+                                    <div class="slds-col slds-size_1-of-1">
+                                        <div class="sep_border"></div>
+                                        <div class="slds-grid slds-wrap">
+                                            <div class="slds-col slds-size_6-of-12">
+                                                <ul class="slds-list_horizontal slds-has-block-links_space ">
+                                                    <li>
+                                                    </li>
+                                                    <li>
+                                                        <span class="slds-page-header__title slds-text-align_left slds-m-left_x-small slds-m-top_xx-small"
+                                                            title={object.name}>{object.name} ({object.count})</span>
+                                                    </li>
+                                                </ul>
+                                            </div>
+
+                                            <div class="slds-col slds-size_6-of-12">
+                                                <ul class="slds-list_horizontal slds-has-block-links_space slds-float_right">
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="slds-box slds-box_x-small slds-p-around_none tabhead  slds-m-bottom_small">
+                                    <div class="slds-grid slds-wrap">
+                                        <template if:true={innerContactListShow}>
+                                            <div class="slds-col slds-size_1-of-1 slds-text-align_left">
+                                                <div>
+                                                    <lightning-datatable class="heightDataTable trucate-des"
+                                                        hide-checkbox-column="true" key-field="id"
+                                                        data={object.outerList} columns={lWCTblConColList}>
+                                                    </lightning-datatable>
+                                                </div>
+                                            </div>
+                                        </template>
+                                        <div
+                                            class="slds-col slds-size_1-of-1 slds-text-align_right slds-p-right_small slds-theme_shade">
+                                            <div class="slds-page-header__col-actions">
+                                                <template if:true={object.veiwMore}>
+                                                    <lightning-button variant="base" label="View All"
+                                                        data-value='Contacts' data-name={object.name}
+                                                        onclick={onClickFirmTableChange}
+                                                        title="View All Contact search results"
+                                                        class="slds-m-left_x-small"></lightning-button>
+                                                </template>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <template if:false={innerContactListShow}>
+                                    <div class="slds-col  slds-p-left_small clsFullHeight">
+                                        <div class="slds-page-header slds-page-header_record-home slds-p-horizontal_none clsFullRightColumnHeight">
+                                            <div class="noResults slds-p-vertical--xx-large slds-m-top--large slds-align--absolute-center slds-grid--vertical slds-text-align--center slds-text-color--weak" data-aura-rendered-by="465:8941;a">
+                                                <figure class="slds-p-bottom--xx-large"
+                                                    data-aura-rendered-by="466:8941;a"><span
+                                                        data-aura-rendered-by="469:8941;a" class="uiImage"
+                                                        data-aura-class="uiImage"><img
+                                                            data-aura-rendered-by="467:8941;a"
+                                                            src="/img/search/no-results.png" class="" alt=""></span>
+                                                </figure>
+                                                <div class="slds-text-heading--large noResultsTitle slds-p-bottom--large"
+                                                    data-aura-rendered-by="470:8941;a">No results for
+                                                    {outerNoRecordOBject}</div>
+                                                <div class="slds-text-heading--small noResultsMessage" data-aura-rendered-by="472:8941;a">
+                                                    <div class="slds-hide" data-aura-rendered-by="473:8941;a"></div>
+                                                    <div class="tips" data-aura-rendered-by="476:8941;a">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </template>
+                            </template>
+                        </template>
+                    </div>
+                </template>
+            </template>
+            <!-- Contact recordtype grid End -->
+            <template if:false={isPrsntConRecTypeNames}>
+                <template if:true={contactListShow}>
+                    <div class="slds-grid slds-wrap slds-box slds-theme_shade slds-theme_default slds-p-vertical_xx-small slds-p-horizontal_medium">
+                        <div class="slds-col slds-size_1-of-1">
+                            <div class="sep_border"></div>
+                            <template if:true={innerContactListShow}>
+                                <div class="slds-grid slds-wrap">
+                                    <div class="slds-col slds-size_6-of-12">
+                                        <ul class="slds-list_horizontal slds-has-block-links_space ">
+                                            <li>
+                                               
+                                            </li>
+                                            <li>
+                                                <span class="slds-page-header__title slds-text-align_left slds-m-left_x-small slds-m-top_xx-small"
+                                                    title={contactTableName}>{contactTableName}
+                                                    ({sizeContactList})</span>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                    <div class="slds-col slds-size_6-of-12">
+                                        <ul class="slds-list_horizontal slds-has-block-links_space slds-float_right">
+                                        </ul>
+                                    </div>
+                                </div>
+                            </template>
+                        </div>
+                    </div>
+                    <div class="slds-box slds-box_x-small slds-p-around_none tabhead  slds-m-bottom_small">
+                        <div class="slds-grid slds-wrap">
+                            <template if:true={innerContactListShow}>
+                                <div class="slds-col slds-size_1-of-1 slds-text-align_left">
+                                    <div>
+                                        <lightning-datatable class="heightDataTable trucate-des"
+                                            hide-checkbox-column="true" key-field="id" data={rprsntConList}
+                                            columns={lWCTblConColList}>
+                                        </lightning-datatable>
+                                    </div>
+                                </div>
+                            </template>
+                            <div class="slds-col slds-size_1-of-1 slds-text-align_right slds-p-right_small slds-theme_shade">
+                                <div class="slds-page-header__col-actions">
+                                    <template if:true={viewMoreContact}>
+                                        <lightning-button variant="base" label="View All" data-value='Contacts'
+                                            data-name='Contacts' onclick={OpenRelatedPage}
+                                            title="View All Contact search results"
+                                            class="slds-m-left_x-small"></lightning-button>
+                                    </template>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <template if:false={innerContactListShow}>
+                        <div class="slds-col  slds-p-left_small clsFullHeight">
+                            <div class="slds-page-header slds-page-header_record-home slds-p-horizontal_none clsFullRightColumnHeight">
+                                <div class="noResults slds-p-vertical--xx-large slds-m-top--large slds-align--absolute-center slds-grid--vertical slds-text-align--center slds-text-color--weak" data-aura-rendered-by="465:8941;a">
+                                    <figure class="slds-p-bottom--xx-large" data-aura-rendered-by="466:8941;a"><span
+                                            data-aura-rendered-by="469:8941;a" class="uiImage"
+                                            data-aura-class="uiImage"><img data-aura-rendered-by="467:8941;a"
+                                                src="/img/search/no-results.png" class="" alt=""></span></figure>
+                                    <div class="slds-text-heading--large noResultsTitle slds-p-bottom--large"
+                                        data-aura-rendered-by="470:8941;a">No results for {outerNoRecordOBject}</div>
+                                    <div class="slds-text-heading--small noResultsMessage"
+                                        data-aura-rendered-by="472:8941;a">
+                                        <div class="slds-hide" data-aura-rendered-by="473:8941;a"></div>
+                                        <div class="tips" data-aura-rendered-by="476:8941;a">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </template>
+                </template>
+            </template>
+            <!--Grid-->
+            <!---Working mechanishm -->
+            <template if:true={isPresentDealRecordTypeNames}>
+                <template for:each={dealRecTypeObjList} for:item="object" for:index="index">
+                    <div key={object.name}>
+                        <template if:true={dealListShow}>
+                            <template if:true={object.hasList}>
+                                <div class="slds-grid slds-wrap slds-box slds-theme_shade slds-theme_default slds-p-vertical_xx-small slds-p-horizontal_medium">
+                                    <div class="slds-col slds-size_1-of-1">
+                                        <div class="sep_border"></div>
+                                        <div class="slds-grid slds-wrap">
+                                            <div class="slds-col slds-size_6-of-12">
+                                                <ul class="slds-list_horizontal slds-has-block-links_space ">
+                                                    <li>
+                                                        
+                                                    </li>
+                                                    <li>
+                                                        <span class="slds-page-header__title slds-text-align_left slds-m-left_x-small slds-m-top_xx-small"
+                                                            title={object.name}>{object.name} ({object.count})</span>
+                                                    </li>
+                                                </ul>
+                                            </div>
+
+                                            <div class="slds-col slds-size_6-of-12">
+                                                <ul class="slds-list_horizontal slds-has-block-links_space slds-float_right">
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- Added above 2 closing divs by LK on 2024-10-15 to fix 00047771 -->
+                                <div class="slds-box slds-box_x-small slds-p-around_none tabhead  slds-m-bottom_small">
+                                    <div class="slds-grid slds-wrap">
+                                        <!-- Commented below 2 closing divs by LK on 2024-10-15 to fix 00047771 -->
+                                        <!-- </div>
+                                        </div> -->
+                                        <template if:true={innerDealListShow}>
+                                            <div class="slds-col slds-size_1-of-1 slds-text-align_left">
+                                                <div>
+                                                    <lightning-datatable class="heightDataTable"
+                                                        hide-checkbox-column="true" key-field="id"
+                                                        data={object.outerList} columns={lWCTabelDealColumnList}>
+                                                    </lightning-datatable>
+                                                </div>
+                                            </div>
+                                        </template>
+                                        <div class="slds-col slds-size_1-of-1 slds-text-align_right slds-p-right_small slds-theme_shade">
+                                            <div class="slds-page-header__col-actions">
+                                                <template if:true={object.veiwMore}>
+                                                    <lightning-button variant="base" label="View All" data-value="Deals"
+                                                        data-name={object.name} title="View All Deals search results"
+                                                        class="slds-m-left_x-small"
+                                                        onclick={onClickFirmTableChange}></lightning-button>
+                                                </template>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <template if:false={innerDealListShow}>
+                                    <div class="slds-col  slds-p-left_small clsFullHeight">
+                                        <div class="slds-page-header slds-page-header_record-home slds-p-horizontal_none clsFullRightColumnHeight">
+                                            <div class="noResults slds-p-vertical--xx-large slds-m-top--large slds-align--absolute-center slds-grid--vertical slds-text-align--center slds-text-color--weak" data-aura-rendered-by="465:8941;a">
+                                                <figure class="slds-p-bottom--xx-large"
+                                                    data-aura-rendered-by="466:8941;a"><span
+                                                        data-aura-rendered-by="469:8941;a" class="uiImage"
+                                                        data-aura-class="uiImage"><img
+                                                            data-aura-rendered-by="467:8941;a"
+                                                            src="/img/search/no-results.png" class="" alt=""></span>
+                                                </figure>
+                                                <div class="slds-text-heading--large noResultsTitle slds-p-bottom--large"
+                                                    data-aura-rendered-by="470:8941;a">No results for
+                                                    {outerNoRecordOBject}</div>
+                                                <div class="slds-text-heading--small noResultsMessage"
+                                                    data-aura-rendered-by="472:8941;a">
+                                                    <div class="slds-hide" data-aura-rendered-by="473:8941;a"></div>
+                                                    <div class="tips" data-aura-rendered-by="476:8941;a">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </template>
+                            </template>
+                        </template>
+                    </div>
+                </template>
+            </template>
+            <!--Grid-->
+            <template if:false={isPresentDealRecordTypeNames}>
+                <template if:true={dealListShow}>
+                    <div class="slds-grid slds-wrap slds-box slds-theme_shade slds-p-vertical_xx-small slds-p-horizontal_medium">
+                        <div class="slds-col slds-size_1-of-1">
+                            <template if:true={innerDealListShow}>
+                                <div class="slds-grid slds-wrap">
+                                    <div class="slds-col slds-size_6-of-12">
+                                        <ul class="slds-list_horizontal slds-has-block-links_space">
+                                            <li>
+                                                <span class="slds-page-header__title slds-text-align_left slds-m-left_x-small slds-m-top_xx-small"
+                                                    title={dealTableName}>{dealTableName} ({sizeDealList})</span>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </template>
+                        </div>
+                    </div>
+                    <div class="slds-box slds-box_x-small slds-p-around_none tabhead  slds-m-bottom_small">
+                        <div class="slds-grid slds-wrap">
+                            <template if:true={innerDealListShow}>
+                                <div class="slds-col slds-size_1-of-1 slds-text-align_left">
+                                    <div>
+                                        <lightning-datatable class="heightDataTable" hide-checkbox-column="true"
+                                            key-field="id" data={representDealList} columns={lWCTabelDealColumnList}>
+                                        </lightning-datatable>
+                                    </div>
+                                </div>
+                            </template>
+                            <div class="slds-col slds-size_1-of-1 slds-text-align_right slds-p-right_small slds-theme_shade">
+                                <div class="slds-page-header__col-actions">
+                                    <template if:true={viewMoreDeal}>
+                                        <lightning-button variant="base" label="View All"
+                                            title="View All Deals search results" class="slds-m-left_x-small"
+                                            data-name="Deals" onclick={OpenRelatedPage}></lightning-button>
+                                    </template>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <template if:false={innerDealListShow}>
+                        <div class="slds-col  slds-p-left_small clsFullHeight">
+                            <div class="slds-page-header slds-page-header_record-home slds-p-horizontal_none clsFullRightColumnHeight">
+                                <div class="noResults slds-p-vertical--xx-large slds-m-top--large slds-align--absolute-center slds-grid--vertical slds-text-align--center slds-text-color--weak" data-aura-rendered-by="465:8941;a">
+                                    <figure class="slds-p-bottom--xx-large" data-aura-rendered-by="466:8941;a"><span
+                                            data-aura-rendered-by="469:8941;a" class="uiImage"
+                                            data-aura-class="uiImage"><img data-aura-rendered-by="467:8941;a"
+                                                src="/img/search/no-results.png" class="" alt=""></span></figure>
+                                    <div class="slds-text-heading--large noResultsTitle slds-p-bottom--large"
+                                        data-aura-rendered-by="470:8941;a">No results for {dealTableName}</div>
+                                    <div class="slds-text-heading--small noResultsMessage"
+                                        data-aura-rendered-by="472:8941;a">
+                                        <div class="slds-hide" data-aura-rendered-by="473:8941;a"></div>
+                                        <div class="tips" data-aura-rendered-by="476:8941;a">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </template>
+                </template>
+            </template>
+            <!--Grid-->
+            <!--Grid-->
+            <template if:true={isPresentFundRecordTypeNames}>
+                <template for:each={fundRecTypeObjList} for:item="object" for:index="index">
+                    <div key={object.name}>
+                        <template if:true={fundListShow}>
+                            <template if:true={object.hasList}>
+                                <div class="slds-grid slds-wrap slds-box slds-theme_shade slds-theme_default slds-p-vertical_xx-small slds-p-horizontal_medium">
+                                    <div class="slds-col slds-size_1-of-1">
+                                        <div class="sep_border"></div>
+                                        <div class="slds-grid slds-wrap">
+                                            <div class="slds-col slds-size_6-of-12">
+                                                <ul class="slds-list_horizontal slds-has-block-links_space ">
+                                                    <li>
+                                                        
+                                                    </li>
+                                                    <li>
+                                                        <span class="slds-page-header__title slds-text-align_left slds-m-left_x-small slds-m-top_xx-small"
+                                                            title={object.name}>{object.name} ({object.count})</span>
+                                                    </li>
+                                                </ul>
+                                            </div>
+
+                                            <div class="slds-col slds-size_6-of-12">
+                                                <ul class="slds-list_horizontal slds-has-block-links_space slds-float_right">
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="slds-box slds-box_x-small slds-p-around_none tabhead  slds-m-bottom_small">
+                                    <div class="slds-grid slds-wrap">
+                                        <template if:true={innerFundListShow}>
+                                            <div class="slds-col slds-size_1-of-1 slds-text-align_left">
+                                                <div>
+                                                    <lightning-datatable class="heightDataTable  "
+                                                        hide-checkbox-column="true" key-field="id"
+                                                        data={object.outerList} columns={lWCTabelFundColumnList}>
+                                                    </lightning-datatable>
+                                                </div>
+                                            </div>
+                                        </template>
+                                        <div class="slds-col slds-size_1-of-1 slds-text-align_right slds-p-right_small slds-theme_shade">
+                                            <div class="slds-page-header__col-actions">
+                                                <template if:true={object.veiwMore}>
+                                                    <lightning-button variant="base" label="View All" data-value='Funds'
+                                                        data-name={object.name} onclick={onClickFirmTableChange}
+                                                        title="View All Funds search results"
+                                                        class="slds-m-left_x-small"></lightning-button>
+                                                </template>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <template if:false={innerFundListShow}>
+                                    <div class="slds-col  slds-p-left_small clsFullHeight">
+                                        <div class="slds-page-header slds-page-header_record-home slds-p-horizontal_none clsFullRightColumnHeight">
+                                            <div class="noResults slds-p-vertical--xx-large slds-m-top--large slds-align--absolute-center slds-grid--vertical slds-text-align--center slds-text-color--weak" data-aura-rendered-by="465:8941;a">
+                                                <figure class="slds-p-bottom--xx-large"
+                                                    data-aura-rendered-by="466:8941;a"><span
+                                                        data-aura-rendered-by="469:8941;a" class="uiImage"
+                                                        data-aura-class="uiImage"><img
+                                                            data-aura-rendered-by="467:8941;a"
+                                                            src="/img/search/no-results.png" class="" alt=""></span>
+                                                </figure>
+                                                <div class="slds-text-heading--large noResultsTitle slds-p-bottom--large"
+                                                    data-aura-rendered-by="470:8941;a">No results for
+                                                    {outerNoRecordOBject}</div>
+                                                <div class="slds-text-heading--small noResultsMessage"
+                                                    data-aura-rendered-by="472:8941;a">
+                                                    <div class="slds-hide" data-aura-rendered-by="473:8941;a"></div>
+                                                    <div class="tips" data-aura-rendered-by="476:8941;a">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </template>
+                            </template>
+                        </template>
+                    </div>
+                </template>
+            </template>
+            <!--Grid-->
+            <!--Grid-->
+            <template if:false={isPresentFundRecordTypeNames}>
+                <template if:true={fundListShow}>
+                    <div class="slds-grid slds-wrap slds-box slds-theme_shade slds-theme_default slds-p-vertical_xx-small slds-p-horizontal_medium">
+                        <div class="slds-col slds-size_1-of-1">
+                            <div class="sep_border"></div>
+                            <template if:true={innerFundListShow}>
+                                <div class="slds-grid slds-wrap">
+                                    <div class="slds-col slds-size_6-of-12">
+                                        <ul class="slds-list_horizontal slds-has-block-links_space ">
+                                            <li>
+                                               
+                                            </li>
+                                            <li>
+                                                <span class="slds-page-header__title slds-text-align_left slds-m-left_x-small slds-m-top_xx-small"
+                                                    title={fundTableName}>{fundTableName} ({sizeFundList})</span>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                    <div class="slds-col slds-size_6-of-12">
+                                        <ul class="slds-list_horizontal slds-has-block-links_space slds-float_right">
+                                        </ul>
+                                    </div>
+                                </div>
+                            </template>
+                        </div>
+                    </div>
+                    <div class="slds-box slds-box_x-small slds-p-around_none tabhead  slds-m-bottom_small">
+                        <div class="slds-grid slds-wrap">
+                            <template if:true={innerFundListShow}>
+                                <div class="slds-col slds-size_1-of-1 slds-text-align_left">
+                                    <div>
+                                        <lightning-datatable class="heightDataTable  " key-field="id"
+                                            columns={lWCTabelFundColumnList} data={representFundList}
+                                            hide-checkbox-column="true">
+                                        </lightning-datatable>
+                                    </div>
+                                </div>
+                            </template>
+                            <div class="slds-col slds-size_1-of-1 slds-text-align_right slds-p-right_small slds-theme_shade">
+                                <div class="slds-page-header__col-actions">
+                                    <template if:true={viewMoreFund}>
+                                        <lightning-button variant="base" label="View All"
+                                            title="View All Funds search results" class="slds-m-left_x-small"
+                                            data-name="Funds" onclick={OpenRelatedPage}></lightning-button>
+                                    </template>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <template if:false={innerFundListShow}>
+                        <div class="slds-col  slds-p-left_small clsFullHeight">
+                            <div class="slds-page-header slds-page-header_record-home slds-p-horizontal_none clsFullRightColumnHeight">
+                                <div class="noResults slds-p-vertical--xx-large slds-m-top--large slds-align--absolute-center slds-grid--vertical slds-text-align--center slds-text-color--weak" data-aura-rendered-by="465:8941;a">
+                                    <figure class="slds-p-bottom--xx-large" data-aura-rendered-by="466:8941;a"><span
+                                            data-aura-rendered-by="469:8941;a" class="uiImage"
+                                            data-aura-class="uiImage"><img data-aura-rendered-by="467:8941;a"
+                                                src="/img/search/no-results.png" class="" alt=""></span></figure>
+                                    <div class="slds-text-heading--large noResultsTitle slds-p-bottom--large"
+                                        data-aura-rendered-by="470:8941;a">No results for {fundTableName}</div>
+                                    <div class="slds-text-heading--small noResultsMessage" data-aura-rendered-by="472:8941;a">
+                                        <div class="slds-hide" data-aura-rendered-by="473:8941;a"></div>
+                                        <div class="tips" data-aura-rendered-by="476:8941;a">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </template>
+                </template>
+            </template>
+            <!--Grid-->
+            <!--Grid-->
+            <template if:true={isPresentFdrRecTypeNames}>
+                <template for:each={fdrRecTypeObjList} for:item="object" for:index="index">
+                    <div key={object.name}>
+                        <template if:true={fdrListShow}>
+                            <template if:true={object.hasList}>
+                                <div class="slds-grid slds-wrap slds-box slds-theme_shade slds-theme_default slds-p-vertical_xx-small slds-p-horizontal_medium">
+                                    <div class="slds-col slds-size_1-of-1">
+                                        <div class="sep_border"></div>
+                                        <div class="slds-grid slds-wrap">
+                                            <div class="slds-col slds-size_6-of-12">
+                                                <ul class="slds-list_horizontal slds-has-block-links_space ">
+                                                    <li>
+                                                        
+                                                    </li>
+                                                    <li>
+                                                        <span class="slds-page-header__title slds-text-align_left slds-m-left_x-small slds-m-top_xx-small"
+                                                            title={object.name}>{object.name} ({object.count})</span>
+                                                    </li>
+                                                </ul>
+                                            </div>
+
+                                            <div class="slds-col slds-size_6-of-12">
+                                                <ul
+                                                    class="slds-list_horizontal slds-has-block-links_space slds-float_right">
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="slds-box slds-box_x-small slds-p-around_none tabhead  slds-m-bottom_small">
+                                    <div class="slds-grid slds-wrap">
+                                        <template if:true={innerFdrListShow}>
+                                            <div class="slds-col slds-size_1-of-1 slds-text-align_left">
+                                                <div>
+                                                    <lightning-datatable class="heightDataTable trucate-des"
+                                                        hide-checkbox-column="true" key-field="id"
+                                                        data={object.outerList} columns={lWCTabelFdrColList}>
+                                                    </lightning-datatable>
+                                                </div>
+                                            </div>
+                                        </template>
+                                        <div class="slds-col slds-size_1-of-1 slds-text-align_right slds-p-right_small slds-theme_shade">
+                                            <div class="slds-page-header__col-actions">
+                                                <template if:true={object.veiwMore}>
+                                                    <lightning-button variant="base" label="View All"
+                                                        data-value="FundRaising" data-name={object.name}
+                                                        title="View All Fundraising search results"
+                                                        class="slds-m-left_x-small"
+                                                        onclick={onClickFirmTableChange}></lightning-button>
+                                                </template>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <template if:false={innerFdrListShow}>
+                                    <div class="slds-col  slds-p-left_small clsFullHeight">
+                                        <div class="slds-page-header slds-page-header_record-home slds-p-horizontal_none clsFullRightColumnHeight">
+                                            <div class="noResults slds-p-vertical--xx-large slds-m-top--large slds-align--absolute-center slds-grid--vertical slds-text-align--center slds-text-color--weak" data-aura-rendered-by="465:8941;a">
+                                                <figure class="slds-p-bottom--xx-large"
+                                                    data-aura-rendered-by="466:8941;a"><span
+                                                        data-aura-rendered-by="469:8941;a" class="uiImage"
+                                                        data-aura-class="uiImage"><img
+                                                            data-aura-rendered-by="467:8941;a"
+                                                            src="/img/search/no-results.png" class="" alt=""></span>
+                                                </figure>
+                                                <div class="slds-text-heading--large noResultsTitle slds-p-bottom--large"
+                                                    data-aura-rendered-by="470:8941;a">No results for
+                                                    {outerNoRecordOBject}</div>
+                                                <div class="slds-text-heading--small noResultsMessage"
+                                                    data-aura-rendered-by="472:8941;a">
+                                                    <div class="slds-hide" data-aura-rendered-by="473:8941;a"></div>
+                                                    <div class="tips" data-aura-rendered-by="476:8941;a">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </template>
+                            </template>
+                        </template>
+                    </div>
+
+                </template>
+            </template>
+            <!--Grid-->
+            <!--Grid-->
+            <template if:false={isPresentFdrRecTypeNames}>
+                <template if:true={fdrListShow}>
+                    <div class="slds-grid slds-wrap slds-box slds-theme_shade slds-theme_default slds-p-vertical_xx-small slds-p-horizontal_medium">
+                        <div class="slds-col slds-size_1-of-1">
+                            <div class="sep_border"></div>
+                            <template if:true={innerFdrListShow}>
+                                <div class="slds-grid slds-wrap">
+                                    <div class="slds-col slds-size_6-of-12">
+                                        <ul class="slds-list_horizontal slds-has-block-links_space ">
+                                            <li>
+                                                
+                                            </li>
+                                            <li>
+                                                <span class="slds-page-header__title slds-text-align_left slds-m-left_x-small slds-m-top_xx-small"
+                                                    title={fdrTableName}>{fdrTableName}
+                                                    ({sizeFdrList})</span>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                    <div class="slds-col slds-size_6-of-12">
+                                        <ul class="slds-list_horizontal slds-has-block-links_space slds-float_right">
+                                        </ul>
+                                    </div>
+                                </div>
+                            </template>
+                        </div>
+                    </div>
+                    <div class="slds-box slds-box_x-small slds-p-around_none tabhead  slds-m-bottom_small">
+                        <div class="slds-grid slds-wrap">
+                            <template if:true={innerFdrListShow}>
+                                <div class="slds-col slds-size_1-of-1 slds-text-align_left">
+                                    <div>
+                                        <lightning-datatable class="heightDataTable trucate-des" key-field="id"
+                                            columns={lWCTabelFdrColList} data={rprsntFdrList}
+                                            hide-checkbox-column="true">
+                                        </lightning-datatable>
+                                    </div>
+                                </div>
+                            </template>
+                            <div class="slds-col slds-size_1-of-1 slds-text-align_right slds-p-right_small slds-theme_shade">
+                                <div class="slds-page-header__col-actions">
+                                    <template if:true={viewMoreFundRaising}>
+                                        <lightning-button variant="base" label="View All"
+                                            title="View All Fundraising search results" class="slds-m-left_x-small"
+                                            data-name="FundRaising" onclick={OpenRelatedPage}></lightning-button>
+                                    </template>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <template if:false={innerFdrListShow}>
+                        <div class="slds-col  slds-p-left_small clsFullHeight">
+                            <div class="slds-page-header slds-page-header_record-home slds-p-horizontal_none clsFullRightColumnHeight">
+                                <div class="noResults slds-p-vertical--xx-large slds-m-top--large slds-align--absolute-center slds-grid--vertical slds-text-align--center slds-text-color--weak"
+                                    data-aura-rendered-by="465:8941;a">
+                                    <figure class="slds-p-bottom--xx-large" data-aura-rendered-by="466:8941;a"><span
+                                            data-aura-rendered-by="469:8941;a" class="uiImage"
+                                            data-aura-class="uiImage"><img data-aura-rendered-by="467:8941;a"
+                                                src="/img/search/no-results.png" class="" alt=""></span></figure>
+                                    <div class="slds-text-heading--large noResultsTitle slds-p-bottom--large"
+                                        data-aura-rendered-by="470:8941;a">No results for {fdrTableName}</div>
+                                    <div class="slds-text-heading--small noResultsMessage"
+                                        data-aura-rendered-by="472:8941;a">
+                                        <div class="slds-hide" data-aura-rendered-by="473:8941;a"></div>
+                                        <div class="tips" data-aura-rendered-by="476:8941;a">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </template>
+                </template>
+            </template>
+            <!--Grid-->
+
+            <!--Theme Section Start -->
+            <template if:true={themeListShow}> <!-- task === Intraction -->
+                <div class="slds-grid slds-wrap slds-box slds-theme_shade slds-theme_default slds-p-vertical_xx-small slds-p-horizontal_medium">
+                    <div class="slds-col slds-size_1-of-1">
+                        <div class="sep_border"></div>
+                        <template if:true={innerThemeListShow}>
+                            <div class="slds-grid slds-wrap">
+                                <div class="slds-col slds-size_6-of-12">
+                                    <ul class="slds-list_horizontal slds-has-block-links_space ">
+                                        <li>
+                                        </li>
+                                        <li>
+                                            <span
+                                                class="slds-page-header__title slds-text-align_left slds-m-left_x-small slds-m-top_xx-small"
+                                                title={themeLabel}>{themeLabel} ({sizeThemeList})</span>
+                                        </li>
+                                    </ul>
+                                </div>
+                                <div class="slds-col slds-size_6-of-12">
+                                    <ul class="slds-list_horizontal slds-has-block-links_space slds-float_right">
+                                    </ul>
+                                </div>
+                            </div>
+                        </template>
+                    </div>
+                </div>
+                <div class="slds-box slds-box_x-small slds-p-around_none tabhead  slds-m-bottom_small">
+                    <div class="slds-grid slds-wrap">
+                        <template if:true={innerThemeListShow}>
+                            <div class="slds-col slds-size_1-of-1 slds-text-align_left">
+                                <div>
+                                    <lightning-datatable class="heightDataTable  " key-field="id"
+                                        columns={lWCTblThmColList} data={representThemeList}
+                                        hide-checkbox-column="true">
+                                    </lightning-datatable>
+                                </div>
+                            </div>
+                        </template>
+                        <div class="slds-col slds-size_1-of-1 slds-text-align_right slds-p-right_small slds-theme_shade">
+                            <div class="slds-page-header__col-actions">
+                                <template if:true={viewMoreTheme}>
+                                    <lightning-button variant="base" label="View All"
+                                        title="View All Theme search results" class="slds-m-left_x-small"
+                                        data-name="Themes" onclick={OpenRelatedPage}></lightning-button>
+                                </template>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <template if:false={innerThemeListShow}>
+                    <div class="slds-col  slds-p-left_small clsFullHeight">
+                        <div class="slds-page-header slds-page-header_record-home slds-p-horizontal_none clsFullRightColumnHeight">
+                            <div class="noResults slds-p-vertical--xx-large slds-m-top--large slds-align--absolute-center slds-grid--vertical slds-text-align--center slds-text-color--weak"
+                                data-aura-rendered-by="465:8941;a">
+                                <figure class="slds-p-bottom--xx-large" data-aura-rendered-by="466:8941;a"><span
+                                        data-aura-rendered-by="469:8941;a" class="uiImage"
+                                        data-aura-class="uiImage"><img data-aura-rendered-by="467:8941;a"
+                                            src="/img/search/no-results.png" class="" alt=""></span></figure>
+                                <div class="slds-text-heading--large noResultsTitle slds-p-bottom--large"
+                                    data-aura-rendered-by="470:8941;a">No results for {themeLabel}</div>
+                                <div class="slds-text-heading--small noResultsMessage"
+                                    data-aura-rendered-by="472:8941;a">
+                                    <div class="slds-hide" data-aura-rendered-by="473:8941;a"></div>
+                                    <div class="tips" data-aura-rendered-by="476:8941;a">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </template>
+            </template>
+            <!-- Theme Section END-->
+
+            <!--- Clip Section Start -->
+            <template if:true={clipListShow}> <!-- task === Intraction -->
+                <div class="slds-grid slds-wrap slds-box slds-theme_shade slds-theme_default slds-p-vertical_xx-small slds-p-horizontal_medium">
+                    <div class="slds-col slds-size_1-of-1">
+                        <div class="sep_border"></div>
+                        <template if:true={innerClipListShow}>
+                            <div class="slds-grid slds-wrap">
+                                <div class="slds-col slds-size_6-of-12">
+                                    <ul class="slds-list_horizontal slds-has-block-links_space ">
+                                        <li>
+                                        </li>
+                                        <li>
+                                            <span
+                                                class="slds-page-header__title slds-text-align_left slds-m-left_x-small slds-m-top_xx-small"
+                                                title={clipLabel}>{clipLabel} ({sizeClipList})</span>
+                                        </li>
+                                    </ul>
+                                </div>
+                                <div class="slds-col slds-size_6-of-12">
+                                    <ul class="slds-list_horizontal slds-has-block-links_space slds-float_right">
+                                    </ul>
+                                </div>
+                            </div>
+                        </template>
+                    </div>
+                </div>
+                <div class="slds-box slds-box_x-small slds-p-around_none tabhead  slds-m-bottom_small">
+                    <div class="slds-grid slds-wrap">
+                        <template if:true={innerClipListShow}>
+                            <div class="slds-col slds-size_1-of-1 slds-text-align_left">
+                                <div>
+                                    <lightning-datatable class="heightDataTable " key-field="id"
+                                        columns={lWCTblClipColList} data={representClipList}
+                                        hide-checkbox-column="true" onrowaction={onClipRowClick}>
+                                    </lightning-datatable>
+                                </div>
+                            </div>
+                        </template>
+                        <div class="slds-col slds-size_1-of-1 slds-text-align_right slds-p-right_small slds-theme_shade">
+                            <div class="slds-page-header__col-actions">
+                                <template if:true={viewMoreClip}>
+                                    <lightning-button variant="base" label="View All"
+                                        title="View All Clip search results" class="slds-m-left_x-small"
+                                        data-name="Clips" onclick={OpenRelatedPage}></lightning-button>
+                                </template>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <template if:false={innerClipListShow}>
+                    <div class="slds-col  slds-p-left_small clsFullHeight">
+                        <div class="slds-page-header slds-page-header_record-home slds-p-horizontal_none clsFullRightColumnHeight">
+                            <div class="noResults slds-p-vertical--xx-large slds-m-top--large slds-align--absolute-center slds-grid--vertical slds-text-align--center slds-text-color--weak" data-aura-rendered-by="465:8941;a">
+                                <figure class="slds-p-bottom--xx-large" data-aura-rendered-by="466:8941;a"><span
+                                        data-aura-rendered-by="469:8941;a" class="uiImage"
+                                        data-aura-class="uiImage"><img data-aura-rendered-by="467:8941;a"
+                                            src="/img/search/no-results.png" class="" alt=""></span></figure>
+                                <div class="slds-text-heading--large noResultsTitle slds-p-bottom--large"
+                                    data-aura-rendered-by="470:8941;a">No results for {clipLabel}</div>
+                                <div class="slds-text-heading--small noResultsMessage"
+                                    data-aura-rendered-by="472:8941;a">
+                                    <div class="slds-hide" data-aura-rendered-by="473:8941;a"></div>
+                                    <div class="tips" data-aura-rendered-by="476:8941;a">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </template>
+            </template>
+            <!-- Clip Section End -->
+            <!-- File Section-->
+            <template if:true={fileListShow}> <!-- task === Intraction -->
+                <div class="slds-grid slds-wrap slds-box slds-theme_shade slds-theme_default slds-p-vertical_xx-small slds-p-horizontal_medium">
+                    <div class="slds-col slds-size_1-of-1">
+                        <div class="sep_border"></div>
+                        <template if:true={innerFileListShow}>
+                            <div class="slds-grid slds-wrap">
+                                <div class="slds-col slds-size_6-of-12">
+                                    <ul class="slds-list_horizontal slds-has-block-links_space ">
+                                        <li>
+                                        </li>
+                                        <li>
+                                            <span class="slds-page-header__title slds-text-align_left slds-m-left_x-small slds-m-top_xx-small"
+                                                title="File">File ({sizeFileList})</span>
+                                        </li>
+                                    </ul>
+                                </div>
+                                <div class="slds-col slds-size_6-of-12">
+                                    <ul class="slds-list_horizontal slds-has-block-links_space slds-float_right">
+                                    </ul>
+                                </div>
+                            </div>
+                        </template>
+                    </div>
+                </div>
+                <div class="slds-box slds-box_x-small slds-p-around_none tabhead  slds-m-bottom_small">
+                    <div class="slds-grid slds-wrap">
+                        <template if:true={innerFileListShow}>
+                            <div class="slds-col slds-size_1-of-1 slds-text-align_left">
+                                <div>
+                                    <lightning-datatable class="heightDataTable  " key-field="id" columns={filesColumn}
+                                        data={representFileList} hide-checkbox-column="true"
+                                        onrowaction={onFileRowClick}>
+                                    </lightning-datatable>
+                                </div>
+                            </div>
+                        </template>
+                        <div
+                            class="slds-col slds-size_1-of-1 slds-text-align_right slds-p-right_small slds-theme_shade">
+                            <div class="slds-page-header__col-actions">
+                                <template if:true={viewMoreFile}>
+                                    <lightning-button variant="base" label="View All"
+                                        title="View All File search results" class="slds-m-left_x-small"
+                                        data-name="Files" onclick={OpenRelatedPage}></lightning-button>
+                                </template>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <template if:false={innerFileListShow}>
+                    <div class="slds-col  slds-p-left_small clsFullHeight">
+                        <div class="slds-page-header slds-page-header_record-home slds-p-horizontal_none clsFullRightColumnHeight">
+                            <div class="noResults slds-p-vertical--xx-large slds-m-top--large slds-align--absolute-center slds-grid--vertical slds-text-align--center slds-text-color--weak" data-aura-rendered-by="465:8941;a">
+                                <figure class="slds-p-bottom--xx-large" data-aura-rendered-by="466:8941;a"><span
+                                        data-aura-rendered-by="469:8941;a" class="uiImage"
+                                        data-aura-class="uiImage"><img data-aura-rendered-by="467:8941;a"
+                                            src="/img/search/no-results.png" class="" alt=""></span></figure>
+                                <div class="slds-text-heading--large noResultsTitle slds-p-bottom--large"
+                                    data-aura-rendered-by="470:8941;a">No results for File</div>
+                                <div class="slds-text-heading--small noResultsMessage"
+                                    data-aura-rendered-by="472:8941;a">
+                                    <div class="slds-hide" data-aura-rendered-by="473:8941;a"></div>
+                                    <div class="tips" data-aura-rendered-by="476:8941;a">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </template>
+            </template>
+            <!--File Section END -->
+
+            <!-- Static poc team  styling start -->
+            <!--Grid-->
+            <template if:true={taskListShow}> <!-- task === Intraction -->
+                <div class="slds-grid slds-wrap slds-box slds-theme_shade slds-theme_default slds-p-vertical_xx-small slds-p-horizontal_medium">
+                    <div class="slds-col slds-size_1-of-1">
+                        <div class="sep_border"></div>
+                        <template if:true={innerTaskListShow}>
+                            <div class="slds-grid slds-wrap">
+                                <div class="slds-col slds-size_6-of-12">
+                                    <ul class="slds-list_horizontal slds-has-block-links_space ">
+                                        <li>
+                                        </li>
+                                        <li>
+                                            <span
+                                                class="slds-page-header__title slds-text-align_left slds-m-left_x-small slds-m-top_xx-small"
+                                                title="Interaction">Interaction ({sizeTaskList})</span>
+                                        </li>
+                                    </ul>
+                                </div>
+                                <div class="slds-col slds-size_6-of-12">
+                                    <ul class="slds-list_horizontal slds-has-block-links_space slds-float_right">
+                                    </ul>
+                                </div>
+                            </div>
+                        </template>
+                    </div>
+                </div>
+                <div class="slds-box slds-box_x-small slds-p-around_none tabhead  slds-m-bottom_small">
+                    <div class="slds-grid slds-wrap">
+                        <template if:true={innerTaskListShow}>
+                            <div class="slds-col slds-size_1-of-1 slds-text-align_left">
+                                <div>
+                                    <lightning-datatable class="heightDataTable  " key-field="id"
+                                        columns={interactionTableHeader} data={representTaskList}
+                                        hide-checkbox-column="true" onrowaction={onIntractionTableClick}>
+                                    </lightning-datatable>
+                                </div>
+                            </div>
+                        </template>
+                        <div class="slds-col slds-size_1-of-1 slds-text-align_right slds-p-right_small slds-theme_shade">
+                            <div class="slds-page-header__col-actions">
+                                <template if:true={viewMoreTask}>
+                                    <lightning-button variant="base" label="View All"
+                                        title="View All Interactions search results" class="slds-m-left_x-small"
+                                        data-name="Tasks" onclick={OpenRelatedPage}></lightning-button>
+                                </template>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <template if:false={innerTaskListShow}>
+                    <div class="slds-col  slds-p-left_small clsFullHeight">
+                        <div class="slds-page-header slds-page-header_record-home slds-p-horizontal_none clsFullRightColumnHeight">
+                            <div class="noResults slds-p-vertical--xx-large slds-m-top--large slds-align--absolute-center slds-grid--vertical slds-text-align--center slds-text-color--weak" data-aura-rendered-by="465:8941;a">
+                                <figure class="slds-p-bottom--xx-large" data-aura-rendered-by="466:8941;a"><span
+                                        data-aura-rendered-by="469:8941;a" class="uiImage"
+                                        data-aura-class="uiImage"><img data-aura-rendered-by="467:8941;a"
+                                            src="/img/search/no-results.png" class="" alt=""></span></figure>
+                                <div class="slds-text-heading--large noResultsTitle slds-p-bottom--large"
+                                    data-aura-rendered-by="470:8941;a">No results for Interaction</div>
+                                <div class="slds-text-heading--small noResultsMessage"
+                                    data-aura-rendered-by="472:8941;a">
+                                    <div class="slds-hide" data-aura-rendered-by="473:8941;a"></div>
+                                    <div class="tips" data-aura-rendered-by="476:8941;a">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </template>
+            </template>
+        </div>
+        <!--Right Side Section-->
+    </div>
+    <!--End-->
+</template>

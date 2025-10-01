@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Check_Allow_Change</fullName>
+    <active>true</active>
+    <description>This VD does not allow the user to change the amount once a Transfer is made from the Commitment.</description>
+    <errorConditionFormula>IF( AND(AllowChange__c = false, ISCHANGED( Commitment_Amount_nearest__c ), Has_Child__c =true), true, false)</errorConditionFormula>
+    <errorMessage>The commitment amount cannot be edited because a transfer has been made from this commitment. Please first delete the transfer made from this commitment and then edit the commitment amount.</errorMessage>
+</ValidationRule>

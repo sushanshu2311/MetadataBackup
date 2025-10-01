@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomFieldTranslation xmlns="http://soap.sforce.com/2006/04/metadata">
+        <label><!-- Navigation Type --></label>
+        <name>Navigation_Type__c</name>
+        <picklistValues>
+            <masterLabel>Bulk Actions</masterLabel>
+            <translation><!-- Bulk Actions --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Create</masterLabel>
+            <translation><!-- Create --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Create New</masterLabel>
+            <translation><!-- Create New --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>New Interactions</masterLabel>
+            <translation><!-- New Interactions --></translation>
+        </picklistValues>
+    </CustomFieldTranslation>

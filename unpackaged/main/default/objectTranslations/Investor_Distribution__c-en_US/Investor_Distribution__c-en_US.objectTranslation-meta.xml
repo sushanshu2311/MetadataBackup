@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObjectTranslation xmlns="http://soap.sforce.com/2006/04/metadata">
+    <caseValues>
+        <plural>false</plural>
+        <value>Investor Distribution</value>
+    </caseValues>
+    <caseValues>
+        <plural>true</plural>
+        <value>Investor Distributions</value>
+    </caseValues>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <layouts>
+        <layout>Investor Distribution Layout</layout>
+        <sections>
+            <label><!-- Custom Links --></label>
+            <section>Custom Links</section>
+        </sections>
+        <sections>
+            <label><!-- Investor Distribution Information --></label>
+            <section>Investor Distribution Information</section>
+        </sections>
+        <sections>
+            <label><!-- Please do not remove this section. --></label>
+            <section>Please do not remove this section.</section>
+        </sections>
+    </layouts>
+    <startsWith>Consonant</startsWith>
+    <validationRules>
+        <errorMessage><!-- Capital Return cannot be less than zero. --></errorMessage>
+        <name>Check_Capital_Return</name>
+    </validationRules>
+    <validationRules>
+        <errorMessage><!-- Dividends cannot be less than zero. --></errorMessage>
+        <name>Check_Dividends</name>
+    </validationRules>
+    <validationRules>
+        <errorMessage><!-- Other Proceeds cannot be less than zero. --></errorMessage>
+        <name>Check_Other_Proceeds</name>
+    </validationRules>
+    <validationRules>
+        <errorMessage><!-- Realized Gain cannot be less than zero. --></errorMessage>
+        <name>Check_Realized_Gain</name>
+    </validationRules>
+    <webLinks>
+        <label><!-- Send_Distribution_Notices --></label>
+        <name>Send_Distribution_Notices</name>
+    </webLinks>
+</CustomObjectTranslation>

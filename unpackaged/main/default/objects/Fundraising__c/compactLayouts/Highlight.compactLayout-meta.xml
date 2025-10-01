@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CompactLayout xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Highlight</fullName>
+    <fields>Name</fields>
+    <fields>Legal_Name__c</fields>
+    <fields>Stage__c</fields>
+    <fields>Investment_Likely_Amount_USD_mn__c</fields>
+    <fields>Target_Close_Date__c</fields>
+    <fields>Closing__c</fields>
+    <label>Highlight</label>
+</CompactLayout>

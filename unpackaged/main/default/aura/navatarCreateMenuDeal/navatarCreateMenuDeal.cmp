@@ -1,0 +1,15 @@
+<aura:component  access="global">
+    <lightning:overlayLibrary aura:id="overlayLib"/>
+    <aura:html tag="style">        
+        .slds-p-around--medium {
+        	padding: 0rem !important;
+        }
+        .slds-modal__container{
+
+            width:30rem !important;
+
+        }
+    </aura:html>
+    <c:navatarCreateMenuDealLwc  onclosemodal = "{!c.handleModalClose}"></c:navatarCreateMenuDealLwc>
+	
+</aura:component>

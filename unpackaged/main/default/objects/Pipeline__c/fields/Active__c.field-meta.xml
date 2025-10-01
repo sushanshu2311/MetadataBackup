@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Active__c</fullName>
+    <formula>($CustomMetadata.Acuity_Setting__mdt.Acuity_Inactive_Deal_StageValue1.Value__c &lt;&gt; &#39;NA&#39;)
+&amp;&amp;
+(NOT(ISNULL(TEXT(Stage__c)) ||
+ISBLANK(TEXT(Stage__c)) ||
+(TEXT(Stage__c) == $CustomMetadata.Acuity_Setting__mdt.Acuity_Inactive_Deal_StageValue1.Value__c ) ||
+(TEXT(Stage__c) == $CustomMetadata.Acuity_Setting__mdt.Acuity_Inactive_Deal_StageValue2.Value__c ) ||
+(TEXT(Stage__c) == $CustomMetadata.Acuity_Setting__mdt.Acuity_Inactive_Deal_StageValue3.Value__c ) ||
+(TEXT(Stage__c) == $CustomMetadata.Acuity_Setting__mdt.Acuity_Inactive_Deal_StageValue4.Value__c ) ||
+(TEXT(Stage__c) == $CustomMetadata.Acuity_Setting__mdt.Acuity_Inactive_Deal_StageValue5.Value__c ) ||
+(TEXT(Stage__c) == $CustomMetadata.Acuity_Setting__mdt.Acuity_Inactive_Deal_StageValue6.Value__c ) ||
+(TEXT(Stage__c) == $CustomMetadata.Acuity_Setting__mdt.Acuity_Inactive_Deal_StageValue7.Value__c ) ||
+(TEXT(Stage__c) == $CustomMetadata.Acuity_Setting__mdt.Acuity_Inactive_Deal_StageValue8.Value__c ) ||
+(TEXT(Stage__c) == $CustomMetadata.Acuity_Setting__mdt.Acuity_Inactive_Deal_StageValue9.Value__c ) ||
+(TEXT(Stage__c) == $CustomMetadata.Acuity_Setting__mdt.Acuity_Inactive_Deal_StageValue10.Value__c )))</formula>
+    <label>Active</label>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Checkbox</type>
+</CustomField>

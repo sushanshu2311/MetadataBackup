@@ -1,0 +1,464 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Translations xmlns="http://soap.sforce.com/2006/04/metadata">
+    <customApplications>
+        <label><!-- Force.com --></label>
+        <name>Force_com</name>
+    </customApplications>
+    <customApplications>
+        <label><!-- PE --></label>
+        <name>PE</name>
+    </customApplications>
+    <customApplications>
+        <label><!-- PE Cloud Mobile --></label>
+        <name>PE_Cloud_Mobile</name>
+    </customApplications>
+    <customLabels>
+        <label><!-- IP_Url --></label>
+        <name>IP_Url</name>
+    </customLabels>
+    <customLabels>
+        <label><!-- Invalid sObject for Editable SDG --></label>
+        <name>Invalid_sObject_for_Editable_SDG</name>
+    </customLabels>
+    <customLabels>
+        <label><!-- Navatar_URL --></label>
+        <name>Navatar_URL</name>
+    </customLabels>
+    <customLabels>
+        <label><!-- Navatar Web Support Page Base URL --></label>
+        <name>navatarWebSupportPageBaseURL</name>
+    </customLabels>
+    <customLabels>
+        <label><!-- After --></label>
+        <name>sdgAfter</name>
+    </customLabels>
+    <customLabels>
+        <label><!-- sdgAgo --></label>
+        <name>sdgAgo</name>
+    </customLabels>
+    <customLabels>
+        <label><!-- Before --></label>
+        <name>sdgBefore</name>
+    </customLabels>
+    <customLabels>
+        <label><!-- Contains --></label>
+        <name>sdgContains</name>
+    </customLabels>
+    <customLabels>
+        <label><!-- Ends --></label>
+        <name>sdgEnds</name>
+    </customLabels>
+    <customLabels>
+        <label><!-- Equals --></label>
+        <name>sdgEquals</name>
+    </customLabels>
+    <customLabels>
+        <label><!-- sdgExcludes --></label>
+        <name>sdgExcludes</name>
+    </customLabels>
+    <customLabels>
+        <label><!-- False --></label>
+        <name>sdgFalse</name>
+    </customLabels>
+    <customLabels>
+        <label><!-- Filtered --></label>
+        <name>sdgFiltered</name>
+    </customLabels>
+    <customLabels>
+        <label><!-- Filtered Of --></label>
+        <name>sdgFilteredOf</name>
+    </customLabels>
+    <customLabels>
+        <label><!-- Greater than --></label>
+        <name>sdgGreaterThan</name>
+    </customLabels>
+    <customLabels>
+        <label><!-- sdgIn --></label>
+        <name>sdgIn</name>
+    </customLabels>
+    <customLabels>
+        <label><!-- sdgIncludes --></label>
+        <name>sdgIncludes</name>
+    </customLabels>
+    <customLabels>
+        <label><!-- Last Month --></label>
+        <name>sdgLastMonth</name>
+    </customLabels>
+    <customLabels>
+        <label><!-- Last quarter --></label>
+        <name>sdgLastQuarter</name>
+    </customLabels>
+    <customLabels>
+        <label><!-- Last Week --></label>
+        <name>sdgLastWeek</name>
+    </customLabels>
+    <customLabels>
+        <label><!-- Last Year --></label>
+        <name>sdgLastYear</name>
+    </customLabels>
+    <customLabels>
+        <label><!-- Less than --></label>
+        <name>sdgLessThan</name>
+    </customLabels>
+    <customLabels>
+        <label><!-- Next month --></label>
+        <name>sdgNextMonth</name>
+    </customLabels>
+    <customLabels>
+        <label><!-- Next Quarter --></label>
+        <name>sdgNextQuarter</name>
+    </customLabels>
+    <customLabels>
+        <label><!-- Next week --></label>
+        <name>sdgNextWeek</name>
+    </customLabels>
+    <customLabels>
+        <label><!-- Next year --></label>
+        <name>sdgNextYear</name>
+    </customLabels>
+    <customLabels>
+        <label><!-- No data --></label>
+        <name>sdgNoData</name>
+    </customLabels>
+    <customLabels>
+        <label><!-- Not Contains --></label>
+        <name>sdgNotContains</name>
+    </customLabels>
+    <customLabels>
+        <label><!-- Not Equals --></label>
+        <name>sdgNotEquals</name>
+    </customLabels>
+    <customLabels>
+        <label><!-- Page --></label>
+        <name>sdgPage</name>
+    </customLabels>
+    <customLabels>
+        <label><!-- Page Size --></label>
+        <name>sdgPage_Size</name>
+    </customLabels>
+    <customLabels>
+        <label><!-- Starts --></label>
+        <name>sdgStarts</name>
+    </customLabels>
+    <customLabels>
+        <label><!-- This Month --></label>
+        <name>sdgThisMonth</name>
+    </customLabels>
+    <customLabels>
+        <label><!-- This quarter --></label>
+        <name>sdgThisQuarter</name>
+    </customLabels>
+    <customLabels>
+        <label><!-- This Week --></label>
+        <name>sdgThisWeek</name>
+    </customLabels>
+    <customLabels>
+        <label><!-- This Year --></label>
+        <name>sdgThisYear</name>
+    </customLabels>
+    <customLabels>
+        <label><!-- Today --></label>
+        <name>sdgToday</name>
+    </customLabels>
+    <customLabels>
+        <label><!-- Tomorrow --></label>
+        <name>sdgTomorrow</name>
+    </customLabels>
+    <customLabels>
+        <label><!-- True --></label>
+        <name>sdgTrue</name>
+    </customLabels>
+    <customLabels>
+        <label><!-- View All --></label>
+        <name>sdgView_All</name>
+    </customLabels>
+    <customLabels>
+        <label><!-- Yesterday --></label>
+        <name>sdgYesterday</name>
+    </customLabels>
+    <customTabs>
+        <label><!-- Clips --></label>
+        <name>Clips</name>
+    </customTabs>
+    <customTabs>
+        <label><!-- Deal Management --></label>
+        <name>Deal_Management</name>
+    </customTabs>
+    <customTabs>
+        <label><!-- Home --></label>
+        <name>Home_Mobile</name>
+    </customTabs>
+    <customTabs>
+        <label><!-- Interactions --></label>
+        <name>Interactions</name>
+    </customTabs>
+    <customTabs>
+        <label><!-- Navatar Investor Manager --></label>
+        <name>Investor_Portal_Manager</name>
+    </customTabs>
+    <customTabs>
+        <label><!-- Navatar Deal Connect --></label>
+        <name>Navatar_Deal_Connect</name>
+    </customTabs>
+    <customTabs>
+        <label><!-- Navatar Setting --></label>
+        <name>Navatar_Setting</name>
+    </customTabs>
+    <customTabs>
+        <label><!-- Navatar Setup --></label>
+        <name>Navatar_Setup</name>
+    </customTabs>
+    <customTabs>
+        <label><!-- NewNotes --></label>
+        <name>NewNotes</name>
+    </customTabs>
+    <customTabs>
+        <label><!-- New Interaction --></label>
+        <name>New_Interaction</name>
+    </customTabs>
+    <customTabs>
+        <label><!-- Special Settings --></label>
+        <name>Special_Settings</name>
+    </customTabs>
+    <customTabs>
+        <label><!-- Themes --></label>
+        <name>Themes</name>
+    </customTabs>
+    <customTabs>
+        <label><!-- View Activity --></label>
+        <name>View_Activity</name>
+    </customTabs>
+    <customTabs>
+        <label><!-- View Interaction --></label>
+        <name>View_Interaction</name>
+    </customTabs>
+    <flowDefinitions>
+        <flows />
+        <fullName>Calculate_DealQuality_and_No_of_Deal_Source_on_Account_Level</fullName>
+    </flowDefinitions>
+    <flowDefinitions>
+        <flows />
+        <fullName>Calculate_DealQuality_and_No_of_Deal_Source_on_Contact_Leve</fullName>
+    </flowDefinitions>
+    <flowDefinitions>
+        <flows />
+        <fullName>Calculate_DealQuality_and_No_of_Deal_Source_on_Contact_Level</fullName>
+    </flowDefinitions>
+    <flowDefinitions>
+        <flows />
+        <fullName>Calculate_DealQuality_and_No_of_Deal_Source_on_Institution_Level</fullName>
+    </flowDefinitions>
+    <flowDefinitions>
+        <flows />
+        <fullName>Event_Type_Update</fullName>
+    </flowDefinitions>
+    <flowDefinitions>
+        <flows />
+        <fullName>Fund_Rollup</fullName>
+    </flowDefinitions>
+    <flowDefinitions>
+        <flows />
+        <fullName>Navatar_LTP_Update_on_Event_Expiration_Flow</fullName>
+    </flowDefinitions>
+    <flowDefinitions>
+        <flows />
+        <fullName>Navatar_Notification</fullName>
+    </flowDefinitions>
+    <flowDefinitions>
+        <flows />
+        <fullName>Office_Location_Primary_Checkbox</fullName>
+    </flowDefinitions>
+    <flowDefinitions>
+        <flows>
+            <textTemplates>
+                <name>sendsms</name>
+            </textTemplates>
+        </flows>
+        <fullName>PartnershipsumRollup</fullName>
+    </flowDefinitions>
+    <flowDefinitions>
+        <flows />
+        <fullName>Rollupflowofpartnership</fullName>
+    </flowDefinitions>
+    <flowDefinitions>
+        <flows />
+        <fullName>Sync_Account_to_Contact_for_Individual_Investor</fullName>
+    </flowDefinitions>
+    <flowDefinitions>
+        <flows />
+        <fullName>Sync_Contact_to_Account_for_Individual_Investor</fullName>
+    </flowDefinitions>
+    <flowDefinitions>
+        <flows />
+        <fullName>Task_Type_Update</fullName>
+    </flowDefinitions>
+    <flowDefinitions>
+        <flows />
+        <fullName>Update_Account_for_Office_Location</fullName>
+    </flowDefinitions>
+    <flowDefinitions>
+        <flows />
+        <fullName>Update_Account_when_convert_Watchlist_to_Under_Evaluation</fullName>
+    </flowDefinitions>
+    <flowDefinitions>
+        <flows />
+        <fullName>Update_Contact_Mailing_Address_when_Office_Location_Fields_gets_changed</fullName>
+    </flowDefinitions>
+    <flowDefinitions>
+        <flows />
+        <fullName>Update_Contact_for_Office_Location</fullName>
+    </flowDefinitions>
+    <flowDefinitions>
+        <flows />
+        <fullName>Update_Mailing_Address_on_Contact_when_Office_Location_is_Updated</fullName>
+    </flowDefinitions>
+    <flowDefinitions>
+        <flows />
+        <fullName>Update_Office_Location_on_Account</fullName>
+    </flowDefinitions>
+    <flowDefinitions>
+        <flows />
+        <fullName>Update_Office_Location_on_Contact</fullName>
+    </flowDefinitions>
+    <flowDefinitions>
+        <flows>
+            <textTemplates>
+                <name>MyTemp</name>
+            </textTemplates>
+            <textTemplates>
+                <name>test</name>
+            </textTemplates>
+        </flows>
+        <fullName>portfolio_version</fullName>
+    </flowDefinitions>
+    <flowDefinitions>
+        <flows />
+        <fullName>update_Higest_Reached_Field</fullName>
+    </flowDefinitions>
+    <quickActions>
+        <label><!-- LogACall --></label>
+        <name>LogACall</name>
+    </quickActions>
+    <quickActions>
+        <label><!-- NewAccount --></label>
+        <name>NewAccount</name>
+    </quickActions>
+    <quickActions>
+        <label><!-- NewCase --></label>
+        <name>NewCase</name>
+    </quickActions>
+    <quickActions>
+        <label><!-- NewContact --></label>
+        <name>NewContact</name>
+    </quickActions>
+    <quickActions>
+        <label><!-- NewEvent --></label>
+        <name>NewEvent</name>
+    </quickActions>
+    <quickActions>
+        <label><!-- NewGroup --></label>
+        <name>NewGroup</name>
+    </quickActions>
+    <quickActions>
+        <label><!-- NewLead --></label>
+        <name>NewLead</name>
+    </quickActions>
+    <quickActions>
+        <label><!-- NewNote --></label>
+        <name>NewNote</name>
+    </quickActions>
+    <quickActions>
+        <label><!-- NewOpportunity --></label>
+        <name>NewOpportunity</name>
+    </quickActions>
+    <quickActions>
+        <label><!-- NewTask --></label>
+        <name>NewTask</name>
+    </quickActions>
+    <quickActions>
+        <label><!-- SendEmail --></label>
+        <name>SendEmail</name>
+    </quickActions>
+    <reportTypes>
+        <description><!-- Orchestration Run Logs Spring &apos;24 --></description>
+        <label><!-- Orchestration Run Logs Spring &apos;24 --></label>
+        <name>flow_orchestration_log_ootb_crt_two_four_eight</name>
+        <sections>
+            <label><!-- Orchestration Run Log --></label>
+            <name>Orchestration Run Log</name>
+        </sections>
+    </reportTypes>
+    <reportTypes>
+        <description><!-- Orchestration Runs Spring &apos;24 --></description>
+        <label><!-- Orchestration Runs Spring &apos;24 --></label>
+        <name>flow_orchestration_run_ootb_crt_two_four_eight</name>
+        <sections>
+            <label><!-- Orchestration Runs --></label>
+            <name>Orchestration Runs</name>
+        </sections>
+    </reportTypes>
+    <reportTypes>
+        <description><!-- Orchestration Stage Runs Spring &apos;24 --></description>
+        <label><!-- Orchestration Stage Runs Spring &apos;24 --></label>
+        <name>flow_orchestration_stage_run_ootb_crt_two_four_eight</name>
+        <sections>
+            <label><!-- Orchestration Stage Runs --></label>
+            <name>Orchestration Stage Runs</name>
+        </sections>
+    </reportTypes>
+    <reportTypes>
+        <description><!-- Orchestration Step Runs Spring &apos;24 --></description>
+        <label><!-- Orchestration Step Runs Spring &apos;24 --></label>
+        <name>flow_orchestration_step_run_ootb_crt_two_four_eight</name>
+        <sections>
+            <label><!-- Orchestration Step Runs --></label>
+            <name>Orchestration Step Runs</name>
+        </sections>
+    </reportTypes>
+    <reportTypes>
+        <description><!-- Orchestration Work Items Spring &apos;24 --></description>
+        <label><!-- Orchestration Work Items Spring &apos;24 --></label>
+        <name>flow_orchestration_work_item_ootb_crt_two_four_eight</name>
+        <sections>
+            <columns>
+                <label><!-- Orchestration Step Run: Label --></label>
+                <name>Orchestration Step Run: Label</name>
+            </columns>
+            <columns>
+                <label><!-- Orchestration Step Run: Name --></label>
+                <name>Orchestration Step Run: Name</name>
+            </columns>
+            <columns>
+                <label><!-- Orchestration Step Run: Status --></label>
+                <name>Orchestration Step Run: Status</name>
+            </columns>
+            <label><!-- Orchestration Step Runs --></label>
+            <name>Orchestration Step Runs</name>
+        </sections>
+        <sections>
+            <columns>
+                <label><!-- Assigned Group or Queue --></label>
+                <name>Assigned Group or Queue</name>
+            </columns>
+            <columns>
+                <label><!-- Assigned User --></label>
+                <name>Assigned User</name>
+            </columns>
+            <label><!-- Orchestration Work Items --></label>
+            <name>Orchestration Work Items</name>
+        </sections>
+    </reportTypes>
+    <reportTypes>
+        <description><!-- Screen Flows --></description>
+        <label><!-- Screen Flows --></label>
+        <name>screen_flows_prebuilt_crt</name>
+        <sections>
+            <label><!-- Flow Interview Log Entries --></label>
+            <name>Flow Interview Log Entries</name>
+        </sections>
+        <sections>
+            <label><!-- Flow Interview Logs --></label>
+            <name>Flow Interview Logs</name>
+        </sections>
+    </reportTypes>
+</Translations>

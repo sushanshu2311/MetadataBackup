@@ -1,0 +1,265 @@
+<apex:component id="RequireFieldCompId" controller="RequireFieldComp_Ctlr">
+<apex:attribute required="true" name="ObjectName" type="String" description="Name of the object."/>
+<apex:attribute required="true" name="ComponentId" type="String" description="Id of current component."/>
+
+<head>
+<script src="/soap/ajax/28.0/connection.js" type="text/javascript"></script>
+<script src="/soap/ajax/28.0/apex.js" type="text/javascript"></script>
+
+</head>
+
+   <apex:actionFunction name="getLayoutData{!ComponentId}" action="{!getLayoutInformation}" oncomplete="" reRender="layoutFieldPanelId" status="status">
+   <apex:param assignTo="{!strObjectLayoutName}" name="layoutName{!ComponentId}" value=""/>
+   <apex:param assignTo="{!strObjectApiName}" name="objectName{!ComponentId}" value=""/>
+   </apex:actionFunction>
+   <apex:actionFunction name="getLayoutName{!ComponentId}" action="{!getLayoutNameData}" oncomplete="gettingAllLayouts{!ComponentId}();" reRender="LayoutFieldsPanel,layoutNamePanelId" status="status">
+   <apex:param assignTo="{!strObjectApiName}" name="objectName{!ComponentId}" value=""/>
+   </apex:actionFunction>
+   <apex:actionStatus onstart="document.getElementById('blurred{!ComponentId}').style.display='block';" onstop="document.getElementById('blurred{!ComponentId}').style.display='none';"  id="status"/>
+    
+<!-- Start REQUIRED SLDS WRAPPER -->
+<div id="blurred{!ComponentId}" style="display:none; position:fixed; background-color:white; height:100%; width:100%; z-index:99999999; opacity:0.6; top:0; left:0;">
+    <div style="width:100px; height:100%; position:relative;top:41%; background:url({!URLFOR($Resource.PE_35, 'PE_3.5/images/icon_loading.gif')}) no-repeat top left; margin:0 auto;"></div>
+</div>
+<apex:outputPanel id="LayoutFieldsPanel">
+<div class="slds" style="background:none !important;">
+    
+    <!-- Start PRIMARY CONTENT WRAPPER -->
+    <div class="myapp">
+        <div id="RightMenuContentSection{!ComponentId}">
+                <!-- Start-->
+                <div class="ContentStart"> 
+                 <div class="cl"></div>                 
+                    <div class="ContentBox" style="margin:10px 0 !important;">                       
+                        
+                        <div>
+                            <span style="float:left; margin-top:6px;" class="slds-section__title_head" id="ObjectLabel{!ComponentId}">{!$ObjectType[ObjectName].Label}</span>
+                            <span style="float:right;">
+                                <table>
+                                    <tr>
+                                        <td><label class="slds-form-element__label" for="text-input-01" style="margin-top:7px;">Layout</label></td>
+                                        <td>
+                                            <div class="slds-form-element">                                 
+                                                <div class="slds-form-element__control" style="width:260px;">                                       
+                                                  <div class="slds-select_container">                                     
+                                                    <select id="pageLayoutSelect{!ComponentId}" class="slds-select icon_6" onchange="ChangeLayoutValue{!ComponentId}(this);">
+                                                      
+                                                    </select>
+                                                    <!--<apex:selectList size="1" styleClass="slds-select">
+                                                        <apex:selectOptions Value="{!LayoutNameData}" />
+                                                    </apex:selectList>-->
+                                                  </div>
+                                                </div>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </span> 
+                        </div>
+                        
+                        <div class="cl"></div>
+                        <div class="tableDataDiv" style="height:auto !important">
+                        <apex:outputPanel id="layoutFieldPanelId">
+                            <table class="slds-table slds-table--bordered" id="tableId{!ComponentId}">
+                            
+                                <thead>
+                                  <tr class="slds-text-heading--label">
+                                    <th class="slds-is-sortable" scope="col">
+                                      <div class="slds-truncate">Field Label
+                                        <button class="slds-button slds-button--icon-bare">
+                                         <span class="slds-assistive-text">Sort</span>
+                                        </button>
+                                      </div>
+                                    </th>
+                                    <th class="slds-is-sortable" scope="col">
+                                      <div class="slds-truncate">Field Name/API Name
+                                        <button class="slds-button slds-button--icon-bare">
+                                          <span class="slds-assistive-text">Sort</span>
+                                        </button>
+                                      </div>
+                                    </th>
+                                    <th class="slds-is-sortable" scope="col">
+                                      <div class="slds-truncate">Data Type
+                                        <button class="slds-button slds-button--icon-bare">
+                                         
+                                          <span class="slds-assistive-text">Sort</span>
+                                        </button>
+                                      </div>
+                                    </th>
+                                  </tr>
+                                </thead>
+                                <tbody>
+                                <apex:repeat value="{!listRequiredField}" var="fieldApi" rendered="{!NOT(ISNULL(listRequiredField))}">
+                                
+                                  <tr class ="slds-hint-parent">
+                                     <td class="slds-truncate">
+                                      {!$ObjectType[ObjectName].fields[fieldApi].Label}
+                                     </td>
+                                     <td class="slds-truncate">
+                                     {!fieldApi}
+                                     </td>
+                                     <td class="slds-truncate">
+                                     {!$ObjectType[ObjectName].fields[fieldApi].Type}
+                                     </td>
+                                  </tr>
+                                </apex:repeat> 
+                                                            
+                                </tbody>
+                                
+                              </table>
+                              </apex:outputPanel>   
+                        </div>
+                    
+                    </div>
+                    <!-- End Content Box -->
+                    
+                    
+                    <div class="cl"></div>
+                    <!-- Start Content Box -->
+                   
+                    <!-- End Content Box -->
+                    
+                    <!--<center>
+                        <a class="btn_white" title="Close">Close</a> 
+                    </center>-->
+                    <div class="cl"></div> 
+                    
+                </div>
+                <!--end-->
+                
+            </div>
+               
+       
+
+    </div>
+    <!-- End PRIMARY CONTENT WRAPPER -->
+
+</div>
+<!-- End REQUIRED SLDS WRAPPER -->
+
+<div class="cl"></div>
+</apex:outputPanel>
+
+    <script>
+        sforce.connection.sessionId = "{!$Api.Session_ID}";
+        var objectLayoutDescribeResult{!ComponentId}= '';
+        var fieldNameArray{!ComponentId} = new Array();
+        var layoutRecordTypeIdArray{!ComponentId} = new Array();
+        var objectDescribeData{!ComponentId} = '';
+        var nameSpacePrefix = '{!JSENCODE(strNameSpace)}';  // SK: 11Dec2017
+    </script>
+  
+  <apex:outputPanel id="layoutNamePanelId">
+  <script>
+     var objects{!ComponentId} = '{!JSENCODE(ObjectName)}';  // SK: 11Dec2017
+     var layoutData{!ComponentId} = '{!JSENCODE(strLayoutNameData)}';  // SK: 11Dec2017
+     var nameSpacePrefix{!ComponentId} = '{!JSENCODE(strNameSpace)}';  // SK: 11Dec2017
+     
+     function gettingAllLayouts{!ComponentId}()
+     {
+       
+       var objectCompnentName = objects{!ComponentId};
+       var layoutArrayIdName = layoutData{!ComponentId}.split('<$$>');
+       var layoutArraySortedIdName = [];
+        for(var j = 0; j<layoutArrayIdName.length; j++)
+            {
+                var layoutName = layoutArrayIdName[j].split('-');
+                var layoutTempName = '';
+                for(var k=1; k<layoutName.length; k++)
+                {
+                   if(k==layoutName.length-1)
+                    layoutTempName = layoutTempName+layoutName[k];
+                    else
+                     layoutTempName = layoutTempName+layoutName[k]+'-';
+                }
+                layoutArraySortedIdName.push(decodeURI(layoutTempName));        
+            }
+        
+        
+       layoutArraySortedIdName.sort(function (a, b) {
+    return a.toLowerCase().localeCompare(b.toLowerCase())})
+       
+       var checkDuplicateLayoutId = new Array();
+       var layoutSelectList= document.getElementById('pageLayoutSelect{!ComponentId}');
+             var optionCount=layoutSelectList.options.length;
+             var selectedLayoutIndex = 0;
+             for(var i = 0; i<layoutArraySortedIdName.length; i++)
+              {     
+                
+                 if(checkDuplicateLayoutId.indexOf(layoutArraySortedIdName[i]) == -1)
+                 {
+                  var fundraidingObject = nameSpacePrefix{!ComponentId}+'Fundraising__c';
+                  var parternshipObject = nameSpacePrefix{!ComponentId}+'Partnership__c';
+                  var commitmentObject = nameSpacePrefix{!ComponentId}+'Commitment__c';
+                  var pipelineObject = nameSpacePrefix{!ComponentId}+'Pipeline__c';
+                  var declayoutName = decodeURI(layoutArraySortedIdName[i]);
+                  if(fundraidingObject.toLowerCase() == objectCompnentName.toLowerCase() && declayoutName == 'Fundraising Layout')
+                  {
+                   layoutSelectList.options[optionCount]=new Option(declayoutName,layoutArraySortedIdName[i]);
+                   optionCount = optionCount+1;
+                   checkDuplicateLayoutId.push(layoutArraySortedIdName[i]);
+                  }
+                  else if(parternshipObject.toLowerCase() == objectCompnentName.toLowerCase() && declayoutName == 'Partnership Layout')
+                  {
+                    layoutSelectList.options[optionCount]=new Option(declayoutName,layoutArraySortedIdName[i]);
+                    optionCount = optionCount+1;
+                    checkDuplicateLayoutId.push(layoutArraySortedIdName[i]);  
+                  } 
+                  else if(commitmentObject.toLowerCase() == objectCompnentName.toLowerCase() && declayoutName == 'Commitment Layout')
+                  {
+                    layoutSelectList.options[optionCount]=new Option(declayoutName,layoutArraySortedIdName[i]);
+                    optionCount = optionCount+1;
+                    checkDuplicateLayoutId.push(layoutArraySortedIdName[i]);  
+                  }
+                  else if(pipelineObject.toLowerCase() == objectCompnentName.toLowerCase() && declayoutName == 'Pipeline Layout')
+                  {
+                    layoutSelectList.options[optionCount]=new Option(declayoutName,layoutArraySortedIdName[i]);
+                    optionCount = optionCount+1;
+                    checkDuplicateLayoutId.push(layoutArraySortedIdName[i]);  
+                  }
+                 else if(objectCompnentName.toLowerCase() == 'account')
+                  {
+                    layoutSelectList.options[optionCount]=new Option(declayoutName,layoutArraySortedIdName[i]);
+                    optionCount = optionCount+1;
+                    checkDuplicateLayoutId.push(layoutArraySortedIdName[i]);  
+                  } 
+                  else if(objectCompnentName.toLowerCase() == 'contact')
+                  {
+                    layoutSelectList.options[optionCount]=new Option(declayoutName,layoutArraySortedIdName[i]);
+                    optionCount = optionCount+1;
+                    checkDuplicateLayoutId.push(layoutArraySortedIdName[i]);  
+                  }               
+                 
+                  }
+              
+              }
+              
+             
+                 ChangeLayoutValue{!ComponentId}(layoutSelectList.options[0]);
+              return false;
+     }
+     var objectdata = '';
+     
+     function ChangeLayoutValue{!ComponentId}(selectedLayoutData)
+     { 
+       getLayoutData{!ComponentId}(selectedLayoutData.value,objects{!ComponentId});
+     }
+     function removeAllFields{!ComponentId}()
+     {
+        var fieldTable =document.getElementById('tableId{!ComponentId}');
+        var rowCount = fieldTable.rows.length;
+        for(var m=1;m<rowCount;m++)
+         {
+            fieldTable.deleteRow(1);
+            
+            
+         }
+     }
+      function hideImage(){
+       document.getElementById('blurred').style.display='none'; 
+       }
+             
+    </script>
+    </apex:outputPanel>
+    
+</apex:component>

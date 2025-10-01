@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomFieldTranslation xmlns="http://soap.sforce.com/2006/04/metadata">
+        <help><!-- Only applicaple for String type of fields, merge fields can also be added for any related field of base object eg: &lt;&lt;Id&gt;&gt; or &lt;&lt;Account.Name&gt;&gt; 
+NOTE: Merge fields are case sensitive. --></help>
+        <label><!-- Redirect URL --></label>
+        <name>Redirect_URL__c</name>
+    </CustomFieldTranslation>

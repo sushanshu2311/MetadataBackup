@@ -1,0 +1,291 @@
+<!--
+** Module Name : Acuity 3.0 - Acuity
+** Description : Displays the Account & Contact Acuity information of Acuity 1.0 including Contacts/Connections Section.
+** Throws : NA
+** Calls : NA
+** Organization : Navatar Group
+** Product Name & Version : Acuity 3.0
+** Revision History:-
+** Version    Date(YYYY-MM-DD)    Author         Description of Action
+** 3.0        2024-02-13          Lakshya        Sharing Model Implementation
+-->
+<template>
+    <!--Start Popover-->
+    <lightning-layout class="errorMsgPopover slds-hide">
+        <lightning-layout-item size="12">
+            <template if:true={showPopoverErrorMsg}>
+                <section aria-describedby="dialog-body-id-110" aria-labelledby="dialog-heading-id-1" class="slds-popover slds-popover_error slds-nubbin_bottom-left" role="dialog">
+                    <!--<div  class="slds-text-align_right"><lightning-icon icon-name="utility:close" size="xx-small" alternative-text="Close" variant="base" title="Close" class="errorMsgPopover" onclick={showoffPopoverErrorMsg}></lightning-icon></div>-->        
+                    <header class="slds-popover__header">
+                        <div class="slds-media slds-media_center slds-has-flexi-truncate ">
+                            <!--Commented below div by LK on 2024-05-13 to fix 00045687-->
+                            <!--<div class="slds-media__figure">
+                                <span class="slds-icon_container slds-icon-utility-error">
+                                    <lightning-icon icon-name="utility:error" size="xx-small" variant="inverse" alternative-text="Error" title="Error"></lightning-icon>
+                                </span>
+                            </div>-->
+                            <div class="slds-media__body">
+                                <h2 class="slds-text-body_small" id="dialog-heading-id-1" title="It seems there's an issue in connecting with external services. Please contact your system admin.">It seems there's an issue in connecting with external services. Please contact your system admin.</h2>
+                            </div>
+                        </div>
+                    </header>
+                </section>
+            </template>
+        </lightning-layout-item>
+    </lightning-layout>                                                                        
+    <!--End Popover-->
+    <div class="slds-m-bottom_xx-small">
+        <div class="slds-grid slds-wrap slds-box slds-theme_shade slds-p-vertical_xx-small header_tab">
+            <div class="slds-col slds-size_4-of-12">
+                <ul class="slds-list_horizontal slds-has-block-links_space"
+                    style="align-items:center;">
+                    <li>
+                        <!--00045824 fixed by raju 28-05-2024-->
+                        <span class="slds-page-header__title slds-text-align_left fit-width-content clsHeadingWidth"
+                            title={conTitle}>
+                            {conTitle}
+                        </span>
+                    </li>
+                    <li>
+                        <template if:true={IsAccount}>
+                            <!--Added "for_desk" CSS class by LK on 2024-07-26 to fix 00046925-->
+                            <lightning-helptext content="View details of people at this firm, who at our firm they have interacted with, all interactions (emails or meetings) as well as deals they have been associated with. View contacts at this firm discovered in Outlook by Navatar who your users may have emailed but not added to Navatar, with the option of downloading them into Navatar. Click on a contact to view or edit details."
+                                            class="info for_desk">
+                        </lightning-helptext>
+                        </template>
+                        <template if:true={IsContact}>
+                            <!--Added "for_desk" CSS class by LK on 2024-07-26 to fix 00046925-->
+                            <lightning-helptext content="View the strength of this contact's connection to your team as well as other contacts based on the number of emails, meetings, and deals they have been a part of together. Click on a contact to view or edit details."
+                                            class="info for_desk">
+                            </lightning-helptext>
+                        </template>
+                    </li>
+                </ul>
+            </div>
+            <template if:false={displayConSecToggle}>
+                <template if:true={displayAddContact}>
+                    <div class="slds-col slds-size_8-of-12 slds-text-align_right addMinus">
+                        <!--update by Shivam New Contact Instead of Add Contact bug #00035325-->
+                        <lightning-icon icon-name="utility:new"
+                                        alternative-text="New Contact"
+                                        title="New Contact"
+                                        onclick={handleNewContact}
+                                        size="x-small"
+                                        class="cur_point for_desk">
+                        </lightning-icon>
+                    </div>
+                </template>
+            </template>
+            <template if:true={displayConSecToggle}>
+                <div class="slds-col slds-large_6-of-12 slds-small_8-of-12  slds-text-align_left">
+                    <!--Removed "name="radioGroups12345"" by LK on 2024-05-28 to fix 00045762 ; 00045798 ; 00045815 ; 00045826 ; 00045296 ; 00045304-->
+                    <lightning-radio-group options={optnsInternalExternal}
+                                        onchange={handleConSecTabSwitch}
+                                        value={conSecTabValue}
+                                        type="button"
+                                        class="radioBtnsInterExter">
+                    </lightning-radio-group>
+                </div>
+            </template>    
+        </div>
+        <div class="slds-box slds-box_x-small slds-p-around_none">
+            <div class="slds-grid slds-wrap">
+                <div class="slds-col slds-size_1-of-1 slds-text-align_left">
+                    <!--Removed "cont-tab-height" class by Raju on 2024-06-24 to fix 00046209-->
+                    <div>
+                        <template if:false={displayConSecToggle}>
+                            <template if:true={conData}>
+                                <lightning-layout>
+                                    <lightning-layout-item size="12" class="slds-is-relative">
+                                        <template if:true={isRgApiError}>
+                                            <!--Removed title="Error" by LK on 2024-05-13 to fix 00045688-->
+                                            <!--Added for_desk by LK on 2024-06-10 to fix 00046022-->
+                                            <lightning-icon icon-name="utility:warning" size="xx-small" alternative-text="Error" class="my-icon slds-is-absolute iconErrCls for_desk" onmouseleave={hideErrorMsgPopover} onmouseover={showErrorMsgPopover}></lightning-icon>
+                                        </template>
+                                        <!--Added "cont-tab-height clsBlockElement" class by Raju on 2024-06-24 to fix 00046209-->
+                                        <lightning-datatable class="for_desk contactDataTable tabcont shadowremovedatatable connectionTableEmailAcc cont-tab-height clsBlockElement"
+                                                             hide-checkbox-column="true"
+                                                             key-field="con"
+                                                             data={conData}
+                                                             columns={conCols}
+                                                             onrowaction={fetchActInfo}>
+                                        </lightning-datatable>
+                                        <!--start Table For Mobile  -->            
+                                        <!--Added "cont-tab-height" by LK on 2024-06-25 to fix 00046229-->
+                                        <lightning-datatable class="for_mob contactDataTable tabcont shadowremovedatatable connectionTableEmailAcc cont-tab-height"
+                                                             hide-checkbox-column="true"
+                                                             key-field="con"
+                                                             data={conData}
+                                                             resize-column-disabled
+                                                             columns={conColsMob}
+                                                             onrowaction={fetchActInfo}>
+                                        </lightning-datatable>
+                                        <!--End Table For Mobile-->
+                                    </lightning-layout-item>
+                                </lightning-layout>
+                                
+                            </template>
+                            <template if:false={conData}>
+                                <lightning-layout>
+                                    <lightning-layout-item size="12" class="slds-is-relative">
+                                        <template if:true={isRgApiError}>
+                                            <!--Removed title="Error" by LK on 2024-05-13 to fix 00045688-->
+                                            <!--Added for_desk by LK on 2024-06-10 to fix 00046022-->
+                                            <lightning-icon icon-name="utility:warning" size="xx-small" alternative-text="Error" class="my-icon slds-is-absolute iconErrCls for_desk" onmouseleave={hideErrorMsgPopover} onmouseover={showErrorMsgPopover}></lightning-icon>
+                                        </template>
+                                        <!--Moved code inside div with "cont-tab-height" class by LK on 2024-06-25 to fix 00046229-->
+                                        <div class="cont-tab-height">
+                                            <lightning-datatable class="for_desk contactDataTable shadowremovedatatable no-data-main-tab"
+                                                                hide-checkbox-column="true"
+                                                                key-field="con"
+                                                                data={noData}
+                                                                columns={conCols}
+                                                                onrowaction={fetchActInfo}>
+                                            </lightning-datatable>
+                                            <!--Table For Mobile-->
+                                            <lightning-datatable class="for_mob contactDataTable tabcont shadowremovedatatable"
+                                                                hide-checkbox-column="true"
+                                                                key-field="con"
+                                                                data={noData}
+                                                                columns={conColsMob}
+                                                                resize-column-disabled
+                                                                onrowaction={fetchActInfo}>
+                                            </lightning-datatable>
+                                            <!--End Table For Mobile-->
+                                            <div class="slds-p-around_x-small">
+                                                {errMsg}
+                                            </div>
+                                        </div>
+                                    </lightning-layout-item>
+                                </lightning-layout>
+                            </template>
+                        </template>
+    
+                        <!--Toggle : Start-->
+                        <template if:true={displayConSecToggle}>
+                            <!--Start Internal-->
+                            <template if:true={isInternal}>
+                                <template if:true={internalData}>
+                                    <lightning-layout>
+                                        <lightning-layout-item size="12" class="slds-is-relative">
+                                            <template if:true={isRgApiError}>
+                                                <!--Removed title="Error" by LK on 2024-05-13 to fix 00045688-->
+                                                <!--Added for_desk by LK on 2024-06-10 to fix 00046022-->
+                                                <lightning-icon icon-name="utility:warning" size="xx-small" alternative-text="Error" class="my-icon slds-is-absolute iconErrCls for_desk" onmouseleave={hideErrorMsgPopover} onmouseover={showErrorMsgPopover}></lightning-icon>
+                                            </template>
+                                            <!--00045788, 00045844 fixed by raju 28-05-2024-->
+                                            <div class="cont-tab-height">
+                                                <lightning-datatable key-field="con"
+                                                                     hide-checkbox-column
+                                                                     data={internalData}
+                                                                     columns={internalTableCols}
+                                                                     onrowaction={fetchActInfo}
+                                                                     class="contactDataTable tabcont tabcont shadowremovedatatable for_desk connectionTableEmailCont">
+                                                </lightning-datatable>
+                                                <lightning-datatable key-field="con"
+                                                                     hide-checkbox-column
+                                                                     data={internalData}
+                                                                     columns={internalTableColsMob}
+                                                                     onrowaction={fetchActInfo}
+                                                                     resize-column-disabled
+                                                                     class="contactDataTable tabcont shadowremovedatatable for_mob connectionTableEmailCont">
+                                                </lightning-datatable>
+                                            </div>
+                                        </lightning-layout-item>
+                                    </lightning-layout>
+                                </template>
+                                <template if:false={internalData}>
+                                    <div class="min_ht_160">
+                                        <lightning-layout>
+                                            <lightning-layout-item size="12" class="slds-is-relative">
+                                                <template if:true={isRgApiError}>
+                                                    <!--Removed title="Error" by LK on 2024-05-13 to fix 00045688-->
+                                                    <!--Added for_desk by LK on 2024-06-10 to fix 00046022-->
+                                                    <lightning-icon icon-name="utility:warning" size="xx-small" alternative-text="Error" class="my-icon slds-is-absolute iconErrCls for_desk" onmouseleave={hideErrorMsgPopover} onmouseover={showErrorMsgPopover}></lightning-icon>
+                                                </template>
+                                                <!--Added "cont-tab-height" class by LK on 2024-06-25 to fix 00046229-->
+                                                <div class="cont-tab-height">
+                                                    <lightning-datatable key-field="con" 
+                                                                         hide-checkbox-column                     
+                                                                         data={noData}
+                                                                         columns={internalTableCols}
+                                                                         onrowaction={handleRowAction}
+                                                                         class="contactDataTable tabcont tabcont shadowremovedatatable for_desk">
+                                                    </lightning-datatable>
+                                                    <lightning-datatable key-field="con"
+                                                                         hide-checkbox-column  resize-column-disabled       
+                                                                         data={noData} 
+                                                                         columns={internalTableColsMob}
+                                                                         onrowaction={handleRowAction}
+                                                                         class="contactDataTable tabcont shadowremovedatatable for_mob">
+                                                    </lightning-datatable>
+                                                    <!--Added noDataMsgPos by LK on 2024-05-09 to fix 00045309-->
+                                                    <p class="slds-p-around_x-small nodata-popup2 noDataMsgPos">
+                                                        {errMsg}
+                                                    </p>
+                                                </div>
+                                            </lightning-layout-item>
+                                        </lightning-layout>
+                                    </div>
+                                </template>
+                            </template>
+                            <!--End Internal-->
+    
+                            <!--Start External-->
+                            <template if:true={isExternal}>
+                                <template if:true={externalData}>
+                                    <!--Added "cont-tab-height clsBlockElement" class by LK on 2024-06-25 to fix 00046229-->
+                                    <lightning-datatable key-field="con"
+                                                         hide-checkbox-column
+                                                         data={externalData}
+                                                         columns={externalTableCols}
+                                                         onrowaction={fetchActInfo}
+                                                         class="contactDataTable tabcont shadowremovedatatable for_desk cont-tab-height clsBlockElement">
+                                    </lightning-datatable>
+                                    <!--Added "for_mobExternal cont-tab-height" by Raju on 2024-06-12 to fix 00046035 ; 00046483-->
+                                    <lightning-datatable key-field="con"
+                                                            hide-checkbox-column
+                                                            data={externalData}
+                                                            columns={externalTableColsMob}
+                                                            onrowaction={fetchActInfo}
+                                                            class="contactDataTable tabcont shadowremovedatatable for_mob for_mobExternal cont-tab-height">
+                                    </lightning-datatable>
+                                </template>
+                                <template if:false={externalData}>
+                                    <div class="min_ht_160">
+                                        <!--Moved code inside div with "cont-tab-height" class by LK on 2024-06-25 to fix 00046229-->
+                                        <div class="cont-tab-height">
+                                        <lightning-datatable key-field="con"
+                                                                hide-checkbox-column
+                                                                data={noData}
+                                                                columns={externalTableCols}
+                                                                onrowaction={fetchActInfo}
+                                                                class="contactDataTable tabcont tabcont shadowremovedatatable for_desk">
+                                        </lightning-datatable>
+                                        <lightning-datatable key-field="con"
+                                                                hide-checkbox-column
+                                                                data={noData}
+                                                                columns={externalTableColsMob}
+                                                                onrowaction={fetchActInfo}
+                                                                class="contactDataTable tabcont tabcont shadowremovedatatable for_mob">
+                                        </lightning-datatable>
+                                        <!--Added "noDataMsgPosExt" by LK on 2024-06-25 to fix 00046229-->
+                                        <p class="slds-p-around_x-small nodata-popup2 noDataMsgPosExt">
+                                            {errMsg}
+                                        </p>
+                                        </div>
+                                    </div>
+                                </template>
+                            </template>
+                            <!--End External-->
+                        </template>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+     <!--Download Icon : Start-->
+     <c-navatar-acuity-ext-connection-add-popup-lwc>
+    </c-navatar-acuity-ext-connection-add-popup-lwc>
+    <!--Download Icon : End-->
+</template>

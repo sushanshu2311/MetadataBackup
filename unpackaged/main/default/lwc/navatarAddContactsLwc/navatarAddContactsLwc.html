@@ -1,0 +1,177 @@
+<!--
+** Module Name : Add To Fund
+** Description : Main Select Contacts page
+** Throws : NA
+** Calls : NA
+** Organization : Navatar Group
+** Product Name & Version : Acuity 3.0
+** Revision History:-
+** Version    Date(YYYY-MM-DD)    Author      Description of Action
+** 1.0        2024-03-08          Lakshya     Acuity Phase 3
+-->
+<template>
+    <div class="slds-box slds-theme_shade main-Container">
+        <lightning-layout>
+            <lightning-layout-item class="cls_headerSubTextPos">
+                <p class="cls_headerTextPos slds-text-heading_medium">
+                    <b>{headerName}</b>
+                </p>
+            </lightning-layout-item>
+        </lightning-layout>
+    </div>
+    <div if:true={isLoading} class="exampleHolder">
+        <lightning-spinner alternative-text="Loading" size="small"></lightning-spinner>
+    </div>
+    <!--BODY SECTION : START-->
+
+    <div class="slds-box slds-theme_default slds-var-m-top_x-small main-Container">
+        <!--BODY HEADER : START-->
+        <!--Added hidediv by LK on 2024-05-11 to fix 00045629 ; 00045702-->
+        <div class="slds-grid hidediv">
+            <p class="slds-col slds-var-p-top_xx-small slds-text-heading_small">
+                Search for {pcontactLabel}  <!--dynamic label fixes by salauddin sheikh 5th july 2023-->
+            </p>
+        </div>
+        <!--BODY HEADER : END-->
+        
+        <div data-id="filterpg" class="slds-p-horizontal_medium slds-m-top_medium cls_containerShadow cls_borderRadius">
+            <!--<template if:true={isfilterPage}>-->
+            <div class="mainAccordion slds-theme_default slds-p-vertical_small">
+            <!--Bug Fix-00043322 for By Harshwardhan Karki-->
+            <template if:true={showFilterCmp}>
+                <div onclick={handleSectionToggle}>
+                    <!--Start Accordion-->
+                    <div class="cls_myCart" style="position:relative;">
+                        <lightning-icon icon-name={headerIconName} onclick={shadowShow} size="x-small"
+                            class="slds-m-right_x-small slds-float_left cls_pos"></lightning-icon>
+                        <button class="slds-button test-id__section-header-button slds-section__title-action slds-float_left"
+                            data-id="cls_btn">Filter</button>
+                    </div>
+                    <!--End Accordion-->
+                </div>
+
+                <div class="inner-custom-mechanish hidediv" >   <!--added for bug #00041581 fixes by salauddin sheikh-->
+                    <!-- <template if:true={filterdiv}> -->
+                        <div data-id="filterdiv" class="slds-box slds-m-top_x-large cls_bordrNone">
+                            <template if:true={objApiNamesListTab}>
+                                <c-navatar-add-contacts-filter-fields-lwc obj-api-names-list={objApiNamesListTab} enable-add-row=true
+                                     mandate-filter={mandateFilter} >
+                                </c-navatar-add-contacts-filter-fields-lwc>
+                            </template>
+                            <div class="slds-align_absolute-center">  
+                                <lightning-button class="slds-var-m-right_small" label="Clear" title="Clear"
+                                    onclick={handleClearFilterInMain}>
+                                </lightning-button>
+                                <!--bug fix - 00042767 By Harshwardhan Singh Karki-->
+                                <lightning-button variant="brand" label="Search" title="Search" onclick={handleApplyFilterInMain}>
+                                </lightning-button>                      
+                        </div>
+                    </div>
+                    <!-- </template> -->
+                </div>
+            </template>
+                <!--FILTER PROSPECTS SECTION : END-->
+
+                <!--PROSPECTS TABLE SECTION : START-->
+                <div class="mainAccordion slds-theme_default slds-box slds-m-top_medium cls_leftRight_p">
+                    <div class="slds-box slds-theme_shade slds-grid">
+                        <span class="slds-size_11-of-12">
+                            <p class="slds-text-heading_small slds-var-p-vertical_xxx-small">
+                                Select {pcontactLabel}  <!--dynamic label fixes by salauddin sheikh 5th july 2023-->
+                            </p>
+                        </span>
+                    </div>
+                    <!-- jagriti 12may start -->
+                    <div class="slds-grid slds-wrap">
+                        <div class="slds-col slds-size_1-of-1">
+                            <div class="slds-is-relative">
+                                <template if:true={showNoRecord}><!--added changes for bug #00041367 fixes by salauddin sheikh-->
+                                    <div class="slds-size_1-of-1 slds-is-absolute emptyTableClass">
+                                      <div class="slds-p-left_medium">
+                                        No Data to Display.
+                                      </div>
+                                    </div>
+                                  </template>
+                                <div if:true={contactData}>
+                                    <div style="height: 235px;border: 1px solid rgb(243 243 243);margin-bottom: 15px;" class="slds-is-relative">
+                                        <!--changes for bug #00041481, #00041485, #00041603 fixes by salauddin sheikh -->
+                                        <lightning-datatable class="contactDataTable tabcont shadowremovedatatable" key-field="Id"
+                                          data={contactData} selected-rows={selectedRows} 
+                                          columns={conColumns} onrowselection={handleRowSelect} data-id="searchResults" enable-infinite-loading="true" onrowaction={fetchActInfo}>
+                                        </lightning-datatable>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="slds-m-top_small">
+                                Total Records: {resultLoaded} &nbsp;
+                                <template if:true={enableShowAll}>
+                                    <a href="#" onclick={fetchAllRecords}>Show All</a>
+                                </template>
+                            </div>
+                            <template if:true={selectedCounts}>
+                                <div class="slds-m-top_x-small">
+                                    {selectedCounts}
+                                </div>
+                            </template>
+                        </div>
+                        <div class="slds-col slds-size_1-of-1 slds-align_absolute-left slds-m-top_medium">
+                    
+                            <button class="slds-button slds-button_outline-brand" title="Add To Contact List"
+                            onclick={handleAddToTargetList}  disabled={disableAddToTarget}>Add To {contactLabel} List</button> <!--dynamic label fixes by salauddin sheikh 5th july 2023-->
+                        </div>
+                        <div class="slds-col slds-size_1-of-1 slds-m-top_medium">
+                            <div class="slds-box slds-theme_shade slds-grid">
+                                <span class="slds-size_11-of-12">
+                                    <p class="slds-text-heading_small slds-var-p-vertical_xxx-small">
+                                        Review {contactLabel} List  <!--dynamic label fixes by salauddin sheikh 5th july 2023-->
+                                    </p>
+                                </span>
+                            </div>
+                            <div>
+                                <div style="height: 235px;border: 1px solid rgb(243 243 243);margin-bottom: 15px;" class="slds-is-relative">
+                                    <template if:true={isFundSource}>
+                                    <!--00044505, 00045953 fixed by raju on dated 27-05-2024-->
+                                    <c-navatar-inline-picklist-lwc class="shadowremovedatatableCls rt_3" show-row-number-column="true" key-field="Id" data={sel_SelectedData} columns={sel_ConColumns1}  hide-checkbox-column="true" onpicklistchanged={dtPicklistChanged} onrowselection={getSelectedDealTeam} oncellchange={handleCellChange} onrowaction={handledeleteRow}>
+                                    </c-navatar-inline-picklist-lwc>
+                                    </template>
+                                    <template if:true={showNoRecord1}><!--added changes for bug #00041367 fixes by salauddin sheikh-->
+                                        <div class="slds-size_1-of-1 slds-is-absolute emptyTableClass">
+                                          <div class="slds-p-left_medium">
+                                            No Data to Display.
+                                          </div>
+                                        </div>
+                                    </template>
+                                    <template if:false={isFundSource}><!--changes for bug #00041504 fixes by salauddin sheikh-->
+                                         <!--changes for bug #00041481, #00041485 fixes by salauddin sheikh -->
+                                        <lightning-datatable key-field="id" data-id="selectedRows" data={sel_SelectedData}
+                                        columns={sel_ConColumns} class="heightDataTable" enable-infinite-loading 
+                                        hide-checkbox-column onrowaction={handledeleteRow}>
+                                    </lightning-datatable>
+                                    </template>
+                                </div>
+                            </div>
+                            <template if:true={sel_resultLoaded}>
+                                <div class="slds-m-top_small">
+                                    {sel_resultLoaded}
+                                </div>
+                            </template>
+                        </div>
+                    </div>
+                    <div class="slds-col slds-size_1-of-1 slds-m-top_medium slds-clearfix">
+                        <template if:false={isFundSource}>
+                            <button class="slds-button slds-button_brand slds-float_right" title="Add contacts to theme"
+                            onclick={createThemeRelation}  disabled={disableAddAsTarget}>Add {pcontactLabel} To {themeLabel}</button> <!--dynamic label,ui fixes by salauddin sheikh 5th july 2023-->
+                        </template>
+                        <template if:true={isFundSource}>   <!--changes added for bug #00041343 by salauddin sheikh -->
+                            <button class="slds-button slds-float_right slds-button_brand" title="Add contacts to fundraising"
+                            onclick={createThemeRelation}  disabled={disableAddAsTarget}>Add {pcontactLabel} To {fdrLabel}</button> <!--dynamic label,ui fixes by salauddin sheikh 5th july 2023-->
+                        </template>
+                        <lightning-button label="Cancel" title="Cancel" onclick={clickBack}
+                            class="slds-float_right slds-var-m-right_small"></lightning-button>
+                    </div>
+                    <!-- jagriti 12may end -->
+                </div>
+            </div>
+        </div>
+    </div>
+</template>

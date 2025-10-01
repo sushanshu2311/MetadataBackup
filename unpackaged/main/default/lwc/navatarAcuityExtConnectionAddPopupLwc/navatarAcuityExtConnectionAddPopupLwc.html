@@ -1,0 +1,103 @@
+<template>
+    <template if:true={isModalOpen}>
+        <!-- Modal/Popup Box starts here -->
+        <section role="dialog" tabindex="-1" aria-labelledby="modal-heading-01" aria-modal="true"
+            aria-describedby="modal-content-id-1" class="slds-modal slds-fade-in-open mainContainer">
+            <div class="slds-modal__container" style="width:30rem">
+              
+                <header class="slds-modal__header">
+                    <button class="slds-button slds-button_icon slds-modal__close slds-button_icon-inverse"
+                        title="Close" onclick={closeModal}>
+                        <lightning-icon icon-name="utility:close" alternative-text="close" variant="inverse"
+                            size="small" title="Close">
+                        </lightning-icon>
+                        <span class="slds-assistive-text">Close</span>
+                    </button>
+                    <h2 id="modal-heading-01" class="slds-text-heading_medium slds-hyphenate">New Contact</h2>
+                </header>
+                <!-- Popup Box body starts here -->
+                <div class="slds-modal__content slds-p-top_medium slds-p-bottom_large" id="modal-content-id-1">
+                    <lightning-layout class="slds-p-horizontal_large">
+                        <lightning-layout-item size="12" flexibility="auto" class="slds-m-right_small">
+                            <!--Added value={firstNameValue} by LK on 2024-08-01 to fix 00046608 ; 00046613-->
+                            <lightning-input name="Firstname" label="First Name" value={firstNameValue} type="text" data-id="name1" onchange={handleFirstName}>
+                            </lightning-input>   
+                        </lightning-layout-item>
+                    </lightning-layout>
+                    <lightning-layout class="slds-p-horizontal_large"> 
+                        <lightning-layout-item size="12" flexibility="auto" class="slds-m-right_small">
+                            <lightning-input name="Lastname" label="Last Name" value={lastNameValue} type="text" data-id="name2" onchange={handleLastName} required>
+                            </lightning-input>
+                        </lightning-layout-item>
+                    </lightning-layout>
+                    <!--Nikita S added-->
+                    <template if:true={objeCheckAcc}>
+                        <lightning-layout class="slds-p-horizontal_large slds-p-bottom_x-small">
+                            <lightning-layout-item size="6" class="slds-p-right_small auto_populate_css">
+                                <lightning-input name="Legal Name" label="Legal Name" value={accountRecordName} disabled>
+                                </lightning-input>
+                            </lightning-layout-item>
+                            </lightning-layout>
+                        </template>
+                       <template if:false={objeCheckAcc}> <!--Nikita S added-->
+
+                    <lightning-layout class="slds-p-horizontal_large slds-p-bottom_x-small">
+                        <lightning-layout-item size="12" flexibility="auto" class="slds-m-right_small">
+                           <!-- <c-custom-Lookup-Single-LWC  search-placeholder="Search Accounts" icon-name="standard:account" required> </c-custom-Lookup-Single-LWC> -->
+                            <div>
+                                <div class="slds-form-element">
+                                    <div class="slds-form-element__control">
+                                        <div class="slds-combobox_container">
+                                            <div id="box" class={boxClass} aria-expanded="true" aria-haspopup="listbox" role="combobox">
+                                                <div class="slds-combobox__form-element slds-input-has-icon slds-input-has-icon_right" role="none">
+                                                    
+                                                    <template if:false={isValueSelected}>
+                                                        <div class="slds-p-top_none">
+                                                            <label class="slds-form-element__label">Legal Name</label>
+                                                        <c-navatar-single-lookup-lwc
+                                                            obj-name ="Account"
+                                                            search-placeholder="Search Firms..."
+                                                            onlookupselected ={handleSelectedFirmRecord}
+                                                            is-rec-selected="true"
+                                                            onaccountselected ={handleAccountName} 
+                                                            contact-check = "true"
+                                                    ></c-navatar-single-lookup-lwc>
+                                                        </div>
+                                                    </template>
+                                                </div>
+                                           
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </lightning-layout-item>
+                    </lightning-layout>
+                    </template> <!--Nikita S added-->
+                    <lightning-layout class="slds-p-horizontal_large">
+                        <lightning-layout-item size="12" flexibility="auto" class="slds-m-right_small">
+                            <lightning-input name="Email" label="Email" type="email" data-id="emailVal" value={email} onchange={handleEmail} >
+                            </lightning-input>
+                        </lightning-layout-item>
+                    </lightning-layout>
+                    <lightning-layout class="slds-p-horizontal_large">   
+                        <lightning-layout-item size="12" flexibility="auto" class="slds-m-right_small">
+                            <lightning-input name="Phone" label="Phone" type="text" data-id="phoneVal" onchange={handlePhone} >
+                            </lightning-input>
+                        </lightning-layout-item>
+                    </lightning-layout>
+                </div>
+
+                <!-- Modal/Popup Box LWC footer starts here -->
+                <footer class="slds-modal__footer cutomFooter">
+                    <lightning-button label="Cancel" title="Cancel" onclick={closeModal} class="slds-m-left_x-small">
+                    </lightning-button>
+                    <lightning-button variant="brand" label="Save" title="Save" onclick={handleSave}
+                        class="slds-m-left_x-small customBrandButton"></lightning-button>
+                </footer>
+            </div>
+        </section>
+        <div class="slds-backdrop slds-backdrop_open"></div>
+    </template>
+    
+</template>

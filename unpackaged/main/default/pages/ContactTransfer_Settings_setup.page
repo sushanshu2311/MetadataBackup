@@ -1,0 +1,620 @@
+<!----------------------------------------------
+    ** Project: PE 3.5
+    ** Start: 09-June-2016
+    ** Module: Contact Transfer Settings Setup
+    ** Class use: ContactTransferSettingsSetup_Ctlr 
+    ** Common Class use: CommonUtilityGlobal   
+    ** Standard Controller: NA
+    ** Call From: Navatar Setup Tab
+    ** Developer: Pramod kumar
+    ** Last Modified: Pramod kumar (10-Nov-2016)
+    ** Version StartDate(YYYY-MM-DD)
+    ** 3.5     2016-05-24           
+----------------------------------------------->
+<apex:page controller="ContactTransferSettingsSetup_Ctlr" id="pageId" docType="html-5.0" contentType="text/html; charset=utf-8" sidebar="false" standardStylesheets="false" tabstyle="Navatar_Setup__tab" title="Contact Transfer Setup">
+    <apex:form id="formId" >   
+        <html >
+        <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        <title>Contact Transfer Setup</title>       
+        <apex:outputPanel id="errorPanel" >                                    
+            <apex:outputPanel rendered="{!If(strErrorMessage!='',true,false)}">
+                <div class="slds">
+                    <!-- Start Error Message -->
+                    <div class="slds-box slds-theme--error" >
+                        <p>{!strErrorMessage}</p>
+                    </div>
+                    <!-- End Error Message -->
+                </div>   
+            </apex:outputPanel>                                 
+        </apex:outputPanel> 
+        <script src="{!URLFOR($Resource.PE_35,'PE_3.5/js/jquery.js')}" type="text/javascript"></script>
+        <link rel="stylesheet" href="{!URLFOR($Resource.PE_35,'PE_3.5/AutoComp/css.css')}" type="text/css" />
+        
+        <link href = "{!URLFOR($Resource.PE_35, 'PE_3.5/css/Navatar-Yellow-Theme.css')}" rel = "stylesheet" type = "text/css"/>
+        
+        <!-- Start FancyBox -->
+        <script src="{!URLFOR($Resource.PE_35,'PE_3.5/js/jquery-ui.js')}"></script>
+        <script>
+            $(function() {
+                $( ".FancyboxContainer" ).draggable({ cancel: ".PopupContentStart" });
+            });
+        </script>
+        <link rel="stylesheet" type="text/css" href="{!URLFOR($Resource.PE_35,'PE_3.5/css/fancybox.css')}" media="screen" />
+        <script type="text/javascript">
+            var popupStatus = 0;            
+            function InsufficientPermissions_Fancybox() 
+            {
+                loadPopupnew('fancybox_background','InsufficientPermissions_Fancybox');
+                centerPopupnew('InsufficientPermissions_Fancybox');
+            }
+            
+            function InsufficientPermissions_Fancybox1() 
+            {
+                loadPopupnew('fancybox_background','InsufficientPermissions_Fancybox1');
+                centerPopupnew('InsufficientPermissions_Fancybox1');                
+            }
+                                                                                
+            function loadPopupnew(cid1,cid2)
+            {
+                if(popupStatus==0){
+                    $('.'+cid1).css({
+                        "opacity": "0.5"
+                    });
+                    $('.'+cid1).fadeIn("slow");
+                    $('.'+cid2).fadeIn("slow");
+                    popupStatus = 1;
+                }
+            };
+            function centerPopupnew(cid)
+            {
+                //request data for centering
+                var windowWidth = document.documentElement.clientWidth;
+                var windowHeight = document.documentElement.clientHeight;
+                var popupHeight = $('.'+cid).height();
+                var popupWidth = $('.'+cid).width();
+                //centering
+                $('.'+cid).css({
+                    "position": "fixed",
+                    "top": windowHeight/2-popupHeight/2,
+                    "left": windowWidth/2-popupWidth/2
+                });
+            };
+            
+            function closepopup(bgdivid,popupdivid)
+            {
+                disablePopupnew(bgdivid);
+                $('.'+popupdivid).fadeOut("slow");
+            } 
+            
+            function disablePopupnew(cid){
+                if(popupStatus==1){
+                    $('.'+cid).fadeOut("slow");
+                    popupStatus = 0;
+                }   
+            };
+            
+            var chkboxval= '';
+        </script>
+        <!-- End FancyBox -->
+
+        <!-- Start Yellow Tooltip -->
+        <link rel="stylesheet" href="{!URLFOR($Resource.PE_35,'PE_3.5/css/tip-yellow.css')}" type="text/css" />
+        <script type="text/javascript" src="{!URLFOR($Resource.PE_35,'PE_3.5/js/jquery.poshytip.js')}"></script>
+        <script type="text/javascript">
+            $(function(){
+                $('.YellowTooltip').poshytip();
+            });
+        </script>
+        <style>
+            .tip-yellow { padding:15px !important; box-shadow:#ccc 0px 0px 5px !important; }
+        </style>
+        <!-- End Yellow Tooltip -->
+        
+        <script>
+            $(document).ready(function(){      
+                $('.div_a').show();
+                $('.div_b').hide();
+
+                $(".click_one").click(function(){
+                    $('.div_a').hide();
+                    //$('.div_b').show();
+                });
+
+                $(".click_Two").click(function(){
+                    $('.div_a').show();
+                    $('.div_b').hide();
+                });      
+            }); 
+            
+            <!-- Progress Bar -->
+            function showProcessingImz() {
+                $("#processing_img").show();                
+            }
+
+            function hidePopup() {
+                $("#processing_img").hide();
+            }
+            
+        </script>
+
+        <style>
+            fieldset {border:1px solid #e2e6ef; text-align:center !important; border-radius:3px; /*background:#f7f9fb;*/ background:#fafafa;}
+            @-moz-document url-prefix() {
+                fieldset legend {
+                    margin-left:45% !important;
+                }
+            }
+            .select_box_view {background: #FAFAFA; float: right; padding: 3px 10px; position: absolute; right: 20px; top: 14px; border: 1px solid #EEEEEE; border-radius: 5px; color: #5D7193;}
+            .select_box_edit {background: #FAFAFA; float: right; padding: 3px 10px; position: absolute; right: 20px; top: 14px; border: 1px solid #EEEEEE; border-radius: 5px; color: #5D7193;}
+            .select_box_option {padding: 0px ! important; width: 90px; height: 25px; margin-left: 10px;}
+
+            .select-editable {
+                position:relative;
+                width: 260px;
+                height: 32px;
+                padding: 0px;
+                border: #c7cede 1px solid;
+                /*font-family: 'Ubuntu Condensed', sans-serif;*/
+                font-size: 14px;
+                border-radius: 4px; 
+            }
+            .select-editable select {
+                 position:absolute;
+                 top:0px;
+                 left:0px;
+                 font-size:14px;
+                 /*font-family: 'Ubuntu Condensed', sans-serif;*/
+                 border:none;
+                 width:258px;
+                 height:30px;
+                 margin:0;
+                 color:#16325c;
+                 padding-left:12px;
+                 -webkit-appearance: none;
+                -moz-appearance: none; appearance: none;  -webkit-transition: border .1s linear,background-color .1s linear; transition: border .1s linear,background-color .1s linear; 
+                background-position:97% !important;
+            }
+            .select-editable input {
+                 position:absolute;
+                 top:0px;
+                 left:1px;
+                 width:100px;
+                 /*font-family: 'Ubuntu Condensed', sans-serif;*/
+                 padding:1px;
+                 font-size:14px;
+                 border:none;
+                 color:#16325c; 
+            }
+            .select-editable select:focus, .select-editable input:focus {
+                outline:none;
+            }
+            .btn_icon_add, .btn_icon_delete {position:relative !important; top:10px !important; left:3px !important;}
+
+            .select-editable select option {padding-left:11px !important;}
+            .select-editable select.icon_3 option {padding-left:30px !important;}
+            /*a:hover {color:#333435 !important;}*/
+        </style>
+
+        <!---start script error, warning, suceess msg---->
+        <script type="text/javascript" src="{!URLFOR($Resource.PE_35,'PE_3.5/js/common.js')}"></script>
+        <!---end script error, warning, suceess msg---->
+
+        <!---start lightning css---->
+        <apex:stylesheet value="{!URLFOR($Resource.SLDS100, 'assets/styles/salesforce-lightning-design-system-vf.css')}" />
+        <link href = "{!URLFOR($Resource.PE_35, 'PE_3.5/css/PeLightning.css')}" rel = "stylesheet" type = "text/css" />
+        <link href = "{!URLFOR($Resource.PE_35, 'PE_3.5/css/Navatar-Yellow-Theme-Setup-Left-Section.css')}" rel = "stylesheet" type = "text/css" />
+        <link href = "{!URLFOR($Resource.PE_35, 'PE_3.5/css/Navatar-Yellow-Theme.css')}" rel = "stylesheet" type = "text/css"/>
+        
+        <!---end lighting css--->
+        </head>
+        <body>
+            <apex:actionFunction name="redirectpageActFn" action="{!redirectpage}" reRender="false" immediate="true">
+                <apex:param name="pgname" assignTo="{!strPageName}"  value=""/>
+            </apex:actionFunction>                
+            
+            <!--Start Loading-->
+            <div id="processing_img" style="width:100%; height:100%; display:block; background:#fff; text-align:center; vertical-align:middle; opacity:0.7; position:fixed; top:0; left:0; z-index:9999999; display:none;">
+                <div style="width:100px; height:100%; position:relative;top:41%; background:url({!URLFOR($Resource.PE_35, 'PE_3.5/images/icon_loading.gif')}) no-repeat top left; margin:0 auto;"></div>
+            </div>
+            <!--End Loading-->
+            <!-- Start REQUIRED SLDS WRAPPER -->
+            <div class="slds">
+
+            <!-- Start PRIMARY CONTENT WRAPPER -->
+            <div class="myapp">
+
+            <div id="temp" style="padding-bottom:0px !important;">
+            <div class="fancybox_background"></div>
+            <!-- Start InsufficientPermissions_Fancybox -->
+            <div class="InsufficientPermissions_Fancybox FancyboxContainer Popup">
+                <div class="slds-modal__header">
+                    <div class="close_white_60" >
+                        <a onclick="closepopup('fancybox_background','FancyboxContainer');return false;" title="Close"><img src="{!URLFOR($Resource.PE_35, 'PE_3.5/images/close_white_60.png')}" /></a>
+                    </div>
+                    <h2 class="slds-text-heading--medium">Insufficient Permission</h2>
+                </div>
+                <div class="PopupContentStart" style="text-align:center; padding:15px 25px !important">
+                    You do not have permission to edit this information. <br />Please contact your Navatar Administrator.
+                    <div class="cl"></div> 
+                </div>
+                <div class="slds-modal__footer">                
+                    <apex:commandButton value="OK" title="OK" styleClass="slds-button slds-button--neutral" onclick="closepopup('fancybox_background','FancyboxContainer');return false;" />
+                </div>                  
+            </div>
+            <!-- End InsufficientPermissions_Fancybox -->
+            
+            <!-- Start InsufficientPermissions_Fancybox -->
+            <div class="InsufficientPermissions_Fancybox1 FancyboxContainer Popup">
+                <div class="slds-modal__header">
+                    <div class="close_white_60" >
+                        <a onclick="closepopup('fancybox_background','FancyboxContainer');return false;" title="Close"><img src="{!URLFOR($Resource.PE_35, 'PE_3.5/images/close_white_60.png')}" /></a>
+                    </div>
+                    <h2 class="slds-text-heading--medium"> Confirmation </h2>
+                </div>
+                <div class="PopupContentStart" style="text-align:center; padding:15px 25px !important">
+                    For this combination of setting, activities will also appear on New Institution of contact.<br/>
+                    Are you sure you want to proceed?
+                    <div class="cl"></div> 
+                </div>
+                <div class="slds-modal__footer">
+                    <apex:commandButton value="No" title="No" styleClass="slds-button slds-button--neutral" onclick="closepopup('fancybox_background','FancyboxContainer');return false;" />
+                    <apex:commandButton reRender="false" value="Yes" title="Yes" styleClass="slds-button slds-button--brand click_for_step_2 click_Two" onclick="enableContTransferSetting(chkboxval); showProcessingImz();closepopup('fancybox_background','FancyboxContainer'); " />
+                </div>                   
+            </div>
+            <!-- End InsufficientPermissions_Fancybox -->
+               
+            <table width="100%" border="0" cellpadding="0" cellspacing="0">
+                <tr>
+                    <td style="width:240px; padding:0 !important;" valign="top" class="Left_bgcolor">  
+                        <div id="LeftMenuSection" class="float_l">
+                            
+                            <div class="ContentStart">
+                                <ul>
+                                     <li><apex:outputLink title="Deal Creation" value="/apex/Deal_Creation_Setup" target="_parent">Deal Creation</apex:outputLink></li>
+                                     <li><apex:outputLink title="Individual Investor Creation" value="/apex/Individual_Investor_Setup" target="_parent">Individual Investor Creation</apex:outputLink></li>
+                                     <li><apex:outputLink title="Commitment Creation" value="/apex/Commitment_Creation_Setup" target="_parent">Commitment Creation</apex:outputLink></li>
+                                     <li><apex:outputLink title="Contact Transfer" styleClass="selected" value="/apex/ContactTransfer_Settings_Setup" target="_parent">Contact Transfer</apex:outputLink></li>
+                                     <li><apex:outputLink title="Account Associations" value="/apex/ProductSetting" target="_parent">Account Associations</apex:outputLink></li>
+                                     <li><apex:outputLink title="Bulk Email" value="/apex/Bulk_Email_Setup" target="_parent">Bulk Email</apex:outputLink></li>
+                                     <li><apex:outputLink title="Office Locations" value="/apex/Office_Locations_Setup" target="_parent">Office Locations</apex:outputLink></li>
+                                     <li><apex:outputLink title="Co-investment Settings" value="/apex/CoInvestment_Settings_Setup" target="_parent">Co-investment Settings</apex:outputLink></li>
+                                     <li><apex:outputLink title="Pipeline Stage Log" value="/apex/Pipeline_Stage_Log" target="_parent">Pipeline Stage Log</apex:outputLink></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </td>
+                
+                    <td valign="top">
+                    <div id="RightMenuContentSection" class="float_r" style="padding-bottom:10px !important;">
+                        
+                        <div id="adminIDCheck" class="slds-box slds-theme--error" style="display:{!IF((isAdminSettingOn),'none','block')}">
+                             <img src="{!URLFOR($Resource.PE_35, 'PE_3.5/images/Cancel-32.png')}"/>
+                             <p style="margin-left:40px; margin-top:-26px">Error Code: 12355. Please contact Navatar Support. System setup improperly.</p>
+                        </div>    
+                        <!-- Start Div A -->
+                        <apex:outputPanel id="showdetailpage">   
+                        <div class="ContentStart" id="detailPageDiv" style="display:{!IF((isAdminSettingOn),'block','none')}">                                
+                             <div class="slds-page-header" role="banner">
+                                <div class="slds-media" style="padding-bottom:10px;">
+                                    <div class="slds-media__figure float_l">
+                                        <div class="slds-icon slds-icon-custom-3 slds-icon--large">
+                                            <img src="{!URLFOR($Resource.SLDS100, '/assets/icons/custom/custom67_60.png')}" />
+                                        </div>
+                                    </div>
+                                    <div class="slds-media__body float_l">
+                                        <p class="slds-page-header__title slds-truncate slds-align-middle" style="padding-top:8px">Contact Transfer 
+                                            <span class="YellowTooltip" title="Use this setting to determine how activities should be handled when a contact moves from one company to another. This feature will work only when 'Roll up activities to a contact's primary account' is enabled in Activity Settings.">
+
+                                            <span class="slds-icon icon-utility-info slds-icon-text-default">
+                                            <img src="{!URLFOR($Resource.SLDS100, '/assets/icons/utility/info_60_white.png')}" style="width:22px; height:22px; position:relative; top:-7px" />
+                                            </span>                                    
+                                            </span>  
+                                        </p>                        
+                                    </div>
+                                    <div class="slds-button-group float_r">                      
+                                        <apex:commandButton value="Edit" action="{!onEditContTransferSetup}" styleClass="slds-button slds-button--neutral" onclick="showProcessingImz();" reRender="refrshPannel,showdetailpage,ShowEditPage" title="Edit" oncomplete="onClickEditGetUserInfo(); hidePopup(); return false;"/>
+                                        
+                                    </div>                                      
+                                </div>
+                                <div class="cl"></div>  
+                            </div>       
+                                                      
+                           <div class="popupLayoutHeading_Top" style="margin:15px 15px 0 15px;padding:6px 8px;">
+                               <label class="slds-checkbox">
+                                <input type="checkbox" name="options" id="checkbox-02" disabled="true" />
+                                <span class="slds-checkbox--faux"></span>                               
+                              </label>
+                              <span data-aura-rendered-by="23510:1;0" class="title primaryPaletteBorder">Enable Contact Transfer</span>   
+                            </div>                                                  
+                                                    
+                            <div class="cl"></div>
+                            <!-- Start Content Box -->
+                            
+                            <div class="ContentBox" style="margin-top:15px;">
+                                <!--<h2 class="slds-section__title">Activity Settings</h2>-->
+                                <div style="border-bottom:#fcb141 1px solid !important; padding-bottom:10px !important;">
+                                    <table border="0" cellpadding="0" cellspacing="0" width="100%" class="table">
+                                        <tr>
+                                            <td><span class="slds-section__title" style="border-bottom:0 !important; color:#5c7d87 !important; background:none !important; padding:0 !important">Activity Settings</span></td>
+                                         </tr>
+                                    </table>
+                                </div>  
+                                <div class="cl"></div>
+                                <table border="0" cellpadding="0" cellspacing="0" width="100%" class="table" style="margin-top:24px;">
+                                    <tr>
+                                        <td valign="top" width="50%">
+                                            <table border="0" cellpadding="5" cellspacing="0" class="" width="100%">
+                                                <tbody>
+                                                    <tr>
+                                                        <td class="td1" style="width:170px;">
+                                                            <label class="slds-form-element__label" for="text-input-01">Keep activities at</label>
+                                                        </td>
+                                                        <td class="td2">
+                                                            <div class="slds-form-element">
+                                                                <div class="slds-form-element__control" style="width:315px;">
+                                                                  <div class="slds-select_container">                                                        
+                                                                    <apex:selectList id="hiddenctsactivity" value="{!ctsActivity}" multiselect="false" size="1" styleClass="slds-select" disabled="true">  
+                                                                        <apex:selectOptions value="{!ctsActivityOption}"/>
+                                                                    </apex:selectList>     
+                                                                  </div>
+                                                                </div>
+                                                            </div>
+                                                        </td>
+                                                    </tr>                                                    
+                                                </tbody>
+                                            </table>                                
+                                        </td>
+                                    </tr>
+                                </table>
+                                <br /><br />                                
+                                <div class="cl"></div>
+                                    <!--<h2 class="slds-section__title">Advanced Settings</h2>-->
+                                    <div style="border-bottom:#fcb141 1px solid !important; padding-bottom:10px !important;">
+                                        <table border="0" cellpadding="0" cellspacing="0" width="100%" class="table">
+                                            <tr>
+                                                <td><span class="slds-section__title" style="border-bottom:0 !important; color:#5c7d87 !important; background:none !important; padding:0 !important">Advanced Settings</span></td>
+                                             </tr>
+                                        </table>
+                                    </div>                                  
+                                    <div class="cl"></div>                                
+                                    <table border="0" cellpadding="0" cellspacing="0" width="100%" class="table" style="margin-top:24px;">
+                                        <tr>
+                                            <td valign="top" width="50%">
+                                                <table border="0" cellpadding="5" cellspacing="0" class="" width="100%">
+                                                    <tbody>
+                                                        <tr>
+                                                            <td class="td1" style="width:170px;">
+                                                                <label class="slds-form-element__label" for="text-input-01">Include activities related to</label>
+                                                            </td>
+                                                            <td class="td2">
+                                                                <div id="div8" class="slds-form-element">
+                                                                    <div id="div9" class="slds-form-element__control" style="width:315px;">
+                                                                      <div id="div10" class="slds-select_container">                                                       
+                                                                         <apex:selectList id="hiddenctsAdvancedOption" value="{!ctsAdvancedActivity}" multiselect="false" size="1" styleClass="slds-select" disabled="true">  
+                                                                            <apex:selectOptions value="{!ctsAdvancedOption}"/>
+                                                                        </apex:selectList>  
+                                                                      </div>
+                                                                    </div>
+                                                                </div>
+                                                            </td>
+                                                        </tr>                                                    
+                                                    </tbody>
+                                                </table>                                
+                                            </td>
+                                        </tr>
+                                    </table>                                
+                            </div>
+                            <!-- End Content Box -->
+                            <div class="cl"></div>                      
+                            <!-- End Content Box -->
+                                            
+                        </div> 
+                      
+                        </apex:outputPanel>                    
+                        <!-- End Div A -->
+                        
+                        <!-- Start Div B -->
+                        <apex:outputPanel id="ShowEditPage"> 
+                        
+                        <!-- Start Yellow Tooltip -->
+                        <script type="text/javascript">
+                            $(function(){
+                                $('.YellowTooltip').poshytip();
+                            });
+                        </script>
+                        <style>
+                            .tip-yellow { padding:15px !important; box-shadow:#ccc 0px 0px 5px !important; }
+                        </style>
+                        <!-- End Yellow Tooltip -->
+                        
+                        <div class="ContentStart" id="EditPageDiv" style="display : none;">                
+                            <div class="slds-page-header" role="banner">
+                                <div class="slds-media" style="padding-bottom:10px;">
+                                    <div class="slds-media__figure float_l">
+                                        <div class="slds-icon slds-icon-custom-3 slds-icon--large">
+                                            <img src="{!URLFOR($Resource.SLDS100, '/assets/icons/custom/custom67_60.png')}" />
+                                        </div>
+                                    </div>
+                                    <div class="slds-media__body float_l">
+                                        <p class="slds-page-header__title slds-truncate slds-align-middle" style="padding-top:8px">Contact Transfer
+                                            <span class="YellowTooltip" title="Use this setting to determine how activities should be handled when a contact moves from one company to another. This feature will work only when 'Roll up activities to a contact's primary account' is enabled in Activity Settings.">                                      
+
+                                            <span class="slds-icon icon-utility-info slds-icon-text-default">
+                                            <img src="{!URLFOR($Resource.SLDS100, '/assets/icons/utility/info_60_white.png')}" style="width:22px; height:22px; position:relative; top:-7px" />
+                                            </span>
+                                            </span>  
+                                        </p>                        
+                                    </div>                     
+                                </div>
+                                <div class="cl"></div>  
+                            </div>
+                                                      
+                            <div class="popupLayoutHeading_Top" style="margin:15px 15px 0 15px;padding:6px 8px;">
+                               <label class="slds-checkbox">
+                                <input type="checkbox" name="options" id="checkbox-01" />
+                                <span class="slds-checkbox--faux"></span>                               
+                              </label>
+                              <span data-aura-rendered-by="23510:1;0" class="title primaryPaletteBorder">Enable Contact Transfer</span>   
+                            </div>
+                           
+                            <div class="cl"></div>
+                            <!-- Start Content Box -->
+                            
+                            <div class="ContentBox" style="margin-top:15px;">
+                                <!--<h2 class="slds-section__title">Activity Settings</h2>-->
+                                <div style="border-bottom:#fcb141 1px solid !important; padding-bottom:10px !important;">
+                                    <table border="0" cellpadding="0" cellspacing="0" width="100%" class="table">
+                                        <tr>
+                                            <td><span class="slds-section__title" style="border-bottom:0 !important; color:#5c7d87 !important; background:none !important; padding:0 !important">Activity Settings</span></td>
+                                         </tr>
+                                    </table>
+                                </div>  
+                                <div class="cl"></div>
+                                <table border="0" cellpadding="0" cellspacing="0" width="100%" class="table" style="margin-top:24px;">
+                                    <tr>
+                                        <td valign="top" width="50%">
+                                            <table border="0" cellpadding="5" cellspacing="0" class="" width="100%">
+                                                <tbody>
+                                                    <tr>
+                                                        <td class="td1" style="width:170px;">
+                                                            <label class="slds-form-element__label" for="text-input-01">Keep activities at</label>
+                                                        </td>
+                                                        <td class="td2">
+                                                            <div class="slds-form-element">
+                                                                <div class="slds-form-element__control" style="width:315px;">
+                                                                  <div class="slds-select_container">                                                        
+                                                                    <apex:selectList id="ctsActivityOption" value="{!ctsActivity}" multiselect="false" size="1" styleClass="slds-select">  
+                                                                        <apex:selectOptions value="{!ctsActivityOption}"/>
+                                                                    </apex:selectList>
+                                                                  </div>
+                                                                </div>
+                                                            </div>
+                                                        </td>
+                                                    </tr>                                                    
+                                                </tbody>
+                                            </table>                                
+                                        </td>
+                                    </tr>
+                                </table>
+                                <br /><br />                                
+                                <div class="cl"></div>
+                                    <!--<h2 class="slds-section__title">Advanced Settings</h2>-->
+                                    <div style="border-bottom:#fcb141 1px solid !important; padding-bottom:10px !important;">
+                                        <table border="0" cellpadding="0" cellspacing="0" width="100%" class="table">
+                                            <tr>
+                                                <td><span class="slds-section__title" style="border-bottom:0 !important; color:#5c7d87 !important; background:none !important; padding:0 !important">Advanced Settings</span></td>
+                                             </tr>
+                                        </table>
+                                    </div>                                  
+                                    <div class="cl"></div>                                
+                                    <table border="0" cellpadding="0" cellspacing="0" width="100%" class="table" style="margin-top:24px;">
+                                        <tr>
+                                            <td valign="top" width="50%">
+                                                <table border="0" cellpadding="5" cellspacing="0" class="" width="100%">
+                                                    <tbody>
+                                                        <tr>
+                                                            <td class="td1" style="width:170px;">
+                                                                <label class="slds-form-element__label" for="text-input-01">Include activities related to</label>
+                                                            </td>
+                                                            <td class="td2">
+                                                                <div id="div8" class="slds-form-element">
+                                                                    <div id="div9" class="slds-form-element__control" style="width:315px;">
+                                                                      <div id="div10" class="slds-select_container">                                                       
+                                                                        <apex:selectList id="ctsAdvancedOption" value="{!ctsAdvancedActivity}" multiselect="false" size="1" styleClass="slds-select">  
+                                                                            <apex:selectOptions value="{!ctsAdvancedOption}"/>
+                                                                        </apex:selectList>
+                                                                      </div>
+                                                                    </div>
+                                                                </div>
+                                                            </td>
+                                                        </tr>                                                    
+                                                    </tbody>
+                                                </table>                                
+                                            </td>
+                                        </tr>
+                                    </table>                                
+                            </div>
+                            <!-- End Content Box -->
+                            <div class="cl"></div>                      
+                            <!-- End Content Box -->
+                            <div class="float_r" style="margin:8px 17px 0 0px;">  
+                                <apex:commandButton value="Cancel" action="{!onCancel}" title="Cancel" reRender="ShowEditPage,showdetailpage" styleClass="slds-button slds-button--neutral" />
+                                <apex:commandButton value="Save" reRender="false" title="Save" styleClass="slds-button slds-button--brand click_for_step_2" onclick="onSaveContatctTransfersett();"/>
+                                <apex:actionFunction action="{!onSaveContTransferSetting}" name="enableContTransferSetting" reRender="ShowEditPage,showdetailpage,refrshPannel,hiddenctsAdvancedOption,hiddenctsactivity" oncomplete="hidePopup();">
+                                    <apex:param name="tempvar" assignTo="{!isEnbleContTransferSetup}" id="tempvar" value=""  />
+                                </apex:actionFunction>
+                            </div>
+                            <div class="cl"></div> <br />                     
+                        </div> 
+                        </apex:outputPanel>
+                        <!-- End Div B -->
+                    </div>
+                    <div class="cl"></div>
+                    </td>
+                </tr>
+            </table>    
+            </div>
+
+            </div>
+            <!-- Start PRIMARY CONTENT WRAPPER -->
+
+            </div>
+            <!-- End REQUIRED SLDS WRAPPER -->
+            <apex:outputPanel id="refrshPannel">
+                <script> 
+                    //used to check if enable contact transfer setup. 
+                    var strEnbleContTransferSetup = '{!isEnbleContTransferSetup}';       
+                    if(strEnbleContTransferSetup =='true'){          
+                         document.getElementById("checkbox-01").checked = true;
+                         document.getElementById("checkbox-02").checked = true;
+                    }else{
+                        document.getElementById("checkbox-01").checked = false;
+                        document.getElementById("checkbox-02").checked = false;
+                    }
+                    
+                    var strAdvancedActivity ='';
+                    var strAdvancedActivity = '';
+                                                            
+                    //used for save contact transfer setting
+                    function onSaveContatctTransfersett(){
+                        chkboxval= document.getElementById("checkbox-01").checked;
+                        strAdvancedActivity ='';
+                        strAdvancedActivity = '';
+                        
+                        strActivity = document.getElementById("pageId:formId:ctsActivityOption").value;
+                        strAdvancedActivity = document.getElementById("pageId:formId:ctsAdvancedOption").value;
+                                            
+                        if(strActivity=='Old Institution Only' && strAdvancedActivity=='Contact, Institution and Custom Object'){                            
+                            InsufficientPermissions_Fancybox1();                            
+                        }else{
+                            showProcessingImz();
+                            enableContTransferSetting(chkboxval);
+                        }                     
+                    }
+                    
+                    //Used to check if login user is system admin
+                    function onClickEditGetUserInfo() {
+                        var val = '{!if(isAuthorizeUser==true,'true','false')}';  
+                        var isEditSection = '{!if(showEditSection==true,'true','false')}';
+                        var isAdminSettingOn = {!if(isAdminSettingOn==true,'true','false')};
+                        
+                        if(val=='false'){                           
+                            document.getElementById("detailPageDiv").style.display = "block";
+                            InsufficientPermissions_Fancybox();
+                            hidePopup();
+                        }else{
+                            if(isEditSection == 'true'){
+                            document.getElementById("detailPageDiv").style.display = "none";
+                                document.getElementById("EditPageDiv").style.display = "block";
+                                $('.div_a').hide();
+                                $('.div_b').show();
+                            }                               
+                        }
+                    }
+                </script>
+            </apex:outputPanel>
+        </body>
+        </html>
+    </apex:form>
+</apex:page>

@@ -1,0 +1,147 @@
+.plus_files{
+  height: 32px;
+  margin-top: 20px;
+  border-radius: 0px;
+  display: flex;
+  align-items: center;
+}
+.topic2{
+  --sds-c-icon-color-foreground-default: #FFFFFF;
+  --sds-c-icon-color-background: #006DCC;
+}
+.pillClass{
+  --lwc-brandTextLink:#006DCC;
+  --slds-c-pill-line-height:20px;
+}
+.cur_point{
+cursor: pointer;
+}
+/* .slide-v {
+  width: 50%;
+  margin: 0 auto;
+  -moz-user-select: none;
+  -webkit-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+} */
+
+/* .slide {
+  padding: 100px 0;
+  color: white;
+  background-color: rgb(101, 192, 149);
+  text-align: center;
+  font-size: 6rem;
+} */
+
+/* .slide:nth-child(2n) {
+  background: rgb(244, 144, 137);
+}
+ */
+.button-container {
+  padding-top: 10px; 
+  width: 50%;
+  margin: 0 auto;
+}
+.slds-carousel__panel.hideextraslide{
+  position: absolute;
+  right: 100%;
+  transform: translate(-100%);
+  width: 100%;
+  -webkit-transition:all, 0.2s cubic-bezier(0.66, 0.05, 0.51, 1.03);
+  -moz-transition: all, 0.2s cubic-bezier(0.66, 0.05, 0.51, 1.03);
+  -ms-transition: all, 0.2s cubic-bezier(0.66, 0.05, 0.51, 1.03);
+  -o-transition: all, 0.2s cubic-bezier(0.66, 0.05, 0.51, 1.03);
+  /* transition: all, 0.2s cubic-bezier(0.36, 0.01, 0.62, 0.98); */
+  transition: all 0.3s ease-in-out;
+}
+.slds-carousel__panel{
+  -webkit-transition:all, 0.2s cubic-bezier(0.66, 0.05, 0.51, 1.03);
+  -moz-transition: all, 0.2s cubic-bezier(0.66, 0.05, 0.51, 1.03);
+  -ms-transition: all, 0.2s cubic-bezier(0.66, 0.05, 0.51, 1.03);
+  -o-transition: all, 0.2s cubic-bezier(0.66, 0.05, 0.51, 1.03);
+  /* transition:all, 0.2s cubic-bezier(0.36, 0.01, 0.62, 0.98); */
+  transition: all 0.3s ease-in-out;
+}
+
+.hideextraslide{
+  
+  display: none;
+  
+}
+
+.slds-carousel{
+  overflow: hidden;
+  /* height: 180px; */
+}
+.slds-modal{
+z-index:101;
+}
+.slds-backdrop{
+z-index: 100;
+height: 95vh !important;
+}
+.for_mob{
+display: none;
+}
+.size_height{
+height:31.6px;
+}
+@media (max-width:600px){
+  .arrowBtn{
+      top:100px;
+  }
+
+  .for_desk{
+    display: none;
+  }
+  .for_mob{
+    display: block;
+  }
+  .for_mob_wid{
+    width:100%;
+  }
+  .mob_text_truncate_css {
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    display: block;
+    overflow: hidden;
+  }
+  
+}
+:host {
+--sds-c-textarea-sizing-min-height: 308px;
+}
+
+.viewMore{
+  right: -10px;
+  bottom: 10px;
+  cursor: pointer;
+  background: #fff;
+  border-radius: 50%;
+  box-shadow: 0px 1px 7px #ccc;
+  padding: 3px 5px;
+}
+
+.textareaReadOnlyCls{
+  resize:none; 
+  border:0;
+  outline: none; 
+  height: 260px;
+  padding: 0;
+}
+
+.textareaReadOnlyCls:focus, textarea:focus{
+  border: 0 none #FFF;
+  overflow: hidden;
+  outline:none;
+  box-shadow: none !important;
+}
+.attatchedFileCls {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+}
+/*00047857 fixed by raju on dated 22-10-2024*/
+.my-pill {
+  --slds-c-pill-color-background: #F3F3F3;
+}

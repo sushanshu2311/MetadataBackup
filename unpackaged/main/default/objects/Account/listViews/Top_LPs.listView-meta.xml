@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ListView xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Top_LPs</fullName>
+    <columns>ACCOUNT.NAME</columns>
+    <columns>Total_Fund_Commitments__c</columns>
+    <columns>Total_Co_investment_Commitments_USD_mn__c</columns>
+    <columns>Fund_Types__c</columns>
+    <columns>Industries__c</columns>
+    <filterScope>Everything</filterScope>
+    <filters>
+        <field>Fund_Types__c</field>
+        <operation>notEqual</operation>
+    </filters>
+    <filters>
+        <field>Institution_Type__c</field>
+        <operation>excludes</operation>
+        <value>Advisors,Bank,Broker,Intermediaries</value>
+    </filters>
+    <filters>
+        <field>Total_Fund_Commitments_USD_mn__c</field>
+        <operation>greaterThan</operation>
+        <value>0</value>
+    </filters>
+    <label>Top LPs</label>
+</ListView>

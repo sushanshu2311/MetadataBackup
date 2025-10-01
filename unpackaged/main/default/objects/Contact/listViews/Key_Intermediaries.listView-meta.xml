@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ListView xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Key_Intermediaries</fullName>
+    <columns>FULL_NAME</columns>
+    <columns>ACCOUNT.NAME</columns>
+    <columns>forTotalDealsShown__c</columns>
+    <columns>forAverageDealQualityScore__c</columns>
+    <columns>Tier__c</columns>
+    <columns>Industry_Focus__c</columns>
+    <filterScope>Everything</filterScope>
+    <filters>
+        <field>forTotalDealsShown__c</field>
+        <operation>notEqual</operation>
+        <value>0</value>
+    </filters>
+    <filters>
+        <field>Contact_Type__c</field>
+        <operation>equals</operation>
+        <value>Banker</value>
+    </filters>
+    <label>Key Intermediaries</label>
+</ListView>

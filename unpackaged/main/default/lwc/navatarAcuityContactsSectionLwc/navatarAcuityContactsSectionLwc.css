@@ -1,0 +1,143 @@
+.cur_point {
+    cursor: pointer;
+}
+.cont-tab-height {
+    height: 609px;
+    overflow-y: auto;/*Replaced "hidden" with "auto" by LK on 2024-06-06 to fix 00045369 ; 00045643*/
+}
+/*Added by Raju on 2024-06-24 to fix 00046209*/
+.clsBlockElement{
+    display: inline-block !important;
+}
+
+.for_mob{
+    display:none;
+}
+
+.min_ht_160{
+    min-height: 160px;
+}
+
+/*Bug 00046006 fixed by Deepak*/
+.info {
+    padding-left: 4px;
+    position: relative;
+    top: -2px;
+}
+
+@media (max-width: 1512px) {
+    .cont-tab-height {
+        height: 600px;
+        overflow-y: auto;/*Replaced "hidden" with "auto" by LK on 2024-06-06 to fix 00045369 ; 00045643*/
+    }
+    
+}
+
+@media (max-width: 600px) {
+    .for_mob{
+        display:block;/*Changed from 'none' to 'block' by LK on 20240422 to fix 00044996 ; 00045452 ; 00045510 ; 00045757 ; 00045125*/
+    }
+    .for_mob .slds-table_header-fixed_container {
+        padding-top: 0px;
+    }
+    .for_mob .slds-table_header-fixed {
+        padding-top: 2rem;
+    }
+    .for_desk{
+        display: none;
+    }    
+    /*Added by LK on 2024-06-25 to fix 00046229*/
+    .noDataMsgPosExt{
+        position: absolute;
+        top: 17% !important;
+    }
+    .clsBlockElement{
+        display: none !important;
+    }
+    /*00045788, 00045844 fixed by raju 28-05-2024*/
+    /*.cont-tab-height {
+        height: 600px;
+        overflow: scroll;
+        -webkit-overflow-scrolling: touch;
+    }*/
+    /*00046388 fixed by raju on 04-07-2024*/
+    .cont-tab-height {
+        /* height: 600px; */
+        min-height: 235px;
+        /* max-height: 560px; */
+        max-height: 445px;
+        height: auto;
+        overflow-y: auto;
+        -webkit-overflow-scrolling: touch;
+    }
+    ::-webkit-scrollbar {
+        width: 2px;
+    }
+    /* Track */
+    ::-webkit-scrollbar-track {
+        background: #f1f1f1;
+    }
+    /* Handle */
+    ::-webkit-scrollbar-thumb {
+        background: #888;
+    }
+    /* Handle on hover */
+    ::-webkit-scrollbar-thumb:hover {
+        background: #555;
+    }
+
+    .min_ht_160{
+        min-height:100px;
+    }
+    /*Added by raju on dated 16-07-2024; 00046388, 00046390*/
+    .noDataMsgPos{
+        position: absolute;
+        top: 15% !important;
+    }
+ 
+    /*Added by raju on dated 16-07-2024; 00046388, 00046390*/
+    .noDataMsgPosExt{
+        position: absolute;
+        top: 33.4% !important;
+    }
+}
+.errorMsgPopover{
+    position: absolute;
+    top: -52px;
+    right: 9px;
+    z-index:99999999999
+}
+.my-icon {
+    --slds-c-icon-color-foreground-default: #BA0517;
+    --slds-c-icon-color-background: transparent;
+}
+.iconErrCls{
+    top:12px;
+    right:18px;
+    z-index:1;
+    cursor: pointer;
+}
+/*Added noDataMsgPos by LK on 2024-05-09 to fix 00045309*/
+.noDataMsgPos{
+    position: absolute;
+    top: 6%;/*Added by LK on 2024-06-25 to fix 00046229*/
+}
+/*Added by LK on 2024-06-25 to fix 00046229*/
+.noDataMsgPosExt{
+    position: absolute;
+    top: 15%;
+}
+
+/*00045824 fixed by raju 28-05-2024 */
+.clsHeadingWidth {
+    white-space: nowrap;
+    max-width: 150px;
+    overflow: hidden;
+    text-overflow: ellipsis; ;
+}
+/*00046256 Fixed by raju on 28-06-2024*/
+.header_tab{
+    align-items: center;
+    height: 66px;
+    padding: 10px 20px;
+}

@@ -1,0 +1,30 @@
+<!--
+** Module Name : Acuity Phase 3 - Interactions Link
+** Description : Mediator component b/n SDG and Interactions component
+** Throws : NA
+** Calls : NA
+** Organization : Navatar Group
+** Product Name & Version : PE v5.3
+** Revision History:-
+** Version    Date(YYYY-MM-DD)    Author         Description of Action
+** 1.0        2024-04-10          Lakshya        Acuity Phase 3 - CR
+-->
+<template>
+    <!--SPINNER : START-->
+    <template if:true={enableSpinner}>
+        <lightning-spinner alternative-text="Loading..." style="z-index:15002">
+        </lightning-spinner>
+    </template>
+    <!--SPINNER : END-->
+
+    <!--INTERACTIONS TAB COMPONENT : START-->
+    <template if:true={redirectToInteractionPg}>
+        <c-navatar-acuity-redirection-lwc header={header}
+                                          act-id-list={actIdList}
+                                          namespace-prefix={namespacePrefix}
+                                          empty-modal-keyword="Interactions"
+                                          ltp-id={ltpId}>
+        </c-navatar-acuity-redirection-lwc>
+    </template>
+    <!--INTERACTIONS TAB COMPONENT : END-->
+</template>

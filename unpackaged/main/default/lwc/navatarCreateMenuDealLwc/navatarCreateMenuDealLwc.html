@@ -1,0 +1,36 @@
+<template>
+	<!--SPINNER : START-->
+    <template if:true={enableSpinner}>
+        <lightning-spinner alternative-text="Loading..."
+                           style="z-index: 15002;
+						   width: 100%;
+						   height: 55%;
+    					   margin-top: 176px;">
+        </lightning-spinner>
+    </template>
+	<template if:true={showDealCreateForm}>
+		<c-navatar-create-menu-deal-form1-lwc onhandlenext={handleNext} onclosemodal={closeModal} > 
+		</c-navatar-create-menu-deal-form1-lwc>
+	</template>
+ 
+	<template if:true={isAccountNeeded}>
+		<c-navatar-create-menu-deal-form2-lwc onhandleyes={handleYes} onhandleno={handleNo} deal-body = 'Do you want to associate a Company with this Deal?' > 
+		</c-navatar-create-menu-deal-form2-lwc> 
+	</template>
+
+	<template if:true={showCompanyForSelection}>
+		<c-navatar-create-menu-deal-form3-lwc onhandleback={handleBack} onhandlesave={handleSave}> 
+		</c-navatar-create-menu-deal-form3-lwc>
+	</template>
+
+	<template if:true={showCompanyRelatedData}> 
+		<c-navatar-create-menu-deal-form4-lwc onnochild={handleNoChild} onclosemodalfromchildclone={handleNoChild} onhandleclonechild={handleCloneScreenSave} acc-id={accId} deal-id={dealId}>
+		</c-navatar-create-menu-deal-form4-lwc>
+	</template>
+
+	<template if:true={selectContactToAdd}>
+
+		<c-navatar-create-menu-deal-form5-lwc onclosemodal={handleNoContact} onhandlenocontact ={handleNoContact} onhandlesave={handleCloneContactSave} acc-id={accId} deal-id={dealId} deal-name={dealRecord.Name}> 
+		</c-navatar-create-menu-deal-form5-lwc>
+	</template>
+</template>

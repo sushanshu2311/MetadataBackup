@@ -1,0 +1,104 @@
+<template>   
+        <template if:true={enableSpinner}>
+         <lightning-spinner alternative-text="Loading...">
+         </lightning-spinner>
+     </template>
+        <div class="main-Container-calllist">
+         <div class="slds-grid slds-wrap slds-m-top_medium">
+         <!--Start-->
+             <div class="slds-col slds-size_12-of-12">
+                 <div class="slds-m-top_small slds-m-bottom_xx-small">
+                     <!--Start Header-->
+                     <div class="slds-grid slds-wrap slds-m-top_small slds-box slds-theme_shade" style="align-items:center;">
+                         <div class="slds-col slds-size_6-of-12">
+                             <span class="slds-page-header__title slds-text-align_left slds-m-left_xx-small" title="My Call List">My Call
+                                 List</span>
+                         </div>
+                         <div class="slds-col slds-size_6-of-12 slds-text-align_right">
+                             <lightning-button label="Import Contacts" title="Import Contacts" onclick={showImportContactsModal}
+                                 variant="neutral">
+                             </lightning-button>
+                         </div>
+                     </div>
+                     <!--End Header-->
+     
+                     <!--Start-datatable -->
+                     <div class="slds-box slds-box_x-small slds-p-around_none">
+                       <div class="slds-grid slds-wrap">
+                           <div class="slds-col slds-size_1-of-1 slds-text-align_left">
+                               <div class="cont-tab-height">
+                                   <lightning-datatable class="tabcont calllistdatatable theme_css"
+                                                           key-field="id" 
+                                                           data={themeCallList}
+                                                           hide-checkbox-column="true" 
+                                                           columns={columns}
+                                                           onrowaction={handleThemeRowSelection}
+                                                            >
+                                     </lightning-datatable>
+                                       <template if:true={callListEmpty}> 
+                                        <!-- Bug 00047834 fixed by Sudhanshu -->
+                                           No items to display.
+                                       </template>
+                                 </div>
+                             </div>
+                         </div>
+                     </div>
+                     <!--End-->
+                 </div>
+             </div>
+         <!--End-->
+         </div>
+     </div>
+     <template if:true={isShowModal}>
+         <!-- Modal/Popup Box starts here -->
+         <section role="dialog" tabindex="-1" aria-labelledby="modal-heading-01" aria-modal="true"
+             aria-describedby="modal-content-id-1" class="slds-modal slds-fade-in-open main-Container">
+             <div class="slds-modal__container">
+                 <!-- Modal/Popup Box header here -->
+                 <header class="slds-modal__header">
+                     <button class="slds-button slds-button_icon slds-modal__close slds-button_icon-inverse" title="Close"
+                         onclick={hideModalBox}>
+                         <lightning-icon icon-name="utility:close" alternative-text="close" variant="inverse" size="small" title="Close">
+                         </lightning-icon>
+                         <span class="slds-assistive-text">Close</span>
+                     </button>
+                     <h2 id="modal-heading-02" class="slds-text-heading_medium slds-hyphenate" style="line-height: 38px;"
+                         title="Import Contacts"> Import Contacts
+                     </h2>
+                 </header>
+                 <!-- Modal/Popup Box body starts here -->
+                 <div class="slds-modal__content slds-p-around_x-small " id="modal-content-id-2">
+                     <div class="slds-form-element__control slds-m-horizontal_medium slds-grow ">
+                         <lightning-layout>
+                             <lightning-layout-item size="12">
+                                 <div class="slds-border_left slds-border_right slds-border_top slds-m-top_x-small slds-m-bottom_x-small">
+   
+                                     <lightning-datatable key-field="id" 
+                                                          resize-column-disabled="true"
+                                                          columns={accColumns}
+                                                          data={firmDataList}
+                                                          onrowselection={handleRowSelection} class="tabcont calllistdatatable theme_css">
+                                     </lightning-datatable>
+   
+                                 </div>
+                                 <!-- <p class="slds-m-top_small"> {itemCount} items selected</p> -->
+                             </lightning-layout-item>
+                         </lightning-layout>
+                     </div>
+                 </div>
+   
+                 <!-- Modal/Popup Box LWC footer starts here -->
+                 <footer class="slds-modal__footer cutomFooter">
+                     <lightning-button label="Cancel" title="Cancel" onclick={hideModalBox} class="slds-m-left_x-small">
+                     </lightning-button>
+                     <lightning-button variant="brand" label="Import" title="Import" onclick={importContacts}
+                         class="slds-m-left_x-small customBrandButton"></lightning-button>
+                 </footer>
+             </div>
+         </section>
+         <div class="slds-backdrop slds-backdrop_open"></div>
+     </template>
+       <template if:true={isCallLogOpen}>           
+           <c-navatar-notes-modal-lwc redirect-id={recordId} object-name="Task" task-type = 'Call' is-redirect-to-record={isRedirectToRecord} onclosemodal={noteModalClosed} oncancelchanges={noteModalClosed} additional-tagged-ids={selectedContactId} ></c-navatar-notes-modal-lwc>
+       </template>
+   </template>

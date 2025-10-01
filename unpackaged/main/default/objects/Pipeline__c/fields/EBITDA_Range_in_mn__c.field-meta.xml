@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>EBITDA_Range_in_mn__c</fullName>
+    <description>Note for Admin- Please do not change these picklist values, since it may impact certain features of Navatar Deal Connect.</description>
+    <inlineHelpText>Note for Admin- Please do not change these picklist values, since it may impact certain features of Navatar Deal Connect.</inlineHelpText>
+    <label>EBITDA  Range (mn)</label>
+    <required>false</required>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Picklist</type>
+    <valueSet>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>0 - 1</fullName>
+                <default>false</default>
+                <label>0 - 1</label>
+            </value>
+            <value>
+                <fullName>1 - 2</fullName>
+                <default>false</default>
+                <label>1 - 2</label>
+            </value>
+            <value>
+                <fullName>2 - 4</fullName>
+                <default>false</default>
+                <label>2 - 4</label>
+            </value>
+            <value>
+                <fullName>4 - 6</fullName>
+                <default>false</default>
+                <label>4 - 6</label>
+            </value>
+            <value>
+                <fullName>6 - 8</fullName>
+                <default>false</default>
+                <label>6 - 8</label>
+            </value>
+            <value>
+                <fullName>8 - 10</fullName>
+                <default>false</default>
+                <label>8 - 10</label>
+            </value>
+            <value>
+                <fullName>10 - 15</fullName>
+                <default>false</default>
+                <label>10 - 15</label>
+            </value>
+            <value>
+                <fullName>15 - 20</fullName>
+                <default>false</default>
+                <label>15 - 20</label>
+            </value>
+            <value>
+                <fullName>20 - 25</fullName>
+                <default>false</default>
+                <label>20 - 25</label>
+            </value>
+            <value>
+                <fullName>25 - 30</fullName>
+                <default>false</default>
+                <label>25 - 30</label>
+            </value>
+            <value>
+                <fullName>30 - 35</fullName>
+                <default>false</default>
+                <label>30 - 35</label>
+            </value>
+            <value>
+                <fullName>35 - 40</fullName>
+                <default>false</default>
+                <label>35 - 40</label>
+            </value>
+            <value>
+                <fullName>40 - 45</fullName>
+                <default>false</default>
+                <label>40 - 45</label>
+            </value>
+            <value>
+                <fullName>45 - 50</fullName>
+                <default>false</default>
+                <label>45 - 50</label>
+            </value>
+            <value>
+                <fullName>50 - 75</fullName>
+                <default>false</default>
+                <label>50 - 75</label>
+            </value>
+            <value>
+                <fullName>75 - 100</fullName>
+                <default>false</default>
+                <label>75 - 100</label>
+            </value>
+            <value>
+                <fullName>100 - 150</fullName>
+                <default>false</default>
+                <label>100 - 150</label>
+            </value>
+            <value>
+                <fullName>150 - 200</fullName>
+                <default>false</default>
+                <label>150 - 200</label>
+            </value>
+            <value>
+                <fullName>200 - 250</fullName>
+                <default>false</default>
+                <label>200 - 250</label>
+            </value>
+            <value>
+                <fullName>250 - 500</fullName>
+                <default>false</default>
+                <label>250 - 500</label>
+            </value>
+            <value>
+                <fullName>500 - 1000</fullName>
+                <default>false</default>
+                <label>500 - 1000</label>
+            </value>
+            <value>
+                <fullName>&gt; 1000</fullName>
+                <default>false</default>
+                <label>&gt; 1000</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
+</CustomField>

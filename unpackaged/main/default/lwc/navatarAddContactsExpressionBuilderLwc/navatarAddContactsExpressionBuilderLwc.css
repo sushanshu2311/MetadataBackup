@@ -1,0 +1,66 @@
+.ms-dropdown{
+    max-height: 500px;
+    overflow-y: auto;
+}
+.back:hover {
+    cursor: pointer;
+}
+.ms-clear-icon{
+    position: absolute;
+}
+.ms-refresh-icon{
+    position: absolute;
+}
+.ms-input{
+    background-color: rgb(255, 255, 255);
+    border: 1px solid rgb(217, 219, 221);
+    border-radius: .25rem;
+    width: 100%;
+    transition: border .1s linear,background-color .1s linear;
+    display: inline-block;
+    padding: 0 1rem 0 .75rem;
+    line-height: 1.875rem;
+    min-height: calc(1.875rem + (1px * 2));
+}
+.ms-filter-input{
+    margin: 0px 5%;
+    width: 50%;
+    height: 30px;
+    border-radius: 2px;
+    border-style: solid;
+    border-width: thin;
+    border-color: darkgray;
+    padding: 2px 5px;
+}
+
+.banpostion { /* Ui fixes for bug #00041377 by salauddin sheikh*/
+    width: 0%;
+    align-self: center;
+    position: absolute;
+    margin-left: 29%;
+    padding-top: 3px;
+}
+.banpostion1 {/*change for bug #00041444 fixes by salauddin sheikh*/
+    
+    align-self: center;
+    display: flex;
+    margin-left: 24%;
+    padding-top: 3px;
+    position: absolute;
+   
+}
+.searchposition {   /* Ui fixes for bug #00041377 by salauddin sheikh*/
+    width: 8%;
+    align-self: center;
+    padding-left: 3%;
+    /*padding-right: 15px;*/
+    display: flex;
+    padding-top: 3px;
+}
+/* @media (max-width: 1480px) {
+    .banpostion {
+        right: 135px;
+    }
+} */
+
+/* ui change 11 jan dec */

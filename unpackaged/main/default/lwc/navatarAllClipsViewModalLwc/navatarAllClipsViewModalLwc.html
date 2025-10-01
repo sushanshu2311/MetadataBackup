@@ -1,0 +1,132 @@
+<!--
+** Module Name : Acuity 2.0 - Acuity
+** Description : Displays the corresponding clip record with all relevant data along with other buttons
+** Throws : NA
+** Calls : NA
+** Organization : Navatar Group
+** Product Name & Version : Acuity 2.0
+** Revision History:-
+** Version    Date(YYYY-MM-DD)    Author         Description of Action
+** 1.0        2022-12-04          Hema
+-->
+<template>
+    <template if:true={isModalOpenview}>
+        <!-- Modal/Popup Box starts here -->
+        <section role="dialog" tabindex="-1" aria-labelledby="modal-heading-01" aria-modal="true"
+            aria-describedby="modal-content-id-1" class="slds-modal slds-modal_medium slds-fade-in-open main-Container">
+            <div class="slds-modal__container">
+                <!-- Modal/Popup Box header here -->
+                <button class="slds-button slds-button_icon slds-modal__close slds-button_icon-inverse"
+                        title="Close" onclick={closeModal}>
+                        <lightning-icon icon-name="utility:close" alternative-text="close" variant="inverse"
+                            size="small" title="Close">
+                        </lightning-icon>
+                        <span class="slds-assistive-text">Close</span>
+                </button>       
+                    <div class="slds-carousel">
+                        <lightning-layout multiple-rows="true">
+                            <lightning-layout-item size="12" class="slds-carousel__panel active">
+                                <header class="slds-modal__header" style="text-align:left;">
+                                    <lightning-layout horizontal-align="spread" style="align-items: center;">
+                                        <lightning-layout-item>
+                                            <lightning-layout style="align-items:center;gap:10px;">
+                                                <lightning-layout-item>
+                                                    <lightning-icon icon-name={clipIcon} alternative-text="Clip" title="Clip"></lightning-icon>
+                                                </lightning-layout-item>
+                                                <lightning-layout-item>
+                                                    <h2  class="slds-text-heading_xx-small slds-hyphenate"><span >Clips</span></h2>
+                                                    <h2 id="modal-heading-02" class="slds-text-heading_small slds-hyphenate" style="font-weight:500;">{selectedData.nameName}</h2>
+                                                </lightning-layout-item>
+                                            </lightning-layout>
+                                        </lightning-layout-item>
+                                        <lightning-layout-item>
+                                            <lightning-layout style="align-items:center;gap:10px;">
+                                                <lightning-layout-item>
+                                                    <lightning-icon icon-name="utility:print" alternative-text="print" onclick={handlePrint} title="Print" size="small" class="cur_pointer pillClass topic2 cur_point" variant="brand" style="padding: 4px;">
+                                                    </lightning-icon>
+                                                </lightning-layout-item>
+                                                <lightning-layout-item>
+                                                    <lightning-icon icon-name="utility:email" alternative-text="email" title="Email" size="small" class="cur_pointer pillClass topic2 cur_point" onclick={handlesendEmailClick}  variant="brand" style="padding: 4px;">
+                                                    </lightning-icon>
+                                                </lightning-layout-item>
+                                                <lightning-layout-item>
+                                                    <lightning-button variant="brand" label="Edit" title="Edit" onclick={handleNoteClickTaskview} class="slds-m-left_xx-small"></lightning-button>
+                                                </lightning-layout-item>
+                                            </lightning-layout>
+                                        </lightning-layout-item>
+                                    </lightning-layout>
+                                    
+                                    
+                                </header>
+                                <div class="slds-modal__content slds-p-vertical_small slds-p-horizontal_large">
+                                    <div class="slds-form-element slds-m-horizontal_small">
+                                        <label class="slds-form-element__label" style="font-weight:700">Summary</label>
+                                        <p>{selectedData.Summary}</p>    
+                                    </div>
+                                    <div class="slds-form-element slds-m-horizontal_small">
+                                        <label class="slds-form-element__label" style="font-weight:700">Notes</label>
+                                        <template if:true={selectedData.Notes}>
+                                            <lightning-textarea class="noteareacss" value={selectedData.Notes} read-only="true"></lightning-textarea>
+                                        </template>
+                                        <template if:false={selectedData.Notes}>
+                                            <div style="height:20px;"></div>
+                                        </template>
+                                    </div>
+                                    <div class="slds-grid">
+                                        <div class="slds-size_1-of-1">
+                                            <lightning-layout class="slds-p-horizontal_small">
+                                                
+                                                <lightning-layout-item size="6" flexibility="auto">
+                                                    <label class="slds-form-element__label" style="font-weight:700">Date</label>
+                                                    <p>{selectedData.date}</p>
+                                                </lightning-layout-item>
+                                            </lightning-layout>
+                                            
+                                            <lightning-layout class="slds-p-horizontal_small">
+                                                <lightning-layout-item size="12" flexibility="auto" class="slds-m-right_small">
+                                                    <label class="slds-form-element__label" style="font-weight:700">Tags</label>
+                                                    <lightning-layout>
+                                                        <lightning-layout-item size="12">
+                                                            <template if:true={tagDataList}>
+                                                                <template for:each={tagDataList} for:item="tags">
+                                                                    <template if:true={tags.tagRef}>
+                                                                    <a href={tags.tagRef} key={tags.index}  target="_blank">
+                                                                    <lightning-pill label={tags.tag} class="slds-m-right_xx-small">
+                                                                        <lightning-icon icon-name={tags.iconName} alternative-text={tags.iconName} ></lightning-icon>
+                                                                    </lightning-pill> 
+                                                                    </a>
+                                                                </template>
+                                                                <template if:false={tags.tagRef}>
+                                                                <lightning-pill key={tags.index} label={tags.tag} class="slds-m-right_xx-small ">
+                                                                    <lightning-icon icon-name={tags.iconName} alternative-text={tags.iconName} ></lightning-icon>
+                                                                </lightning-pill> 
+                                                            </template>
+                                                                </template>
+                                                            </template>
+                                                        </lightning-layout-item>
+                                                    </lightning-layout>
+                                                </lightning-layout-item>
+                                            </lightning-layout>
+                                            
+                                        </div>
+                                    </div>        
+                                </div>
+                            </lightning-layout-item>
+                        </lightning-layout>
+                    </div>
+                    <lightning-button-icon icon-name="utility:left" variant="bare"  onclick={prevslidemock} disabled={prevdisableButtonMock} title="Previous" alternative-text="View More" class="arrowBtn" style="position: absolute;top:50%;"></lightning-button-icon>
+                    <!-- <button  value="prev" class="prev slds-button slds-button_neutral">Prev</button> -->
+                    <lightning-button-icon icon-name="utility:right" variant="bare"   onclick={nextslidemock} disabled={nextDisableButtonMock} title="Next"  alternative-text="View More" class="arrowBtn" style="position: absolute;right:0;top:50%;"></lightning-button-icon>
+                    <!-- <button  value="next" class="next slds-button slds-button_neutral" onclick={nextslide} disabled={getdisabled}>Next</button> -->
+                     
+            </div>
+        </section>
+        <div class="slds-backdrop slds-backdrop_open"></div>
+      
+    </template>
+    <template if:true={sendEmailView}>
+         <!-- Added by Hema - Changed body var to populate notes - 00034991 -->
+         <!-- Added by Hema - Added id to redirect to clipview - 00035181 -->
+        <c-navatar-Send-Email-Lwc  subject={selectedData.nameName} body={selectedData.Notes}  message={selectedData.id}></c-navatar-Send-Email-Lwc> 
+    </template>
+</template>

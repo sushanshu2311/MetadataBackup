@@ -1,0 +1,68 @@
+<template>
+    
+    <div class="slds-grid slds-wrap slds-m-bottom_medium cls_myTableContainer main-Container-filter">
+        <template if:true={rte}>
+        <!-- <div style="width: 2%;">
+        </div> -->
+        <div class="slds-p-left_small slds-form-element__label" style="width: 30%;">
+            <span class="marginLeftMinus">Field</span>
+        </div>
+        <div class="slds-form-element__label" style="width: 31%;">
+            Operator
+        </div>
+        <div class="slds-form-element__label" style="width: 31%;">
+            Value
+        </div>
+        <div style="width: 8%;">
+        </div>
+    </template>
+        
+        <template if:true={filterList}>
+            <div class="slds-col slds-size_12-of-12">
+                <div class="slds-p-left_x-small slds-form-element__label" style="width: 95%;">
+                    <template if:true={flag}>
+                    <template for:each={filterList} for:item="filter">
+                        <div key={filter.index}>
+                            <c-navatar-Research-Expression-Builder-Lwc index={filter.index} field-struct={fieldStruct}
+                            
+                                comp-data={filter.filterData} row-size={rowSize} ondeleterows={handleRowDeletion}
+                                is-filter-logic-enabled={enableFilterLogic}
+                                onsearchcomponentdatahandler={recieveDataFromSearchComponent}>
+                            </c-navatar-Research-Expression-Builder-Lwc>
+                            
+                        </div>
+                    </template>
+                </template>
+                <template if:false={flag}>
+                    <template for:each={filterList} for:item="filter">
+                        <div key={filter.index}>
+                            <c-navatar-Research-Expression-Builder-Lwc index={filter.index} field-struct={fieldStruct}
+                            
+                                comp-data={filter.filterData} row-size={rowSize} ondeleterows={handleRowDeletion}
+                                is-filter-logic-enabled={enableFilterLogic} 
+                                onsearchcomponentdatahandler={recieveDataFromSearchComponent} >
+                            </c-navatar-Research-Expression-Builder-Lwc>
+                            
+                        </div>
+                    </template>
+                </template>
+                </div>
+
+                <div class="slds-p-left_x-small slds-form-element__label" style="width: 5%;">
+                    <template if:true={enableAddRow}>
+                        <!-- <a onclick={handleRowInsertion} title = "Add Row" aria-disabled={disableMoreRows}>
+                            Add Row </a> -->
+                        <div class="addMinus position_btn posibtn">
+                                <lightning-icon  icon-name="utility:new" alternative-text="Add"  onclick={handleRowInsertion} title="Add Row" size="x-small" class="cur_point slds-m-left_small my_disabled_class" aria-disabled={disableMoreRows} disabled={disableMoreRows}></lightning-icon>
+                        </div>
+                    </template>
+                </div>
+            </div>
+        </template>
+    </div>
+
+
+
+    <lightning-formatted-text style="color: red;" value={filterErrMsg}>
+    </lightning-formatted-text>
+</template>

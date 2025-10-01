@@ -1,0 +1,114 @@
+<!-- /****************************************************************************************************
+  
+    ** Module Name : Connections 2.0 - Custom Notification
+    ** Description : Used to handle notification bell icon related funtionalities of Connections 2.0 Custom Notification.
+    ** Throws : NA
+    ** Calls : NA
+    ** Organization : Navatar Group
+    ** Product Name & Version : Connections 2.0
+    ** Revision History:-
+    ** Version    Date(YYYY-MM-DD)    Author         Description of Action
+    ** 1.0        2022-08-02          Priyank        fetch and update event's records
+    ** 2.0        2022-08-30          Priyank        merge with UI 2
+    ** 3.0        2022-09-26          Priyank        update as per new CR
+    ** 4.0        2022-11-14          Priyank        update phase 2 UI
+
+****************************************************************************************************/ -->
+<!-- new lwc component created on 3 NOV UI-J-->
+<template>
+    <template if:true={isNotificationsAllowed}>
+    <div class="main-cont slds-m-bottom_x-small">
+
+        <!--Start Notification Icon -->
+        <div class="slds-text-align_right slds-is-relative">
+            <lightning-icon icon-name="utility:announcement"
+                class="slds-m-left_x-small clsBlue_icon cur_point nofy-icon pd_t_mob" onclick={showCustomNotification}
+                size="small" alternative-text="Notifications" title="Notifications">
+            </lightning-icon>
+            <div class="countDot cur_point" >
+                <span class="counterLabel">{notificationUnreadCount}</span>
+            </div>
+        </div>
+        <!-- End -->
+
+        <!--Start Notification Popup-->
+        <template if:true={isNotificationShow}>
+            <section aria-label="Dialog title" aria-describedby="popover-body-id"
+                class="slds-popover slds-nubbin_top-right slds-is-absolute cls_popover_position slds-p-around_none slds-popover_large sec-notify"
+                role="dialog">
+                <lightning-layout horizontal-align="spread">
+                    <lightning-layout-item padding="around-small" class="notification_refresh">
+                        <span class="slds-page-header__title slds-text-align_left slds-m-left_x-small" title="Notifications">Notifications</span>
+                        <lightning-icon icon-name="utility:refresh" size="x-small" alternative-text="Refresh!"
+                                title="Refresh" class="slds-text-link_reset" onclick={refreshAcuityNotification}>
+                            </lightning-icon>
+                    </lightning-layout-item>
+                    <lightning-layout-item padding="around-small">
+                        <lightning-icon icon-name="utility:close" size="x-small" alternative-text="close!" title="Close" class="slds-text-link_reset icon-position-notify" onclick={closeDialog}>
+                        </lightning-icon>
+                    </lightning-layout-item>
+                </lightning-layout>
+                <div id="popover-body-id"
+                    class="slds-popover__body slds-p-horizontal_none notification-scroll slds-p-around_none">
+                    <!-- Modal/Popup Box body starts here -->
+                    <div class="slds-modal__content min-hght">
+                        <template if:true={isNotificationCount}>
+                            <template for:each={notificationRecords} for:item="data" for:index="index">
+							    <div class={data.rowClass} style="align-items:center;" key={data.id} data-index={index}>
+							
+                                    <div  style="position:inherit;">
+                                        <template if:true={isLoading}>
+                                            <lightning-spinner 
+                                            alternative-text="Loading" size="medium" variant="brand"></lightning-spinner>
+                                        </template>
+                                        </div>
+                                <div class="slds-size_1-of-12 slds-p-horizontal_x-small slds-p-vertical_small slds-text-align_center">
+                                    <lightning-icon if:true={nnIsDeleteable} icon-name="utility:clear" size="x-small" onclick={dismissNotification}
+                                        title="Dismiss Notification" class="cur_point" data-id={data.id}>
+                                    </lightning-icon>
+                                </div>
+                                <div class="slds-size_7-of-12 slds-p-horizontal_xxx-small slds-p-vertical_small ">
+                                    <div class="slds-text-align_left">
+                                        <p class="slds-truncate"><b><a onclick={viewNotificationClick} target="_blank" class="noti" title={data.subject}
+                                            data-record-id={data.recordId}  data-id={data.id} data-index={index} data-type={data.recObjType}>{data.subject}</a></b>
+                                        </p>
+                                        <p class="text" title={data.description}>{data.description}</p>
+                                    </div>
+                                </div>
+                                <div class="slds-size_4-of-12">
+                                    <div class="slds-text-align_center">
+                                        <lightning-button variant="brand" label="Add Note" title="Add Note"
+                                                class="customBrandButton" value={data.id} onclick={clickAddNote} data-record-id={data.recordId} data-type={data.recObjType} if:true={data.isAddNote}></lightning-button>
+                                            <lightning-button variant="brand" label="Review Tag" title="Review Tag"
+                                                class="customBrandButton" value={data.id} onclick={clickAddTag} data-record-id={data.recordId} data-type={data.recObjType} if:true={data.isAddTag}></lightning-button>
+                                    </div>
+                                </div>
+                                </div>
+                            </template>
+                        </template>
+                        <template if:false={isNotificationCount}>
+                            <p style="text-align: center;"><b>You don't have any notifications right now.</b></p>
+                        </template>
+                    </div>
+                    <!-- end  -->
+
+                </div>
+            <!-- Modal/Popup Box LWC footer starts here -->
+            </section>
+        </template>
+    </div> 
+    <c-navatar-all-interactions-view-modal-lwc onchildmethod={handleNoteClick}>
+    </c-navatar-all-interactions-view-modal-lwc>
+    <template if:true={isShowNote}>
+        <c-navatar-notes-modal-lwc record-id={actRecId} object-name={actRecType} is-redirect-to-record={isRedirectToRecord} onclosemodal={handleCloseModal} oncancelchanges={noteModalClosed} ></c-navatar-notes-modal-lwc>
+    </template>
+    <!-- onclosemodal={handleCloseModal} oncancelchanges={noteModalClosed} -->
+    <template if:true={isReviewTag}>
+        <!-- Bug 00045083 fixed by Sudhanshu on 22-04-2022 -->
+        <c-navatar-notes-modal-lwc record-id={actRecId} object-name={actRecType} open-tag
+
+        open-suggested-tags open-edit-modal is-redirect-to-record={isRedirectToRecord} onclosemodal={handleCloseModal} oncancelchanges={noteModalClosed}></c-navatar-notes-modal-lwc>
+
+    </template>
+</template>
+</template>

@@ -1,0 +1,99 @@
+<apex:page showHeader="false" sidebar="false" standardController="Fundraising_Contact__c" extensions="SetPrimaryContactCTRL" recordSetVar="selectedApplications">
+    
+    <script>
+        var __sfdcSessionId = "{!GETSESSIONID()}";
+    </script>    
+    
+    <script src="/soap/ajax/40.0/connection.js" type="text/javascript">
+    </script>
+    
+    
+    <script>
+        try
+        {
+            var __sfdcSessionId = "{!GETSESSIONID()}";
+            
+            var strFRId = "{!JsEncode(presentRecordId)}";
+            var arrSelectedFRC = "{!JsEncode(FRIds)}";
+            arrSelectedFRC = arrSelectedFRC.split(",");
+            
+            // Check if there is any Fundraising Conatcts under Fundraising 
+            var iCount = sforce.connection.query("Select count() from navpeII_dev18__Fundraising_Contact__c where navpeII_dev18__Fundraising__c ='"+strFRId+"'");
+            
+            if(iCount.size == 0){
+                alert("The Fundraising does not have any Contact.");
+                window.open("/" +strFRId, "_self");
+            }
+            //if no records selected
+            else if(arrSelectedFRC.length == 0){
+                alert("Please select a Contact that you want to set as the Primary Contact.");
+                window.open("/" +strFRId, "_self");
+            }
+            //if more than one record selected
+            else if(arrSelectedFRC.length > 1){
+                alert("Please select one contact to set as the Primary Contact.");
+                window.open("/" +strFRId, "_self");
+            }
+            //if only one record selected
+            else if(arrSelectedFRC.length == 1)
+            {
+                //get primary contact record
+                var strSOQL = "Select Id, navpeII_dev18__IsPrimary__c from navpeII_dev18__Fundraising_Contact__c where navpeII_dev18__IsPrimary__c=true and navpeII_dev18__Fundraising__c='"+strFRId+"'";
+                var qryResult = sforce.connection.query(strSOQL);
+                var arrPrimaryRecords = qryResult.getArray("records");
+                
+                //Set selected contact as primary.
+                if(arrPrimaryRecords.length == 0)
+                {
+                    var objFRC = new sforce.SObject("navpeII_dev18__Fundraising_Contact__c");
+                    objFRC.Id = arrSelectedFRC[0];
+                    objFRC.navpeII_dev18__IsPrimary__c = true;
+                    var updateResult = sforce.connection.update([objFRC]);
+                    
+                    if (updateResult[0].getBoolean("success")) {
+                        alert("The Contact has been set as the Primary Contact for the Fundraising.");
+                        window.open("/" +strFRId, "_self");
+                    }
+                    else{
+                        alert("Insufficient Privileges.");
+                        window.open("/" +strFRId, "_self");
+                    }
+                }
+                else
+                {
+                    var strTemp = (arrPrimaryRecords[0].Id).substring(0,15);
+                    
+                    if(strTemp == arrSelectedFRC[0] && arrPrimaryRecords.length == 1){
+                        alert("This Contact is already set as Primary Contact.");
+                        window.open("/" +strFRId, "_self");
+                    }
+                    else
+                    {
+                        var blnConfirm = confirm("You are about to change the Primary Contact for this fundraising. Are you sure?");
+                        if(blnConfirm == true)
+                        {
+                            var objFRC2 = new sforce.SObject("navpeII_dev18__Fundraising_Contact__c");
+                            objFRC2.Id = arrSelectedFRC[0];
+                            objFRC2.navpeII_dev18__IsPrimary__c = true;
+                            var updateResult2 = sforce.connection.update([objFRC2]);
+                            
+                            if (updateResult2[0].getBoolean("success")) {
+                                alert("The Contact has been set as the Primary Contact for the Fundraising.");
+                                window.open("/" +strFRId, "_self");
+                            }
+                            else{
+                                alert("Insufficient Privileges.");
+                                window.open("/" +strFRId, "_self");
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        catch(ex){
+            alert('Error: ' +ex);
+            window.open("/" +strFRId, "_self");
+        }
+    </script>
+    
+</apex:page>

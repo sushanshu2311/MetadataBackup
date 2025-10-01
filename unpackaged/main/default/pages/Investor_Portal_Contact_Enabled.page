@@ -1,0 +1,22 @@
+<apex:page standardController="Contact" extensions="Investor_Portal_Contact_Enabled_cls" showHeader="false" sidebar="false">
+    
+    <script>
+    var ipurl = '';
+    var erromsg = '{!JSENCODE(error)}'; 
+    
+        if(erromsg == 'noemail' )
+        ipurl = '{!$Label.navpeII_dev18__IP_Url}'+'showerrormessage_con' ; // email id is blank then error page loaded
+        else 
+        {
+            if(erromsg == 'msg')   
+            ipurl = '{!$Label.navpeII_dev18__IP_Url}'+'Show_Error_onfund_Page1?Errorpage=Contact' ; 
+            else if(erromsg == 'false' || erromsg == false)          
+            ipurl = '{!$Label.navpeII_dev18__IP_Url}'+'apex/Gateway?startURL=/apex/PE_Contact_Enabled?id={!JSENCODE(session)}_@_{!JSENCODE(passhost)}_@_{!JSENCODE(foraccountid)}_@_{!JSENCODE(orgid)}_@_{!JSENCODE(conid)}';
+            else if(erromsg == 'true' || erromsg == true) 
+            ipurl = '{!$Label.navpeII_dev18__IP_Url}'+'Show_Error_onfund_Page?Errorpage=Contact' ;        
+        }
+        
+        window.location=ipurl ;       
+    </script>
+    
+</apex:page>

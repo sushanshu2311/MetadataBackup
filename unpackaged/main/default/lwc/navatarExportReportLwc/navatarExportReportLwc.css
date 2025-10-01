@@ -1,0 +1,12 @@
+.list{
+    font-size:14px;
+}
+.listdiv li{
+    margin:10px 0;
+}
+.text {
+    white-space: nowrap;	
+    text-overflow: ellipsis;	
+    display: block;	
+    overflow: hidden;
+  }

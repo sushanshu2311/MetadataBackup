@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomFieldTranslation xmlns="http://soap.sforce.com/2006/04/metadata">
+        <label><!-- Stage --></label>
+        <name>Stage__c</name>
+        <picklistValues>
+            <masterLabel>Closed</masterLabel>
+            <translation><!-- Closed --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Deal Received</masterLabel>
+            <translation><!-- Deal Received --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Declined/Dead</masterLabel>
+            <translation><!-- Declined/Dead --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Due Diligence</masterLabel>
+            <translation><!-- Due Diligence --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>IOI</masterLabel>
+            <translation><!-- IOI --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>LOI</masterLabel>
+            <translation><!-- LOI --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Management Meeting</masterLabel>
+            <translation><!-- Management Meeting --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>NDA Signed</masterLabel>
+            <translation><!-- NDA Signed --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Parked</masterLabel>
+            <translation><!-- Parked --></translation>
+        </picklistValues>
+    </CustomFieldTranslation>

@@ -1,0 +1,91 @@
+<template>
+    
+   <!-- <div class="slds-m-around_medium">
+        <lightning-input type="search"
+        placeholder="Enter one or more research terms"
+           value={searchValue}
+           label=""
+           onchange={searchKeyword} 
+           onkeypress={handleEnter} 
+           ></lightning-input>
+           <lightning-button variant="brand" label="Research" title="Research" onclick={handleSearch} class="slds-m-left_x-small slds-float_right slds-p-top_xx-small"></lightning-button>
+
+     </div>-->
+     
+     
+     
+        <!--
+            handleEnter(event){
+    if(event.keyCode === 13){
+      this.handleSearch();
+    }
+  }
+        -->
+        <div class="slds-m-around_medium main-Container" onmouseenter={showcombo}>          
+          <span onkeypress={key_Code_Checker}>
+          <!--<lightning-input label="" type="search" placeholder="Search"></lightning-input>-->
+          <div class="slds-grid slds-m-top_xx-large">
+            <div class="slds-col slds-size_9-of-12 slds-m-left_x-small">
+              <!-- <div class="slds-form-element">
+              <div class="slds-form-element__control"> -->
+                  <div class="slds-combobox-group">
+                  <template if:true={combo}>
+                    
+                    <div class="slds-combobox_object-switcher slds-combobox-addon_start">
+                      <div class="slds-form-element">
+                      <div class="slds-form-element__control">
+                          <lightning-combobox
+                          name="progress"
+                          variant="label-hidden"
+                          value={value}
+                          title={value}
+                          options={options}
+                          onchange={handleChange} ></lightning-combobox>
+                      </div>
+                      </div>
+                  </div>
+                  </template>
+                  <div class="slds-combobox_container slds-combobox-addon_end">
+                      <div class="slds-combobox slds-dropdown-trigger slds-dropdown-trigger_click" >
+                      <div class="slds-combobox__form-element slds-input-has-icon slds-input-has-icon_right" role="none">
+                          <!--<input type="text" class="slds-input slds-combobox__input"  aria-autocomplete="list" aria-controls="listbox-id-1" aria-expanded="false" aria-haspopup="listbox" role="combobox" placeholder="Search..." onclick={showcombo} onchange={searchKeyword} 
+                          onkeypress={handleEnter} />-->
+                          <lightning-input type="text" 
+                          class="label_hidden"
+                             placeholder="Search..."
+                          value={searchValue}
+                          
+                          onclick={showcombo}
+                          onchange={searchKeyword} 
+                          onkeypress={handleEnter} 
+           ></lightning-input>
+           <span class="slds-icon_container slds-icon-utility-search slds-input__icon slds-input__icon_right"
+                  title="Description of icon when needed">
+                  <lightning-icon icon-name="utility:search"
+                                  size="x-small"
+                                  alternative-text="search!"
+                                  title="Search"></lightning-icon>
+           </span>
+                       <!--  <span class="slds-icon_container slds-icon-utility-search slds-input__icon slds-input__icon_right" title="Description of icon when needed">
+                          
+                          </span>-->
+                      </div>
+                      </div>
+                  </div>
+                  </div>
+              </div>
+              <!-- </div>
+          </div> -->
+            <div class="slds-col slds-size_3-of-12">
+              <lightning-button variant="brand" label="Research" title="Research" data-boolcheck="false" onclick={handleNavigate} ></lightning-button>
+            </div>
+          </div> 
+          <div class="slds-grid main-Container">
+            <div class="slds-col slds-size_9-of-12 slds-m-left_x-small"></div>
+            <div class="slds-col slds-size_3-of-12 slds-m-top_x-small">
+              <a href="javascript:void(0)"  onclick={handleAdvanceClick} data-boolcheck="true" style="padding: 4px 13.5px;" title="Advanced">Advanced</a>
+            </div>
+          </div>
+      </span>
+  </div>
+</template>

@@ -1,0 +1,308 @@
+<!--
+Project: PE 3.5
+Start: 09-June-2016
+Module: NavatarQuickLink
+Class use: NavatarQuickLink_ctr 
+Common Class use: NA
+Standard Controller: NA
+Call From: Home Page
+Developer: Sachin Kumar
+Last Modified: Sachin Kumar (10-Nov-2016)
+-->
+
+<apex:page controller="NavatarQuickLink_ctr">
+    <link href = "{!URLFOR($Resource.SLDS100, 'assets/styles/salesforce-lightning-design-system-vf.css')}" rel = "stylesheet" type = "text/css"/>
+      <!--script src="/soap/ajax/28.0/connection.js" type="text/javascript"></script>
+     <script src="/soap/ajax/28.0/apex.js" type="text/javascript"></script-->
+  <html style="{!IF(isLightningModeOff=true,'', 'margin-top: -32px;')}">
+    
+      <style>
+         body.sfdcBody.apexPageInline {margin:0; padding:0;}
+          #sidebarDiv .sidebarModule .sidebarModuleBody {padding: 12px 5px 10px !important;}
+        
+          .NavatarQuickLink_Sec { }
+          .NavatarQuickLink_Sec ul,li { margin:0; padding:0; list-style:none; }
+          .NavatarQuickLink_Sec ul li { margin:0; }
+          .NavatarQuickLink_Sec ul li a {padding:4px 0px 4px 0px !important; border-radius:5px;  display:block; /*padding-left:22px; background:url(https://ap2.salesforce.com/img/sprites/master.png) top 4px left no-repeat;*/ }          
+          /*.NavatarQuickLink_Sec ul li a.fundraising { background:url(https://ap2.salesforce.com/img/icon/sun16.png) top 4px left no-repeat; }
+          .NavatarQuickLink_Sec ul li a.email { background:url(https://ap2.salesforce.com/img/icon/sun16.png) top 4px left no-repeat; }
+          .NavatarQuickLink_Sec ul li a.deal { background:url(https://ap2.salesforce.com/img/icon/sun16.png) top 4px left no-repeat; }
+          .NavatarQuickLink_Sec ul li a.investor { background:url(https://ap2.salesforce.com/img/icon/sun16.png) top 4px left no-repeat; }
+          .NavatarQuickLink_Sec ul li a.Commitment { background:url(https://ap2.salesforce.com/img/icon/sun16.png) top 4px left no-repeat; }
+          */.NavatarQuickLink_Sec div a.Support { display:block; border-radius:5px; background:url({!URLFOR($Resource.PE_35, 'PE_3.5/images/contacts_contact_book_address-20.png')}) top 8px left 8px no-repeat; background-color:#e3f3ff;padding:10px 12px 10px 30px;font-size: 11px; text-decoration:none; font-weight:bold; }
+          .NavatarQuickLink_Sec ul li a:hover { background-color:#e3f3ff;}
+          .NavatarQuickLink_Sec ul li img {float:left; margin-right:5px;}
+      </style>
+      
+      <style>
+          .NavatarQuickLink_Sec_Lightning { }
+          .NavatarQuickLink_Sec_Lightning ul,li { margin:0; padding:0; list-style:none; }
+          .NavatarQuickLink_Sec_Lightning ul li { margin:25px 0; }
+          .NavatarQuickLink_Sec_Lightning ul li a {padding:4px 0px 4px 0px !important; border-radius:2px;  display:block; position:relative; left:15px; }          
+          .NavatarQuickLink_Sec_Lightning div a.Support { display:block; border-radius:2px; background:url({!URLFOR($Resource.PE_35, 'PE_3.5/images/contacts_contact_book_address-20.png')}) top 8px left 8px no-repeat; background-color:#e3f3ff;padding:10px 12px 10px 30px;font-size: 11px; text-decoration:none; font-weight:bold; }
+          .NavatarQuickLink_Sec_Lightning ul li img { margin-right:5px;}
+          .NavatarQuickLink_Sec_Lightning .slds-icon {border-radius: 2px;}
+          
+          .slds a:focus {
+                outline: thin dotted;
+                outline: none !important;
+                outline-offset: -2px;
+                }
+                
+      </style>
+    
+      <script src="../../soap/ajax/38.0/connection.js" type="text/javascript"></script>
+        <script type="text/javascript">
+            //var sfdcSessionId = '{!GETSESSIONID()}';    
+            sforce.connection.sessionId = '{!$Api.Session_ID}';
+            var namespace = '{!namespace}';
+            var strAccountTabIcon ='';
+            var strCommitmentTabIcon='';
+            var strPipelineTabIcon='';
+            var strFundraisingTabIcon='';
+            var strTabAccountColor='';
+            var strTabCommitmentColor='';
+            var strTabPipelineColor='';
+            var strTabFundraisingColor='';
+            var isLightningModeOff = '{!isLightningModeOff}';
+            var arryObjectName =[];         
+            var result = sforce.connection.describeAllTabs();
+            var strTabCommitment = namespace+'Commitment__c';
+            var strTabPipeline = namespace+'Pipeline__c';
+            var strTabFundraising = namespace+'Fundraising__c';
+            var strTabAccount = 'Account';
+            arryObjectName.push(strTabAccount);
+            arryObjectName.push(strTabCommitment);
+            arryObjectName.push(strTabPipeline);
+            arryObjectName.push(strTabFundraising);         
+            for(var i=0; i<result.length;i++)
+            {
+             var objectName = result[i].sobjectName;
+             for(var j=0;j<arryObjectName.length; j++)
+                {
+                 if(objectName.toLowerCase() == arryObjectName[j].toLowerCase())
+                   {
+                    var tabColorInfo = result[i].colors;
+                    var tabIconInfo = result[i].icons;
+                    for(var k=0;k<tabColorInfo.length;k++)
+                     {
+                        if((isLightningModeOff == true || isLightningModeOff == 'true') && tabColorInfo[k].theme =='theme3')
+                          {
+                            if(objectName.toLowerCase() == strTabAccount.toLowerCase())
+                             strTabAccountColor = '#'+tabColorInfo[k].color;
+                            if(objectName.toLowerCase() == strTabCommitment.toLowerCase())
+                             strTabCommitmentColor = '#'+tabColorInfo[k].color;
+                            if(objectName.toLowerCase() == strTabPipeline.toLowerCase())
+                             strTabPipelineColor = '#'+tabColorInfo[k].color;
+                            if(objectName.toLowerCase() == strTabFundraising.toLowerCase())
+                             strTabFundraisingColor = '#'+tabColorInfo[k].color;
+                          }
+                        else if((isLightningModeOff == false || isLightningModeOff == 'false') && tabColorInfo[k].theme =='theme4')
+                          {
+                            if(objectName.toLowerCase() == strTabAccount.toLowerCase())
+                             strTabAccountColor = '#'+tabColorInfo[k].color;
+                            if(objectName.toLowerCase() == strTabCommitment.toLowerCase())
+                             strTabCommitmentColor = '#'+tabColorInfo[k].color;
+                            if(objectName.toLowerCase() == strTabPipeline.toLowerCase())
+                             strTabPipelineColor = '#'+tabColorInfo[k].color;
+                            if(objectName.toLowerCase() == strTabFundraising.toLowerCase())
+                             strTabFundraisingColor = '#'+tabColorInfo[k].color;
+                          }
+                     }
+                     for(var l=0;l<tabIconInfo.length;l++)
+                     {
+                       if((isLightningModeOff == true || isLightningModeOff == 'true') && tabIconInfo[l].theme =='theme3' && tabIconInfo[l].height == '32')
+                          { 
+                            if(objectName.toLowerCase() == strTabAccount.toLowerCase())
+                             strAccountTabIcon = '<img src="'+tabIconInfo[l].url+'"/>';
+                            if(objectName.toLowerCase() == strTabCommitment.toLowerCase())
+                             strCommitmentTabIcon = '<img src="'+tabIconInfo[l].url+'"/>';
+                            if(objectName.toLowerCase() == strTabPipeline.toLowerCase())
+                             strPipelineTabIcon = '<img src="'+tabIconInfo[l].url+'"/>';
+                            if(objectName.toLowerCase() == strTabFundraising.toLowerCase())
+                             strFundraisingTabIcon = '<img src="'+tabIconInfo[l].url+'"/>';
+                          }
+                        else if((isLightningModeOff == false || isLightningModeOff == 'false') && tabIconInfo[k].theme =='theme4' && tabIconInfo[l].height == '60')
+                          {
+                            if(objectName.toLowerCase() == strTabAccount.toLowerCase())
+                             strAccountTabIcon = '<img src="'+tabIconInfo[l].url+'"/>';
+                            if(objectName.toLowerCase() == strTabCommitment.toLowerCase())
+                             strCommitmentTabIcon = '<img src="'+tabIconInfo[l].url+'"/>';
+                            if(objectName.toLowerCase() == strTabPipeline.toLowerCase())
+                             strPipelineTabIcon = '<img src="'+tabIconInfo[l].url+'"/>';
+                            if(objectName.toLowerCase() == strTabFundraising.toLowerCase())
+                             strFundraisingTabIcon = '<img src="'+tabIconInfo[l].url+'"/>';
+                          }
+                     }
+                   }
+                }   
+            }
+           
+           if(isLightningModeOff == false || isLightningModeOff == 'false')
+           {
+           var styleDeal = document.createElement('style');
+           styleDeal.type = 'text/css';
+           styleDeal.innerHTML = '#DealIconIdLT'+isLightningModeOff+' img {background: '+strTabPipelineColor+' none repeat scroll 0 0; border-radius: 2px !important;height: 31px !important;width: 31px !important;}';
+           document.getElementsByTagName('head')[0].appendChild(styleDeal);
+           var styleIIS = document.createElement('style');
+           styleIIS.type = 'text/css';
+           styleIIS.innerHTML = '#IISIconIdLT'+isLightningModeOff+' img {background: '+strTabAccountColor+' none repeat scroll 0 0; border-radius: 2px !important;height: 31px !important;width: 31px !important;}';
+           document.getElementsByTagName('head')[0].appendChild(styleIIS); 
+           var styleFundraising = document.createElement('style');
+           styleFundraising.type = 'text/css';
+           styleFundraising.innerHTML = '#FundraisingIconIdLT'+isLightningModeOff+' img {background: '+strTabFundraisingColor+' none repeat scroll 0 0; border-radius: 2px !important;height: 31px !important;width: 31px !important;}';
+           document.getElementsByTagName('head')[0].appendChild(styleFundraising); 
+           var styleCommitment = document.createElement('style');
+           styleCommitment.type = 'text/css';
+           styleCommitment.innerHTML = '#CommitmentIconIdLT'+isLightningModeOff+' img {background: '+strTabCommitmentColor+' none repeat scroll 0 0; border-radius: 2px !important;height: 31px !important;width: 31px !important;}';
+           document.getElementsByTagName('head')[0].appendChild(styleCommitment); 
+           }
+           else
+            {
+            var styleDeal = document.createElement('style');
+           styleDeal.type = 'text/css';
+           styleDeal.innerHTML = '#DealIconId'+isLightningModeOff+' img {border-radius: 2px !important;height: 19px !important;width: 19px !important;}';
+           document.getElementsByTagName('head')[0].appendChild(styleDeal);
+           var styleIIS = document.createElement('style');
+           styleIIS.type = 'text/css';
+           styleIIS.innerHTML = '#IISIconId'+isLightningModeOff+' img {border-radius: 2px !important;height: 19px !important;width: 19px !important;}';
+           document.getElementsByTagName('head')[0].appendChild(styleIIS); 
+           var styleFundraising = document.createElement('style');
+           styleFundraising.type = 'text/css';
+           styleFundraising.innerHTML = '#FundraisingIconId'+isLightningModeOff+' img {border-radius: 2px !important;height: 19px !important;width: 19px !important;}';
+           document.getElementsByTagName('head')[0].appendChild(styleFundraising); 
+           var styleCommitment = document.createElement('style');
+           styleCommitment.type = 'text/css';
+           styleCommitment.innerHTML = '#CommitmentIconId'+isLightningModeOff+' img {border-radius: 2px !important;height: 19px !important;width: 19px !important;}';
+           document.getElementsByTagName('head')[0].appendChild(styleCommitment); 
+           }
+                    
+        
+            
+            
+           
+      /*sforce.connection.sessionId = "{!$Api.Session_ID}";
+       var result = sforce.connection.describeAllTabs();                
+                var tabURL = '';
+                alert('---result----'+result);*/
+        function GetTabIcons()
+        { 
+          var specifer = '';
+           if(isLightningModeOff == false || isLightningModeOff == 'false')
+            {
+             specifer = 'LT';
+            }
+            else
+            {
+             specifer = '';
+            }
+          var dealDOM = document.getElementById("DealIconId"+specifer+"{!isLightningModeOff}");
+          var IISDOM = document.getElementById("IISIconId"+specifer+"{!isLightningModeOff}");
+          var FundraisingDOM = document.getElementById("FundraisingIconId"+specifer+"{!isLightningModeOff}");
+          var CommitmentDOM = document.getElementById("CommitmentIconId"+specifer+"{!isLightningModeOff}");
+          if(dealDOM != null && dealDOM != 'undefind')
+          {
+                   
+            dealDOM.innerHTML = strPipelineTabIcon;
+            //$("#DealIconId{!isLightningModeOff}").find("img").css("backgroud",strTabPipelineColor+" none repeat scroll 0 0");
+          }
+          if(IISDOM != null && IISDOM != 'undefind')
+          {
+            IISDOM.innerHTML = strAccountTabIcon;
+          }
+          if(FundraisingDOM != null && FundraisingDOM != 'undefind')
+          {
+            FundraisingDOM.innerHTML = strFundraisingTabIcon;
+          }
+          if(CommitmentDOM != null && CommitmentDOM != 'undefind')
+          {
+            CommitmentDOM.innerHTML = strCommitmentTabIcon;
+          }
+          
+                
+                
+        }
+      
+      </Script>
+      
+      <apex:outputPanel id="classic_mode" rendered="{!isLightningModeOff}"> 
+          <div class="NavatarQuickLink_Sec">
+              <ul>
+                  <li><apex:outputLink rendered="{!bulkEmail}" target="_parent" value="/apex/Bulk_Email?retURL={!StrRetUrl}" styleClass="email "><img src="{!URLFOR($Resource.PE_35, 'PE_3.5/images/mail16.png')}" /> Send Bulk Email</apex:outputLink></li>
+                  
+                  <li><apex:outputLink rendered="{!newDeal}" target="_parent" value="/apex/Deal_Creation?retURL={!StrRetUrl}" styleClass="deal"><div id="DealIconId{!isLightningModeOff}"></div> Create New Deal</apex:outputLink></li>
+                  
+                  <li><apex:outputLink rendered="{!individualInvestor}" target="_parent" value="/apex/IndividualInvestor?retURL={!StrRetUrl}" styleClass="investor"><div id="IISIconId{!isLightningModeOff}"></div> Create New Individual Investor</apex:outputLink></li>
+                  
+                  <li><apex:outputLink rendered="{!isFundraising}" target="_parent" value="/apex/CreateMassFundraising?retURL={!StrRetUrl}&Source=Home" styleClass=",fundraising"><div id="FundraisingIconId{!isLightningModeOff}"></div> Create Fundraisings</apex:outputLink></li>
+                  
+                  <li><apex:outputLink rendered="{!isCommitment}" target="_parent" value="/apex/CommitmentCreation?retURL={!StrRetUrl}&Source=Home&id=" styleClass="Commitment"><div id="CommitmentIconId{!isLightningModeOff}"></div> Create New Commitment</apex:outputLink></li>
+              
+              </ul>
+              <div style="margin-top:5px;"><apex:outputLink target="_blank" value="http://www.navatargroup.com/support.php" styleClass="Support">Contact Navatar Support</apex:outputLink></div>
+          </div>
+      </apex:outputPanel>
+      
+          
+    <!-- REQUIRED SLDS WRAPPER -->
+    <apex:outputPanel id="lightning_mode" rendered="{! !isLightningModeOff}">
+        <div class="slds"  style="padding-bottom: 0px;">
+            <style>
+                .slds-icon_container {float:left; position:relative; bottom:2px;}
+            </style>
+              <div class="NavatarQuickLink_Sec_Lightning"  style="padding-bottom: 0px;">
+                  <ul>
+                      <li>
+                        <span class="slds-icon_container slds-icon-custom-custom23" style="display:{!IF(bulkEmail == true, 'block', 'none')}">
+                            <div aria-hidden="true" class="slds-icon slds-icon-action-email slds-p-around--x-small">
+                                <img src="{!URLFOR($Resource.SLDS100, 'assets/icons/action/email_60.png')}" />
+                            </div>
+                        </span>
+                        <apex:outputLink value="/apex/Bulk_Email?retURL={!StrRetUrl}" style="display:{!IF(bulkEmail == true, 'block', 'none')}" target="_parent">Send Bulk Email</apex:outputLink>
+                      </li>
+                      
+                      <li>
+                        <span class="slds-icon_container" style="display:{!IF(newDeal == true, 'block', 'none')}">
+                            <div id="DealIconIdLT{!isLightningModeOff}">
+                            </div>
+                        </span>
+                        <apex:outputLink value="/apex/Deal_Creation?retURL={!StrRetUrl}" style="display:{!IF(newDeal == true, 'block', 'none')}" target="_parent"> Create New Deal</apex:outputLink>
+                      </li>
+                      
+                      <li>
+                        <span class="slds-icon_container" style="display:{!IF(individualInvestor == true, 'block', 'none')}">
+                            <div id="IISIconIdLT{!isLightningModeOff}">
+                            </div>
+                        </span>
+                        <apex:outputLink value="/apex/IndividualInvestor?retURL={!StrRetUrl}" style="display:{!IF(individualInvestor == true, 'block', 'none')}" target="_parent"> Create New Individual Investor</apex:outputLink>
+                      </li>
+                      
+                      <li>
+                        <span class="slds-icon_container" style="display:{!IF(isFundraising == true, 'block', 'none')}">
+                            <div id="FundraisingIconIdLT{!isLightningModeOff}" ></div>
+                        </span>
+                        <apex:outputLink value="/apex/CreateMassFundraising?retURL={!StrRetUrl}&Source=Home" style="display:{!IF(isFundraising == true, 'block', 'none')}" target="_parent">
+                         Create Fundraisings</apex:outputLink>
+                      </li>
+                      
+                      <li>
+                        <span class="slds-icon_container" style="display:{!IF(isCommitment == true, 'block', 'none')}">
+                            <div id="CommitmentIconIdLT{!isLightningModeOff}">
+                            </div>
+                        </span>
+                        <apex:outputLink value="/apex/CommitmentCreation?retURL={!StrRetUrl}&Source=Home&id=" style="display:{!IF(isCommitment == true, 'block', 'none')}" target="_parent"> Create New Commitment</apex:outputLink>
+                     </li>
+                  
+                  </ul>
+                  <div style="margin-top:5px;">
+                     <a href="http://www.navatargroup.com/support.php" Class="Support" target="_blank">Contact Navatar Support</a>
+                  </div>
+              </div>
+        </div>
+    </apex:outputPanel>
+    <!-- END REQUIRED SLDS WRAPPER -->
+    <Script>
+      GetTabIcons();
+     </Script>  
+  </html>
+</apex:page>

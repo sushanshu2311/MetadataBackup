@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Flow xmlns="http://soap.sforce.com/2006/04/metadata">
+    <actionCalls>
+        <description>Pass the event relation IDs list of list to the apex method &quot;processRelationIds&quot;.</description>
+        <name>Call_Apex</name>
+        <label>Call Apex</label>
+        <locationX>551</locationX>
+        <locationY>585</locationY>
+        <actionName>NavatarTaskEventRelationHandler</actionName>
+        <actionType>apex</actionType>
+        <flowTransactionModel>CurrentTransaction</flowTransactionModel>
+        <inputParameters>
+            <name>relationRecordsIdList</name>
+            <value>
+                <elementReference>EventRelationIDList</elementReference>
+            </value>
+        </inputParameters>
+        <nameSegment>NavatarTaskEventRelationHandler</nameSegment>
+        <offset>0</offset>
+    </actionCalls>
+    <apiVersion>62.0</apiVersion>
+    <areMetricsLoggedToDataCloud>false</areMetricsLoggedToDataCloud>
+    <assignments>
+        <description>Prepares list of event relation IDs to be passed to the &quot;NavatarTaskEventRelationHandler&quot; apex class.</description>
+        <name>Prepare_Event_Relation_ID_List</name>
+        <label>Prepare Event Relation ID List</label>
+        <locationX>918</locationX>
+        <locationY>429</locationY>
+        <assignmentItems>
+            <assignToReference>EventRelationIDList</assignToReference>
+            <operator>Add</operator>
+            <value>
+                <elementReference>Iterate_over_Event_Relation_Records.Id</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>Iterate_over_Event_Relation_Records</targetReference>
+        </connector>
+    </assignments>
+    <environments>Default</environments>
+    <interviewLabel>Navatar LTP Update on Event Expiration Flow {!$Flow.CurrentDateTime}</interviewLabel>
+    <label>Navatar LTP Update on Event Expiration Flow</label>
+    <loops>
+        <description>For iterating over the event relation records.</description>
+        <name>Iterate_over_Event_Relation_Records</name>
+        <label>Iterate over Event Relation Records</label>
+        <locationX>632</locationX>
+        <locationY>432</locationY>
+        <collectionReference>EventRelationRecordsList</collectionReference>
+        <iterationOrder>Asc</iterationOrder>
+        <nextValueConnector>
+            <targetReference>Prepare_Event_Relation_ID_List</targetReference>
+        </nextValueConnector>
+        <noMoreValuesConnector>
+            <targetReference>Call_Apex</targetReference>
+        </noMoreValuesConnector>
+    </loops>
+    <processMetadataValues>
+        <name>BuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>CanvasMode</name>
+        <value>
+            <stringValue>FREE_FORM_CANVAS</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>OriginBuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processType>AutoLaunchedFlow</processType>
+    <recordLookups>
+        <description>Fetches event relation records associated with the event.</description>
+        <name>Get_Event_Relation_Records</name>
+        <label>Get Event Relation Records</label>
+        <locationX>632</locationX>
+        <locationY>324</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>Iterate_over_Event_Relation_Records</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>EventId</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>$Record.Id</elementReference>
+            </value>
+        </filters>
+        <object>EventRelation</object>
+        <outputReference>EventRelationRecordsList</outputReference>
+        <queriedFields>Id</queriedFields>
+    </recordLookups>
+    <start>
+        <locationX>330</locationX>
+        <locationY>48</locationY>
+        <object>Event</object>
+        <recordTriggerType>Create</recordTriggerType>
+        <scheduledPaths>
+            <name>Apex_Calling_Scenario</name>
+            <connector>
+                <targetReference>Get_Event_Relation_Records</targetReference>
+            </connector>
+            <label>Apex Calling Scenario</label>
+            <offsetNumber>0</offsetNumber>
+            <offsetUnit>Minutes</offsetUnit>
+            <recordField>EndDateTime</recordField>
+            <timeSource>RecordField</timeSource>
+        </scheduledPaths>
+        <triggerType>RecordAfterSave</triggerType>
+    </start>
+    <status>Active</status>
+    <variables>
+        <name>EventRelationIDList</name>
+        <dataType>String</dataType>
+        <isCollection>true</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+    </variables>
+    <variables>
+        <description>Contains the event relation records associated with the event in the form of a list.</description>
+        <name>EventRelationRecordsList</name>
+        <dataType>SObject</dataType>
+        <isCollection>true</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+        <objectType>EventRelation</objectType>
+    </variables>
+</Flow>

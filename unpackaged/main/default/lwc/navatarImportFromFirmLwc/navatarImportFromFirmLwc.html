@@ -1,0 +1,14 @@
+<template>
+    <template if:true={showImportDetails}>
+            <div class="listdiv">
+                <template if:true={showCloneOption}>
+                        <div class="slds-modal__content content" id="modal-content-id-1">
+                        <div></div>
+                        <c-navatar-create-menu-deal-form4-lwc is-checked-clip={isCheckedClip}  is-checked-interaction={isCheckedInteraction} onclosemodalfromchildclone={closeModal} onhandleclonechild={handleCloneScreenSave} acc-id={accId} deal-id={_recordId} action-button="Import"> 
+
+                        </c-navatar-create-menu-deal-form4-lwc>
+                        </div> 
+                </template>
+            </div> 
+    </template>
+</template>

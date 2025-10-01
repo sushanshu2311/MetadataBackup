@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomFieldTranslation xmlns="http://soap.sforce.com/2006/04/metadata">
+        <label><!-- Valuation Methodology --></label>
+        <name>Valuation_Methodology__c</name>
+        <picklistValues>
+            <masterLabel>Black Scholes</masterLabel>
+            <translation><!-- Black Scholes --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>DCF</masterLabel>
+            <translation><!-- DCF --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>EBITDA Multiple</masterLabel>
+            <translation><!-- EBITDA Multiple --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Marked to Market (Discounted)</masterLabel>
+            <translation><!-- Marked to Market (Discounted) --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Marked to Market (Not discounted)</masterLabel>
+            <translation><!-- Marked to Market (Not discounted) --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Other</masterLabel>
+            <translation><!-- Other --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Revenue Multiple</masterLabel>
+            <translation><!-- Revenue Multiple --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>YTM</masterLabel>
+            <translation><!-- YTM --></translation>
+        </picklistValues>
+    </CustomFieldTranslation>

@@ -1,0 +1,18 @@
+<apex:page standardController="Commitment__c" extensions="Investor_Portal_Commitment_Enabled_cls" showHeader="false" sidebar="false">    
+    <script>  
+        var ipurl = ''; 
+        var erromsg = '{!JSENCODE(error)}';
+
+        if(erromsg == 'msg')   
+        ipurl = '{!$Label.navpeII_dev18__IP_Url}'+'Show_Error_onfund_Page1?Errorpage=Commitment';   
+        // IP V1.8 Remove Co-Investment restriction  
+        //else if(erromsg == 'Co-investment')      
+        //ipurl = '{!$Label.navpeII_dev18__IP_Url}'+'Show_Error_onfund_Page?Errorpage=Commitment&Fundtype=Co-investment';  
+        else if(erromsg == 'false' || erromsg == false)          
+        ipurl = '{!$Label.navpeII_dev18__IP_Url}'+'apex/Gateway?startURL=/apex/PE_Commitment_Enabled?id={!JSENCODE(session)}_@_{!JSENCODE(passhost)}_@_{!JSENCODE(fundid)}_@_{!JSENCODE(orgid)}_@_{!JSENCODE(accountid)}_@_{!JSENCODE(recordtypename)}';
+        else if(erromsg == 'true' || erromsg == true)   
+        ipurl = '{!$Label.navpeII_dev18__IP_Url}'+'Show_Error_onfund_Page?Errorpage=Commitment'; 
+
+        window.location=ipurl ;       
+    </script>    
+</apex:page>

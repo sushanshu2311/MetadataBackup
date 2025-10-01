@@ -1,0 +1,120 @@
+:host {
+    --sds-c-textarea-sizing-min-height: 200px;
+}
+.topic2{
+    --sds-c-icon-color-foreground-default: #FFFFFF;
+    --sds-c-icon-color-background: #006DCC;
+}
+.pillClass{
+    --lwc-brandTextLink:#006DCC;
+    --slds-c-pill-line-height:20px;
+}
+/*.cutomFooter{
+    --slds-c-modal-footer-color-background:#F3F2F2;
+}
+.customBrandButton{
+    --slds-c-button-brand-color-background:#0070D2;
+}
+.accordation{
+    --slds-c-accordion-heading-text-color:var(--lwc-brandTextLink)
+}*/
+.cur_point{
+    cursor:pointer;
+}
+.mt_1{
+    margin-top: -3px;
+}
+
+.dropLists{
+    display:flex;
+    gap:5px;   
+}
+.dropLists:hover{
+    background: #ecf4fe;
+    cursor: pointer;
+}
+.drop_ul{
+    box-shadow: 0px 2px 2px rgb(0 0 0 / 10%);
+    border:1px solid #ddd;
+    border-radius:4px;
+}
+.slds-modal__content{
+    overflow: auto !important;
+}
+.align_icons{
+    display:flex;
+    align-items: center;
+    justify-content: center;
+    gap:5px;
+}
+.header_text{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
+} 
+.cls_header {
+    font-size: 12px;
+    color: #3E3E3C;
+    font-weight: 700;
+}
+.slds-border_around{
+    padding:5px 10px;
+}
+.align_center{
+    align-items: center;
+}
+.cls_Icon_lookupSearch{
+    display: flex;
+    align-items: center;
+}
+.cls_SearchIconPosition {    
+    margin-left: -20px;
+}
+.slds-border_around{
+    padding: 5px 10px;
+}
+.min_32{
+    min-height:32px;
+}
+.red{
+    background:#f3f3f3;
+    border-top:1px solid #e5e5e5;
+    border-bottom:1px solid #e5e5e5;
+}
+.image-upload > input
+{
+    display: none;
+}
+.cur_pointer{
+    cursor:pointer;
+}
+
+.removeGrayPattern {
+    background: none !important;
+    border-bottom: 0 !important;
+}
+
+ul.drop_ul {
+    position: absolute;
+    top: 100%;
+    right: 0;
+    bottom: 0;
+    left: 8px;
+    z-index: 15003 !important;
+    height: fit-content;
+    background: #fff;
+    width: 86%;
+    max-height: 163px;
+    overflow-y: auto;
+}
+.info{
+    float: right;
+    padding-right: 14px;
+    padding-bottom: 4px;
+}
+@media (min-width: 64em){
+    .heightonpop .slds-textarea{
+        height: 500px !important;
+    }
+}

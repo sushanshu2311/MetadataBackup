@@ -1,0 +1,316 @@
+<!--
+** Module Name : Acuity 1.0 - Acuity
+** Description : Displays the Acuity information of Acuity 1.0 including Referenced, Contacts/Connections, Interactions Section.
+** Throws : NA
+** Calls : NA
+** Organization : Navatar Group
+** Product Name & Version : Acuity 1.0
+** Revision History:-
+** Version    Date(YYYY-MM-DD)    Author         Description of Action
+** 1.0        2022-12-04          Lakshya        Acuity Phase 2
+** 2.0        2024-02-13          Lakshya        Sharing Model Implementation
+** 3.0        2024-04-10          Lakshya        Acuity Phase 3 - CR
+-->
+<template>
+    <!--SPINNER : START-->
+    <template if:true={enableSpinner}>
+        <div class="full_size_spinner">
+            <lightning-spinner alternative-text="Loading...">
+        </lightning-spinner>
+        </div>
+    </template>
+    <!--SPINNER : END-->
+    <!--Raju "slds-box header_tab" add class on 04-07-2024 ; 00046388-->
+    <div class="slds-page-header margin_bottom slds-box header_tab"><!-- Nikita change class replacement -->
+        <div class="slds-page-header__row">
+          <div class="slds-page-header__col-title">
+            <div class="slds-media"
+                 style="align-items: center;">
+              <div class="slds-media__figure for_desk">
+                <lightning-icon icon-name="standard:groups">
+                </lightning-icon>
+              </div>
+              <div class="slds-media__body">
+                <div class="slds-page-header__name">
+                  <div class="slds-page-header__name-title">
+                    <h1>
+                        <span class="slds-page-header__title slds-truncate"
+                              title={header}>
+                            {header}
+                        </span>
+                    </h1>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+    </div>
+    <!--Raju remove "slds-theme_shade" css class 04-07-2024 ; 00046388-->
+    <!--Raju add "slds-theme_shade" css class 16-07-2024 ; 00046388, 00046390 (inherit css for mobile)-->
+    <div class="slds-m-bottom_small main-Container-alltheme slds-theme_shade">
+        <!--Start Popover : Added by LK on 2024-10-07 to fix 00047722-->
+        <lightning-layout class="errorMsgPopover slds-hide">
+            <lightning-layout-item size="12">
+                <!-- <template if:true={showPopoverErrorMsg}> -->
+                    <section aria-describedby="dialog-body-id-110" aria-labelledby="dialog-heading-id-1" class="slds-popover slds-popover_error slds-nubbin_bottom-right" role="dialog">
+                        <!--<div  class="slds-text-align_right"><lightning-icon icon-name="utility:close" size="xx-small" alternative-text="Close" variant="base" title="Close" class="errorMsgPopover" onclick={showoffPopoverErrorMsg}></lightning-icon></div>-->        
+                        <header class="slds-popover__header">
+                            <div class="slds-media slds-media_center slds-has-flexi-truncate ">
+                                <!--Commented below div by LK on 2024-05-13 to fix 00045687-->
+                                <!--<div class="slds-media__figure">
+                                    <span class="slds-icon_container slds-icon-utility-error">
+                                        <lightning-icon icon-name="utility:error" size="xx-small" variant="inverse" alternative-text="Error" title="Error"></lightning-icon>
+                                    </span>
+                                </div>-->
+                                <div class="slds-media__body">
+                                    <h2 class="slds-text-body_small" id="dialog-heading-id-1" title="It seems there's an issue in connecting with external services. Please contact your system admin.">It seems there's an issue in connecting with external services. Please contact your system admin.</h2>
+                                </div>
+                            </div>
+                        </header>
+                    </section>
+                <!-- </template> -->
+            </lightning-layout-item>
+        </lightning-layout>
+        <!--End Popover-->
+        <lightning-layout>
+            <lightning-layout-item size="12" class="for_desk">
+                <div class="slds-grid slds-box" style="align-items:center;border-bottom: none;
+                padding-bottom: 5px;">
+                    <template if:true={displaySearch}>
+                        <div class="slds-size_3-of-12">
+                            <div onkeyup={handleSearch}>
+                                <lightning-input
+                                    name="Search"
+                                    variant="label-hidden"
+                                    type="search"
+                                    autocomplete="off"
+                                    onchange={handleSearch}
+                                    placeholder="Search this list..."> <!--Added by Anshika Ahuja W.R.To. Critical_Bug #00035133-->
+                                </lightning-input>
+                            </div>
+                        </div>
+                    </template>
+                    <div class={rightHeaderClass}>
+                        <div class="slds-is-relative">
+                            <div style="display: flex;justify-content:end">
+                            <template if:true={displayFilter}>
+                                <lightning-icon icon-name="utility:filterList"
+                                                size="x-small"
+                                                onclick={showFilterPopover}
+                                                alternative-text="Filter"
+                                                title="Filter"
+                                                class="filtr-icon">
+                                </lightning-icon>
+                            </template>
+                            <template if:true={displayFilterPopup}>
+                                <section aria-label="Dialog title"
+                                         id="toHide"
+                                         aria-haspopup="true"
+                                         aria-describedby="popover-body-id"
+                                         class="slds-popover slds-nubbin_top-right slds-is-absolute cls_viewAllPopupScreen slds-popover_small myfilter"
+                                         role="dialog">
+                                    <div class="slds-grid slds-m-around_small">
+                                        <div class="slds-size_1-of-2">
+                                            <h3>
+                                                Filters
+                                            </h3>
+                                        </div>
+                                        <div class="slds-size_1-of-2">
+                                            <lightning-icon icon-name="utility:close"
+                                                            size="x-small"
+                                                            alternative-text="close"
+                                                            title="Close"
+                                                            class="slds-float_right slds-text-link_reset cur_point"
+                                                            onclick={closeFilterPopover}>
+                                            </lightning-icon>
+                                        </div>
+                                    </div>
+                                    <div id="popover-body-id"
+                                         class="slds-popover__body  slds-border_top">
+                                        <template for:each={popoverValuesMap}
+                                                  for:item="popoverValue">
+                                            <div key={popoverValue.value}>
+                                                <lightning-input data-id="popoverFilter" 
+                                                                 type="checkbox"
+                                                                 label={popoverValue.label}
+                                                                 name={popoverValue.value}
+                                                                 checked={popoverValue.isChecked}
+                                                                 onchange={filterData}>
+                                                </lightning-input>
+                                            </div>
+                                        </template>
+                                    </div>
+                                </section>
+                            </template>
+                            </div>
+                            <div>
+                            <template if:true={displayToggle}>
+                                <lightning-layout class="slds-box slds-theme_shade">
+                                    <lightning-layout-item size="12" padding="horizontal-small"
+                                                           class="slds-text-align_center">
+                                        <lightning-radio-group name="radioGroupss"
+                                                               options={optnsInternalExternal}
+                                                               onchange={handleTabSwitch}
+                                                               value={tabValue}
+                                                               type="button"
+                                                               class="radioBtnsInterExter">
+                                        </lightning-radio-group>
+                                    </lightning-layout-item>
+                                </lightning-layout>
+                            </template>
+                        </div>
+                    </div>
+                        
+                    </div>
+                </div>
+                <template if:true={showMore}>
+                    <p class="display_text">Displaying recent {interactionsCount} Interactions</p>
+            </template>
+            </lightning-layout-item>
+        </lightning-layout>
+        <lightning-layout>
+            <lightning-layout-item size="12" padding="vertical-small">
+                <!--Raju add "slds-border_bottom" css class 04-07-2024 ; 00046388-->
+                <div class="slds-border_left slds-border_right slds-border_top slds-border_bottom">
+                    <template if:false={displayToggle}> 
+                        <!--Normal Data : Start-->
+                        <template if:true={partialTableData}>
+                            <lightning-datatable key-field="id"
+                                                 data={partialTableData}
+                                                 columns={tableCols}
+                                                 onrowaction={handleRowAction}
+                                                 hide-checkbox-column
+                                                 class="viewallScreen for_desk">
+                            </lightning-datatable>
+                            <!-- Nikita change -->
+                            <template if:true={isinteractionPage}>
+                                <lightning-datatable key-field="id"
+                                                data={partialTableData}
+                                                columns={tableColsmob}
+                                                onrowaction={handleRowAction}
+                                                hide-checkbox-column
+                                                class="viewallScreen inter tabcontmob tablecolorshadow_css_mob for_mob con-data-tble">
+                                </lightning-datatable>
+                                
+                            </template>
+                            <template if:true={isinteractionRecord}>
+                                <!--Raju "cont-tab-height" add class on 04-07-2024 ; 00046388-->
+                                <div class="cont-tab-height">
+                                    <lightning-datatable key-field="id"
+                                                    data={partialTableData}
+                                                    columns={tableColsmob}
+                                                    onrowaction={handleRowAction}
+                                                    hide-checkbox-column
+                                                    class="viewallScreen tabcontmob tablecolorshadow_css_mob for_mob con-data-tble">
+                                    </lightning-datatable>
+                                </div>
+                            </template>
+                             <!-- Nikita change -->
+                        </template>
+                        <template if:false={partialTableData}>
+                            <!--Raju "cont-tab-height_NoData" add class on 04-07-2024 ; 00046388-->
+                            <div class="cont-tab-height_NoData">
+                                <lightning-datatable key-field="id" 
+                                                     data={noData} 
+                                                     columns={tableCols}
+                                                     onrowaction={handleRowAction} 
+                                                     hide-checkbox-column
+                                                     class="viewallScreen for_desk con-data-tble">
+                                </lightning-datatable>
+                                <lightning-datatable key-field="id" 
+                                                        data={noData} 
+                                                        columns={tableColsmob}
+                                                        onrowaction={handleRowAction} 
+                                                        hide-checkbox-column
+                                                        class="tabcontmob tablecolorshadow_css_mob for_mob con-data-tble">
+                                </lightning-datatable>
+                                <p class="slds-p-around_x-small nodata-popup2">
+                                    {errMsg}
+                                </p>
+                            </div>
+                        </template>
+                        <!--Normal Data : End-->
+                    </template>
+                    <!--Toggle : Start-->
+                    <template if:true={displayToggle}> 
+                        <!--Start Internal-->
+                        <template if:true={isInternal}>
+                            <template if:true={internalData}>
+                                <!-- Added conditional icon visibility by LK on 2024-10-07 to fix 00047722 -->
+                                <template if:true={isRgApiError}>
+                                    <lightning-icon icon-name="utility:warning" size="xx-small" alternative-text="Error" class="my-icon slds-is-absolute iconErrCls for_desk" onmouseleave={hideErrorMsgPopover} onmouseover={showErrorMsgPopover}></lightning-icon>
+                                </template>
+                                <lightning-datatable key-field="id"
+                                                     hide-checkbox-column
+                                                     data={internalData}
+                                                     onrowaction={handleRowAction}
+                                                     columns={internalTableCols}
+                                                     class="viewallScreen companyTableInter con-data-tble">
+                                </lightning-datatable>
+                            </template>
+                            <template if:false={internalData}>
+                                <div style="min-height:160px">
+                                    <!-- Added conditional icon visibility by LK on 2024-10-07 to fix 00047722 -->
+                                    <template if:true={isRgApiError}>
+                                        <lightning-icon icon-name="utility:warning" size="xx-small" alternative-text="Error" class="my-icon slds-is-absolute iconErrCls for_desk" onmouseleave={hideErrorMsgPopover} onmouseover={showErrorMsgPopover}></lightning-icon>
+                                    </template>
+                                    <lightning-datatable key-field="id" 
+                                                         data={noData} 
+                                                         columns={internalTableCols}
+                                                         onrowaction={handleRowAction} 
+                                                         hide-checkbox-column
+                                                         class="viewallScreen companyTableInter con-data-tble">
+                                    </lightning-datatable>
+                                    <p class="slds-p-around_x-small nodata-popup2">
+                                        {errMsg}
+                                    </p>
+                                </div>
+                            </template>
+                        </template>
+                        <!--End Internal-->
+                        <!--Start External-->
+                        <template if:true={isExternal}>
+                            <template if:true={externalData}>
+                                <lightning-datatable key-field="id"
+                                                     hide-checkbox-column
+                                                     data={externalData}
+                                                     onrowaction={handleRowAction}
+                                                     columns={externalTableCols}
+                                                     class="viewallScreen companyTableExter con-data-tble">
+                                </lightning-datatable>
+                            </template>
+                            <template if:false={externalData}>
+                                <div style="min-height:160px">
+                                    <lightning-datatable key-field="id" 
+                                                         data={noData} 
+                                                         columns={externalTableCols}
+                                                         onrowaction={handleRowAction} 
+                                                         hide-checkbox-column
+                                                         class="viewallScreen companyTableExter con-data-tble">
+                                    </lightning-datatable>
+                                    <p class="slds-p-around_x-small nodata-popup2">
+                                        {errMsg}
+                                    </p>
+                                </div>
+                            </template>
+                        </template>
+                        <!--End External-->
+                    </template>
+                    <!--Toggle : End-->
+                </div>
+                <template if:true={showMore}>
+                    <div class="slds-clearfix slds-box slds-border_left slds-border_right slds-border_top slds-border_bottom">
+                        <a href="#" class="slds-float_right" title="Show More" onclick={showMoreInteraction}>Show More</a>
+                    </div>
+                </template>
+            </lightning-layout-item>
+        </lightning-layout>
+    </div>
+    <c-navatar-acuity-interaction-column-popup-lwc></c-navatar-acuity-interaction-column-popup-lwc><!--Modified by Anshika Ahuja W.R.To Naming Convention-->
+    <c-navatar-all-interactions-view-modal-lwc onchildmethod={handleNoteClick}><!--Modified by Anshika Ahuja W.R.To Naming Convention-->
+    </c-navatar-all-interactions-view-modal-lwc>
+    <!-- added for opening the quick contact create --> 
+    <c-navatar-acuity-ext-connection-add-popup-lwc>
+    </c-navatar-acuity-ext-connection-add-popup-lwc>  <!--//Modified by Anshika Ahuja W.R.To Naming Convention--> 
+</template>

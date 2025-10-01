@@ -1,0 +1,785 @@
+<template>
+    <div class="main-Container">
+
+        <template if:false={isDoHaveEditAccess}>
+            <div class="slds-modal__content slds-p-around_small">
+                <h2 class="slds-text-heading_medium slds-hyphenate">Note</h2>
+                <div class="slds-form-element__control slds-m-horizontal_medium slds-grow ">
+                    You do not have the level of access necessary to perform the operation you requested. Please
+                    contact the owner of the record or your administrator if access is necessary.
+                </div>
+            </div>
+            <footer class="slds-modal__footer">
+                <button class="slds-button slds-button_neutral" onclick={hideRecordModal}
+                    title="Close">Close</button>
+            </footer>
+        </template>
+ 
+
+        <template if:true={isShowModal}>
+                <template if:true={isLoading}>
+                    <lightning-spinner alternative-text="Loading" size="large" variant="brand"></lightning-spinner>
+                </template>
+                    <div class="slds-modal__content ">
+                        <template if:true={isError}>
+                            <div class="slds-p-horizontal_large slds-p-top_medium slds-p-bottom_medium">
+                                <div class="slds-notify slds-notify_alert slds-alert_error" role="alert">
+                                    <span class="slds-assistive-text">error</span>
+                                    <span class="slds-icon_container slds-icon-utility-error slds-m-right_x-small"
+                                        title="Description of icon when needed">
+                                    </span>
+                                    <h2>Review the errors on this page.</h2>
+                                </div>
+                                <template for:each={errorMessage} for:item="err">
+                                    <p class="slds-p-left_medium" key={err} style="color:red">{err} </p>
+                                </template>
+                        
+                            </div>
+                        </template>
+                        <h2 id="modal-heading-01" class="slds-text-heading_medium slds-hyphenate header_text">
+                            <lightning-icon icon-name={headerIcon} size="small" alternative-text="events"
+                                title={modalHeader}></lightning-icon>{modalHeader}
+                        </h2>
+                        <div
+                            class="slds-form-element slds-p-horizontal_medium slds-m-horizontal_medium slds-m-top_small">
+                            <label class="slds-form-element__label">{subjectLabel}</label>
+                            <div class="slds-form-element__control">
+                                <div class="slds-combobox_container">
+                                    <div class="slds-combobox slds-dropdown-trigger slds-dropdown-trigger_click">
+                                        <!--00046007 Fixed by raju on 01-07-2024; add class "slds-p-right_xx-small"-->
+                                        <div class="slds-combobox__form-element slds-input-has-icon slds-input-has-icon_right slds-p-right_xx-small"
+                                            role="none">
+                                            <input type="text" value={subject} onkeyup={handleChangeSubject}
+                                                onclick={showSubjectOption} onblur={hideSubjectOption}
+                                                class="slds-input slds-combobox__input" data-id="combobox-id-1"
+                                                aria-autocomplete="list" aria-controls="listbox-id-1"
+                                                aria-expanded="false" aria-haspopup="listbox" role="combobox" />
+                                            <span
+                                                class="slds-icon_container slds-icon-utility-search slds-input__icon slds-input__icon_right">
+                                                <lightning-icon icon-name="utility:search" size="x-small"
+                                                    title="Warning">
+                                                </lightning-icon>
+                                            </span>
+                                        </div>
+                                        <template if:true={showSubjectError}><span class="errorMsg">Complete this
+                                                field</span></template>
+                                        <div data-id="listbox-id-1"
+                                            class="slds-dropdown slds-dropdown_length-with-icon-7 slds-dropdown_fluid"
+                                            role="listbox" onclick={hideDropDown}>
+                                            <ul class="slds-listbox slds-listbox_vertical" role="presentation">
+                                                <template for:each={subjectOptions} for:item="record">
+                                                    <li role="presentation" class="slds-listbox__item"
+                                                        key={record.value} onclick={selectSubject}
+                                                        data-id={record.value} data-name={record.value}>
+                                                        <div class="slds-media slds-listbox__option slds-listbox__option_entity slds-listbox__option_has-meta"
+                                                            role="option">
+                                                            <span class="slds-media__body">
+                                                                <span
+                                                                    class="slds-listbox__option-text slds-listbox__option-text_entity"
+                                                                    onclick={selectSubject}>{record.label}</span>
+                                                            </span>
+                                                        </div>
+                                                    </li>
+
+                                                </template>
+
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+
+                        <div style="position:relative" class="slds-p-horizontal_medium">
+                            <label class="slds-form-element__label slds-m-horizontal_medium">Notes</label>
+                            <div>
+                                  <template if:false={isRichTxtEnable}>
+                                        <textarea onchange={handleChangeNotes} onkeyup={test} oninput={test1}
+                                        class="slds-m-horizontal_medium texthelp notetextareaEdit" formats={formats}
+                                        style="width: 90%;height: 200px;border-color: #c3c3c3;border-radius: 4px;">{commentStr}</textarea>
+                                      </template> 
+    
+                                        <template if:true={isRichTxtEnable}>
+                                        	<!--Added by Raju to fix 47978-->
+                                            <lightning-input-rich-text onchange={handleChangeNotes} onkeyup={test} oninput={test1}
+                                            share-with-entity-id
+                                            class="slds-m-horizontal_medium texthelp notetextareaEdit hide-toolbar" formats={formats}
+                                            style="width: 90%;height: auto;border-color: #c3c3c3;border-radius: 4px;" value={richTxtDescription}></lightning-input-rich-text><!--Bug #00038272--><!-- UI Bug #38418 changed height from 200px to 282px-->
+                                        </template><!--00047290 Bug Fix By Manonit-->
+                            </div>
+
+                            <!--HTML UL, clsSldsMedia, clsFontStyle, clsFontSize, <br />, span, template by raju on dated 23-10-2024 ; 47979-->
+                            <div class="hover">
+                                <ul>
+                                <template for:each={recordData} for:item="obj">
+                                    <li key={obj.Id} role="presentation" class="slds-listbox__item">
+                                        <div data-recid={obj.Id} onclick={handelSelectedRecord}
+                                            class="slds-media slds-listbox__option slds-listbox__option_entity slds-listbox__option_has-meta clsSldsMedia"
+                                            role="option" title={obj.Name}>
+                                            <span style="pointer-events: none;"
+                                                class="slds-media__figure slds-listbox__option-icon">
+                                                <span class="slds-icon_container">
+                                                    <lightning-icon icon-name={obj.iconName} size="small"
+                                                        alternative-text="icon" class="suggest-css"> </lightning-icon>
+                                                </span>
+                                            </span>
+                                            <span style="pointer-events: none;" class="slds-media__body">
+                                                <!-- Added By Sudhanshu for CR(00047979) Change -->
+                                                <span
+                                                    class="slds-listbox__option-text slds-listbox__option-text_entity clsFontStyle">{obj.Name}<br /><span class="clsFontSize"><template if:true={obj.isContact}>{obj.actName}</template></span></span>
+                                            </span>
+                                        </div>
+                                    </li>
+                                    </template>
+                                </ul>
+                            </div>
+                        </div>
+
+                        <lightning-layout>
+                            <lightning-layout-item class="slds-m-top_xx-small slds-p-left_medium">
+                                <lightning-icon icon-name="standard:quotes"
+                                    class="topic2 cur_point pillClass slds-m-left_medium slds-m-right_xx-small mt15"
+                                    variant="brand" size="small" onclick={handleClickTag} alternative-text="Tag"
+                                    title="Tag">
+                                </lightning-icon>
+                            </lightning-layout-item>
+                            <!-- <lightning-layout-item class="mt_1">
+                                <div class="image-upload slds-p-around_x-small">
+                                    <label for="file-input">
+                                        <lightning-icon icon-name="standard:attach"
+                                            class="slds-m-top_small topic2 cur_point pillClass cur_pointer"
+                                            variant="brand" size="small" title="Attachment">
+                                        </lightning-icon>
+                                    </label>
+                                    <input id="file-input" type="file" onchange = {openfileUpload}/>
+                                </div>
+                            </lightning-layout-item> -->
+                        </lightning-layout>
+
+                        <lightning-layout>
+                            <lightning-layout-item size="12" class="slds-p-horizontal_medium mt_1 slds-m-top_small">
+                                <div if:true={isTagOpen} class="slds-p-horizontal_medium">
+                                    <c-navatar-combobox-polymorphic-lwc obj-name={searchableObjectStr}
+                                        onlookupselected={handleSelectLookup}
+                                        search-placeholder="Search"></c-navatar-combobox-polymorphic-lwc>
+                                </div>
+                            </lightning-layout-item>
+                        </lightning-layout>
+
+                        <div class="slds-grid slds-m-top_xx-small slds-m-horizontal_medium">
+                            <div class="slds-size_12-of-12 slds-p-horizontal_medium">
+                                    <template for:each={allTaggedRecords} for:item="obj">
+                                        <template if:true={obj.isUser}>
+                                            <lightning-pill label={obj.Name} key={obj.Id} name={obj.Id}
+                                                data-id={obj.Name} variant="plain"
+                                                class="pillClass slds-m-right_xx-small pillsHide">
+                                                <lightning-icon icon-name={obj.iconName}
+                                                    alternative-text={obj.objectName}></lightning-icon>
+                                            </lightning-pill>
+                                        </template>
+                                        <template if:false={obj.isUser}>
+                                            <lightning-pill label={obj.Name} key={obj.Id} name={obj.Id}
+                                                data-id={obj.Name} class="pillClass slds-m-right_xx-small"
+                                                onremove={removeRecord}>
+                                                <lightning-icon icon-name={obj.iconName}
+                                                    alternative-text={obj.objectName}></lightning-icon>
+                                            </lightning-pill>
+                                        </template>
+                                    </template>
+                            </div>
+                        </div>
+
+
+                        <div class="slds-grid slds-p-horizontal_medium mainContainer">
+                            <div class="slds-size_1-of-1">
+                                <lightning-accordion class="example-accordion advanceAccordion"
+                                    allow-multiple-sections-open active-section-name={activeSectionAdvance}>
+                                    <lightning-accordion-section name="A" label="Advanced"
+                                        class="advance-font cls_leftSpace">
+
+                                        <div class="slds-grid slds-wrap disp_grid">
+                                            <div class="slds-col slds-large_6-of-12 slds-small_12-of-12">
+                                                <template for:each={otherPAgeLAyoutFields} for:item="field">
+                                             <!--    <template if:true={field.isLeftField}> Bug Fix By Manonit 00045818-->
+                                                        <div key={field.fieldType} class="slds-m-top_small">
+                                                            <template if:true={field.isText}>
+                                                                <!-- Bug 00047116 fixed by sudhanshu 29-07-2024 -->
+                                                                <lightning-input type="text" class={field.fieldAPI}
+                                                                    label={field.fieldLabel} id={field.fieldAPI}
+                                                                    value={field.fieldValue} maxlength="255" required={field.isRequired}></lightning-input>
+                                                            </template>
+
+                                                            <template if:true={field.isBoolean}>
+                                                                <!--00046311 Bug fix by Manonit-->  
+                                                                <label class="slds-form-element__label">{field.fieldLabel}</label>
+                                                                <lightning-input type="checkbox"
+                                                                    data-name={field.fieldAPI} onchange={handleAllDayEvent} variant="label-hidden" class={field.fieldAPI}
+                                                                    label={field.fieldLabel} id={field.fieldAPI}
+                                                                    checked={field.booleanValue}></lightning-input>
+                                                                <!--      <div class="slds-form-element">
+                                                                        <label class="slds-form-element__label">{field.fieldLabel}</label>
+                                                                        <div class="slds-form-element__control">
+                                                                          <span class="slds-checkbox slds-checkbox_standalone">
+                                                                            <input type="checkbox"
+                                                                            data-name={field.fieldAPI} class={field.fieldAPI}
+                                                                             id={field.fieldAPI}
+                                                                            checked={field.booleanValue} />
+                                                                            <span class="slds-checkbox_faux"></span>
+                                                                          </span>
+                                                                        </div>
+                                                                    </div>-->
+                                                            </template>
+
+                                                            <template if:true={field.isDate}>
+                                                                <!-- // Bug 00046977 fixed by Sudhanshu -->
+                                                                <lightning-input type="date" data-name={field.fieldAPI}
+                                                                    onchange={handleChangeEventDate}
+                                                                    onclick={handleChangeEventDate}
+                                                                    required={field.isRequired}
+                                                                    message-when-bad-input="Invalid data type"
+                                                                    class={field.fieldAPI} label={field.fieldLabel}
+                                                                    id={field.fieldAPI}  value={field.dateValue}>
+                                                                </lightning-input>
+                                                            </template>
+
+                                                            <template if:true={field.isDateTime}>
+                                                               
+                                                                <lightning-input type="datetime"
+                                                                    required={field.isRequired}
+                                                                    onchange={handleChangeDate}
+                                                                    message-when-bad-input="Invalid data type"
+                                                                    data-name={field.fieldAPI} class={field.fieldAPI}
+                                                                    label={field.fieldLabel} id={field.fieldAPI}
+                                                                    value={field.dateTimeValue} onclick={tobottom}>
+                                                                </lightning-input>
+                                                            </template>
+
+                                                            <template if:true={field.isPicklist}>
+                                                                <c-navatar-picklist-lwc field-name={field.fieldAPI}
+                                                                    object-name={objectName}
+                                                                    field-label-name={field.fieldLabel}
+                                                                    selected-option={field.fieldValue}
+                                                                    input-cls={field.fieldAPI}
+                                                                    class-name={field.lwcFieldClass}
+                                                                    is-required={field.isRequired}>
+                                                                </c-navatar-picklist-lwc>
+                                                            </template>
+
+                                                            <template if:true={field.isReference}>
+                                                                <c-navatar-single-lookup-lwc
+                                                                    obj-name={field.referenceObjName}
+                                                                    field-name={field.fieldAPI}
+                                                                    field-label-name={field.fieldLabel}
+                                                                    selected-id={field.fieldValue}
+                                                                    input-cls={field.fieldAPI}
+                                                                    is-required={field.isRequired}>
+                                                                </c-navatar-single-lookup-lwc>
+                                                            </template>
+
+                                                            <template if:true={field.isNumber}>
+                                                                <lightning-input type="number" class={field.fieldAPI}
+                                                                    label={field.fieldLabel} id={field.fieldAPI}
+                                                                    value={field.numberValue} required={field.isRequired} step="0.01">
+                                                                </lightning-input>
+                                                            </template>
+
+
+
+                                                           <!--Manonit Change Start-->
+                                                           <template if:true={field.isPhone}>
+                                                            <lightning-input type="text" class={field.fieldAPI}
+                                                                label={field.fieldLabel} id={field.fieldAPI}
+                                                                value={field.fieldValue} required={field.isRequired} >
+                                                            </lightning-input>
+                                                        </template>
+                                                        <template if:true={field.isEmail}>
+                                                            <lightning-input type="text" class={field.fieldAPI}
+                                                                label={field.fieldLabel} id={field.fieldAPI}
+                                                                value={field.fieldValue} required={field.isRequired}></lightning-input>
+                                                        </template>
+                                                       <template if:true={field.isTextArea}>
+                                                              <!-- Bug 00047116 fixed by sudhanshu 29-07-2024 -->
+                                                                     <lightning-textarea
+                                                                        label={field.fieldLabel} label-visible="true" class={field.fieldAPI} id={field.fieldAPI}
+                                                                        value={field.fieldValue} maxlength="255" required={field.isRequired}  >
+                                                                     </lightning-textarea> <!-- Bug 00045108 fixed by Manonit -->
+                                                                      <!--  <div class="slds-form-element">
+                                                                    <label class="slds-form-element__label" for="textarea-id-01">{field.fieldLabel}</label>
+                                                                    <div class="slds-form-element__control">
+                                                                          <textarea id={field.fieldAPI} placeholder="Placeholder text�" class="slds-textarea" style="height: 170px;">
+                                                                        {field.fieldValue}
+                                                                      </textarea>
+                                                                        </div>
+                                                                  </div>-->
+                                                                  
+                                                            </template>
+
+                                                          <!--Manonit Change End-->
+                                                        </div>
+                                                  <!-- Side@Mano  </template>-->
+                                                </template>
+                                            </div>
+                                            <div class="slds-col slds-large_6-of-12 slds-small_12-of-12">
+                                               
+
+
+                                            </div>
+                                        </div>
+
+                                        <lightning-accordion allow-multiple-sections-open
+                                            onsectiontoggle={handleClickFollowupTask}
+                                            class="slds-p-horizontal_x-small slds-p-vertical_none"
+                                            active-section-name={activeSectionFolllowUp}>
+                                            <lightning-accordion-section name="B" label="Tasks"
+                                                class="slds-p-around_none">
+                                                <template for:each={followUpList} for:item="raw">
+                                                    <div class="slds-box slds-theme_shade slds-m-top_x-small"
+                                                        key={raw.id}>
+                                                        <!-- 00031214 hide close button if there is only one task -->
+                                                        <template if:true={followupTaskList}>
+                                                            <div class="slds-grid">
+                                                                <div class="slds-size_1-of-1">
+                                                                    <div class="slds-clearfix">
+                                                                        <div class="slds-float_right">
+                                                                            <lightning-icon icon-name="utility:close"
+                                                                                class="cur_point slds-m-right_xx-small slds-floar_right"
+                                                                                size="x-small" alternative-text=""
+                                                                                title="Close" onclick={closeMoreTask}
+                                                                                data-id={raw.id}>{raw.id}
+                                                                            </lightning-icon>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </template>
+
+
+                                                        <div class="slds-grid slds-wrap">
+                                                            <div class="slds-col slds-large_1-of-2 slds-small_1-of-2" role="listitem">
+                                                                <div class="slds-m-horizontal_x-small">
+                                                                    <template for:each={raw.data} for:item="field">
+        
+                                                                            <div key={field.fieldType}
+                                                                                class="slds-m-top_small">
+                                                                                <template if:true={field.isText}>
+                                                                                    <!-- Bug 00047116 fixed by sudhanshu 29-07-2024 -->
+                                                                                    <lightning-input type="text"
+                                                                                        class={field.lwcFieldClass}
+                                                                                        label={field.fieldLabel}
+                                                                                        id={field.fieldAPI}
+                                                                                        value={field.fieldValue}
+                                                                                        required={field.isRequired}
+                                                                                        maxlength="255">
+                                                                                    </lightning-input>
+                                                                                </template>
+                                                                                <template if:true={field.isCombobox}>
+                                                                                    <label
+                                                                                        class="slds-form-element__label"
+                                                                                        for="combobox-id-1">Subject</label>
+                                                                                    <div
+                                                                                        class="slds-form-element__control">
+                                                                                        <div
+                                                                                            class="slds-combobox_container">
+                                                                                            <div
+                                                                                                class={raw.subjectClass}>
+                                                                                                <div class="slds-combobox__form-element slds-input-has-icon slds-input-has-icon_right"
+                                                                                                    role="none">
+
+                                                                                                    <input type="text"
+                                                                                                        value={field.fieldValue}
+                                                                                                        class="slds-input slds-combobox__input"
+                                                                                                        aria-autocomplete="list"
+                                                                                                        aria-controls="listbox-id-1"
+                                                                                                        aria-expanded="false"
+                                                                                                        aria-haspopup="listbox"
+                                                                                                        onkeyup={handleChangeSubjectFollowUp}
+                                                                                                        onclick={showSubjectOptionFollowUp}
+                                                                                                        onblur={hideSubjectOption}
+                                                                                                        role="combobox"
+                                                                                                        placeholder="Subject"
+                                                                                                        data-id={field.lwcFieldClass}
+                                                                                                        data-uid={raw.subjectClass} />
+
+                                                                                                    <span
+                                                                                                        class="slds-icon_container slds-icon-utility-search slds-input__icon slds-input__icon_right">
+                                                                                                        <lightning-icon
+                                                                                                            icon-name="utility:search"
+                                                                                                            size="x-small"
+                                                                                                            title="Warning">
+                                                                                                        </lightning-icon>
+                                                                                                    </span>
+                                                                                                </div>
+                                                                                                <div class="slds-dropdown slds-dropdown_length-with-icon-7 slds-dropdown_fluid"
+                                                                                                    role="listbox">
+                                                                                                    <!-- onclick={hideSubjectOption} -->
+                                                                                                    <ul class="slds-listbox slds-listbox_vertical"
+                                                                                                        role="presentation">
+
+                                                                                                        <template
+                                                                                                            for:each={subjectOptions}
+                                                                                                            for:item="record">
+                                                                                                            <li class="slds-listbox__item"
+                                                                                                                key={record.value}
+                                                                                                                role="presentation">
+                                                                                                                <div class="slds-media slds-listbox__option slds-listbox__option_entity slds-listbox__option_has-meta"
+                                                                                                                    role="option">
+                                                                                                                    <span
+                                                                                                                        class="slds-media__body">
+                                                                                                                        <span
+                                                                                                                            class="slds-listbox__option-text slds-listbox__option-text_entity"
+                                                                                                                            onclick={selectFollowUpSubject}
+                                                                                                                            data-id={field.lwcFieldClass}
+                                                                                                                            data-name={record.value}>{record.label}</span>
+                                                                                                                    </span>
+                                                                                                                </div>
+                                                                                                            </li>
+                                                                                                        </template>
+                                                                                                    </ul>
+                                                                                                </div>
+                                                                                            </div>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </template>
+
+                                                                                <template if:true={field.isBoolean}>
+                                                                                    <!--00045551 Bug Fix By Manonit-->
+                                                                                    <label class="slds-form-element__label">{field.fieldLabel}</label>
+                                                                                    <lightning-input type="checkbox"
+                                                                                        class={field.lwcFieldClass}
+                                                                                        label={field.fieldLabel}
+                                                                                        id={field.fieldAPI}
+                                                                                        variant="label-hidden"
+                                                                                        checked={field.booleanValue}>
+                                                                                    </lightning-input>
+                                                                                </template>
+
+                                                                                <template if:true={field.isDate}>
+                                                                                    <lightning-input type="date"
+                                                                                        class={field.lwcFieldClass}
+                                                                                        label={field.fieldLabel}
+                                                                                        id={field.fieldAPI}
+                                                                                        required={field.isRequired}
+                                                                                        value={field.dateValue}
+                                                                                        onclick={tobottom}>
+                                                                                    </lightning-input>
+                                                                                </template>
+
+                                                                                <template if:true={field.isDateTime}>
+                                                                                    <lightning-input type="datetime"
+                                                                                        class={field.lwcFieldClass}
+                                                                                        label={field.fieldLabel}
+                                                                                        id={field.fieldAPI}
+                                                                                        value={field.dateTimeValue}
+                                                                                        required={field.isRequired}
+                                                                                        onclick={tobottom}>
+                                                                                    </lightning-input>
+                                                                                </template>
+
+                                                                                <template if:true={field.isPicklist}>
+                                                                                    <c-navatar-picklist-lwc
+                                                                                        field-name={field.fieldAPI}
+                                                                                        object-name="Task"
+                                                                                        field-label-name={field.fieldLabel}
+                                                                                        selected-option={field.fieldValue}
+                                                                                        input-cls={field.lwcFieldClass}
+                                                                                        required={field.isRequired}
+                                                                                        is-required={field.isRequired}>
+                                                                                    </c-navatar-picklist-lwc>
+                                                                                </template>
+
+                                                                                <template if:true={field.isReference}>
+                                                                                    <c-navatar-single-lookup-lwc
+                                                                                        obj-name={field.referenceObjName}
+                                                                                        field-name={field.fieldAPI}
+                                                                                        field-label-name={field.fieldLabel}
+                                                                                        selected-id={field.fieldValue}
+                                                                                        required={field.isRequired}
+                                                                                        input-cls={field.lwcFieldClass}
+                                                                                        is-required={field.isRequired}>
+                                                                                    </c-navatar-single-lookup-lwc>
+                                                                                </template>
+
+                                                                                <template if:true={field.isNumber}>
+                                                                                    <lightning-input type="number"
+                                                                                        class={field.lwcFieldClass}
+                                                                                        label={field.fieldLabel}
+                                                                                        id={field.fieldAPI}
+                                                                                        required={field.isRequired}
+                                                                                        value={field.numberValue}
+                                                                                        step="0.01"></lightning-input>
+                                                                                </template>
+                                                                                 <!--Manonit Change Start-->
+                                                                                    <template if:true={field.isPhone}>
+                                                                                    <lightning-input type="text" class={field.lwcFieldClass}
+                                                                                        label={field.fieldLabel} id={field.fieldAPI}
+                                                                                        required={field.isRequired}
+                                                                                        value={field.fieldValue} >
+                                                                                    </lightning-input>
+                                                                                </template>
+                                                                                <template if:true={field.isEmail}>
+                                                                                    <lightning-input type="text" class={field.lwcFieldClass}
+                                                                                        label={field.fieldLabel} id={field.fieldAPI}
+                                                                                        required={field.isRequired}
+                                                                                        value={field.fieldValue}></lightning-input>
+                                                                                </template>
+                                                                                <template if:true={field.isTextArea}>
+                                                                                    <!-- Bug 00047116 fixed by sudhanshu 29-07-2024 -->
+                                                                                        <lightning-textarea
+                                                                                            label={field.fieldLabel} label-visible="true" class={field.lwcFieldClass} id={field.fieldAPI}
+                                                                                            value={field.fieldValue} maxlength="255" required={field.isRequired} >
+                                                                                        </lightning-textarea>   
+                                                                                    </template>
+
+                                                          <!--Manonit Change End-->
+                                                                            </div>
+                                                                       
+                                                                    </template>
+                                                                </div>
+                                                            </div>
+                                                            
+                                                        </div>
+                                                    </div>
+                                                </template>
+
+
+                                                <div class="slds-grid slds-m-top_small">
+                                                    <div class="slds-size_1-of-1">
+                                                        <lightning-button label="Add More" title="Add More"
+                                                            icon-name="utility:add" class="slds-m-left_x-small"
+                                                            onclick={showmoreTask}></lightning-button>
+                                                    </div>
+                                                </div>
+                                            </lightning-accordion-section>
+                                        </lightning-accordion>
+
+
+                                    </lightning-accordion-section>
+
+                                </lightning-accordion>
+                            </div>
+                        </div>
+                    <footer class="slds-modal__footer cutomFooter">
+                        <!-- <lightning-button variant="brand" class="" label="Save" title="Save" onclick={handleSaveRecord}
+                            class="slds-m-left_x-small"></lightning-button> handleSaveRecord -->
+                            <button class="slds-button slds-button_brand slds-m-left_x-small clsTagButton" style="width: 60px;" title="Save" onclick={handleSaveRecord}>Save</button>
+                    </footer>
+    </div>
+</template>
+
+</div>
+<!-- Sudhanshu  Search Suggested Tag Functionality Start Here-->
+<template if:true={isSuggestShowModal}>
+<!-- Suggested Tag Ui Change Done by Raju 17-04-2024 -->
+        <!-- modal body start -->
+        <div class="slds-modal__content slds-p-around_small slds-p-horizontal_none" id="modal-content-id-2">
+            <!-- <h2 class="slds-text-heading_medium slds-hyphenate header_text">Suggested Tags</h2> -->
+            <div class="slds-form-element__control slds-m-horizontal_none slds-grow slds-m-top_x-small">
+                
+
+                <lightning-layout>
+                    <lightning-layout-item size="12">
+                        
+                        <!--Start Custom Table-->
+                        <table width="100%" border="0" cellpadding="0" cellspacing="0" class="cusSuggestedTagTable slds-border_top slds-border_bottom">
+                                
+                            <!--Start Search Section-->
+                            <tr>
+                                <!-- Bug 00046010 fixed by Sudhanshu on 11-06-2024 -->
+                                <td colspan="3" class="slds-p-horizontal_x-small slds-p-vertical_x-small slds-text-align_right">
+                                    <lightning-input placeholder="Search tags..." variant="label-hidden" type="Search" 
+                                    onkeyup={handleSearch}   onchange={handleSearch} onblur={handleBlurSearch}  class="clsSearch slds-float_right slds-m-right_x-small"></lightning-input>
+                                </td>
+                            </tr>
+                            <!--End Search Section-->
+
+                            <tbody class="slds-border_top slds-border_bottom">
+                                
+                                <!--Start Header-->
+                                <tr class="slds-border_bottom">
+                                    <td class="slds-p-vertical_xx-small slds-p-left_medium">
+                                        <lightning-input type="checkbox" name="input1" variant="label-hidden" onchange={handleTagGlobalCheck}
+                                            data-id="TagGlobalCheckId" checked = {globalCheck}>
+                                        </lightning-input>
+                                    </td>
+                                    <!-- <th class="slds-p-vertical_xx-small slds-p-left_x-small"><input type="checkbox" ></th> -->
+                                    <!-- Bug 00046010 fixed by Sudhanshu on 11-06-2024 -->
+                                    <td><strong>Tags</strong></td>
+                                    <td><strong>Type</strong></td>
+                                </tr>
+                                <!--End Header-->
+
+                                <!--Start Body Rows-->
+
+                                <!-- Bug 00044399 fixed by Raju 17-04-2024 -->
+                                <template if:true={suggestedRecordsData}>
+                                    <template for:each={suggestedRecordsData} for:item="item">
+                                        <tr class="slds-border_bottom" key={item.id}>
+                                            <td class="slds-p-vertical_x-small slds-p-left_medium">
+                                                <lightning-input type="checkbox" data-id={item.id} onchange={getSelectedSuggestedRecords} checked={item.isSelect} variant="label-hidden" name="input1">
+                                                </lightning-input>
+                                            </td>
+                                            <td><span>{item.Deals}</span></td>
+                                            <td>
+                                                <lightning-layout>
+                                                    <!-- <lightning-layout-item size="2">
+                                                        <lightning-icon icon-name={item.dynamicIcon} size="x-small"></lightning-icon>
+                                                    </lightning-layout-item> -->
+                                                    <lightning-layout-item size="12">
+                                                        {item.objectName}
+                                                    </lightning-layout-item>
+                                                </lightning-layout>
+                                            </td>
+                                        </tr>
+                                    </template>
+                                </template>
+                               
+                               
+                                <!--Start Body Rows-->
+
+                            </tbody>
+                            
+                        </table>
+                        <!--End Custom Table-->
+                        <template if:true={errMsg}>
+                            <div class="slds-is-relative clsMsgParentbox slds-border_right slds-border_left slds-border_bottom">
+                                <div class="message-container slds-is-absolute validateMsg">
+                                    <!-- Bug 00046413 Fixed by Sudhanshu on 03-07-2024  -->
+                                    <p>No items to display.</p>
+                                </div>  
+                            </div>                      
+                        </template>
+                        <template if:true={errSrch}>
+                            <div class="slds-is-relative clsMsgParentbox slds-border_right slds-border_left slds-border_bottom">
+                                <div class="message-container slds-is-absolute validateMsg">
+                                    <p>Your search term must have 2 or more characters.</p>
+                                </div>  
+                            </div>                      
+                        </template>
+                    </lightning-layout-item>
+                </lightning-layout>
+                <!-- <p class="slds-m-top_small"> {itemCount} Items Selected of {totalCount}</p> -->
+                <!-- Bug 00044569 Fixed by Sudhanshu 10-04-2024 -->
+                <p class="slds-m-top_small slds-p-left_medium"> {itemCount} Items Selected</p>   
+                <lightning-layout-item size="12">
+                    <lightning-accordion class="example-accordion" allow-multiple-sections-open
+                        active-section-name="">
+                        <lightning-accordion-section name="A" label="Details" class="advance-font detailsAccor">
+                            <div class="slds-form-element slds-m-horizontal_small">
+                                <label class="slds-form-element__label" style="font-weight:700"
+                                    for="combobox-id-1">Subject</label>
+                                <p class="slds-truncate">{subject}</p>
+                            </div>
+                            <div class="slds-form-element slds-m-horizontal_small">
+                                <label class="slds-form-element__label" style="font-weight:700"
+                                    for="combobox-id-1">Notes</label>
+                                <!-- <p>{commentStr}</p> -->
+                                <template if:true={commentStr}>
+                                    <!--  // UI fix critical 00038073 1 march textarea only for UI class name change detailsnoteareacss -->
+                                    <lightning-textarea class="detailsnoteareacss slds-textareaCls" value={commentStr} read-only="true"></lightning-textarea>
+                                   
+                                </template>
+
+                               
+
+                            </div>
+                            <div class="slds-grid">
+                                <div class="slds-size_1-of-1">
+                                    <lightning-layout class="slds-p-horizontal_small">
+                                        <lightning-layout-item size="6" flexibility="auto"
+                                            class="slds-m-right_small">
+                                            <label class="slds-form-element__label slds-m-top_x-small"
+                                                style="font-weight:700">{ownerIdLabel}</label>
+                                            <p>{suggestedFuntionalityDetailScreenData.CreatedByName}</p><!--Bug # 00039740-->
+                                        </lightning-layout-item>
+                                        <lightning-layout-item size="6" flexibility="auto">
+                                            <label class="slds-form-element__label slds-m-top_x-small"
+                                                style="font-weight:700">Date</label>
+                                            <p>{suggestedFuntionalityDetailScreenData.createdDateString}</p>
+                                        </lightning-layout-item>
+                                    </lightning-layout>
+
+                                    <lightning-layout class="slds-m-top_x-small slds-p-horizontal_small">
+                                        <lightning-layout-item size="12" flexibility="auto"
+                                            class="slds-m-right_small">
+                                            <label class="slds-form-element__label slds-m-top_x-small"
+                                                style="font-weight:700">Tags</label>
+                                            <lightning-layout>
+                                                <lightning-layout-item size="12">
+                                                    <template if:true = {allTaggedRecords}>
+                                                        <template for:each={allTaggedRecords} for:item="tag">
+                                                            <lightning-pill label={tag.Name} key ={tag.Id} class="pillsHide">
+                                                                <lightning-icon icon-name={tag.iconName}
+                                                                    alternative-text={tag.objectName}></lightning-icon>
+                                                            </lightning-pill>
+
+                                                        </template>
+                                                    </template>
+
+
+                                                </lightning-layout-item>
+                                            </lightning-layout>
+                                        </lightning-layout-item>
+                                    </lightning-layout>
+                                    <template if:true={filesDisplay}>
+                                        <lightning-layout class="slds-m-op_x-small slds-p-horizontal_small">
+                                            <lightning-layout-item size="6" flexibility="auto"
+                                                class="slds-m-right_small">
+                                                <!-- <lightning-layout style="align-items:center;gap:10px;">
+                                                <lightning-layout-item> -->
+                                                <label class="slds-form-element__label slds-m-top_x-small"
+                                                    style="font-weight:700">Files</label>
+                                                <!-- </lightning-layout-item>
+                                            </lightning-layout> -->
+                                                <div style="width:15rem" class="slds-m-top_x-small">
+                                                    <div
+                                                        class="slds-file slds-file_card slds-file_loading slds-has-title">
+                                                        <figure>
+                                                            <figcaption class="slds-file__title"
+                                                                style="background:#f3f3f3;padding: 0px 5px;">
+                                                                <div
+                                                                    class="slds-media slds-media_small slds-media_center">
+                                                                    <div
+                                                                        class="slds-media__figure slds-line-height_reset">
+                                                                        <span class="slds-icon_container"
+                                                                            title="image">
+                                                                            <lightning-icon icon-name="doctype:ppt"
+                                                                                alternative-text="ppt" title="Close"
+                                                                                size="small">
+                                                                            </lightning-icon>
+                                                                        </span>
+                                                                    </div>
+                                                                    <div class="slds-media__body">
+                                                                        <span class="slds-file__text slds-truncate"
+                                                                            title="Image Title">Image Title</span>
+                                                                        <span class="slds-file__text slds-truncate"
+                                                                            title="Image Title">2 MB</span>
+                                                                    </div>
+                                                                </div>
+                                                            </figcaption>
+                                                        </figure>
+                                                    </div>
+                                                </div>
+                                            </lightning-layout-item>
+                                        </lightning-layout>
+                                    </template>
+                                </div>
+                            </div>
+                        </lightning-accordion-section>
+                    </lightning-accordion>
+                </lightning-layout-item>
+
+            </div>
+        </div>
+
+        <!-- modal footer start-->
+        <footer class="slds-modal__footer">
+            <button class="slds-button slds-button_neutral clsMobileView" onclick={hideRecordModal}  title="Cancel">Cancel</button>
+            <!-- <button class="slds-button slds-button_brand" onclick={handleSaveSuggessionRecords}  title="Tag">Tag</button> -->
+            <!-- <lightning-button variant="brand" label="Tag" class="clsTagButton" title="Tag" onclick={handleSaveSuggessionRecords}></lightning-button> -->
+            <button class="slds-button slds-button_brand clsTagButton" style="width: 60px;" title="Tag" onclick={handleSaveSuggessionRecords}>Tag</button>
+        </footer>
+
+</template>
+<!-- Sudhanshu  Search Suggested Tag Functionality End Here-->
+</template>

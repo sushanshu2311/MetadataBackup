@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Correspondence_Received__c</fullName>
+    <label>Correspondence Received</label>
+    <required>false</required>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>MultiselectPicklist</type>
+    <valueSet>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>Press &amp; Announcements</fullName>
+                <default>false</default>
+                <label>Press &amp; Announcements</label>
+            </value>
+            <value>
+                <fullName>Legal Docs</fullName>
+                <default>false</default>
+                <label>Legal Docs</label>
+            </value>
+            <value>
+                <fullName>Tax Information</fullName>
+                <default>false</default>
+                <label>Tax Information</label>
+            </value>
+            <value>
+                <fullName>Capital Calls</fullName>
+                <default>false</default>
+                <label>Capital Calls</label>
+            </value>
+            <value>
+                <fullName>Distribution Notices</fullName>
+                <default>false</default>
+                <label>Distribution Notices</label>
+            </value>
+            <value>
+                <fullName>Capital Account Statements &amp; Financials</fullName>
+                <default>false</default>
+                <label>Capital Account Statements &amp; Financials</label>
+            </value>
+            <value>
+                <fullName>Meeting Notifications</fullName>
+                <default>false</default>
+                <label>Meeting Notifications</label>
+            </value>
+            <value>
+                <fullName>Advisory Board Meeting</fullName>
+                <default>false</default>
+                <label>Advisory Board Meeting</label>
+            </value>
+            <value>
+                <fullName>Legal &amp; Amendments</fullName>
+                <default>false</default>
+                <label>Legal &amp; Amendments</label>
+            </value>
+            <value>
+                <fullName>VCOC Certificate</fullName>
+                <default>false</default>
+                <label>VCOC Certificate</label>
+            </value>
+            <value>
+                <fullName>Annual Meeting</fullName>
+                <default>false</default>
+                <label>Annual Meeting</label>
+            </value>
+            <value>
+                <fullName>Reports &amp; News</fullName>
+                <default>false</default>
+                <label>Reports &amp; News</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
+    <visibleLines>3</visibleLines>
+</CustomField>

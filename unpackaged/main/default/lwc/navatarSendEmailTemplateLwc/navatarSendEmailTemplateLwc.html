@@ -1,0 +1,29 @@
+<template>
+    <template if:true={isloading}>
+        <lightning-spinner alternative-text="Loading"></lightning-spinner>
+    </template>
+    <div class="content mainAccordion slds-theme_default slds-box slds-m-top_medium">
+        Please select an email template to use. To create a new template, you must exit this email process and create
+        the new
+        template in your personal setup section.
+
+        <div class="slds-grid slds-wrap">
+            <!--<div class="slds-col slds-size_12-of-12 slds-m-top_medium"></div>-->
+            <div class="slds-col slds-size_3-of-12 slds-m-top_medium">
+                <lightning-combobox name="Folder" class="slds-form-element_1-col" label="Folder"
+                    value="All" options={templateoptions} onchange={handletemplateoptionselect}>
+                </lightning-combobox>
+            </div>
+            <div class="slds-col slds-size_9-of-12"></div>
+        </div>
+        <template if:true={templatedata}>
+            <div class="slds-col slds-size_12-of-12 slds-m-top_small" style="height: 20.5rem;">
+                <lightning-datatable key-field=templateId min-column-width="130" selected-rows={selectedval}
+                    max-row-selection=1 data={templatedata} onrowselection={handlerowSelect} columns={columns}
+                    default-sort-direction={sortDirection} sorted-direction={sortDirection} sorted-by={sortedBy} 
+                    onsort={onHandleSort}>
+                </lightning-datatable>
+            </div>
+        </template>
+    </div>
+</template>

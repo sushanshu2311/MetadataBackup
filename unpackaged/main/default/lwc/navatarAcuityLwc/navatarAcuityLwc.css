@@ -1,0 +1,314 @@
+:host {
+    --slds-c-card-header-spacing-block-end: 0px;
+    --slds-c-card-header-spacing-block-start: 0px;
+}
+
+.cur_point {
+    cursor: pointer;
+}
+
+.col-grid1,
+.col-grid {
+    display: inline-flex;
+    min-height: 40px;
+}
+
+.heightC {
+    height: 903px;
+    overflow-y: auto;
+}
+.extra_height{
+    height:960px;
+}
+
+.cont-tab-height {
+    height: 609px;
+    overflow-y: auto;/*Replaced "hidden" with "auto" by LK on 2024-05-14 to fix 00045555*/
+}
+
+@media (max-width: 1512px) {
+    .col-grid1 {
+        display: grid;
+        grid-template-columns: auto;
+        gap: 5px;
+        min-height: 65px;
+    }
+    .heightC {
+        /*height: 933px;*/
+        height: 893px;
+        overflow-y: auto;
+    }
+    .cont-tab-height {
+        height: 600px;
+        overflow-y: auto;/*Replaced "hidden" with "auto" by LK on 2024-05-14 to fix 00045555*/
+    }
+    
+}
+
+@media (max-width: 1512px) {
+    .col-grid {
+        display: grid;
+        grid-template-columns: auto;
+        gap: 5px;
+        min-height: 65px;
+    }
+    .heightC {
+        height: 933px;
+        /* height: 893px; */
+        overflow-y: auto;
+    }
+}
+
+.mr_vertical {
+    margin-top: -5px !important;
+    margin-bottom: -5px !important;
+}
+
+/* BUG FIX 00032172 jagriti*/
+.fit-width-content {
+    width: fit-content;
+    white-space: nowrap;
+}
+
+.cur_point {
+    cursor: pointer;
+}
+.bg-color-blue{
+    background: #0176d3;
+}
+
+/*@media (max-width: 1512px) {
+    .pl_2_150{
+        padding-left:2px;
+    }
+}*/
+
+.allcardheight{
+    min-height: 180px;
+    min-height: 180px;
+    background: #f3f3f3;
+     gap: 8px;
+     display: flex;
+     justify-content: center;
+ }
+ .less_cards{
+    min-height: 180px;
+    min-height: 180px;
+    background: #f3f3f3;
+    display: flex;
+    justify-content: flex-start;
+    gap: 8px;
+    margin-left: 8px;
+ }
+ .sortby_css{
+    display: flex;
+    position: relative;
+    height: 22px;
+    align-items: center;
+    line-height: 32px;
+    padding-top: 2px;
+}
+.header_tab{
+    align-items: center;
+    height: 66px;
+    padding: 10px 20px;
+}
+
+@media (min-width: 64em){
+    .allcardheight .slds-large-size_3-of-12, .slds-large-size--3-of-12 {
+    width: 24%;
+    }
+    .less_cards .slds-large-size_3-of-12, .slds-large-size--3-of-12 {
+        width: 24%;
+    }
+}
+.mr_vertical {
+    margin-top: -5px !important;
+    margin-bottom: -5px !important;
+}
+.div_deal_css{
+    align-items:center;padding: 0.74em 16px;
+    height: 65.72px;
+}
+/* .div_deal_css{
+    align-items:center;
+    padding: 10px 6px;
+} */
+
+.info{
+    padding-left: 4px;
+    position: relative;
+    top: -2px;
+}
+
+
+.min_ht_160{
+    min-height: 160px;
+}
+/* mobile css*/
+.for_mob{
+    display:none;
+}
+.slds-p-right_small_desk{
+    padding-right:0.75rem;
+}
+.slds-p-right_x-small_desk{
+    padding-right:0.5rem;
+}
+.slds-p-left_x-small_desk{
+    padding-left:0.5rem;
+}
+/*00045497 fixed by raju on dated 27-05-2024*/
+.clsViewMob {
+    display: none;
+} 
+.clsViewDsktop {
+    display: contents;
+}
+@media (max-width: 600px) {	
+    .for_mob{
+        display:block;
+    }
+    .for_desk{
+        display: none;
+    }
+    .cls_popover_position {
+        right: 35px !important;
+    }
+    .slds-p-right_small_desk{
+        padding-right:0;
+    }
+    .slds-p-right_x-small_desk{
+        padding-right:0;
+    }
+    .slds-p-left_x-small_desk{
+        padding-left:0;
+    }
+    .padding_lr_mob{
+        padding:0px 10px !important;
+    }
+    /* .mt_mob{
+        margin-top:1rem;
+    } */
+    /*00046388 fixed by raju 04-07-2024*/
+    .mt_mob{
+        margin-top:8px;
+    }
+    .heightC {
+        height: 200px;
+        overflow-y: auto;
+    }
+    .min_ht_160{
+        min-height:100px;
+    }
+    /*00045788 fixed by raju 28-05-2024*/
+    /* .cont-tab-height {
+        height: 600px;
+        overflow: scroll;
+        -webkit-overflow-scrolling: touch;
+    } */
+    /*00046388 fixed by raju 04-07-2024 ; Above code commented 2024-07-08*/
+    .cont-tab-height {
+        min-height: 235px;
+        max-height: 445px;
+        height: auto;
+        overflow-y: auto;
+        -webkit-overflow-scrolling: touch;
+    }
+    ::-webkit-scrollbar {
+        width: 2px;
+    }
+    /* Track */
+    ::-webkit-scrollbar-track {
+        background: #f1f1f1;
+    }
+    /* Handle */
+    ::-webkit-scrollbar-thumb {
+        background: #888;
+    }   
+    /* Handle on hover */
+    ::-webkit-scrollbar-thumb:hover {
+        background: #555;
+    }
+
+    .mob_alignment{
+        text-align:right !important;
+    }
+    /*00045497 fixed by raju on dated 27-05-2024*/
+    .clsViewMob {
+        display: block;
+    }
+    .clsViewDsktop {
+        display: none;
+    }
+}
+.my-icon {
+    --slds-c-icon-color-foreground-default: #BA0517;
+    --slds-c-icon-color-background: transparent;
+}
+.errorPopoverIcon {
+    --slds-c-icon-color-foreground: #BA0517;
+    --slds-c-icon-color-background: transparent;
+}
+
+.errorMsgPopover{
+    position: absolute;
+    top: -52px;
+    right: 9px;
+    z-index:99999999999
+}
+/* Added by LK on 2024-08-30 to fix 00047233 */
+.errorMsgPopoverFullWidthTableDT{
+    position: absolute;
+    right: 0px;
+    z-index:99999999999
+}
+.errorMsgPopoverFullWidthTable{
+    position: absolute; 
+    top: -52px; 
+    right: 0px; 
+    z-index:99999999999
+}
+.iconErrCls{
+    top:12px; 
+    right:18px; 
+    z-index:1;
+    cursor: pointer;
+}
+/* Added by LK on 2024-10-21 to fix 00047544 */
+.iconErrClsDT{
+    top:446px; 
+    right:19px; 
+    z-index:1;
+    cursor: pointer;
+}
+
+.cur_point {
+    cursor: pointer;
+}
+
+/*00045464 fixed by raju on dated 21-05-2024*/
+/*00046038 fixed by raju on dated 11-06-2024*/
+@media screen and (max-width: 992px) {
+    .clsHeadingWidth {
+        white-space: nowrap;
+        max-width: inherit !important;
+        width: 263px !important;/*Updated by Raju to fix 46038 on 2024-06-12*/
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+    .clsForMobileDeal {
+        display: block;
+    }
+    .clsForDesktopDeal{
+        display: none;
+    }
+}
+
+/*00045824 fixed by raju on dated 21-05-2024*/
+.clsHeadingWidth {
+    white-space: nowrap;
+    max-width: 150px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}

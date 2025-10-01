@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ListView xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>All_Limited_Partners</fullName>
+    <columns>ACCOUNT.NAME</columns>
+    <columns>ACCOUNT.RECORDTYPE</columns>
+    <columns>Total_Fund_Commitments_USD_mn__c</columns>
+    <columns>Total_Co_investment_Commitments_USD_mn__c</columns>
+    <filterScope>Everything</filterScope>
+    <filters>
+        <field>Source__c</field>
+        <operation>equals</operation>
+        <value>Navatar Deal Connect</value>
+    </filters>
+    <label>All Limited Partners</label>
+    <language>en_US</language>
+</ListView>

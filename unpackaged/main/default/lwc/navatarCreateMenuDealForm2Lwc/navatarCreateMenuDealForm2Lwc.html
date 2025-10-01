@@ -1,0 +1,20 @@
+<template>
+    <lightning-quick-action-panel header={dealHeader}>
+    <!-- Modal/Popup Box body starts here -->
+		<div class="slds-modal__content slds-p-vertical_large" style="height:100x;display: flex;
+        align-items: center;justify-content: center;">
+       <lightning-layout class="slds-p-horizontal_large slds-p-bottom_x-small">
+           <lightning-layout-item size="12" flexibility="auto" class="yourText">
+               <p class="slds-text-heading_small slds-text-align_center font_18">{dealBody}</p>
+           </lightning-layout-item>
+       </lightning-layout>
+   </div>
+    </lightning-quick-action-panel>
+   <!-- Modal/Popup Box LWC footer starts here -->
+   <footer class="slds-modal__footer cutomFooter">
+       <lightning-button label="No" title="No" onclick={handleNo} class="slds-m-left_x-small">
+       </lightning-button>
+       <lightning-button label="Yes" variant="brand" title="Yes" onclick={handleYes} class="slds-m-left_x-small">
+       </lightning-button>
+   </footer>
+</template>

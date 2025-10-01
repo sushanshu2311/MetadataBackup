@@ -1,0 +1,622 @@
+<template>
+
+    <template if:true={isInfoMessage}>
+        <template if:true={isUrl}>
+        <div class="ClsOutreMessageBox">
+            <div class="slds-text-heading_small">Please close the Browser Tab to exit the page</div>
+        </div>
+    </template>
+    </template>
+
+    <template if:true={isModalOpenview}>
+        <!-- Modal/Popup Box starts here -->
+        <section role="dialog" tabindex="-1" aria-labelledby="modal-heading-01" aria-modal="true"
+            aria-describedby="modal-content-id-1" class="main-container slds-modal slds-modal_medium slds-fade-in-open main-Container">
+            <div class="slds-modal__container">
+                <!-- Modal/Popup Box header here -->
+                <!--Fixed by Sudhanshu for 47557-->
+                <button class="slds-button slds-button_icon slds-modal__close slds-button_icon-inverse"
+                        title="Close this window" onclick={closeModal}>
+                        <lightning-icon icon-name="utility:close" alternative-text="Close this window" variant="inverse"
+                            size="small" title="Close this window">
+                        </lightning-icon>
+                        <span class="slds-assistive-text">Close this window</span>
+                </button>       
+                    <div class="slds-carousel">
+                        
+                        <lightning-layout multiple-rows="true">
+                            <lightning-layout-item size="12" class="slds-carousel__panel active">
+
+                                <header class="slds-modal__header slds-p-around_none" style="text-align:left;">
+                                    <lightning-layout horizontal-align="spread" class="slds-p-around_medium" style="align-items: center;">
+                                        <lightning-layout-item>
+                                            <lightning-layout style="align-items:center;gap:10px;">
+                                                <lightning-layout-item>
+                                                    <lightning-icon icon-name={selectedData.iconName} alternative-text={selectedData.type} title={selectedData.type}></lightning-icon>
+                                                </lightning-layout-item>
+                                                <lightning-layout-item>
+                                                    <h2  class="slds-text-heading_xx-small slds-hyphenate"><span style="font-weight:700;">{selectedData.type}</span><span class="slds-m-left_small">{selectedData.classification}</span></h2>
+                                                    <h2 id="modal-heading-02" class="slds-text-heading_small slds-hyphenate" style="font-weight:500;">{selectedData.subject}</h2>
+                                                </lightning-layout-item>
+                                            </lightning-layout>
+                                        </lightning-layout-item>
+                                        <lightning-layout-item>
+                                            <lightning-layout style="align-items:center;gap:10px;">
+                                                <lightning-layout-item style="display:flex;align-items:center;" class="clsForButtonSize">
+                                                    <!-- <lightning-icon icon-name="utility:attach" alternative-text="attachment" title="attachment" size="small" class="cur_pointer" onclick={filesDisplayclick}>
+                                                    </lightning-icon> -->
+                                                    <template if:true = {displayFileEditDelButton}>
+                                                    <div class="image-upload slds-p-around_x-small slds-is-relative">
+                                                        <lightning-icon icon-name="standard:attach" variant="brand" size="small" alternative-text="Tag" title="Tag" class="slds-m-left_xx-small topic2 cur_point pillClass slds-is-absolute iconAttachPosition"></lightning-icon>
+                                                        <!-- Bug 00045683 Fix By Sudhanshu on 10-05-2024  -->
+                                                        <lightning-file-upload
+                                                                class="slds-m-top_small topic2 cur_point pillClass cur_pointer slds-is-relative iconUploadPosition"
+                                                                
+                                                                title="Upload Files"
+                                                                name="fileUploader"
+                                                                accept={acceptedFormats}
+                                                                record-id={recId}
+                                                                variant="label-hidden"
+                                                                onuploadfinished={handleUploadFinished} multiple>
+                                                        </lightning-file-upload>
+                                                    </div>
+                                                    <!-- <template if:true={displayClipIcon}> -->
+                                                        <!-- <lightning-icon icon-name="standard:attach"
+                                                        class="topic2 cur_point pillClass cur_pointer"
+                                                        variant="brand" size="medium" title="Attachment" onclick={filesDisplayclick}> 
+                                                        </lightning-icon> -->
+                                                    <!-- </template> -->
+
+                                                    <lightning-button-icon icon-name="utility:edit_form"  variant="brand" title="Edit" alternative-text="Edit" class="slds-m-left_xx-small" style="padding: 3.4px" onclick={handleNoteClickTaskview}></lightning-button-icon>
+                                                    <lightning-button-icon icon-name="utility:delete" variant="brand" alternative-text="Delete" title="Delete" class="clsDelete slds-m-left_xx-small" onclick={handleClickDelete} style="padding: 3.4px"></lightning-button-icon>
+                                                    <!-- <lightning-button variant="brand" label="Edit" title="Edit" onclick={handleNoteClickTaskview} class="slds-m-left_x-small"></lightning-button>
+                                                    <lightning-button variant="destructive" label="Delete" title="Delete" onclick={handleClickDelete} class="slds-m-left_x-small slds-m-right_small"></lightning-button> -->
+                                                </template>
+                                                </lightning-layout-item>
+                                            </lightning-layout>
+                                        </lightning-layout-item>
+                                    </lightning-layout>
+                                    
+                                    
+                                </header>
+                                <div class="slds-modal__content slds-p-vertical_small slds-p-horizontal_large scroll_modal" id="modal-content-id-1">
+                                    <template if:true={isLoading}>
+                                        <lightning-spinner alternative-text="Loading" size="large" variant="brand"></lightning-spinner>
+                                    </template>
+                                    <!--Attatched File Section-->
+                                    <template if:true={isAttachment}>
+                                        <lightning-layout>
+                                            <lightning-layout-item size="12" flexibility="auto" class="slds-m-horizontal_small">
+                                               
+                                                <lightning-layout>                            
+                                                    <lightning-layout-item size="12" class="attatchedFileCls slds-p-bottom_x-small slds-p-top_xxx-small">
+                                                        <template for:each={fileDataList} for:item="file">
+                                                            <lightning-pill label={file.title} key={file.versionId} data-id={file.contentDocumentId} onclick={handleFilePreview} class="my-pill" onremove={handleAttachment}>
+                                                                <!-- <lightning-icon icon-name="doctype:attachment" alternative-text={file.title}></lightning-icon> -->
+                                                            </lightning-pill>
+                                                        </template>
+                                                        
+
+
+                                                        
+                                                    </lightning-layout-item>
+                                                </lightning-layout>
+                                            </lightning-layout-item>
+                                        </lightning-layout>
+                                    </template>                                    
+                                    <!--Attatched File Section-->
+
+                                    <div class="slds-form-element slds-m-horizontal_small">
+                                        <label class="slds-form-element__label" style="font-weight:700" for="combobox-id-1"
+                                            id="combobox-label-id-33">Notes</label>
+                                        <template if:true={isRichTxtEnable}>
+                                            <div>
+                                            	<!-- Bug 00047374 fixed by Sudhanshu -->
+                                                <template if:true={selectedData.detail}>
+                                                <lightning-formatted-rich-text class="textareaReadOnlyCls" disable-linkify value={richTxtDescription}></lightning-formatted-rich-text>
+                                            </template>
+                                        </div>
+                                        </template> 
+                                        <template if:false={isRichTxtEnable}>   
+                                            <template if:true={selectedData.detail}>
+                                                <!-- <lightning-textarea class="noteareacssinteractions" value={selectedData.detail} read-only="true"></lightning-textarea> -->
+                                                <!--  // UI fix critical 00038072 1 march textarea only for UI  -->
+                                                <!-- <textarea class="slds-textarea txtar" style="visibility: hidden;position: absolute;z-index: -10;"></textarea> -->
+                                                <div>
+                                                    <textarea class="slds-textarea txtar textareaReadOnlyCls" readonly data-id="textAreaId">{selectedData.detail}</textarea>
+                                                </div>
+                                                <!-- <lightning-formatted-rich-text disable-linkify value={selectedData.detail}></lightning-formatted-rich-text> -->
+
+                                                
+                                                <!--  // UI fix critical 00038072 1 march textarea only for UI  -->
+                                            </template>
+                                        </template> 
+                                        <!-- ui fix 7feb -->
+                                    <template if:true={showLeftRightChangeArrow}>
+                                        <lightning-button-icon icon-name="utility:left" variant="bare"
+                                            onclick={prevslidemock} disabled={prevdisableButtonMock} title="Previous"
+                                            alternative-text="View More" class="arrowBtn" style="position: absolute;top: 50%;
+                                            left: -4%;"></lightning-button-icon>
+                                        <!-- <button  value="prev" class="prev slds-button slds-button_neutral">Prev</button> -->
+                                        <lightning-button-icon icon-name="utility:right" variant="bare"
+                                            onclick={nextslidemock} disabled={nextDisableButtonMock} title="Next"
+                                            alternative-text="View More" class="arrowBtn" style="position: absolute;top: 50%;
+                                            right: -4%;"></lightning-button-icon>
+                                    </template>
+                                    </div>
+                                    <div class="slds-grid">
+                                        <div class="slds-size_1-of-1">
+                                            <template if:true={isTask}>
+                                                <lightning-layout class="slds-p-horizontal_small">
+                                                    <lightning-layout-item size="6" flexibility="auto" class="slds-m-right_small">
+                                                        <label class="slds-form-element__label" style="font-weight:700">User</label>
+                                                        <p>{selectedData.actOwner}</p>
+                                                    </lightning-layout-item>
+                                                    <lightning-layout-item size="6" flexibility="auto">
+                                                        <label class="slds-form-element__label" style="font-weight:700">Status</label>
+                                                        <p>{selectedData.status}</p>
+                                                    </lightning-layout-item>
+                                                </lightning-layout>
+    
+                                                <lightning-layout class="slds-p-horizontal_small">
+                                                    <lightning-layout-item size="6" flexibility="auto" class="slds-m-right_small">
+                                                        <label class="slds-form-element__label" style="font-weight:700">Due Date</label>
+                                                        <p>
+                                                            <template if:true={displayActDate}>
+                                                                {selectedData.actDate}
+                                                            </template>
+                                                            <template if:true={displayDate}>
+                                                                {selectedData.date}
+                                                            </template>
+                                                        </p>
+                                                    </lightning-layout-item>
+                                                    <lightning-layout-item size="6" flexibility="auto">
+                                                        <label class="slds-form-element__label" style="font-weight:700">Priority</label>
+                                                        <p>{selectedData.priority}</p>
+                                                    </lightning-layout-item>
+                                                </lightning-layout>
+                                                
+                                                  <!-- Added By Sudhanshu for display Custom Field -->
+                                                <lightning-layout class="slds-p-horizontal_small">
+                                                    
+                                             
+                                                
+                                                    <table width="100%" border="0" cellpadding="0" cellspacing="0">
+                                                        <!-- <template for:each={customFieldinfo} for:item="Key">
+                                                        <tr key={Key} >
+                                                            <template for:each={Key.values} for:item="item">
+                                                                <td width="50%" key={item.label} valign="top" class="slds-m-right_small">
+                                                                    <label class="slds-form-element__label" style="font-weight:700">{item.label}</label>
+                                                                    <p>
+                                                                        {item.value}
+                                                                    </p>
+                                                                </td>
+                                                            </template>
+                                                            <td>{key}</td>
+                                                       
+                                                        </tr>
+                                                    </template> -->
+                                                    <template for:each={customFieldinfo} for:item="row">
+                                                        <tr key={row.key}>
+                                                            <!-- Access the properties of each row -->
+                                                            <td width="50%" valign="top" class="slds-m-right_small">
+                                                                <label class="slds-form-element__label" style="font-weight:700">{row.label1}</label>
+                                                                <p>
+                                                                    <!-- Bug 00046116,45381 fixed by Sudhanshu 28-06-2024 -->
+                                                                    <template if:true={row.textarea1}>
+                                                                        <lightning-formatted-text value={row.value1}></lightning-formatted-text>
+                                                                    </template>
+                                                                    <template if:false={row.textarea1}>
+                                                                        <template if:true={row.checkbox1}>
+                                                                            <!-- <input type="checkbox" checked={row.value1} disabled /> -->
+                                                                            <lightning-input type="checkbox" disabled checked={row.value1}> </lightning-input>
+                                                                        </template>
+                                                                        <template if:false={row.checkbox1}>
+                                                                            {row.value1}
+                                                                        </template>
+                                                                        
+                                                                    </template>
+                                                                </p>
+                                                            </td>
+                                                            <td width="50%"  valign="top" class="slds-p-left_small">
+                                                                <label class="slds-form-element__label" style="font-weight:700">{row.label2}</label>
+                                                                <p>
+                                                                    <template if:true={row.textarea2}>
+                                                                        <lightning-formatted-text value={row.value2}></lightning-formatted-text>
+                                                                    </template>
+                                                                    <template if:false={row.textarea2}>
+                                                                        <template if:true={row.checkbox2}>
+                                                                            <!-- <input type="checkbox" checked={row.value2} disabled /> -->
+                                                                            <lightning-input type="checkbox" disabled checked={row.value2}> </lightning-input>
+                                                                        </template>
+                                                                        <template if:false={row.checkbox2}>
+                                                                            {row.value2}
+                                                                        </template>
+                                                                    </template>
+                                                                </p>
+                                                            </td>
+                                                        </tr>
+                                                    </template>
+                                                        
+                                                    </table>
+                                                </lightning-layout>
+
+
+                                            </template>
+                                            
+                                            <template if:false={isTask}>
+                                                <template if:true={isCall}>
+                                                    <lightning-layout class="slds-p-horizontal_small" >
+                                                        <lightning-layout-item size="6" flexibility="auto" class="slds-m-right_small">
+                                                            <label class="slds-form-element__label" style="font-weight:700">User</label>
+                                                            <p>{selectedData.actOwner}</p>
+                                                        </lightning-layout-item>
+                                                        <lightning-layout-item size="6" flexibility="auto">
+                                                            <label class="slds-form-element__label" style="font-weight:700">Date</label>
+                                                            <p>
+                                                                <template if:true={displayActDate}>
+                                                                    {selectedData.actDate}
+                                                                </template>
+                                                                <template if:true={displayDate}>
+                                                                    {selectedData.date}
+                                                                </template>
+                                                            </p>
+                                                        </lightning-layout-item>
+                                                    </lightning-layout>
+                                                      <!-- Added By Sudhanshu for display Custom Field -->
+                                                    <lightning-layout class="slds-p-horizontal_small">
+                                                        
+                                                           
+
+                                                            <table width="100%" border="0" cellpadding="0" cellspacing="0">
+                                                                <template for:each={customFieldinfo} for:item="row">
+                                                                    <tr key={row.key}>
+                                                                        <!-- Access the properties of each row -->
+                                                                        <td width="50%" valign="top" class="slds-m-right_small">
+                                                                            <label class="slds-form-element__label" style="font-weight:700">{row.label1}</label>
+                                                                            <p>
+                                                                               <!-- Bug 00046116,45381 fixed by Sudhanshu 28-06-2024 -->
+                                                                               <template if:true={row.textarea1}>
+                                                                                <lightning-formatted-text value={row.value1}></lightning-formatted-text>
+                                                                            </template>
+                                                                            <template if:false={row.textarea1}>
+                                                                                <template if:true={row.checkbox1}>
+                                                                                    <!-- <input type="checkbox" checked={row.value1} disabled /> -->
+                                                                                    <lightning-input type="checkbox" disabled checked={row.value1}> </lightning-input>
+                                                                                </template>
+                                                                                <template if:false={row.checkbox1}>
+                                                                                    {row.value1}
+                                                                                </template>
+                                                                            </template>
+                                                                            </p>
+                                                                        </td>
+                                                                        <td width="50%"  valign="top" class="slds-p-left_small">
+                                                                            <label class="slds-form-element__label" style="font-weight:700">{row.label2}</label>
+                                                                            <p>
+                                                                                <template if:true={row.textarea2}>
+                                                                                    <lightning-formatted-text value={row.value2}></lightning-formatted-text>
+                                                                                </template>
+                                                                                <template if:false={row.textarea2}>
+                                                                                    <template if:true={row.checkbox2}>
+                                                                                        <!-- <input type="checkbox" checked={row.value2} disabled /> -->
+                                                                                        <lightning-input type="checkbox" disabled checked={row.value2}> </lightning-input>
+                                                                                    </template>
+                                                                                    <template if:false={row.checkbox2}>
+                                                                                        {row.value2}
+                                                                                    </template>
+                                                                                </template>
+                                                                            </p>
+                                                                        </td>
+                                                                    </tr>
+                                                                </template>
+                                                            </table>
+                                                        
+                                                    </lightning-layout>
+                                                </template>
+                                                <template if:false={isCall}>
+                                                        <lightning-layout class="slds-p-horizontal_small">
+                                                            <lightning-layout-item size="6" flexibility="auto" class="slds-m-right_small">
+                                                                <label class="slds-form-element__label" style="font-weight:700">User</label>
+                                                                <p>{selectedData.actOwner}</p>
+                                                            </lightning-layout-item>
+                                                            <lightning-layout-item size="6" flexibility="auto">
+                                                                <label class="slds-form-element__label" style="font-weight:700">Date</label>
+                                                                <p>
+                                                                    <template if:true={displayActDate}>
+                                                                        {selectedData.actDate}
+                                                                    </template>
+                                                                    <template if:true={displayDate}>
+                                                                        {selectedData.date}
+                                                                    </template>
+                                                                </p>
+                                                            </lightning-layout-item>
+                                                        </lightning-layout>
+                                                        <!-- Added By Sudhanshu for display Custom Field -->
+                                                        <lightning-layout class="slds-p-horizontal_small">
+                                                            
+                                                             
+                                                                <table width="100%" border="0" cellpadding="0" cellspacing="0">
+                                                                    <template for:each={customFieldinfo} for:item="row">
+                                                                        <tr key={row.key}>
+                                                                            <!-- Access the properties of each row -->
+                                                                            <td width="50%" valign="top" class="slds-m-right_small">
+                                                                                <label class="slds-form-element__label" style="font-weight:700">{row.label1}</label>
+                                                                                <p>
+                                                                                     <!-- Bug 00046116,45381 fixed by Sudhanshu 28-06-2024 -->
+                                                                                     <template if:true={row.textarea1}>
+                                                                                        <lightning-formatted-text value={row.value1}></lightning-formatted-text>
+                                                                                    </template>
+                                                                                    <template if:false={row.textarea1}>
+                                                                                        <template if:true={row.checkbox1}>
+                                                                                            <!-- <input type="checkbox" checked={row.value1} disabled /> -->
+                                                                                            <lightning-input type="checkbox" disabled checked={row.value1}> </lightning-input>
+                                                                                        </template>
+                                                                                        <template if:false={row.checkbox1}>
+                                                                                            {row.value1}
+                                                                                        </template>
+                                                                                    </template>
+                                                                                </p>
+                                                                            </td>
+                                                                            <td width="50%"  valign="top" class="slds-p-left_small">
+                                                                                <label class="slds-form-element__label" style="font-weight:700">{row.label2}</label>
+                                                                                <p>
+                                                                                    <template if:true={row.textarea2}>
+                                                                                        <lightning-formatted-text value={row.value2}></lightning-formatted-text>
+                                                                                    </template>
+                                                                                    <template if:false={row.textarea2}>
+                                                                                        <template if:true={row.checkbox2}>
+                                                                                            <!-- <input type="checkbox" checked={row.value2} disabled /> -->
+                                                                                            <lightning-input type="checkbox" disabled checked={row.value2}> </lightning-input>
+                                                                                        </template>
+                                                                                        <template if:false={row.checkbox2}>
+                                                                                            {row.value2}
+                                                                                        </template>
+                                                                                    </template>
+                                                                                </p>
+                                                                            </td>
+                                                                        </tr>
+                                                                    </template>
+                                                                </table>
+                                                            
+                                                        </lightning-layout>
+                                                    </template>
+                                            </template>
+                                            
+                                            
+                                            <lightning-layout class="slds-m-top_x-small slds-p-horizontal_small">
+                                                <lightning-layout-item size="12" flexibility="auto" class="slds-m-right_small">
+                                                    <label class="slds-form-element__label slds-m-top_x-small" style="font-weight:700">Tags</label>
+                                                    <lightning-layout>
+                                                        <lightning-layout-item size="12">
+                                                            <template if:true={tagDataList}>
+                                                                <template if:true={tagDataList1}> <!--for smoke round testing critical bug 00035293 -->
+                                                                    <template for:each={tagDataList1} for:item="tag"> <!--for smoke round testing critical bug 00035293 -->
+                                                                        <template if:false={tag.isuser}> <!--for smoke round testing critical bug 00035293 -->
+                                                                            <lightning-pill label={tag.name} key={tag.index}
+                                                                                data-id={tag.nameRef}
+                                                                                onclick={handleTagDataClick}
+                                                                                class="slds-m-right_xx-small nocross cur_pointer">
+                                                                                <lightning-icon icon-name={tag.iconName}
+                                                                                    alternative-text={tag.name}></lightning-icon>
+                                                                            </lightning-pill>
+                                                                        </template>
+                                                                        <template if:true={tag.isuser}> <!--for smoke round testing critical bug 00035293 -->
+                                                                            <lightning-pill label={tag.name} key={tag.index}
+                                                                                data-id={tag.nameRef}
+                                                                                class="slds-m-right_xx-small nocross">
+                                                                                <lightning-icon icon-name={tag.iconName}
+                                                                                    alternative-text={tag.name}></lightning-icon>
+                                                                            </lightning-pill>
+                                                                        </template>
+                                                                    </template>
+                                                                </template>
+                                                            </template>
+                                                            <!--lightning-pill label="Pill Label">
+                                                                <lightning-icon icon-name="standard:account" alternative-text="Account"></lightning-icon>
+                                                            </lightning-pill>
+                                                            <lightning-pill label="Pill Label" class="slds-m-left_xx-small">
+                                                                <lightning-icon icon-name="standard:account" alternative-text="Account"></lightning-icon>
+                                                            </lightning-pill-->
+                                                        </lightning-layout-item>
+                                                    </lightning-layout>
+                                                </lightning-layout-item>
+                                            </lightning-layout>
+                                            <!-- <template if:true={filesDisplay}> -->
+                                                <!-- <lightning-layout class=" slds-p-horizontal_small">
+                                                    <lightning-layout-item size="6" flexibility="auto" class="slds-p-top_x-small slds-p-bottom_x-small">
+                                                        <label class="slds-form-element__label" style="font-weight:700">Files</label>
+                                                        <div class="file_css">
+                                                            <template for:each={fileDataList} for:item="file">
+                                                                <div class="slds-file slds-file_card slds-file_loading slds-has-title cur_pointer" key={file.versionId}>
+                                                                    <figure>
+                                                                        <figcaption class="slds-file__title" style="background:#f3f3f3;padding: 0px 5px;">
+                                                                            <div class="slds-media slds-media_small slds-media_center">
+                                                                                
+                                                                                    <div class="slds-media__figure slds-line-height_reset" key={file.versionId} data-id={file.contentDocumentId} onclick={handleFilePreview}>
+                                                                                        <span class="slds-icon_container" title="image">
+                                                                                            <lightning-icon icon-name='doctype:attachment' alternative-text= "ppt" title={file.title} size="small" data-id={file.contentDocumentId}
+                                                                                                            > 
+                                                                                                            For resolving critiacl bug 00040057 of Attachmnet icon
+                                                                                            </lightning-icon>
+                                                                                        </span>
+                                                                                    </div>
+                                                                                     <div class="slds-media__body"  key={file.versionId} onclick={handleFilePreview} data-id={file.contentDocumentId}>
+                                                                                        <span class="slds-file__text slds-truncate" title="Image Title">{file.title}</span>
+                                                                                        <span class="slds-file__text slds-truncate" title="Image Title">{file.size}</span>
+                                                                                        
+                                                                                    </div>
+                                                                                    <lightning-icon
+                                                                                            icon-name="utility:close"
+                                                                                            size="xx-small" data-id={file.contentDocumentId} 
+                                                                                            onclick={handleAttachment}
+                                                                                            alternative-text="Indicates close">
+                                                                                        </lightning-icon>
+                                                                               
+                                                                                
+                                                                            </div>
+                                                                        </figcaption>
+                                                                    </figure>
+                                                                    </div>
+
+                                                            </template>
+                                                            
+                                                        </div>
+                                                    </lightning-layout-item>
+                                                </lightning-layout> -->
+                                            <!-- </template> -->
+                                        </div>
+                                    </div>        
+                                </div>
+                            </lightning-layout-item>
+                        </lightning-layout>
+                    </div>
+                   <!-- <template if:true = {showLeftRightChangeArrow}>
+                        <lightning-button-icon icon-name="utility:left" variant="bare"  onclick={prevslidemock} disabled={prevdisableButtonMock} title="Previous" alternative-text="View More" class="arrowBtn" style="position: absolute;"></lightning-button-icon>
+                   
+                        <lightning-button-icon icon-name="utility:right" variant="bare"   onclick={nextslidemock} disabled={nextDisableButtonMock} title="Next"  alternative-text="View More" class="arrowBtn" style="position: absolute;right:0;"></lightning-button-icon>
+
+                    </template>-->
+                    
+            </div>
+        </section>
+        <div class="slds-backdrop slds-backdrop_open"></div>
+        <!--c-add-Notes-Popup></c-add-Notes-Popup-->
+    </template>
+
+
+
+    <template if:true = {openEditModal}>
+        <c-navatar-notes-modal-lwc record-id={recId} 
+                                                  object-name={objType} 
+                                                  open-suggested-tags={openSuggestedTag} 
+                                                  is-redirect-to-record={isRedirectToRecord} 
+                                                  onclosemodal={handleCloseModal} 
+                                                  oncancelchanges={noteModalClosed}
+                                                  is-redirect-to-parent-screen={redirectToParent}
+                                                  open-tag={directlyOpenSuggestedTag}
+                                                  redirect-id = {redirectId}
+                                                  >
+
+        </c-navatar-notes-modal-lwc>
+    </template><!-- Manonit 00045538 Bug Fix-->
+
+    <template if:true={isDelete}>
+        <section role="dialog" tabindex="-1" aria-modal="true" aria-labelledby="modal-heading-01"
+            class="slds-modal slds-fade-in-open">
+            <div class="slds-modal__container creatrecord_css">
+    
+                <lightning-layout>
+                    <lightning-layout-item size="12" class="slds-text-align_right">
+                        <lightning-icon variant="inverse" size="small" icon-name="utility:close" alternative-text="Close!"
+                            title="Close" class="slds-text-link_reset slds-m-bottom_medium"
+                            onclick={closeDelete}></lightning-icon>
+                    </lightning-layout-item>
+                </lightning-layout>
+    
+                <!--Start Header-->
+                <div class="slds-modal__header">
+                    <!-- Bug 00044442 Fixed on 01-04-2024 By Sudhanshu -->
+                    <h1 class="slds-modal__title slds-hyphenate">Delete Interaction</h1>
+                </div>
+                <!--End Header-->
+    
+                <div class="slds-modal__content slds-p-around_medium">
+                    <template if:true={isLoading}>
+                        <lightning-spinner alternative-text="Loading" size="large" variant="brand"></lightning-spinner>
+                    </template>
+                    <div class="slds-align_absolute-center">
+                        Are you sure you want to delete this Interaction?
+                    </div>
+                </div>
+                <div class="slds-modal__footer">
+                    <!-- <button class="slds-button slds-button_neutral" aria-label="Delete" title="Delete"
+                        onclick={handleDelete}>Delete</button> -->
+                    <button class="slds-button slds-button_neutral" title="Cancel"
+                        onclick={closeDelete}>Cancel</button>
+                    <button class="slds-button slds-button_brand" title="Delete"
+                        onclick={handleDeleteNote}>Delete</button>
+                </div>
+            </div>
+        </section>
+        <div class="slds-backdrop slds-backdrop_open" role="presentation"></div>
+        <!--End Modal-->
+    </template>
+
+    <template if:false={isDeleteAccess}>
+        <section role="dialog" tabindex="-1" aria-labelledby="modal-heading-01" aria-modal="true"
+            aria-describedby="modal-content-id-1" class="slds-modal slds-fade-in-open" style="z-index:15003">
+            <div class="slds-modal__container">
+                <!-- modal header start -->
+                <!-- <header class="slds-modal__header"> -->
+                    <button class="slds-button slds-button_icon slds-modal__close slds-button_icon-inverse"
+                        title="Close" onclick={closeAccessModal}>
+                        <lightning-icon icon-name="utility:close" alternative-text="close" variant="inverse"
+                            size="small" title="Close"></lightning-icon>
+                        <span class="slds-assistive-text">Close</span>
+                    </button>
+                    <!-- <h2 class="slds-text-heading_medium slds-hyphenate">Note</h2> -->
+                <!-- </header> -->
+
+                <!-- modal body start -->
+                <div class="slds-modal__content slds-p-around_small">
+                    <div class="slds-form-element__control slds-m-horizontal_medium slds-grow ">
+                        There's a problem saving this record. You might not have permission to edit it, or it might have been
+                        deleted or archived. Contact your administrator for help.
+                    </div>
+                </div>
+
+                <!-- modal footer start-->
+                <!-- <footer class="slds-modal__footer">
+                    <button class="slds-button slds-button_neutral" onclick={hideRecordModal}
+                        title="Close">Close</button>
+                </footer> -->
+
+            </div>
+        </section>
+        <div class="slds-backdrop slds-backdrop_open" style="z-index:15002;"></div>
+    </template>
+
+
+    <template if:true={isDeleteAttachment}>
+        <section role="dialog" tabindex="-1" aria-modal="true" aria-labelledby="modal-heading-01"
+            class="slds-modal slds-fade-in-open">
+            <div class="slds-modal__container creatrecord_css">
+    
+                <lightning-layout>
+                    <lightning-layout-item size="12" class="slds-text-align_right">
+                        <lightning-icon variant="inverse" size="small" icon-name="utility:close" alternative-text="Close!"
+                            title="Close" class="slds-text-link_reset slds-m-bottom_medium"
+                            onclick={closeAttachment}></lightning-icon>
+                    </lightning-layout-item>
+                </lightning-layout>
+    
+                <!--Start Header-->
+                <div class="slds-modal__header">
+                    <h1 class="slds-modal__title slds-hyphenate">Delete File</h1>
+                </div>
+                <!--End Header-->
+    
+                <div class="slds-modal__content slds-p-around_medium">
+                    <template if:true={isLoading}>
+                        <lightning-spinner alternative-text="Loading" size="large" variant="brand"></lightning-spinner>
+                    </template>
+                    <div class="slds-align_absolute-center">
+                        <!-- Bug 00045703,00044497 Fixed by Sudhanshu on 11-05-2024  -->
+                        Are you sure you want to remove this file?
+                    </div>
+                </div>
+                <div class="slds-modal__footer">
+                    <!-- <button class="slds-button slds-button_neutral" aria-label="Delete" title="Delete"
+                        onclick={handleDelete}>Delete</button> -->
+                    <button class="slds-button slds-button_neutral" title="Cancel"
+                        onclick={closeAttachment}>Cancel</button>
+                    <button class="slds-button slds-button_brand" title="Delete"
+                        onclick={onDeleteAttachment}>Delete</button>
+                </div>
+            </div>
+        </section>
+        <div class="slds-backdrop slds-backdrop_open" role="presentation"></div>
+        <!--End Modal-->
+    </template>
+    <!-- <c-navatar-Delete-Ineraction-Modal-Lwc record-id={recId} subject={selectedData.subject}></c-navatar-Delete-Ineraction-Modal-Lwc> -->
+</template>

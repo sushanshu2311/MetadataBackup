@@ -1,0 +1,1135 @@
+<!----------------------------------------------
+    ** Project: PE 3.5
+    ** Start: 09-June-2016
+    ** Module: CreateDistribution
+    ** Class use: CreateDistribution
+    ** Standard Controller: Fund__c
+    ** Call From: Fund Page
+    ** Developer: Brahmaditya Bhaskar   
+    ** Last Modified: Vanita Tripathi (10-Nov-2016)
+    ** Version StartDate(YYYY-MM-DD)
+    ** 3.5     2016-05-20         
+----------------------------------------------->
+<apex:page showHeader="true" applyHtmlTag="true" applyBodyTag="false" docType="html-5.0" standardController="Fund__c" extensions="CreateDistribution" tabStyle="Fund_Distribution__c" title="Create Distribution"> 
+<style>
+            
+</style>
+<apex:form id="frm">
+<html>    
+
+<head>
+  <title>Create Distribution</title>
+  
+  <apex:stylesheet value="{!URLFOR($Resource.SLDS100, 'assets/styles/salesforce-lightning-design-system-vf.css')}" />
+  
+  <link href = "{!URLFOR($Resource.PE_35, 'PE_3.5/css/pe_3.5.css')}" rel = "stylesheet" type = "text/css"/>
+  <script src="{!URLFOR($Resource.PE_35,'PE_3.5/js/aw.js')}" type="text/javascript"></script>
+  <link rel="stylesheet" type="text/css" href="{!URLFOR($Resource.PE_35, 'PE_3.5/css/aw.css')}" media="screen" />
+  
+  <script type="text/javascript" src="{!URLFOR($Resource.PE_35,'PE_3.5/js/jquery.js')}"></script>
+  <script src="/soap/ajax/23.0/connection.js" type="text/javascript"></script>
+  <script src="/soap/ajax/19.0/apex.js" type="text/javascript"></script>
+   <script> var Totaldisributionamount ;  </script>
+
+  <!--need to delete this script  -->
+  <!--<script>
+        $(document).ready(function(){
+          
+          $('.step_1').show();
+          $('.step_2').hide();
+          
+          $(".click_for_step_2").click(function(){
+            $('.step_1').hide();
+            $('.step_2').show();
+          });
+          
+        }); 
+        //alert('abc');
+    </script>-->
+    
+    <!-- Start FancyBox -->
+        <script src="{!URLFOR($Resource.PE_35,'PE_3.5/js/jquery-ui.js')}"></script>
+        <script>
+        $(function() {
+        $( ".FancyboxContainer" ).draggable({ cancel: ".PopupContentStart" });
+        });
+        </script>
+        <link rel="stylesheet" type="text/css" href="{!URLFOR($Resource.PE_35,'PE_3.5/css/fancybox.css')}" media="screen" />
+        <script type="text/javascript">
+        var popupStatus = 0;
+                
+                function InsufficientPermissions_Fancybox() 
+                {
+                    loadPopupnew('fancybox_background','InsufficientPermissions_Fancybox');
+                    centerPopupnew('InsufficientPermissions_Fancybox');
+                    document.getElementById('nocmtavilable').style.display = 'none';
+                }
+                
+                function InsufficientPermissions_Fancybox1() 
+                {
+                    loadPopupnew('fancybox_background','InsufficientPermissions_Fancybox1');
+                    centerPopupnew('InsufficientPermissions_Fancybox1');
+                    document.getElementById('showerrorifamtisblank').style.display = 'none';
+                }
+
+                                                            
+                function loadPopupnew(cid1,cid2)
+                {
+                    if(popupStatus==0){
+                        $('.'+cid1).css({
+                            "opacity": "0.5"
+                        });
+                        $('.'+cid1).fadeIn("slow");
+                        $('.'+cid2).fadeIn("slow");
+                        popupStatus = 1;
+                    }
+                };
+                function centerPopupnew(cid)
+                {
+                    //request data for centering
+                    var windowWidth = document.documentElement.clientWidth;
+                    var windowHeight = document.documentElement.clientHeight;
+                    var popupHeight = $('.'+cid).height();
+                    var popupWidth = $('.'+cid).width();
+                    //centering
+                    $('.'+cid).css({
+                        "position": "fixed",
+                        "top": windowHeight/2-popupHeight/2,
+                        "left": windowWidth/2-popupWidth/2
+                    });
+                };
+                
+                function closepopup(bgdivid,popupdivid)
+                {
+                    disablePopupnew(bgdivid);
+                    $('.'+popupdivid).fadeOut("slow");
+                } 
+                
+                function disablePopupnew(cid){
+                    if(popupStatus==1){
+                        $('.'+cid).fadeOut("slow");
+                        popupStatus = 0;
+                    }   
+                };
+        </script>
+        <!-- End FancyBox -->
+        
+        
+        
+        <!---start lightning css---->
+        <link href = "{!URLFOR($Resource.PE_35, 'PE_3.5/css/PeLightning.css')}" rel = "stylesheet" type = "text/css" />
+        
+        <style>
+            .contentBox_shadow {box-shadow:none !important; border:#eee 1px solid !important}
+        </style>
+        <!---end lighting css--->
+
+  
+  <style>
+      .ContentBox { margin-left:24px; margin-right:24px;  }
+      .slds {background: #f2f5fa !important;}
+
+  </style>
+  <link href = "{!URLFOR($Resource.PE_35, 'PE_3.5/css/Navatar-Yellow-Theme.css')}" rel = "stylesheet" type = "text/css"/>
+</head>
+
+<body>
+    
+    <div class="fancybox_background"></div>
+    
+    <!-- REQUIRED SLDS WRAPPER -->
+
+    <div class="slds">
+        <apex:pageMessages id="msgPanel" />
+            <apex:actionFunction name="TotalDistributionactionf" action="{!TotalDistribution_currency}" oncomplete="" reRender="currencypanel3456" status="">
+                     <apex:param name="param1" value="" assignTo="{!TotalDistributioncurrency}"/>    
+        </apex:actionFunction>
+    <apex:outputPanel id="msgPanel1">
+            <div class="slds-box slds-theme--error" id="error_bpt"  style="display:none;">
+                <p> <apex:outputLabel escape="false" value="{!JSENCODE(errormsg)}"></apex:outputLabel> </p>
+        </div>
+             
+    </apex:outputPanel>
+    
+
+    
+    <apex:outputPanel rendered="{!AND((Total_Capital_Called_mn == 0.0), NOT(noCommitments))}">               
+            <!--<div class="grid">
+            <div class="warning" id="warning"><p><span style="color:#666666;font-weight:normal;  font-size:12px;"><strong style="color:#ff9105; font-size:14px; font-weight:bold;">Warning</strong><br/>
+            No Drawdowns have been created for this Fund.</span></p><p class="hide"><a href="javascript:void(0);" onclick="hide('warning');">Hide</a></p>
+            </div>
+            </div>-->
+
+            <div class="grid">
+                <!--<div class="slds-box slds-theme--warning" ID="hidethisdmsg" style="margin: 3px 0px 10px;border-radius: 0;">
+                <p>No Drawdowns have been created for this Fund.</p>
+                <p style=""><a href="javascript:void(0);" onclick="hide();" style='color: #000;'>Hide</a></p>
+                </div>-->
+                <div class="slds-box slds-theme--warning" id="hidethisdmsg" style="margin: 3px 0px 10px;border-radius: 0; position:relative; border:none;">
+                    <a href="javascript:void(0);" onclick="hide();" title="Hide" style="position:absolute; top:5px; right:5px"><img style="width:22px" src="{!URLFOR($Resource.PE_35, 'PE_3.5/images/close_white_60.png')}" /></a>
+                    <p>No Drawdowns have been created for this Fund.</p>
+                </div>
+            </div>
+        </apex:outputPanel>
+    
+        <style>
+            .slds-media__body {position:relative; top:10px;}
+            .slds-page-header { padding: 24px 24px 24px !important; }
+        </style>
+
+        <div class="slds-page-header" role="banner">
+            <a class="slds-button slds-button--neutral" title="Back" style="float:right;position: relative;top: 6px;" onclick="redirectpage()">
+                <div aria-hidden="true" class="slds-icon icon-utility-back slds-icon-text-default" style="width:15px;margin-top: -3px;
+">
+                    <img src="{!URLFOR($Resource.SLDS100, 'assets/icons/utility/back_60.png')}"  />
+                    
+                </div>
+            </a>
+            <div class="slds-media">
+                <div class="slds-media__figure">
+                         <div aria-hidden="true" class="slds-icon slds-icon-action-call slds-icon--large slds-p-around--x-small"><img src="{!URLFOR($Resource.SLDS100, 'assets/icons/action/call_60.png')}" /></div>
+                </div>
+                <div class="slds-media__body">
+                    <p class="slds-page-header__title slds-truncate slds-align-middle" ><apex:outputText value="Distributions for {!Fund__c.Name}" title="{!Fund__c.Name}"/></p>
+                    <p class="slds-text-body--small"></p>
+                </div>
+            </div>
+        </div>
+
+        <div class="InsufficientPermissions_Fancybox FancyboxContainer Popup" id="showerrorifamtisblank">
+            <div class="slds-modal__header">
+            <div class="close_white_60" >
+            <a onclick="closepopup('fancybox_background','FancyboxContainer');return false;" title="Close"><img src="{!URLFOR($Resource.PE_35, 'PE_3.5/images/close_white_60.png')}" /></a>
+            </div>
+            <h2 class="slds-text-heading--medium">Error</h2>
+            </div>
+            <div class="PopupContentStart" style="text-align:center; padding:15px 25px !important" id="nodistribution">
+            Please enter the Distribution Amount.
+            <div class="cl"></div> 
+            </div>
+            <div class="PopupContentStart" style="text-align:center; padding:15px 25px !important" id="ifnocmtavl">
+            The Fund does not have any Commitment(s).<br/>For creating Fund Distribution, the Fund should have atleast one Commitment.
+            <div class="cl"></div> 
+            </div>
+            <div class="slds-modal__footer">
+            <button class="slds-button slds-button--neutral click_one" onclick="closepopup('fancybox_background','FancyboxContainer');return false;">OK</button>
+            <!--<apex:commandButton value="Close" title="Close" styleClass="slds-button slds-button--neutral click_one" onclick="closepopup('fancybox_background','FancyboxContainer');return false;" />-->
+            </div>                  
+        </div>
+
+
+
+
+
+
+
+
+        <div class="InsufficientPermissions_Fancybox1 FancyboxContainer Popup" id="nocmtavilable" style="display:none;">
+            <div class="slds-modal__header">
+            <div class="close_white_60" >
+            <a onclick="closepopup('fancybox_background','FancyboxContainer');redirectpage();return false;" title="Close"><img src="{!URLFOR($Resource.PE_35, 'PE_3.5/images/close_white_60.png')}" /></a>
+            </div>
+            <h2 class="slds-text-heading--medium">Error</h2>
+            </div>
+           <!-- <div class="PopupContentStart" style="text-align:center; padding:15px 25px !important" id="nodistribution">
+            Please enter the Distribution Amount.
+            <div class="cl"></div> 
+            </div>-->
+            <div class="PopupContentStart" style="text-align:center; padding:15px 25px !important" id="">
+            The Fund does not have any Commitment(s).<br/>For creating Fund Distribution, the Fund should have atleast one Commitment.
+            <div class="cl"></div> 
+            </div>
+            <div class="slds-modal__footer">
+            <!--<button class="slds-button slds-button--neutral click_one" onclick="closepopup('fancybox_background','FancyboxContainer');return false;">Close</button>-->
+            <apex:commandButton value="OK" title="OK" styleClass="slds-button slds-button--neutral click_one" onclick="closepopup('fancybox_background','FancyboxContainer');redirectpage();return false;" />
+            </div>                  
+        </div>      
+        
+      <apex:outputPanel rendered="{!noCommitments}">
+        <script>
+        //var ac= '{!noCommitments}';
+        //alert('suddur====='+ac);
+          if({!noCommitments} == true)
+          {
+            var ac= '{!if(noCommitments==true,'true','false')}';
+            document.getElementById('nodistribution').style.display = 'none';
+            //document.getElementById('nocmtavilable').style.display = 'block';
+            InsufficientPermissions_Fancybox1();            
+          }
+        </script>
+    </apex:outputPanel>
+        
+            
+            <!-- Start Content Box -->
+            <div class="ContentBox">
+                <h2 class="slds-section__title">Fund Information</h2>
+                <div class="cl"></div><br />
+                <table border="0" cellpadding="0" cellspacing="0" width="100%" class="table">
+                    <tr>
+                        <td valign="top">
+                            <table border="0" cellpadding="5" cellspacing="0" width="100%">
+                                <tbody>
+                                    <tr>
+                                        <td class="td1" style="width:200px;">Total Commitments</td>
+                                            <td class="td2">
+                                                <span>
+                                                    <div id="TotalComm" style="margin-right:100px;">
+                                                      <!--apex:outputText value="{0, number, ###,##0.00}"> <apex:param value="{!Fund__c.Total_Commitments__c}" /> </apex:outputText-->
+                                                      <apex:outputField value="{!Fund__c.Total_Commitments__c}"  />
+                                                    </div>
+                                                    <!--div id="TotalCommZero1" style="display:none;margin-right:100px;">
+                                                      <apex:outputLabel >0.00</apex:outputLabel>
+                                                    </div-->
+                                                </span>
+                                            </td>       
+                                    </tr>
+                                    <tr>
+                                        <td class="td1">Total Recallable Capital</td>
+                                        <td class="td2">
+                                            <span>
+                                                <div id="RecallCapital" style="margin-right:100px;">
+                                                  <!--apex:outputText value="{0, number, ###,##0.00}">
+                                                    <apex:param value="{!Fund__c.Total_Recallable_Capital__c}" />
+                                                  </apex:outputText--> 
+                                                      <apex:outputField value="{!Fund__c.Total_Recallable_Capital__c}"  />
+                                                </div>
+                                                <!--div id="RecallCapitalZero" style="display:none;margin-right:100px;">
+                                                 <apex:outputLabel >0.00</apex:outputLabel>
+                                                </div-->
+                                            </span>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        
+                        </td>
+                        <td valign="top">
+                            <table border="0" cellpadding="5" cellspacing="0" width="100%">
+                                <tbody>
+                                    <tr>
+                                        <td class="td1" style="width:200px;">Total Capital Called</td>
+                                        <td class="td2">
+                                             <span>
+                                                <div id="TotalCapital" style="margin-right:100px;">
+                                                  <!--apex:outputText value="{0, number, ###,##0.00}"> <apex:param value="{!Fund__c.Total_Capital_Called__c}" /></apex:outputText-->
+                                                   <apex:outputField value="{!Fund__c.Total_Capital_Called__c}" />
+                                                </div>
+                                                <!--div id="TotalCapitalZero" style="display:none;margin-right:100px;">
+                                                  <apex:outputLabel >0.00</apex:outputLabel>
+                                                 </div-->
+                                              </span>
+                                         </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="td1"></td>
+                                        <td class="td2"></td>
+                                    </tr> 
+                                </tbody>
+                            </table>
+                        </td>
+                    </tr>
+                </table>
+                <div class="cl"></div>
+                
+            </div>
+            <!-- Start Content Box -->
+            <style>
+                .apexp .bPageBlock.apexDefaultPageBlock .pbBody {margin:0 !important;}
+                body .bPageBlock .pbBody .labelCol, body .bPageBlock .pbBody .dataCol, body .bPageBlock .pbBody .data2Col, body .print .topics-label, body .print .topics-list {padding:0 !important;}
+                .bPageBlock .detailList .data2Col {padding:0 !important;}
+                .bPageBlock .ContentBox {margin-top:0 !important;}
+            </style>
+            
+            <!-- Start Content Box -->
+            <apex:pageBlock id="dS" rendered="{!NOT(noCommitments)}">
+            <apex:pageBlockSection columns="1" id="dSPBS">
+                <apex:outputPanel >
+                    <apex:inputHidden id="capReturnSummary" value="{!capReturnSummary}"/>
+                    <apex:inputHidden id="DividendSummary" value="{!DividendSummary}"/>
+                    <apex:inputHidden id="reGainSummary" value="{!reGainSummary}"/>
+                    <apex:inputHidden id="othProceedsSummary" value="{!othProceedsSummary}"/>
+            <div class="ContentBox">
+                <h2 class="slds-section__title">Distribution Summary</h2>
+                <div class="cl"></div><br />
+                
+                <table border="0" cellpadding="0" cellspacing="0" width="100%" class="table">
+                    <tr>
+                        <td valign="top">
+                            <table border="0" cellpadding="5" cellspacing="0" width="100%">
+                                <tbody>
+                                    <tr>
+                                        <td class="td1" style="width:200px;"></td>
+                                        <td class="td2">
+                                            <span style="position: relative;left: 123px; color:#16325c">Amount</span>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="td1" style="line-height: 34px;">Capital Return</td>
+                                        <td class="td2">
+                                           <!-- <input id="text-input-01" class="slds-input" type="text" placeholder="00.00" style="width: 178px; text-align:right;" />-->
+                                            <input type="text" name="txtCapitalret" tabindex="1" class="slds-input" oncopy="return false;" onpaste="return false;" onkeypress="return chkChar(event);" maxlength="19" id="txtCapitalret" value="{!ROUND(capReturnSummary*1.0,2)}" size="16" style="width: 178px; text-align:right;" onkeyup="onKeyup_TxtField(event,this.id)" onFocus="clearZero(this.id);" onBlur="roundNum1();assignZero(this.id);correctValue(this,2);TotalDistribution_currency();"/>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="td1" style="line-height: 34px;">Dividends</td>
+                                        <td class="td2">
+                                            <!--<input id="text-input-01" class="slds-input" type="text" placeholder="00.00" style="width: 178px; text-align:right;" />-->
+                                            <input type="text" class="slds-input" onkeypress="return chkChar(event);" oncopy="return false;" onpaste="return false;" name="txtDividends" tabindex="2" id="txtDividends" maxlength="19" value="{!ROUND(DividendSummary*1.0,2)}" size="16" style="width: 178px; text-align:right;" onkeyup="onKeyup_TxtField(event,this.id)" onFocus="clearZero(this.id);" onBlur="roundNum2();assignZero(this.id);correctValue(this,2);TotalDistribution_currency();" />
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="td1" style="line-height: 34px;">Realized Gain</td>
+                                        <td class="td2">
+                                           <!-- <input id="text-input-01" class="slds-input" type="text" placeholder="00.00" style="width: 178px; text-align:right;" />-->
+                                            <input type="text" name="txtReagain" tabindex="4" class="slds-input" oncopy="return false;" onpaste="return false;" onkeypress="return chkChar(event);" id="txtReagain" maxlength="19" value="{!ROUND(reGainSummary*1.0,2)}" size="16" style="width: 178px;text-align:right;" onkeyup="onKeyup_TxtField(event,this.id)" onFocus="clearZero(this.id);" onBlur="roundNum3();assignZero(this.id);correctValue(this,2);TotalDistribution_currency();"/>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="td1" style="line-height: 34px;">Other Proceeds</td>
+                                        <td class="td2">
+                                            <!--<input id="text-input-01" class="slds-input" type="text" placeholder="00.00" style="width: 178px; text-align:right;" />-->
+                                            <input type="text" name="txtOtproceeds" class="slds-input" oncopy="return false;" onpaste="return false;" onkeypress="return chkChar(event);" tabindex="4" id="txtOtproceeds" maxlength="19" value="{!ROUND(othProceedsSummary*1.0,2)}" size="16" style="width: 178px;text-align:right;" onkeyup="onKeyup_TxtField(event,this.id)" onFocus="clearZero(this.id);" onBlur="roundNum4();assignZero(this.id);correctValue(this,2);TotalDistribution_currency();"/>
+                                            
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="td1">Total Distribution</td>
+                                        <td class="td2">
+                                           <!-- <input id="text-input-01" class="slds-input" type="text" value="00000000000.00" style="width: 178px; text-align:right; border:none; box-shadow:none;" />-->
+                                           
+                                        
+                                        <div id="lblTotalDistribution" class="slds-input" style="width: 178px; text-align:right; border:none; box-shadow:none;">
+                                        <apex:outputPanel id="currencypanel3456">
+                                            <script>
+                                                Totaldisributionamount   = '{!objFundCC.Total_Capital_Called__c}';
+                                            </script>                                                        
+                                            <apex:outputField value="{!objFundCC.Total_Capital_Called__c}" id="outpotlbu"/>
+                                        </apex:outputPanel> 
+                                        </div>
+
+                                      </td>
+                                    </tr>
+                                </tbody>
+                            </table>                            
+                        </td>
+                        <td valign="top">
+                            <table border="0" cellpadding="5" cellspacing="0" width="100%">
+                                <tbody>
+                                    <tr>
+                                        <td class="td1" style="width:220px;">&nbsp;</td>
+                                        <td class="td2"></td>
+                                    </tr>
+                                    <tr>
+                                        <td class="td1" style="line-height: 34px;">Can Capital be recalled?</td>
+                                        <td class="td2">
+                                       <!-- <label class='slds-checkbox' style='position:relative; top:5px;'><input type='checkbox' /><span class='slds-checkbox--faux'></span></label>-->
+                                         <apex:inputCheckbox styleClass="amount" id="checkRecalled" value="{!capRecalled}" onkeyup="onKeyup_TxtField(event,this.id)" style="position:relative; top:3px;"/>
+                                           
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="td1" style="line-height: 34px;"><span class="slds-required">*</span>Distribution Date</td>
+                                        <td class="td2" style="position:relative;">
+                                        <!--
+                                            <input id="text-input-01" class="slds-input error_border" type="text" style="width: 150px;" />
+                                            <svg aria-hidden="true" class="slds-icon icon-utility-event slds-icon-text-default" style="width:18px; height:18px; left:-30px; cursor:pointer; position: relative; bottom: 1px; ">
+                                            <img src="{!URLFOR($Resource.SLDS100, 'assets/icons/utility/event_60.png')}" style="width:18px; height:18px; position: absolute; left: 124px; top: 14px;" /></svg>-->
+                                             <apex:inputField id="txtdistibDate" styleClass="slds-input" value="{!fund_Distribution.Distribution_Date__c}" style="width:150px;"/>
+                                            <svg class="slds-icon icon-utility-event slds-icon-text-default" style="width:18px; height:18px; left:-30px; cursor:pointer; position: relative; bottom: 1px; "><img src="{!URLFOR($Resource.SLDS100, 'assets/icons/utility/event_60.png')}" style="width:18px; height:18px; position: absolute; left: 124px; top: 14px;" /></svg>
+                                            <!--<img src="{!URLFOR($Resource.PE_35, 'PE_3.5/images/icon_calendar.png')}" style="left:-28px; cursor:pointer; position: relative; bottom: 0px; " height="16" width="16"/>-->
+                                            <div id="showerrordate" style="display:none;" class="mandatory_msg"><p> <b>Please enter a value.</b></p></div>
+                                            <div id="showerrordate_invaliddate" style="display:none;" class="mandatory_msg"><p> <b>Invalid date.</b></p></div>
+                                            
+                                        </td>
+                                        
+                                    </tr>
+                                    <tr>
+                                        <td class="td1"></td>
+                                       <!-- <td class="td2" style="padding-top:0 !important; line-height: 12px;">
+                                            <span class="mandatory_msg">Please enter the value</span>
+                                        </td>-->
+                                    </tr> 
+                                </tbody>
+                            </table>
+                        </td>
+                    </tr>
+                    <tr class="step_1">
+                        <td colspan="2">
+                             <div id='showbutton'>
+                            
+                                <center>
+                                    <!--<a class="slds-button slds-button--neutral" title="Cancel">Cancel</a>-->
+                                    <apex:outputPanel id="panelSetup2">
+                                    <apex:commandLink id="can" value="" styleclass="slds-button slds-button--neutral" style="margin-left: 4px;border: 1px solid #d8dde6;" action="{!cancel}" rendered="{!NOT(ShowID)}" reRender="msgPanel,msgPanel1"><span>Cancel</span></apex:commandLink> 
+                                    </apex:outputPanel>
+                                    &nbsp;
+                                    <apex:outputPanel id="panelSetup1"> 
+                                    <apex:commandLink id="sid" value="" styleclass="slds-button slds-button--brand"  onclick=" javascript: if(send2HiddenAndFreez()){ return false;};" action="{!SetInD}" reRender="setupInvestorDistribution,msgPanel,msgPanel1,panelSetup1,panelSetup2" rendered="{!NOT(ShowID)}" oncomplete="javascript: isErrorOccured()" style="border:none;"><span>Setup Investor Distributions</span></apex:commandLink>
+                                    </apex:outputPanel> 
+                                </center>
+                             </div >
+                        </td>
+                    </tr>
+                </table>
+                <div class="cl"></div>
+                
+            </div>
+                            </apex:outputPanel>
+            </apex:pageBlockSection>
+        </apex:pageBlock> 
+            <!-- Start Content Box -->
+            
+            
+         
+            <!-- Start Content Box -->
+                  <apex:outputPanel id="setupInvestorDistribution">
+        
+    <apex:pageBlock rendered="{!ShowID}" id="cCS">
+        <style>
+            tr.headerRow {
+                    font-size: 12px;
+                    line-height: 1.25;
+                    text-transform: uppercase;
+                    letter-spacing: 0.0625em;
+                    color: #54698d;
+                }
+            td.dataCell {color:#222;}
+            tr.headerRow th:hover {
+              background-color: #f4f6f9;
+              cursor:pointer;
+              color: #0070d2;
+            }
+
+            <!--td.dataCell {
+              background-color: #f0f8fc;
+            }-->
+        </style>
+          <div class="ContentBox step_2">
+                <h2 class="slds-section__title" style="border:none">Investor Distributions</h2>
+                <div class="cl"></div>
+                
+                <style>
+                    .slds-table tr td { vertical-align: middle !important; }
+                </style>
+                <table class="slds-table slds-table--bordered">
+            <apex:pageBlockTable value="{!InvestorDistribution}" var="InDn" id="cCSP">
+                <apex:column title="{!InDn.limPartner}"  width="15%" headerValue="Limited Partner" style="text-align:left;padding-left:10px;">
+                    <apex:facet name="header"><div style="text-align:left;">Limited Partner</div></apex:facet>
+                    <apex:outputLink style="margin-left:14px;" value="/{!InDn.limPartnerId}" target="_parent">{!InDn.limPartner}</apex:outputLink>
+                </apex:column>
+                <apex:column title="{!InDn.commitment}" width="10%" headerValue="Commitment"  style="text-align:left;padding-left:11px;">
+                <apex:facet name="header"><div style="text-align:left;">Commitment</div></apex:facet>
+                    <apex:outputLink value="/{!InDn.commitmentId}"  target="_parent">{!InDn.commitment}</apex:outputLink> 
+                </apex:column>
+               
+                <apex:column value="{!InDn.commitmentAmount}" title="{!InDn.commitmentAmount}" width="10%" headerValue="Commitment Amount" style="text-align:right;">
+                <apex:facet name="header"><div style="text-align:right;">Commitment Amount</div></apex:facet>
+                 </apex:column>
+                <apex:column title="{!InDn.capReturn}" width="14%" headerValue="Capital Return" style="text-align:right;"> 
+                <apex:facet name="header"><div style="text-align:right;">Capital Return</div></apex:facet>
+                   <!--   <input id="CR" type="text" size="13" maxlength="19" oncopy="return false;" onpaste="return false;" onkeypress="return chkChar(event);" onkeyup="onKeyup_EnterCapture(event,this.id)" style="text-align:right" value="{!InDn.capReturn}" onblur="evaluateTotal()"/>-->
+                  <apex:inputText id="CR" size="13" maxlength="19" styleClass="slds-input" onkeydown="return noCopyKey(event);" onkeypress="return chkChar(event);" onkeyup="onKeyup_EnterCapture(event,this.id)" style="text-align:right" value="{!InDn.capReturn}" onblur="evaluateTotal(this)"/> 
+                </apex:column>
+
+                <apex:column title="{!InDn.Dividend}" width="14%" headerValue="Dividends" style="text-align:right;">
+                    <apex:facet name="header"><div style="text-align:right;">Dividends</div></apex:facet>
+                   <!-- <input type="text" id="DI" size="13" maxlength="19" oncopy="return false;" onpaste="return false;" onkeypress="return chkChar(event);" onkeyup="onKeyup_EnterCapture(event,this.id)" style="text-align:right" value="{!InDn.Dividend}" onblur="evaluateTotal()"/ >-->
+
+                    <apex:inputText id="DI" size="13" maxlength="19" styleClass="slds-input" onkeydown="return noCopyKey(event);" onkeypress="return chkChar(event);" onkeyup="onKeyup_EnterCapture(event,this.id)" style="text-align:right" value="{!InDn.Dividend}" onblur="evaluateTotal(this)"/ >  
+                </apex:column>
+                <apex:column title="{!InDn.reGain}" width="14%" headerValue="Realized Gain" style="text-align:right;">
+                    <apex:facet name="header"><div style="text-align:right;">Realized Gain</div></apex:facet>
+                    <!--<input type="text" id="RG" size="13" maxlength="19" oncopy="return false;" onpaste="return false;" onkeypress="return chkChar(event);" onkeyup="onKeyup_EnterCapture(event,this.id)" style="text-align:right" value="{!InDn.reGain}" onblur="evaluateTotal()"/>-->
+
+                    <apex:inputText id="RG" size="13" maxlength="19" styleClass="slds-input" onkeydown="return noCopyKey(event);" onkeypress="return chkChar(event);" onkeyup="onKeyup_EnterCapture(event,this.id)" style="text-align:right" value="{!InDn.reGain}" onblur="evaluateTotal(this)"/>  
+                </apex:column>
+                <apex:column title="{!InDn.othProceeds}" width="14%" headerValue="Other Proceeds" style="text-align:right;">
+                    <apex:facet name="header"><div style="text-align:right;">Other Proceeds</div></apex:facet>
+                   <!-- <input type="text" id="OT" size="13" maxlength="19" oncopy="return false;" onpaste="return false;" onkeypress="return chkChar(event);" onkeyup="onKeyup_EnterCapture(event,this.id)" style="text-align:right" value="{!InDn.othProceeds}" onblur="evaluateTotal()"/>-->
+
+                    <apex:inputText id="OT" size="13" maxlength="19" styleClass="slds-input" onkeydown="return noCopyKey(event);" onkeypress="return chkChar(event);" onkeyup="onKeyup_EnterCapture(event,this.id)" style="text-align:right" value="{!InDn.othProceeds}" onblur="evaluateTotal(this)"/> 
+                </apex:column>
+                <apex:column title="{!InDn.totDistruibution}" headerValue="Total" width="9%" style="text-align: right;">
+                    <apex:facet name="header"><div style="text-align:right;">Total</div></apex:facet>
+                   <apex:outputText id="cl" value="{!InDn.totDistruibution}"/> 
+                   <!--  <label id="cl"> {!InDn.totDistruibution}</label> -->
+                </apex:column>
+                </apex:pageBlockTable>
+                  </table>
+                
+                
+                
+                <br />
+                
+                
+                <center>
+                   <apex:commandLink value="" styleclass="slds-button slds-button--neutral" action="{!cancelSetup}" rerender="dSPBS,setupInvestorDistribution,msgPanel1" oncomplete="SetValueWithoutExp();" style="border: 1px solid #d8dde6;" ><span>Cancel</span></apex:commandLink>
+                &nbsp;
+                <apex:commandLink id="btnGID" styleclass="slds-button slds-button--brand" value="" oncomplete="showerrormgspnl()" action="{!saveInvestorDisrtibutions}" style="border:none;" rerender="msgPanel,msgPanel1" ><span>Generate Investor Distributions</span> </apex:commandLink>                                        
+                </center>
+            </div>
+            </apex:pageBlock>
+
+        
+            <script type="text/javascript">
+                if({!noCommitments} == false)
+                {   
+                    //alert('abc');
+                    document.getElementById("{!$Component.frm.dS.dSPBS.txtdistibDate}").disabled = {!ShowID};
+                    document.getElementById("{!$Component.frm.dS.dSPBS.checkRecalled}").disabled = {!ShowID};
+                    document.getElementById("txtCapitalret").disabled = {!ShowID};
+                    document.getElementById("txtDividends").disabled = {!ShowID};
+                    document.getElementById("txtReagain").disabled = {!ShowID};
+                    document.getElementById("txtOtproceeds").disabled = {!ShowID};
+                }               
+            </script>
+           </apex:outputPanel>
+            <!-- Start Content Box -->
+        
+        
+    </div>
+
+    <!-- / REQUIRED SLDS WRAPPER --> 
+        <script> 
+            var totCommitment ='{!JSENCODE(Text(Fund__c.Total_Commitments__c))}';
+            
+            /*if(totCommitment == 0.0){
+                document.getElementById('TotalCommZero1').style.display = 'block'; 
+                document.getElementById('TotalComm').style.display = 'none'; 
+            }
+            else{
+                document.getElementById('TotalCommZero1').style.display = 'none'; 
+                document.getElementById('TotalComm').style.display = 'block'; 
+            }*/
+            
+            var totCapCall ="{!JSENCODE(Text(Fund__c.Total_Capital_Called__c))}";        
+          
+            /*if(totCapCall  == 0.0){
+                document.getElementById('TotalCapitalZero').style.display = 'block'; 
+                document.getElementById('TotalCapital').style.display = 'none'; 
+            }
+            else{
+                document.getElementById('TotalCapitalZero').style.display = 'none'; 
+                document.getElementById('TotalCapital').style.display = 'block'; 
+            } */
+            
+            var totRecallCap ='{!JSENCODE(Text(Fund__c.Total_Recallable_Capital__c))}';
+            /*if(totRecallCap  == 0.0){
+                //document.getElementById('RecallCapitalZero').style.display = 'block'; 
+                document.getElementById('RecallCapital').style.display = 'none'; 
+            }
+            else{
+                //document.getElementById('RecallCapitalZero').style.display = 'none'; 
+                document.getElementById('RecallCapital').style.display = 'block'; 
+            }*/
+/*=============================================================================================*/   
+            if({!noCommitments} == false)
+            {
+                document.getElementById("txtCapitalret").focus();
+                document.getElementById("{!$Component.frm.dS.dSPBS.checkRecalled}").tabIndex="5";
+                document.getElementById("{!$Component.frm.dS.dSPBS.txtdistibDate}").tabIndex="6";
+                document.getElementById("{!$Component.frm.dS.dSPBS.sid}").tabIndex="7";
+                document.getElementById("{!$Component.frm.dS.dSPBS.can}").tabIndex="8";
+            }
+                
+            var er = false;
+            //var preErrorFormat = '<div class="slds-box slds-theme--error" id="error"></div><br>';  
+            var preErrorFormat = '<div class="slds"><div id="error" class="slds-box slds-theme--error" style="margin: 3px 0px 10px;border-radius: 0;"><p><span style="color:#FFFFFF;font-weight:normal;font-size:12px;" ><strong style="color:#FFFFFF; font-size:14px; font-weight:bold;">Error</strong><br>';     
+            var suffErrorFormat ='</span></p></div></div>';
+                                                                                        
+            var prevValidValue;
+            
+            function chkChar(e)
+            {
+              //alert(e.which);
+              if( e.which!=8 && e.which!=46 && e.which!=0 && (e.which<48 || e.which>57))
+              {
+                return false;
+              } 
+              
+              return true;
+            }
+            
+            function onKeyup_TxtField(e,i)
+            {
+                var keynum;
+                if(window.event) // IE
+                {
+                    keynum = e.keyCode;
+                }
+                else if(e.which) // Netscape/Firefox/Opera
+                {
+                    keynum = e.which;
+                }
+                
+                if(keynum==13) 
+                {
+                    if(i != "{!$Component.frm.dS.dSPBS.txtdistibDate}" && i!="{!$Component.frm.dS.dSPBS.checkRecalled}")
+                    {
+                        assignZero(i);
+                        correctValue(document.getElementById(i), 2);
+                        TotalDistribution_currency();
+                    }
+                    else if(i == "{!$Component.frm.dS.dSPBS.txtdistibDate}")
+                    {
+                        DateTrim(document.getElementById(i));
+                    }
+                    document.getElementById("{!$Component.frm.dS.dSPBS.sid}").click();              
+                    return false;   
+                }   
+            }
+                function showerrormgspnl(){
+                     document.getElementById('error_bpt').style.display = 'block';
+                }
+            function onKeyup_EnterCapture(e,i)
+            {
+                var keynum;
+                if(window.event) // IE
+                {
+                    keynum = e.keyCode;
+                }
+                else if(e.which) // Netscape/Firefox/Opera
+                {
+                    keynum = e.which;
+                }
+                if(keynum==13) 
+                {
+                    evaluateTotal(document.getElementById(i));
+                    document.getElementById("{!$Component.frm.cCS.btnGID}").click();              
+                    return false;   
+                }   
+            }
+
+            function DateTrim(Obj)
+            {
+                Obj.value = removeSpace(Obj.value);
+                Obj.value = removeOtherChar(Obj.value);
+            }
+            
+            function removeOtherChar(str)
+            {
+                var tempStr = '';
+                for(var i = 0 ; i < str.length ; i++)
+                {
+                    var charVal = str.substring(i,i+1);
+                    if(charVal == '0' || charVal == '1' || charVal == '2' || charVal == '3' || charVal == '4' || charVal == '5' || charVal == '6' || charVal == '7' || charVal == '8' || charVal == '9' || charVal == '/')
+                    {
+                        tempStr += charVal;
+                    }
+                }
+                return tempStr;
+            }
+
+            function prevValue( objId )
+            {
+                prevValidValue = objId.value;
+            }
+            
+            function newValue( objId )
+            {
+                if(isNaN(objId.value))
+                    objId.value = prevValidValue;
+            }
+
+            function evaluateTotal(Obj)
+            {
+                var tempID = Obj.id;
+                tempID = tempID.substring(0,tempID.length-2);
+                Obj.value = removeSpace(Obj.value);
+                if(Obj.value == null || Obj.value == '')
+                    Obj.value = '0.000';
+                else if(isNaN(Obj.value)){}
+                    else
+                        Obj.value = ((parseFloat(Obj.value, 10) + 1.00).toFixed(3) - 1.00).toFixed(3);
+                    
+                var capVal = document.getElementById(tempID+"CR").value;
+                var divVal = document.getElementById(tempID+"DI").value;
+                var RelGainVal = document.getElementById(tempID+"RG").value;
+                var otProVal = document.getElementById(tempID+"OT").value;
+                document.getElementById(tempID+"cl").innerHTML = ((parseFloat((isNaN(capVal) || (capVal.length == 0))?0:capVal, 10) + parseFloat((isNaN(divVal) || (divVal.length == 0))?0:divVal, 10) + parseFloat((isNaN(RelGainVal) || (RelGainVal.length == 0))?0:RelGainVal, 10) + parseFloat((isNaN(otProVal) || (otProVal.length == 0))?0:otProVal, 10) + 1.00).toFixed(3) - 1.00).toFixed(3);
+
+             }
+
+            function isErrorOccured()
+            {   
+
+                if(document.getElementById("{!$Component.frm.msgPanel}").innerHTML == !'')
+                {
+
+                    document.getElementById("{!$Component.frm.dS.dSPBS.txtdistibDate}").disabled = false;
+                    document.getElementById("{!$Component.frm.dS.dSPBS.checkRecalled}").disabled = false;
+                    document.getElementById("txtCapitalret").disabled = false;
+                    document.getElementById("txtDividends").disabled = false;
+                    document.getElementById("txtReagain").disabled = false;
+                    document.getElementById("txtOtproceeds").disabled = false;
+                    document.getElementById('showerrordate').style.display = 'none';
+                    document.getElementById('showerrordate_invaliddate').style.display = 'none';
+                      
+                }
+            }
+            
+            function send2HiddenAndFreez()
+            {
+                var err;
+                var  callIt = false;
+                var arrtext1 = new Array();
+                var arrtext2 = new Array();
+                
+                if (isNaN(document.getElementById("txtCapitalret").value))
+                { 
+                   arrtext1.push('Capital Return');
+                   callIt = true;
+                }
+                 if (isNaN(document.getElementById("txtDividends").value))
+                {
+                   arrtext1.push('Dividends');
+                   callIt = true;
+                }
+                 if (isNaN(document.getElementById("txtReagain").value))
+                {
+                   arrtext1.push('Realized Gain');
+                   callIt = true;
+                }
+                if (isNaN(document.getElementById("txtOtproceeds").value))
+                {
+                    arrtext1.push('Other Proceeds');
+                    callIt = true;
+                }
+               
+                if (parseFloat(document.getElementById("txtCapitalret").value, 10).toFixed(2) < 0)
+                {
+                   arrtext2.push('Capital Return');
+                   callIt = true;
+              
+                }
+                if (parseFloat(document.getElementById("txtDividends").value, 10).toFixed(2) < 0)
+                {
+                   arrtext2.push('Dividends');
+                   callIt = true;
+                }
+                 if (parseFloat(document.getElementById("txtReagain").value, 10).toFixed(2) < 0)
+                {
+                   arrtext2.push('Realized Gain');
+                   callIt = true;
+               }
+                if(parseFloat(document.getElementById("txtOtproceeds").value, 10).toFixed(2) < 0)
+                {
+                   arrtext2.push('Other Proceeds');
+                   callIt = true;
+                }
+                if(callIt){
+                return(showErr(arrtext1,arrtext2));
+                
+                }
+                
+                var CapitalReturnamt = document.getElementById("txtCapitalret").value;
+                var CapitalReturnamt1 = parseFloat(CapitalReturnamt);
+                var Dividends = document.getElementById("txtDividends").value;
+                var Dividends1 = parseFloat(Dividends);
+                var RealizedGain = document.getElementById("txtReagain").value;
+                var RealizedGain1 = parseFloat(RealizedGain);
+                var OtherProceeds = document.getElementById("txtOtproceeds").value;
+                var OtherProceeds1 = parseFloat(OtherProceeds);
+                var TotalDistribution = CapitalReturnamt1 + Dividends1 + RealizedGain1+OtherProceeds1;
+            
+                //in this case i have change this document.getElementById("lblTotalDistribution").innerHTML == '0.00' to current 
+                if((TotalDistribution == '0.00' ||TotalDistribution == '0')&& (CapitalReturnamt=='0.00'&&Dividends=='0.00'&&RealizedGain1=='0.00'&&OtherProceeds1=='0.00')){
+                
+                     document.getElementById('nodistribution').style.display = 'block';
+                     document.getElementById('ifnocmtavl').style.display = 'none';
+                     InsufficientPermissions_Fancybox();
+                     return true;
+                }     
+                   
+                var st = new String(document.getElementById("{!$Component.frm.dS.dSPBS.txtdistibDate}").value);
+                st = removeSpace(st);
+                document.getElementById("{!$Component.frm.dS.dSPBS.txtdistibDate}").value = st;
+
+                if(document.getElementById("{!$Component.frm.dS.dSPBS.txtdistibDate}").value == '')
+                {
+                     document.getElementById('showerrordate').style.display = 'block';
+                     document.getElementById('showerrorifamtisblank').style.display = 'none';
+
+                    //document.getElementById("{!$Component.frm.msgPanel}").innerHTML = preErrorFormat + 'Please enter the Distribution Date.' + suffErrorFormat;
+                    return true;
+                }
+                sforce.connection.sessionId = "{!$Api.Session_ID}";
+                var Disdate = document.getElementById("{!$Component.frm.dS.dSPBS.txtdistibDate}").value;
+                     var regexObj = /^\d{1,2}(\-|\/|\.)\d{1,2}\1\d{4}$/ ;                    
+                     if(Disdate != ''){      
+                        var namespace = "{!JSENCODE(namspace)}";
+                        namespace = namespace.replace('__','');
+                        if(namespace==''){
+                             var bol = sforce.apex.execute('CommonUtilityGlobal','getValidDate', {strDate:Disdate});
+                        }
+                        else{
+                              var bol = sforce.apex.execute(''+namespace+'.CommonUtilityGlobal','getValidDate', {strDate:Disdate});
+                        }                               
+                        if(bol == false || bol == 'false'){                
+                            //document.getElementById("{!$Component.frm.msgPanel}").innerHTML = preErrorFormat + 'Distribution Date: Invalid Date' + suffErrorFormat;
+                            document.getElementById('showerrordate').style.display = 'none';
+                            document.getElementById('showerrordate_invaliddate').style.display = 'block';
+                            document.getElementById('showerrorifamtisblank').style.display = 'none';
+
+                            return true;
+                        }
+                     }      
+                document.getElementById("{!$Component.frm.dS.dSPBS.capReturnSummary}").value = document.getElementById("txtCapitalret").value;
+                document.getElementById("{!$Component.frm.dS.dSPBS.DividendSummary}").value = document.getElementById("txtDividends").value;
+                document.getElementById("{!$Component.frm.dS.dSPBS.reGainSummary}").value = document.getElementById("txtReagain").value;
+                document.getElementById("{!$Component.frm.dS.dSPBS.othProceedsSummary}").value = document.getElementById("txtOtproceeds").value;
+                document.getElementById('showerrordate').style.display = 'none';
+                document.getElementById('showerrordate_invaliddate').style.display = 'none';
+                document.getElementById('showerrorifamtisblank').style.display = 'none';
+                                               
+               document.getElementById("{!$Component.frm.dS.dSPBS.txtdistibDate}").disabled = true;
+               document.getElementById("{!$Component.frm.dS.dSPBS.checkRecalled}").disabled = true;
+               document.getElementById("txtCapitalret").disabled = true;
+               document.getElementById("txtDividends").disabled = true;
+               document.getElementById("txtReagain").disabled = true;
+               document.getElementById("txtOtproceeds").disabled = true;  
+               //document.getElementById('tab2').style.display = 'none';      
+               return false;
+            }
+            
+            function removeSpace(str)
+            {
+                while(str.search(/ /) != -1)
+                {
+                    str = str.replace(/ /, "");
+                }
+                return str;
+            }
+
+            function showErr(arr1,arr2)
+            {  
+
+                var err1 = '';
+                var err2 = '';
+                if(arr1.length>0)
+                {
+                    err1 = 'Please enter a valid number for '+ arr1[0];
+                    if(arr1.length > 1)
+                    {
+                        for(i=1;i<(arr1.length-1);i++)
+                        {
+                            err1 = err1 + ', ' +arr1[i];
+                            
+                        }
+                        err1 = err1 + ' and '+arr1[arr1.length-1]
+                    }
+                     err1 = err1 + '.';
+                     
+                }
+               if(arr2.length>0)
+               {
+                   err2 = 'Please enter a value greater than or equal to zero for '+ arr2[0];
+                   if(arr2.length > 1)
+                    {
+                        for(i=1;i<(arr2.length-1);i++)
+                        {
+                            err2 = err2 + ', ' +arr2[i];
+                            
+                        }
+                        err2 = err2 + ' and '+arr2[arr2.length-1]
+                    }
+                     err2 = err2 + '.';
+                     
+                }
+                if(err1 != '' && err2 != '')
+                {
+                    document.getElementById("{!$Component.frm.msgPanel}").innerHTML = preErrorFormat+ '<ul style="margin: 0px; padding-left: 10px; padding-top: 0px;"><li style="padding-top: 5px;">'+ err1 +'</br></li><li style="padding-top: 5px;">'+ err2 +'</li></ul>'+ suffErrorFormat;
+                    return true;
+                }
+
+                if(err1 !='' && err2 == '')
+                {
+                    document.getElementById("{!$Component.frm.msgPanel}").innerHTML = preErrorFormat + err1 + suffErrorFormat;
+                    return true;
+                }
+                if(err1 =='' && err2 != '')
+                {
+                    document.getElementById("{!$Component.frm.msgPanel}").innerHTML = preErrorFormat + err2 + suffErrorFormat;
+                    return true;
+                }
+                
+             }
+                    
+            function clearZero(id)
+            {
+                if (document.getElementById(id).value == "0.00")
+                {
+                    document.getElementById(id).value = "";
+                }
+            }
+            
+            function assignZero(id)
+            {
+                var st = new String(document.getElementById(id).value);
+                st = removeSpace(st);
+                document.getElementById(id).value = st;
+
+                if (document.getElementById(id).value == "")
+                {
+                    document.getElementById(id).value = "0.00";
+                }
+            }
+                       
+            function correctValue(Obj, len)
+            {
+                if(!isNaN(Obj.value))
+                    Obj.value = ((parseFloat(Obj.value) + 1.00).toFixed(len) - 1.00).toFixed(len);
+            }
+            
+            function noCopyKey(e) {
+                var forbiddenKeys = new Array('c','x','v');
+                var keyCode = (e.keyCode) ? e.keyCode : e.which;
+                var isCtrl;
+        
+        
+                if(window.event)
+                    isCtrl = e.ctrlKey
+                else
+                    isCtrl = (window.Event) ? ((e.modifiers & Event.CTRL_MASK) == Event.CTRL_MASK) : false;
+            
+        
+                if(isCtrl) {
+                    for(i = 0; i < forbiddenKeys.length; i++) {
+                        if(forbiddenKeys[i] == String.fromCharCode(keyCode).toLowerCase()) {
+                            //alert('You are prompted to type this twice for a reason!');
+                            return false;
+                        }
+                    }
+                }
+                return true;
+            }
+            function SetValueWithoutExp()
+            {             
+                                  
+                 if(!isNaN(document.getElementById("txtCapitalret").value))
+                 {                   
+                   document.getElementById("txtCapitalret").value = ((parseFloat(document.getElementById("txtCapitalret").value) + 1.00).toFixed(2) - 1.00).toFixed(2);
+                 } 
+                 if(!isNaN(document.getElementById("txtDividends").value))
+                 {                   
+                   document.getElementById("txtDividends").value = ((parseFloat(document.getElementById("txtDividends").value) + 1.00).toFixed(2) - 1.00).toFixed(2);
+                 } 
+                 if(!isNaN(document.getElementById("txtReagain").value))
+                 {                   
+                   document.getElementById("txtReagain").value = ((parseFloat(document.getElementById("txtReagain").value) + 1.00).toFixed(2) - 1.00).toFixed(2);
+                 } 
+                 if(!isNaN(document.getElementById("txtOtproceeds").value))
+                 {                   
+                   document.getElementById("txtOtproceeds").value = ((parseFloat(document.getElementById("txtOtproceeds").value) + 1.00).toFixed(2) - 1.00).toFixed(2);
+                 }                 
+                TotalDistribution_currency();              
+                 
+           }
+            
+            function calculateValues()
+            {   
+             if(isNaN(document.getElementById("txtCapitalret").value) || isNaN(document.getElementById("txtDividends").value) || isNaN(document.getElementById("txtOtproceeds").value) || isNaN(document.getElementById("txtReagain").value))
+                 {
+                  
+                 }
+                 else
+                     document.getElementById("lblTotalDistribution").innerHTML = (parseFloat(document.getElementById("txtCapitalret").value, 10) + parseFloat(document.getElementById("txtDividends").value, 10) + parseFloat(document.getElementById("txtReagain").value, 10) + parseFloat(document.getElementById("txtOtproceeds").value, 10)).toFixed(2);
+            }
+            
+        </script>
+        
+          <script language="javascript" type="text/javascript">
+ 
+        function roundNum1()
+         {
+           var v= document.getElementById("txtCapitalret").value;
+           if(isNaN(v))
+           { 
+               
+           }
+           else
+           {
+               roundNumber1(v,2);
+           }
+        }
+        function roundNumber1(rnum, rlength) { // Arguments: number to round, number of decimal places
+           var newnumber = Math.round(rnum*Math.pow(10,rlength))/Math.pow(10,rlength);
+           document.getElementById("txtCapitalret").value= parseFloat(newnumber); // Output the result to the form field (change for your purposes)
+        }
+        
+       function roundNum2()
+         {
+           var v= document.getElementById("txtDividends").value;
+           if(isNaN(v))
+           { 
+               
+           }
+           else
+           {
+               roundNumber2(v,2);
+           }
+        }
+        function roundNumber2(rnum, rlength) { // Arguments: number to round, number of decimal places
+           var newnumber = Math.round(rnum*Math.pow(10,rlength))/Math.pow(10,rlength);
+           document.getElementById("txtDividends").value= parseFloat(newnumber); // Output the result to the form field (change for your purposes)
+        }
+        
+        function roundNum3()
+         {
+           var v= document.getElementById("txtReagain").value;
+           if(isNaN(v))
+           { 
+               
+           }
+           else
+           {
+               roundNumber3(v,2);
+           }
+        }
+        function roundNumber3(rnum, rlength) { // Arguments: number to round, number of decimal places
+           var newnumber = Math.round(rnum*Math.pow(10,rlength))/Math.pow(10,rlength);
+           document.getElementById("txtReagain").value= parseFloat(newnumber); // Output the result to the form field (change for your purposes)
+        }
+        
+        function roundNum4()
+         {
+           var v= document.getElementById("txtOtproceeds").value;
+           if(isNaN(v))
+           { 
+               
+           }
+           else
+           {
+               roundNumber4(v,2);
+           }
+        }
+        function roundNumber4(rnum, rlength) { // Arguments: number to round, number of decimal places
+           var newnumber = Math.round(rnum*Math.pow(10,rlength))/Math.pow(10,rlength);
+           document.getElementById("txtOtproceeds").value= parseFloat(newnumber); // Output the result to the form field (change for your purposes)
+        } 
+         function redirectpage(){ 
+         var newwindow = window.open("../{!Fund__c.Id}","_self"); 
+         newwindow.focus();
+         }
+         function hide(){
+            document.getElementById('hidethisdmsg').style.display = 'none';
+         }
+            function TotalDistribution_currency(){
+            var CapitalReturnamt = document.getElementById("txtCapitalret").value;
+            var CapitalReturnamt1 = parseFloat(CapitalReturnamt);
+            var Dividends = document.getElementById("txtDividends").value;
+            var Dividends1 = parseFloat(Dividends);
+            var RealizedGain = document.getElementById("txtReagain").value;
+            var RealizedGain1 = parseFloat(RealizedGain);
+            var OtherProceeds = document.getElementById("txtOtproceeds").value;
+            var OtherProceeds1 = parseFloat(OtherProceeds);
+            var TotalDistribution = CapitalReturnamt1 + Dividends1 + RealizedGain1+OtherProceeds1;
+            TotalDistributionactionf(TotalDistribution); 
+            }
+         
+        </script> 
+                    
+</body>
+</html>
+ </apex:form>
+</apex:page>

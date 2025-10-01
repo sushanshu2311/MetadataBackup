@@ -1,0 +1,20 @@
+.red{
+    background: #fff !important;
+    border-top:1px solid #fff !important;
+    border-bottom:1px solid #fff !important;
+    /* border-top:1px solid #e5e5e5 !important;
+    border-bottom:1px solid #e5e5e5 !important; */
+}
+
+.yourText{
+   /* margin-top: -15px;*/
+    margin-bottom: 20px;
+}
+
+.searchCompany{
+    font-weight: 500;
+}
+
+.border_color {
+    border: 2px solid red;
+}

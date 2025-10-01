@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>LPAddress__c</fullName>
+    <externalId>false</externalId>
+    <formula>Limited_Partner__r.BillingStreet + &#39;,&#39; + BR() + Limited_Partner__r.BillingCity + &#39;, &#39; + Limited_Partner__r.BillingState + &#39;, &#39; + Limited_Partner__r.BillingPostalCode</formula>
+    <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+    <label>LPAddress</label>
+    <required>false</required>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Text</type>
+    <unique>false</unique>
+</CustomField>

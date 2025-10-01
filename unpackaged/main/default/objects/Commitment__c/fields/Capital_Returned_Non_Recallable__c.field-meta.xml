@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Capital_Returned_Non_Recallable__c</fullName>
+    <label>Capital Returned (Non-Recallable)</label>
+    <summarizedField>Investor_Distribution__c.Capital_Return__c</summarizedField>
+    <summaryFilterItems>
+        <field>Investor_Distribution__c.Capital_Recallable__c</field>
+        <operation>equals</operation>
+        <value>False</value>
+    </summaryFilterItems>
+    <summaryForeignKey>Investor_Distribution__c.Commitment__c</summaryForeignKey>
+    <summaryOperation>sum</summaryOperation>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Summary</type>
+</CustomField>

@@ -1,0 +1,191 @@
+<!--
+** Module Name : Acuity 2.0 - Acuity
+** Description : To create the New Fundraising record from Fund Acuity page and Firm Acuity Page
+** Throws : NA
+** Calls : NA
+** Organization : Navatar Group
+** Product Name & Version : Acuity 2.0
+** Revision History:-
+** Version    Date(YYYY-MM-DD)    Author            Description of Action
+** 1.0        2022-11-18         Nikita Suresh
+** 2.0        2024-03-08         Lakshya Kanchan    Acuity Phase 3
+-->
+
+<template>
+   
+    <template if:true={openModal}>
+       
+        <section role="dialog" tabindex="-1" aria-modal="true" aria-labelledby="modal-heading-01"
+            class="slds-modal slds-fade-in-open main-fundrasing">
+            <div class="slds-modal__container">
+                <template if:false={areDetailsVisible}>
+                    <lightning-spinner alternative-text="Loading..."
+                    style="z-index:15002" class="spinner_css">
+                </lightning-spinner>
+             </template>
+                <lightning-icon variant="inverse" size="small" icon-name="utility:close" alternative-text="close!"
+                    title="Close" class="slds-text-align_right slds-m-bottom_small slds-text-link_reset"
+                    onclick={closeNewFundraising}></lightning-icon>
+                <div class="slds-modal__header">
+                    <!--Replaced "New Fundraising" with {newFdrLabel} by LK on 2024-05-22 to fix 00045424-->
+                    <h1 class="slds-modal__title slds-hyphenate">{newFdrLabel}</h1>
+                </div>
+               
+                <lightning-record-edit-form object-api-name="navpeII_dev18__Fundraising__c" onload={handleLoad}>
+                    <div class="slds-modal__content slds-p-around_medium" style="overflow: initial !important;">
+                           <!--new change error message start-->
+              <template if:true={showError}>
+                <div class="slds-p-bottom_small">
+                    <div class="slds-notify slds-notify_alert slds-alert_error" style="display: -webkit-box;" role="alert">
+                        <span class="slds-assistive-text">error</span>
+                        <span class="slds-icon_container slds-icon-utility-error slds-m-right_x-small" title="Error">
+                        </span>
+                        <h2>Review the errors on this page.</h2>
+                    </div>
+                    <p class="slds-p-left_medium" style="color:red">{errorMessage} </p>
+                </div>
+            </template>
+    
+    <!--new change error message end-->
+                        <template if:false={fundCheck}>
+                            <lightning-layout>
+
+                                <lightning-layout-item size="6" class="slds-p-right_small auto_populate_css">
+                                    <lightning-input-field field-name={fundName} value={selectedId} disabled>
+                                    </lightning-input-field>
+                                </lightning-layout-item>
+
+                                <lightning-layout-item size="6" class="slds-p-left_small lookup_css_h">
+                                    <label class="slds-form-element__label"><abbr class="slds-required"
+                                            title="required">*</abbr>{investor}</label>
+                                    <!-- <label class="slds-form-element__label">Investor</label> -->
+                                    <c-navatar-single-lookup-lwc obj-name="Account"
+                                        search-placeholder="Search Investor..." onlookupselected={handleSelectedRecord}
+                                        onaccountselected ={handleInvestortName} 
+                                        contact-check = "true"
+                                        is-rec-selected="true" class="custom_pill lablehide"></c-navatar-single-lookup-lwc>
+                                        <!-- <div>
+                                            <template if:true={showError}>
+                                                <label class="slds-form-element__label" style="color:red">Complete this field.</label>
+                                            </template>
+                                        </div> -->
+                                </lightning-layout-item>
+                            </lightning-layout>
+                           
+                        </template>
+                        <template if:true={fundCheck}>
+                            <lightning-layout>
+                                <lightning-layout-item size="6" class="slds-p-right_x-small lookup_css_h">
+                                    <label class="slds-form-element__label"><abbr class="slds-required"
+                                            title="required">*
+                                        </abbr>Fund Name</label>
+                                    <c-navatar-single-lookup-lwc obj-name="navpeII_dev18__Fund__c"
+                                        search-placeholder="Search Funds..." onlookupselected={handleSelectedFundRecord}
+                                        onaccountselected ={handleFundName} 
+                                        contact-check = "true"
+                                        is-rec-selected="true" class="custom_pill lablehide"></c-navatar-single-lookup-lwc>
+                                        <!-- <div>
+                                            <template if:true={showError}>
+                                                <label class="slds-form-element__label" style="color:red">Complete this field.</label>
+                                            </template>
+                                        </div> -->
+                                </lightning-layout-item>
+                                <!--Added template if:true and moved existing code in if:false by LK on 2024-03-09 to fix 00044270-->
+                                <template if:true={displayAccountAsLookup}>
+                                    <lightning-layout-item size="6" class="slds-m-left_x-small slds-p-right_x-small lookup_css_h">
+                                        <label class="slds-form-element__label">
+                                            {investor}
+                                        </label>
+                                        <c-navatar-single-lookup-lwc obj-name="Account"
+                                            search-placeholder="Search Accounts..." onlookupselected={handleSelectedRecordCon}
+                                            onaccountselected ={handleInvestortName} 
+                                            contact-check = "true"
+                                            is-rec-selected="true" class="custom_pill lablehide">
+                                        </c-navatar-single-lookup-lwc>
+                                    </lightning-layout-item>
+                                </template>
+                                <template if:false={displayAccountAsLookup}>
+                                    <lightning-layout-item size="6" class="slds-p-left_x-small">
+                                        <lightning-input-field field-name={legalName} value={selectedId}
+                                            class="auto_populate_field" disabled></lightning-input-field>
+                                    </lightning-layout-item>
+                                </template>
+                            </lightning-layout>
+                        </template>
+                        <lightning-layout class="slds-m-top_x-small">
+                            <lightning-layout-item size="6" class="slds-p-right_x-small">
+                                <lightning-input-field field-name={stage} data-id="stage1" onchange={handleStage}
+                                    value={stages}></lightning-input-field>
+                            </lightning-layout-item>
+                            <lightning-layout-item size="6" class="slds-p-left_x-small">
+                                <lightning-input-field field-name={closingField} data-id="close" value={closeFields}
+                                    onchange={handleClosingField}></lightning-input-field>
+                            </lightning-layout-item>
+                        </lightning-layout>
+                        <lightning-layout class="slds-m-top_x-small">
+                            <lightning-layout-item size="6" class="slds-p-right_x-small">
+                                <lightning-input-field field-name={likelyAmountField} value={amount} data-id="l1"
+                                    onchange={handleAmount}></lightning-input-field>
+                            </lightning-layout-item>
+                            <lightning-layout-item size="6" class="slds-p-left_x-small">
+                                <lightning-input-field field-name={closingDateField} data-id="dateField"
+                                    value={dateValue} onchange={handleClosingDateField}></lightning-input-field>
+                              
+                            </lightning-layout-item>
+                        </lightning-layout>
+                        <template if:true={openCoinvestmentModal}>
+                            <lightning-layout class="css_padding">
+                                <lightning-layout-item size="6" class="slds-p-right_x-small lookup_css_h">
+                                    <label class="slds-form-element__label">{company}</label>
+                                    <c-navatar-single-lookup-lwc obj-name="Account"
+                                        search-placeholder="Search company..."
+                                        onaccountselected ={handleCompanyName} 
+                                        contact-check = "true"
+                                        onlookupselected={handleSelectedCompanyRecord} is-rec-selected="true"
+                                        class="pd-left lablehide"
+                                        input-cls="field1"
+                                        >
+                                    </c-navatar-single-lookup-lwc>
+                                    <!-- <div>
+                                        <template if:true={showError}>
+                                            <label class="slds-form-element__label" style="color:red">Complete this field.</label>
+                                        </template>
+                                    </div> -->
+                                </lightning-layout-item>
+                            </lightning-layout>
+                        </template>
+                        <template if:true={companyCheck}>
+                            <lightning-layout>
+                                <lightning-layout-item size="6" class="slds-p-right_x-small lookup_css_h">
+                                    <label class="slds-form-element__label">{company}</label>
+                                    <c-navatar-single-lookup-lwc obj-name="Account"
+                                        search-placeholder="Search company..."
+                                        onaccountselected ={handleCompanyName} 
+                                        contact-check = "true"
+                                        onlookupselected={handleSelectedCompanyRecord} is-rec-selected="true"
+                                        class="pd-left lablehide"
+                                        input-cls="field2">
+                                    </c-navatar-single-lookup-lwc>
+                                    <!-- <div>
+                                        <template if:true={showError}>
+                                            <label class="slds-form-element__label" style="color:red">Complete this field.</label>
+                                        </template>
+                                    </div> -->
+                                </lightning-layout-item>
+                            </lightning-layout>
+                        </template>
+
+
+                    </div>
+                </lightning-record-edit-form>
+                <div class="slds-modal__footer">
+                    <lightning-button label="Cancel" title="Cancel" onclick={closeNewFundraising} class="slds-m-left_x-small">
+                    </lightning-button>
+                    <lightning-button variant="brand" class="slds-m-left_x-small customBrandButton" type="submit"
+                        label="Save" title="Save" onclick={saveNewFundraising}></lightning-button>
+                </div>
+            </div>
+        </section>
+        <div class="slds-backdrop slds-backdrop_open" role="presentation"></div>
+    </template>
+</template>

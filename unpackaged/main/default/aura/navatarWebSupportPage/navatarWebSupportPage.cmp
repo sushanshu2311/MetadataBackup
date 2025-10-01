@@ -1,0 +1,14 @@
+<aura:component implements="flexipage:availableForAllPageTypes,lightning:isUrlAddressable" access="global" >
+	   <aura:handler name="init" value="{!this}" action="{!c.doInit}" description="Handler for valueInit event fired when the component has been initialised"/>
+    <link REL="SHORTCUT ICON" HREF="{!$Resource.NavatarLogo}"> </link>
+     <iframe 
+      src="https://www.navatargroup.com/support"
+      referrerpolicy="no-referrer"
+      height="99%"
+      width="100%"  
+      sandbox="allow-same-origin allow-scripts allow-popups allow-forms"  
+      scrolling="true"
+      title="iFrame"
+    ></iframe> 
+    <!---->
+</aura:component>

@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomFieldTranslation xmlns="http://soap.sforce.com/2006/04/metadata">
+        <help><!-- Note for Admin- Please do not change these picklist values, since it may impact certain features of Navatar Deal Connect. --></help>
+        <label><!-- Revenue Range (mn) --></label>
+        <name>Revenue_Range_in_mn__c</name>
+        <picklistValues>
+            <masterLabel>0 - 1</masterLabel>
+            <translation><!-- 0 - 1 --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>1 - 2</masterLabel>
+            <translation><!-- 1 - 2 --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>10 - 20</masterLabel>
+            <translation><!-- 10 - 20 --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>100 - 150</masterLabel>
+            <translation><!-- 100 - 150 --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>150 - 200</masterLabel>
+            <translation><!-- 150 - 200 --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>2 - 5</masterLabel>
+            <translation><!-- 2 - 5 --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>20 - 30</masterLabel>
+            <translation><!-- 20 - 30 --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>200 - 250</masterLabel>
+            <translation><!-- 200 - 250 --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>250 - 500</masterLabel>
+            <translation><!-- 250 - 500 --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>30 - 40</masterLabel>
+            <translation><!-- 30 - 40 --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>40 - 50</masterLabel>
+            <translation><!-- 40 - 50 --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>5 - 10</masterLabel>
+            <translation><!-- 5 - 10 --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>50 - 75</masterLabel>
+            <translation><!-- 50 - 75 --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>500 - 1000</masterLabel>
+            <translation><!-- 500 - 1000 --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>75 - 100</masterLabel>
+            <translation><!-- 75 - 100 --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>&gt; 1000</masterLabel>
+            <translation><!-- &gt; 1000 --></translation>
+        </picklistValues>
+    </CustomFieldTranslation>

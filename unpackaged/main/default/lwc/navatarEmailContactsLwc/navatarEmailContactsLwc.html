@@ -1,0 +1,199 @@
+<template>
+
+    <!--SPINNER : START-->
+    <template if:true={isLoading}>
+        <lightning-spinner alternative-text="Loading...">
+        </lightning-spinner>
+    </template>
+    <!--SPINNER : END-->
+
+    <!--HEADER SECTION : START-->
+    <div class="slds-box slds-theme_shade main-Container">
+        <lightning-layout>
+            <lightning-layout-item>
+                <lightning-icon icon-name="standard:email" alternative-text="Email" class="slds-var-m-right_small">
+                </lightning-icon>
+            </lightning-layout-item>
+            <lightning-layout-item class="cls_headerSubTextPos">
+                <p class="slds-text-body_small">
+                    Email
+                </p>
+                <p class="cls_headerTextPos slds-text-heading_medium">
+                    <b>
+                        E-mail Contacts
+                    </b>
+                </p>
+            </lightning-layout-item>
+        </lightning-layout>
+    </div>
+    <!--HEADER SECTION : END-->
+
+    <!--BODY SECTION : START-->
+    <div class="slds-box slds-theme_default slds-var-m-top_x-small main-Container">
+
+        <!--BODY HEADER : START-->
+        <div class="slds-grid">
+            <p class="slds-col slds-var-p-top_xx-small slds-text-heading_small">
+                Step {currentpagemsg}
+            </p>
+            <div class="slds-clearfix">
+                <lightning-button class="slds-float_right slds-var-m-left_x-small" variant="brand"
+                    label={nextbuttonTitle} title={nextbuttonTitle} onclick={nextSetup} disabled={disableNextbutton}>
+                </lightning-button>
+                <template if:false={isfilterPage}>
+                    <lightning-button class="slds-float_right slds-var-m-left_x-small" label="Previous" title="Previous"
+                        onclick={handlePrevious}>
+                    </lightning-button>
+                </template>
+                <lightning-button class="slds-float_right slds-var-m-left_x-small" label="Cancel" title="Cancel"
+                    onclick={handleCancel}>
+                </lightning-button>
+            </div>
+        </div>
+        <!--BODY HEADER : END-->
+        <div data-id="filterpg" class="slds-p-horizontal_medium slds-m-top_medium cls_containerShadow cls_borderRadius">
+            <!--<template if:true={isfilterPage}>-->
+            <div class="mainAccordion slds-theme_default slds-p-vertical_small">
+
+                <!--PAGE 1 :- FILTER PROSPECTS PAGE : START-->
+                <!--FILTER PROSPECTS SECTION : START-->
+                <!--<button data-id="filterProspectHeader"
+                        class="slds-button slds-section__title-action slds-var-p-vertical_xx-small"
+                        onclick={handleSecToggle}>
+                    <lightning-icon class="slds-var-p-right_small"
+                                    icon-name={bodyIconName}
+                                    size="x-small">
+                    </lightning-icon>
+                    <p class="slds-text-heading_small">
+                        Filter Contacts
+                    </p>
+                </button>-->
+
+                <div onclick={handleSectionToggle}>
+                    <!--Start Accordion-->
+                    <div class="cls_myCart">
+                        <lightning-icon icon-name={headerIconName} onclick={shadowShow} size="x-small"
+                            class="slds-m-right_x-small slds-float_left cls_pos"></lightning-icon>
+                        <button
+                            class="slds-button test-id__section-header-button slds-section__title-action slds-float_left"
+                            data-id="cls_btn">Filter Contacts</button>
+                    </div>
+                    <!--End Accordion-->
+                </div>
+
+                <template if:true={filterdiv}>
+                    <div data-id="filterdiv" class="slds-box slds-m-top_x-large cls_bordrNone">
+                        <template if:true={objApiNamesList}>
+                            <c-navatar-filter-fields-lwc obj-api-names-list={objApiNamesList} enable-add-row=true
+                                enable-add-filter-logic=true mandate-filter=true>
+                            </c-navatar-filter-fields-lwc>
+                        </template>
+                        <div class="slds-align_absolute-center">  
+                            <lightning-button class="slds-var-m-right_small" label="Clear" title="Clear"
+                                onclick={handleClearFilter}>
+                            </lightning-button>
+                            <lightning-button variant="brand" label="Apply" title="Apply" onclick={handleApplyFilter}>
+                            </lightning-button>
+                        </div>
+                    </div>
+                </template>
+                <!--FILTER PROSPECTS SECTION : END-->
+
+                <!--PROSPECTS TABLE SECTION : START-->
+                <div class="mainAccordion slds-theme_default slds-box slds-m-top_medium cls_leftRight_p">
+                    <div class="slds-box slds-theme_shade slds-grid">
+                        <span class="slds-size_11-of-12">
+                            <p class="slds-text-heading_small slds-var-p-vertical_xxx-small">
+                                Contacts
+                            </p>
+                        </span>
+                    </div>
+
+                    <div class="slds-is-relative" style="height: 300px; overflow: auto; border-bottom: 1px solid #f3f3f3; ">
+                        <div>
+                            <lightning-datatable key-field="id" selected-rows={selectedRows} data={conData}
+                                sorted-by={sortBy} sorted-direction={sortDirection} onsort={handleDataTableSort}
+                                enable-infinite-loading
+                                class="slds-table_header-fixed_container slds-scrollable_x slds-border_top massemailtable"
+                                columns={fpDataTableCols} onrowselection={handleRowSelection} min-column-width="50">
+                            </lightning-datatable>
+                        </div>
+
+                        <template if:false={displayRecords}>
+                            <div class="slds-size_1-of-1" style="margin:10px">
+                                <div class="slds-var-p-left_medium">
+                                    {fpErrMsg}
+                                </div>
+                            </div>
+                        </template>
+                    </div>
+
+                    <!-- <template if:true={recordSelected}> -->
+                        <div class="slds-col slds-size_12-of-12 slds-m-top_small">
+                            {recordSelMsg}
+                        </div>
+                    <!-- </template> -->
+
+                    <div class="slds-col slds-size_12-of-12 slds-m-top_small">
+                        Total Records: {recCount} &nbsp;
+                        <template if:true={enableShowAll}>
+                            <a href="#" onclick={getAllRecords}>
+                                Show All
+                            </a>
+                        </template>
+                    </div>                    
+                </div>
+                <!--PROSPECTS TABLE SECTION : END-->
+
+
+                <!--PAGE 1 :- FILTER PROSPECTS PAGE : END-->
+
+            </div>
+        </div>
+        <!-- PAGE 2 :- <div data-id="tempPage">-->
+        <template if:true={istemplatePage}>
+            <c-navatar-send-email-template-lwc selectedval={tempIds} emailpreviewdata={emailPreviewRecipient}
+                ontemplateselect={handletemplateselect}>
+            </c-navatar-send-email-template-lwc>
+        </template>
+        <!-- PAGE 2 :- </div>-->
+
+
+        <!-- PAGE 3 :- <div data-id="reviewPage">-->
+        <template if:true={isreviewPage}>
+            <div class="mainAccordion slds-theme_default slds-box slds-m-top_medium">
+                <span id="counter">You currently have {selectedRows.length} recipient(s) selected to receive this
+                    email.</span>
+
+                <h3 class="slds-section-title--divider"
+                    style="background:rgb(243, 242, 242);font-family:Salesforce Sans , Arial, sans-serif;margin: 0.5rem 0rem;">
+                    PROCESSING OPTIONS</h3>
+                <lightning-input type="checkbox" label="BCC me on one message" variant="label-inline" name="BCC"
+                    onchange={handleFormInputChange}></lightning-input>
+                <lightning-input type="checkbox" label="Use my signature" variant="label-inline" name="Signature"
+                    onchange={handleFormInputChange}></lightning-input>
+                <lightning-input type="checkbox" variant="label-inline" label="Store an activity for each message"
+                    checked={storeAsAnActivity} name="StoreAct" onchange={handleFormInputChange}></lightning-input>
+            </div>
+        </template>
+        <!-- PAGE 3 :- </div>-->
+        <!--BODY FOOTER : START-->
+        <div class="slds-clearfix" style="margin-top:1rem">
+            <lightning-button class="slds-float_right slds-var-m-left_x-small" variant="brand" label={nextbuttonTitle}
+                title={nextbuttonTitle} onclick={nextSetup} disabled={disableNextbutton}>
+            </lightning-button>
+            <template if:false={isfilterPage}>
+                <lightning-button class="slds-float_right slds-var-m-left_x-small" label="Previous" title="Previous"
+                    onclick={handlePrevious}>
+                </lightning-button>
+            </template>
+            <lightning-button class="slds-float_right slds-var-m-left_x-small" label="Cancel" title="Cancel"
+                onclick={handleCancel}>
+            </lightning-button>
+        </div>
+        <!--BODY FOOTER : END-->
+
+    </div>
+    <!--BODY SECTION : END-->
+
+</template>

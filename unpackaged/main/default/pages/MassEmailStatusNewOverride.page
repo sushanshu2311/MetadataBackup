@@ -1,0 +1,27 @@
+<apex:page standardController="Mass_Email_Status__c">
+    <div class="bPageTitle">
+        <div class="ptBody secondaryPalette">
+            <div class="content">
+                <img src="/s.gif" alt="Mass Email Status" class="pageTitleIcon" title="Mass Email Status"/>
+                <h1 class="pageType">Mass Email Status</h1>
+                <h2 class="pageDescription">New Mass Email Status</h2>
+            </div>
+        </div>
+    </div>
+    <apex:form >
+    <apex:pageBlock >
+    
+        <table width="100%" border="0" cellspacing="0" cellpadding="0" align="center">
+        <b>Mass Email Status cannot be created/edited from here.</b>
+        <br/>
+            <tbody>
+              <tr align="center">
+                <td width="100%">
+                    <apex:commandButton value="OK" action="{!cancel}" />
+                </td>
+              </tr>
+            </tbody>
+        </table>
+    </apex:pageBlock>
+    </apex:form>
+</apex:page>

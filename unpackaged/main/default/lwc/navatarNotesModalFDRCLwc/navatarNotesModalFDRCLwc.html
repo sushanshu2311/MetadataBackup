@@ -1,0 +1,82 @@
+<template>
+    <section role="dialog" tabindex="-1" aria-modal="true" aria-labelledby="modal-heading-01"
+    class="slds-modal slds-fade-in-open">
+
+    <!--// 00045106 fixed by raju 09-05-2024 (Add 'clsMainContainer' this class)-->
+    <div class="slds-modal__container clsMainContainer">
+        <lightning-icon variant="inverse" size="small" icon-name="utility:close" alternative-text="Close!"
+            title="Close" class="slds-text-align_right slds-text-link_reset slds-m-bottom_medium"
+            onclick={hideRecordModal}></lightning-icon>
+
+        <!--Start Header-->
+        <div class="slds-modal__header">
+            <h1 class="slds-modal__title slds-hyphenate">Add to Fundraising Contacts</h1>
+        </div>
+        <!--End Header-->
+
+        <div class="slds-modal__content slds-p-around_medium">
+            <template if:true={isFundTeamError}>
+                <div class="slds-p-horizontal_large slds-p-top_medium slds-p-bottom_medium">
+                    <div class="slds-notify slds-notify_alert slds-alert_error" role="alert">
+                        <span class="slds-assistive-text">error</span>
+                        <span class="slds-icon_container slds-icon-utility-error slds-m-right_x-small"
+                            title="Description of icon when needed">
+                        </span>
+                        <h2>Review the errors on this page.</h2>
+                    </div>
+                    <template for:each={errorMessage} for:item="err">
+                        <p class="slds-p-left_medium" key={err} style="color:red">{err} </p>
+                    </template>
+
+                </div>
+            </template>
+            <!--Start Header-->
+            <lightning-layout class="slds-grid slds-wrap slds-theme_shade slds-border_around">
+                <lightning-layout-item class="slds-col slds-size_1-of-12">
+                    <lightning-input type="checkbox" name="input1" class="cls_marginLeftMinus" data-id="fundraisingId"
+                        onchange={handleFundGlobalCheck} checked={globalFundCheck}>
+                    </lightning-input>
+                </lightning-layout-item>
+                <lightning-layout-item class="slds-col slds-size_3-of-12 cls_header" title="Name">
+                    <strong>Name</strong>
+                </lightning-layout-item>
+                <lightning-layout-item class="slds-col slds-size_3-of-12 cls_header" title="Firm">
+                    <strong>Firm</strong>
+                </lightning-layout-item>
+                <lightning-layout-item class="slds-col slds-size_5-of-12 cls_header" title="Role">
+                    <strong>Role</strong>
+                </lightning-layout-item>
+            </lightning-layout>
+            <!--End Header-->
+
+            <template if:true={fundRaisingContacts}>
+                <template for:each={fundRaisingContacts} for:item="fundContact">
+                    <lightning-layout class="slds-p-around_x-small align_center clrChange" key={fundContact.index}>
+                        <lightning-layout-item class="slds-col slds-size_1-of-12">
+                            <lightning-input type="checkbox" name="input1" data-id={fundContact.index}
+                                onchange={handleFundContactCheckBox} checked={fundContact.isSelected}>
+                            </lightning-input>
+                        </lightning-layout-item>
+                        <lightning-layout-item class="slds-col slds-size_3-of-12 truncate_text_css" title={fundContact.conName}>{fundContact.conName}
+                        </lightning-layout-item>
+                        <lightning-layout-item class="slds-col slds-size_3-of-12 truncate_text_css" title={fundContact.accName}>{fundContact.accName}
+                        </lightning-layout-item>
+                        <lightning-layout-item class="slds-col slds-size_5-of-12">
+                            <lightning-combobox name="Role" variant="label-hidden" dropdown-alignment="auto"
+                                value={fundContact.role} data-id={fundContact.index} placeholder="Select Role"
+                                options={optionsFund} onchange={handlefundRoleChange} class="dropdownout_css">
+                            </lightning-combobox>
+                        </lightning-layout-item>
+                    </lightning-layout>
+                </template>
+            </template>
+        </div>
+        <div class="slds-modal__footer">
+            <button class="slds-button slds-button_neutral" title="Cancel" onclick={hideRecordModal}>Cancel</button>
+            <button class="slds-button slds-button_brand" onclick={handleFundTeamCreate} title="Add">Add</button>
+        </div>   
+    </div>
+</section>
+<div class="slds-backdrop slds-backdrop_open" role="presentation"></div>
+<!--End Modal-->
+</template>

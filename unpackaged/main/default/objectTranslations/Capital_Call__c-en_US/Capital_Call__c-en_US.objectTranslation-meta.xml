@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObjectTranslation xmlns="http://soap.sforce.com/2006/04/metadata">
+    <caseValues>
+        <plural>false</plural>
+        <value>Capital Call</value>
+    </caseValues>
+    <caseValues>
+        <plural>true</plural>
+        <value>Capital Calls</value>
+    </caseValues>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <layouts>
+        <layout>Capital Call Layout</layout>
+        <sections>
+            <label><!-- Capital Call Information --></label>
+            <section>Capital Call Information</section>
+        </sections>
+        <sections>
+            <label><!-- Custom Links --></label>
+            <section>Custom Links</section>
+        </sections>
+        <sections>
+            <label><!-- Please do not remove this section. --></label>
+            <section>Please do not remove this section.</section>
+        </sections>
+    </layouts>
+    <startsWith>Consonant</startsWith>
+    <validationRules>
+        <errorMessage><!-- Call Amount Received cannot be less than zero. --></errorMessage>
+        <name>Check_Call_Amount_Received</name>
+    </validationRules>
+    <validationRules>
+        <errorMessage><!-- Capital Amount cannot be less than zero. --></errorMessage>
+        <name>Check_Capital_Amount</name>
+    </validationRules>
+    <validationRules>
+        <errorMessage><!-- Management Fee cannot be less than zero. --></errorMessage>
+        <name>Check_Management_Fee</name>
+    </validationRules>
+    <validationRules>
+        <errorMessage><!-- Other Fee cannot be less than zero. --></errorMessage>
+        <name>Check_Other_Fee</name>
+    </validationRules>
+    <webLinks>
+        <label><!-- Send_Capital_Call_Notices --></label>
+        <name>Send_Capital_Call_Notices</name>
+    </webLinks>
+</CustomObjectTranslation>

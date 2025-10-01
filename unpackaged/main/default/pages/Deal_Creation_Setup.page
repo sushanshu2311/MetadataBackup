@@ -1,0 +1,2152 @@
+<!----------------------------------------------
+    ** Project: PE 3.5
+    ** Start: 09-June-2016
+    ** Module: Deal Creation Setup
+    ** Class use: Deal_Creation_Setup_Ctlr 
+    ** Common Class use: CommonUtilityGlobal
+    ** Standard Controller: NA
+    ** Call From: Navatar Setup Tab
+    ** Developer: Pramod kumar
+    ** Last Modified: Pramod kumar (10-Nov-2016)
+    ** Version StartDate(YYYY-MM-DD)
+    ** 3.5     2016-05-24           
+----------------------------------------------->
+<apex:page id="pageId" docType="html-5.0" controller="Deal_Creation_Setup_Ctlr" contentType="text/html; charset=utf-8" sidebar="false" standardStylesheets="false" tabstyle="Navatar_Setup__tab" title="Deal Creation Setup">
+
+    <!--Start Auto Complete Script--->
+    <script src="{!URLFOR($Resource.PE_35,'PE_3.5/AutoComp/jquery-2.2.4.js')}" type="text/javascript"></script>
+    <script src="{!URLFOR($Resource.PE_35,'PE_3.5/AutoComp/jquery-ui.js')}" type="text/javascript"></script>
+    <link rel="stylesheet" href="{!URLFOR($Resource.PE_35,'PE_3.5/AutoComp/jquery-ui.css')}" type="text/css" />
+    <!--End Auto Complete Script--->   
+    <link href = "{!URLFOR($Resource.PE_35, 'PE_3.5/css/Navatar-Yellow-Theme.css')}" rel = "stylesheet" type = "text/css"/>
+   
+    <style>        
+        .ui-autocomplete {
+            max-height: 100px;
+            overflow-y: auto;        
+            /* prevent horizontal scrollbar */
+            overflow-x: hidden;
+            max-width: 252px;
+        }
+        
+        /* IE 6 doesnt support max-height
+          we use height instead, but this forces the menu to always be this tall
+        */
+        
+        html .ui-autocomplete {
+            height: 100px;
+        }
+        
+        .ui-corner-all, .ui-corner-bottom, .ui-corner-right, .ui-corner-br {
+            -moz-border-radius-bottomright: 4px/*{cornerRadius}*/;
+            -webkit-border-bottom-right-radius: 4px/*{cornerRadius}*/;
+            -khtml-border-bottom-right-radius: 4px/*{cornerRadius}*/;
+            border-bottom-right-radius: 4px/*{cornerRadius}*/;
+            display: none !important;
+        }
+         
+        html {
+            overflow: initial !important;
+        } 
+                
+        .ui-menu .ui-menu-item a {
+            text-decoration: none;
+            display: block;
+            padding: 2px .4em;
+            line-height: 1.5;
+            zoom: 1;
+            height: 37px;
+            font-weight: normal;
+        }
+        
+        .td1 {
+            font-weight: normal;
+            padding-right: 0px !important;
+            text-align: right;
+            position: relative;
+            word-break: break-all;
+            word-break: keep-all !important;
+        }
+        
+    </style>  
+
+    <apex:form id="mainFormId">        
+        <apex:actionFunction name="saveDealSetup" reRender="" action="{!onclickSaveButton}" oncomplete="hidePopup();">
+            <apex:param id="theparam" name="apiparamvalue" assignTo="{!strFieldApiName}" value=""/>
+            <apex:param id="chkbxid" name="chkbx" assignTo="{!isEnableDealCreation}" value=""/>
+        </apex:actionFunction>          
+        
+        <html>
+            <head>
+                <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+                <title>Deal Creation Setup</title>
+                
+                <!-- Start Yellow Tooltip -->
+                <link rel="stylesheet" href="{!URLFOR($Resource.PE_35,'PE_3.5/css/tip-yellow.css')}" type="text/css" />
+                <script type="text/javascript" src="{!URLFOR($Resource.PE_35,'PE_3.5/js/jquery.poshytip.js')}"></script>
+
+                <script type="text/javascript">         
+                    $(function(){
+                        $('.YellowTooltip').poshytip();
+                    });
+                </script>
+                <style>
+                    .tip-yellow { padding:15px !important; box-shadow:#ccc 0px 0px 5px !important; }
+                </style>    
+                <!-- End Yellow Tooltip --> 
+                
+                <script src="{!URLFOR($Resource.PE_35,'PE_3.5/js/jquery.js')}" type="text/javascript"></script>
+                <link rel="stylesheet" href="{!URLFOR($Resource.PE_35,'PE_3.5/AutoComp/css.css')}" type="text/css" />
+
+                <!-- Start FancyBox -->
+                <script src="{!URLFOR($Resource.PE_35,'PE_3.5/js/jquery-ui.js')}"></script>
+                <script>
+                    $(function() {
+                        $( ".FancyboxContainer" ).draggable({ cancel: ".PopupContentStart" });
+                    });
+                </script>
+
+                <link rel="stylesheet" type="text/css" href="{!URLFOR($Resource.PE_35,'PE_3.5/css/fancybox.css')}" media="screen"/>
+                
+                <apex:outputPanel id="userinfor">
+                <script type="text/javascript">
+                    var popupStatus = 0;
+                    function InsufficientPermissions_Fancybox() 
+                    {                    
+                        var isUserSystemAdmin = '{!if(isUserSystemAdmin==true,'true','false')}';//Added By Qadier Khan for PE 3.5 11 OCT 2017.
+                        showProcessingImz();
+                        if(isUserSystemAdmin!='true'){
+                            loadPopupnew('fancybox_background','InsufficientPermissions_Fancybox');
+                            centerPopupnew('InsufficientPermissions_Fancybox');
+                            hidePopup();
+                        }  
+                        else{                        
+                            callEditFn();            
+                        }
+                    }
+                    
+                    function redirectpage(pageName) {
+                        redirectpageActFn(pageName);
+                    }
+                </script>
+                </apex:outputPanel>
+                <apex:actionFunction name="redirectpageActFn" action="{!redirectpage}" reRender="false" immediate="true">
+                    <apex:param name="pgname" assignTo="{!strPageName}"  value=""/>
+                </apex:actionFunction>
+                
+                <script type="text/javascript">
+                    function Warning_Fancybox() 
+                    {
+                        loadPopupnew('fancybox_background','Warning_Fancybox');
+                        centerPopupnew('Warning_Fancybox');
+                    }
+                    
+                    function Warning_Fancybox() 
+                    {
+                        loadPopupnew('fancybox_background','Warning_Fancybox');
+                        centerPopupnew('Warning_Fancybox');
+                    }
+                    
+                    function Error_Fancybox() 
+                    {
+                        loadPopupnew('fancybox_background','Error_Fancybox');
+                        centerPopupnew('Error_Fancybox');
+                    }
+                    
+                    function Error_Fancybox1() 
+                    {
+                        loadPopupnew('fancybox_background','Error_Fancybox1');
+                        centerPopupnew('Error_Fancybox1');
+                    }
+                    
+                    function loadPopupnew(cid1,cid2)
+                    {
+                        if(popupStatus==0){
+                            $('.'+cid1).css({
+                            "opacity": "0.5"
+                            });
+                            $('.'+cid1).fadeIn("slow");
+                            $('.'+cid2).fadeIn("slow");
+                            popupStatus = 1;
+                        }
+                    };
+                    
+                    function centerPopupnew(cid)
+                    {
+                        //request data for centering
+                        var windowWidth = document.documentElement.clientWidth;
+                        var windowHeight = document.documentElement.clientHeight;
+                        var popupHeight = $('.'+cid).height();
+                        var popupWidth = $('.'+cid).width();
+                        //centering
+                        $('.'+cid).css({
+                            "position": "fixed",
+                            "top": windowHeight/2-popupHeight/2,
+                            "left": windowWidth/2-popupWidth/2
+                        });
+                    };
+                                        
+                    /*
+                    @Description: Executes for an onkeyup event of static fields, for both Left & Right panel.
+                    @Parameter: Passing this, which includes value, id & all attributes of clicked event.
+                    */
+                    function fixedFieldsFun( thisIs ) 
+                    {       
+                        /*Dynamic Fields*/                  
+                        var vall = document.getElementById(thisIs.id).value;                    
+                        var strid = thisIs.id;
+                                             
+                        if(document.getElementById(thisIs.id).value == '' && strid.indexOf("dealinputleftcolmn")>-1)
+                        {
+                            jQuery('#'+thisIs.id).removeClass( "icon_33LightPipeline" ).removeClass( "icon_33LightAccount" );
+                        }
+                        
+                        if(document.getElementById(thisIs.id).value == '' && strid.indexOf("dealinputrightcolmn")>-1)
+                        {
+                            jQuery('#'+thisIs.id).removeClass( "icon_33LightPipeline" ).removeClass( "icon_33LightAccount" );
+                        }
+                        
+                        if(document.getElementById(thisIs.id).value == '' && strid.indexOf("accinputleftcolmn")>-1)
+                        {
+                            jQuery('#'+thisIs.id).removeClass( "icon_33LightAccount" );
+                        }
+                        
+                        if(document.getElementById(thisIs.id).value == '' && strid.indexOf("coninputleftcolmn")>-1)
+                        {
+                            jQuery('#'+thisIs.id).removeClass( "icon_33LightContact" );
+                        }
+                        
+                    }       
+                                    
+                </script>
+                <!-- End FancyBox -->
+
+                <style>
+                fieldset {border:1px solid #e2e6ef; text-align:center !important; border-radius:3px; /*background:#f7f9fb;*/ background:#fafafa;}
+                @-moz-document url-prefix() {
+                    fieldset legend {
+                        margin-left:45% !important;
+                    }
+                }
+                .select_box_view {background: #FAFAFA; float: right; padding: 3px 10px; position: absolute; right: 20px; top: 14px; border: 1px solid #EEEEEE; border-radius: 5px; color: #5D7193;}
+                .select_box_edit {background: #FAFAFA; float: right; padding: 3px 10px; position: absolute; right: 20px; top: 14px; border: 1px solid #EEEEEE; border-radius: 5px; color: #5D7193;}
+                .select_box_option {padding: 0px ! important; width: 90px; height: 25px; margin-left: 10px;}
+
+                 .select-editable {
+                    position:relative;
+                    width: 260px;
+                    height: 32px;
+                    padding: 0px;
+                    border: #c7cede 1px solid;
+                    /*font-family: 'Ubuntu Condensed', sans-serif;*/
+                    font-size: 14px;
+                    /*border-radius: 4px;*/
+                }
+                
+                 .select-editable select {
+                     position:absolute;
+                     top:0px;
+                     left:0px;
+                     font-size:14px;
+                     /*font-family: 'Ubuntu Condensed', sans-serif;*/
+                     border:none;
+                     width:258px;
+                     height:30px;
+                     padding-right:20px !important;
+                     margin:0;
+                     color:#16325c;
+                     padding-left:12px;
+                     -webkit-appearance: none;
+                    -moz-appearance: none; appearance: none;  -webkit-transition: border .1s linear,background-color .1s linear; transition: border .1s linear,background-color .1s linear; 
+                    background-position:97% !important;
+                 }
+                          
+                 .select-editable input {
+                     position:absolute;
+                     top:0px;
+                     left:1px;
+                     width:100px;
+                     /*font-family: 'Ubuntu Condensed', sans-serif;*/
+                     padding:1px;
+                     font-size:14px;
+                     border:none;
+                     /*color:#16325c;*/
+                 }
+                 .select-editable select:focus, .select-editable input:focus {
+                     outline:none;
+                 }             
+                .btn_icon_add, .btn_icon_delete {position:relative !important; top:10px !important; left:3px !important;}
+                .select-editable select option {padding-left:11px !important;}
+                .select-editable select.icon_3 option {padding-left:30px !important;}           
+                </style>
+
+                <!---start script error, warning, suceess msg---->
+                <script type="text/javascript" src="{!URLFOR($Resource.PE_35,'PE_3.5/js/common.js')}"></script>
+                <!---end script error, warning, suceess msg---->
+
+                <!---start lightning css---->
+                <apex:stylesheet value="{!URLFOR($Resource.SLDS100, 'assets/styles/salesforce-lightning-design-system-vf.css')}" />
+                <link href = "{!URLFOR($Resource.PE_35, 'PE_3.5/css/PeLightning.css')}" rel = "stylesheet" type = "text/css" />
+                <link href = "{!URLFOR($Resource.PE_35, 'PE_3.5/css/Navatar-Yellow-Theme-Setup-Left-Section.css')}" rel = "stylesheet" type = "text/css" />
+                <link href = "{!URLFOR($Resource.PE_35, 'PE_3.5/css/Navatar-Yellow-Theme.css')}" rel = "stylesheet" type = "text/css"/>
+                
+                <style>
+                    .contentBox_shadow {box-shadow:none !important; border:#eee 1px solid !important}
+                     .ui-state-active {
+                       border: 1px solid #B1AAAA !important;
+                       border-radius: 5px;
+                       border-bottom:2px solid #B1AAAA !important;
+                     }
+                </style>                
+                <!---end lighting css--->
+
+        </head>
+        <body>
+            <!--Start Loading-->
+            <div id="processing_img" style="width:100%; height:100%; display:block; background:#fff; text-align:center; vertical-align:middle; opacity:0.7; position:fixed; top:0; left:0; z-index:9999999; display:none;">
+                <div style="width:100px; height:100%; position:relative;top:41%; background:url({!URLFOR($Resource.PE_35, 'PE_3.5/images/icon_loading.gif')}) no-repeat top left; margin:0 auto;"></div>
+            </div>
+            <!--End Loading--> 
+                <script>
+                    //show data on window load
+                    $(window).load(function() { 
+                        AddContentInDetailMode();
+                    });
+                    
+                    function showProcessingImz() {
+                        $("#processing_img").show();                
+                    }
+
+                    function hidePopup() {
+                        $("#processing_img").hide();
+                    }
+                </script>
+                
+                <script>
+                    var strNameIds = ''; 
+                    var mapInputFieldIdVsFieldLabel = {};
+                    var strAccountLabel = '{!$ObjectType.Account.Label}';
+                    var strContactLabel = '{!$ObjectType.Contact.Label}';
+                    var strPipelineLabel = '{!$ObjectType.Pipeline__c.Label}';
+                    
+                    //utility for add icon in column
+                    function jQueryUtilityOfAutoComplete(nameIs, arrList)
+                    {                        
+                        var getLocalId='';
+                        j$(document).ready(function()
+                        {
+                            $("input[name^='"+nameIs+"']").autocomplete({
+                                minLength: 0,
+                                source: arrList,
+                                
+                                focus: function (event, ui) 
+                                {
+                                    if(event.keyCode ==38 || event.keyCode ==40 || event.keyCode ==13)
+                                    {   
+                                        var showSelected = ui.item.value;
+                                     
+                                        var labell = ui.item.label;
+                                        $(this).each(function() 
+                                        {
+                                            $.each(this.attributes, function() 
+                                            {
+                                                if(this.name == 'id')    /*It will give you the value of clicked input text fields.*/
+                                                    getLocalId = this.value;
+                                            });
+                                        });                                         
+                                        if(showSelected.indexOf(strAccountLabel+':') > -1 )
+                                        {
+                                            selectedValueAtLast = showSelected.substring(showSelected.indexOf(strAccountLabel+':')+strAccountLabel.length+1, showSelected.length);
+                                            jQuery('#'+getLocalId).addClass( "icon_33LightAccount" );
+                                            ui.item.value = selectedValueAtLast;
+                                        }
+                                        else if(showSelected.indexOf(strContactLabel+':') > -1 )
+                                        {
+                                            selectedValueAtLast = showSelected.substring(showSelected.indexOf(strContactLabel+':')+strContactLabel.length+1, showSelected.length);
+                                            jQuery('#'+getLocalId).addClass( "icon_33LightContact" );
+                                            ui.item.value = selectedValueAtLast;
+                                        }
+                                        else if(showSelected.indexOf(strPipelineLabel+':') > -1 )
+                                        {
+                                            selectedValueAtLast = showSelected.substring(showSelected.indexOf(strPipelineLabel+':')+strPipelineLabel.length+1, showSelected.length);
+                                            jQuery('#'+getLocalId).addClass( "icon_33LightPipeline" );
+                                            ui.item.value = selectedValueAtLast;
+                                        }
+                                        if(getLocalId.length >0)
+                                        {    
+                                            mapInputFieldIdVsFieldLabel[""+getLocalId+""] = ""+ui.item.label+"";
+                                        }
+                                    }
+                                },
+                                
+                                select: function( event, ui )
+                                {   
+                                    var showSelected = ui.item.value;
+                                   
+                                    var labell = ui.item.label;
+                                    $(this).each(function() 
+                                    {
+                                        $.each(this.attributes, function() 
+                                        {
+                                            if(this.name == 'id')    /*It will give you the value of clicked input text fields.*/
+                                                getLocalId = this.value;
+                                        });
+                                    });                                         
+                                     if(showSelected.indexOf(strAccountLabel+':') > -1 )
+                                    {
+                                        selectedValueAtLast = showSelected.substring(showSelected.indexOf(strAccountLabel+':')+strAccountLabel.length+1, showSelected.length);
+                                        jQuery('#'+getLocalId).addClass( "icon_33LightAccount" );
+                                        ui.item.value = selectedValueAtLast;
+                                    }
+                                    else if(showSelected.indexOf(strContactLabel+':') > -1 )
+                                    {
+                                        selectedValueAtLast = showSelected.substring(showSelected.indexOf(strContactLabel+':')+strContactLabel.length+1, showSelected.length);
+                                        jQuery('#'+getLocalId).addClass( "icon_33LightContact" );
+                                        ui.item.value = selectedValueAtLast;
+                                    }
+                                    else if(showSelected.indexOf(strPipelineLabel+':') > -1 )
+                                    {
+                                        selectedValueAtLast = showSelected.substring(showSelected.indexOf(strPipelineLabel+':')+strPipelineLabel.length+1, showSelected.length);
+                                        jQuery('#'+getLocalId).addClass( "icon_33LightPipeline" );
+                                        ui.item.value = selectedValueAtLast;
+                                    }
+                                    if(getLocalId.length >0)
+                                    {    
+                                        mapInputFieldIdVsFieldLabel[""+getLocalId+""] = ""+ui.item.label+"";
+                                    }
+                                }
+                               
+                            }).focus(function ()  /*focus: it works on click of input text.*/
+                            {                 
+                                $(this).autocomplete("search", "");
+                                                            
+                            }).data("ui-autocomplete")._renderItem = function (ul, item) 
+                            {                               
+                                var myItem = item.value;                                
+                                myItem = myItem.replace(/&/g, "&amp;").replace(/>/g, "&gt;").replace(/</g, "&lt;").replace(/"/g, "&quot;");
+                            
+                                if(myItem.indexOf(strAccountLabel+':') > -1 )                                             
+                                {                        
+                                    var str = myItem.substring(myItem.indexOf(strAccountLabel+':')+strAccountLabel.length+1, myItem.length);                                   
+                                    var listItem = $("<li></li>").data("item.autocomplete", item).append("<a class='myaccount_cls'>" + "<input type=hidden value="+ myItem +" />" + str + "</a>").appendTo(ul);
+                                } 
+                                else if(myItem.indexOf(strContactLabel+':') > -1)
+                                {
+                                    var str = myItem.substring(myItem.indexOf(strContactLabel+':')+strContactLabel.length+1, myItem.length);
+                                    var listItem = $("<li></li>").data("item.autocomplete", item).append("<a class='mycontact_cls'>" + "<input type=hidden value="+ myItem +" />" + str + "</a>").appendTo(ul);
+                                }
+                                else if(myItem.indexOf(strPipelineLabel+':') > -1)
+                                {
+                                    var str = myItem.substring(myItem.indexOf(strPipelineLabel+':')+strPipelineLabel.length+1, myItem.length);
+                                    var listItem = $("<li></li>").data("item.autocomplete", item).append("<a class='mypipeline_cls'>" + "<input type=hidden value="+ myItem +" />" + str + "</a>").appendTo(ul);
+                                }                                
+                                return listItem;
+                            };
+                        });
+                    }
+                    
+                    function closepopup(bgdivid, popupdivid)
+                    {                       
+                        disablePopupnew(bgdivid);
+                        $('.'+popupdivid).fadeOut("slow");
+                    } 
+                    
+                    function disablePopupnew(cid){
+                        
+                        $("#blurred").fadeOut('slow');
+                        if(popupStatus==1){
+                            $('.'+cid).fadeOut("slow");
+                            popupStatus = 0;
+                        }                           
+                    };
+                    
+                </script>
+                <!-- Start REQUIRED SLDS WRAPPER -->                
+                <div class="slds">
+
+                <!-- Start PRIMARY CONTENT WRAPPER -->
+                <div class="myapp">         
+                                                                
+                <div id="temp" style="padding-bottom:0px !important;">
+                
+                    <div id="blurred" class="fancybox_background"></div> 
+                     
+                    <!-- Start InsufficientPermissions_Fancybox -->
+                    <div class="InsufficientPermissions_Fancybox FancyboxContainer Popup">
+                        <div class="slds-modal__header">
+                            <div class="close_white_60" >
+                                <a onclick="closepopup('fancybox_background','FancyboxContainer'); return false;" title="Close">
+                                    <img src="{!URLFOR($Resource.PE_35, 'PE_3.5/images/close_white_60.png')}" />
+                                </a>
+                            </div>
+                            <addedRows_6 class="slds-text-heading--medium">Insufficient Permission</addedRows_6>
+                        </div>
+                        <div class="PopupContentStart" style="text-align:center; padding:15px 25px !important">
+                            You do not have permission to edit this information. <br />Please contact your Navatar Administrator.
+                            <div class="cl"></div> 
+                        </div>
+                        <div class="slds-modal__footer">
+                            <apex:commandButton value="OK" title="OK" reRender="rctPnl,rctPnl2" styleClass="slds-button slds-button--neutral" onclick="closepopup('fancybox_background','FancyboxContainer');return false;" />
+                        </div>                  
+                    </div>
+                    <!-- End InsufficientPermissions_Fancybox -->
+                    
+                    <!-- Start Duplicate MSG -->
+                    <div id="duplicateErr" style="position: fixed; top: 200px; left: 463.5px;display:none;width:400px;" class="Error_Fancybox1 FancyboxContainer Popup ui-draggable">
+                         <div class="slds-modal__header">
+                            <div class="close_white_60" >
+                                <a onclick="document.getElementById('duplicateErr').style.display = 'none';document.getElementById('blurred').style.display = 'none';" ><img src="{!URLFOR($Resource.PE_35, 'PE_3.5/images/close_white_60.png')}" /></a>
+                            </div>
+                            <addedRows_6 class="slds-text-heading--medium">Error</addedRows_6>
+                        </div>
+                        <div class="PopupContentStart" style="text-align:center; padding:15px 25px !important">
+                            You cannot save duplicate fields.
+                            <div class="cl"></div> 
+                        </div>
+                        <div class="slds-modal__footer">
+                            <input type="button" value="OK" class="slds-button slds-button--neutral" onclick="document.getElementById('duplicateErr').style.display = 'none';document.getElementById('blurred').style.display = 'none';" />
+                        </div>                 
+                    </div>
+                    <!-- End Duplicate MSG -->
+                    
+                    <!-- Start Warning_Fancybox -->         
+                    <div class="Warning_Fancybox FancyboxContainer Popup">
+                        <div class="slds-modal__header">
+                            <div class="close_white_60" >
+                                <a onclick="closepopup('fancybox_background','FancyboxContainer');return false;" title="Close"><img src="{!URLFOR($Resource.PE_35, 'PE_3.5/images/close_white_60.png')}" /></a>
+                            </div>
+                            <addedRows_6 class="slds-text-heading--medium">Warning</addedRows_6>
+                        </div>
+                        
+                        <div class="PopupContentStart" style="padding:15px 25px !important">
+                            <table cellpadding="0" cellspacing="20" border="0" width="100%">
+                                <tr>
+                                   <!-- <td width="42">
+                                        <div class="slds-icon slds-icon-text-warning slds-icon--x-large">
+                                            <img src="{!URLFOR($Resource.SLDS100, '/assets/icons/utility/warning_60.png')}" />
+                                        </div>
+                                    </td>-->
+                                    <td>
+                                        Any layout change made will be rolled back to the default setting.<br />
+                                        Are you sure you want to proceed?
+                                    </td>
+                                </tr>
+                            </table>
+                            <div class="cl"></div> 
+                        </div>
+
+                        <div class="slds-modal__footer">
+                            <apex:commandButton value="No" title="No" styleClass="slds-button slds-button--neutral" onclick="closepopup('fancybox_background','FancyboxContainer');return false;" />
+                            <apex:commandButton action="{!onRevertToDefault}" reRender="rctPnl,rctPnl2" value="Yes" title="Yes" styleClass="slds-button slds-button--brand click_for_step_2 click_Two" onclick="closepopup('fancybox_background','FancyboxContainer'); " />
+                        </div>  
+
+                    </div>
+                    <!-- End Warning_Fancybox -->
+                    <apex:actionFunction name="callEditFn" action="{!fetchEditSectionValue}" oncomplete="AddContentInEditMode(); hidePopup();" rerender="detailSection,editSection,slct2"/>
+
+
+                    <table width="100%" border="0" cellpadding="0" cellspacing="0">
+                    <tr>
+                        <td style="width:240px; padding:0 !important;" valign="top" class="Left_bgcolor">  
+                            <div id="LeftMenuSection" class="float_l">                            
+                                <div class="ContentStart">
+                                <ul>
+                                    <li><apex:outputLink title="Deal Creation" styleClass="selected" value="/apex/Deal_Creation_Setup" target="_parent">Deal Creation </apex:outputLink></li>
+                                    <li><apex:outputLink title="Individual Investor Creation" value="/apex/Individual_Investor_Setup" target="_parent">Individual Investor Creation </apex:outputLink></li>
+                                    <li><apex:outputLink title="Commitment Creation" value="/apex/Commitment_Creation_Setup" target="_parent">Commitment Creation </apex:outputLink></li>
+                                    <li><apex:outputLink title="Contact Transfer" value="/apex/ContactTransfer_Settings_Setup" target="_parent">Contact Transfer</apex:outputLink></li>
+                                    <li><apex:outputLink title="Account Associations" value="/apex/ProductSetting" target="_parent">Account Associations </apex:outputLink></li>
+                                    <li><apex:outputLink title="Bulk Email" value="/apex/Bulk_Email_Setup" target="_parent">Bulk Email</apex:outputLink></li>
+                                    <li><apex:outputLink title="Office Locations" value="/apex/Office_Locations_Setup" target="_parent">Office Locations</apex:outputLink></li>
+                                    <li><apex:outputLink title="Co-investment Settings" value="/apex/CoInvestment_Settings_Setup" target="_parent">Co-investment Settings</apex:outputLink></li>
+                                    <li><apex:outputLink title="Pipeline Stage Log" value="/apex/Pipeline_Stage_Log" target="_parent">Pipeline Stage Log</apex:outputLink></li>
+                                </ul>
+                                </div>
+                            </div>
+                        </td>
+
+
+                        <td valign="top">
+
+                            <div id="RightMenuContentSection" class="float_r" style="padding-bottom:10px !important;">
+                                
+                            <!-- Start Div A -->              
+
+                            <apex:outputPanel id="detailSection">   
+                                 
+                                <script type="text/javascript">
+                                   
+                                    var popupStatus = 0; 
+                                    var strDealLeftColField = '';                                      
+                                    var arrDealLeftColFieldApi = []; 
+                                    
+                                    var strDealRightColField = ''; 
+                                    var arrDealRightColFieldApi = [];                     
+
+                                    var strSourceFirmColField = '';  
+                                    var arrSourceFirmColFieldApi = [];  
+                                     
+                                    var strSourceContactColField = '';   
+                                    var arrSourceContactColFieldApi = []; 
+                                    
+                                    //getting field api from navatar setup object
+                                    var strFieldApiValue = '{!JSENCODE(strFieldApiName)}';
+                                    
+                                    var strFieldApiValueDeal= '{!JSENCODE(strFieldApiNameDeal)}';
+                                    var strFieldApiValueAccount= '{!JSENCODE(strFieldApiNameAccount)}';
+                                    var strFieldApiValueContact= '{!JSENCODE(strFieldApiNameContact)}';
+                                    
+                                    var arrDealLeftColFieldIndex = [];
+                                    var arrDealRightColFieldIndex = [];                                    
+                                    var arrFirmColFieldIndex = [];
+                                    var arrContactColFieldIndex = []; 
+                                  
+                                    var dealLeftRowCount = 1;           
+                                    var dealRightRowCount = 1;
+                                    var sourceFirmRowCount = 1;
+                                    
+                                    var rowCount3 = 1;
+                                    var rowCount4 = 1;
+                                                
+                                    var rowCount7 = 1; var rowCount6 = 1;
+                                    
+                                    arrDealLeftColFieldIndex.push(dealLeftRowCount);
+                                    arrDealRightColFieldIndex.push(dealRightRowCount);
+                                    arrFirmColFieldIndex.push(sourceFirmRowCount);
+                                    arrContactColFieldIndex.push(rowCount6); 
+                                     
+                                    var strFindDuplicateValue = '';
+                                    var isDuplicateValueFound = ''; 
+                                    var mapFieldLabelVsApi = {};
+                                    
+                                    function saveLayout(){   // To save fields into Navatar Setup Object
+                                        strDealLeftColField = '';
+                                        strDealRightColField='';
+                                        strSourceFirmColField='';
+                                        strSourceContactColField='';
+                                        var strContentData = '';   
+                                        strFindDuplicateValue = '';
+                                        isDuplicateValueFound = false;
+                                        var i=0;
+                                        
+                                        //used for Deal information left column
+                                        while (i<arrDealLeftColFieldIndex.length) {
+                                            var inputText = '';
+                                            var strInputFieldId = 'dealinputleftcolmn'+arrDealLeftColFieldIndex[i]+'';
+                                            var inputColmnVal = document.getElementById("dealinputleftcolmn"+arrDealLeftColFieldIndex[i]+"").value;                    
+                                        
+                                            if(inputColmnVal.length>0){                                         
+                                                if(mapInputFieldIdVsFieldLabel[strInputFieldId]!=undefined){   
+                                                    inputText = mapInputFieldIdVsFieldLabel[strInputFieldId];
+                                                }else{
+                                                    inputText ='';
+                                                }  
+                                             
+                                                if(mapFieldLabelVsApi[inputText]!=undefined){
+                                                    if(strFindDuplicateValue.indexOf(mapFieldLabelVsApi[inputText].toLowerCase())>-1){                                        
+                                                        isDuplicateValueFound = true;                                                   
+                                                        document.getElementById('duplicateErr').style.display = 'block';
+                                                        document.getElementById('blurred').style.display = 'block'; 
+                                                    }else{
+                                                        strFindDuplicateValue = strFindDuplicateValue +','+ mapFieldLabelVsApi[inputText].toLowerCase();
+                                                    }
+                                                }  
+                                                    
+                                                if(inputText.length >0 && inputText!=undefined){
+                                                    if(strDealLeftColField.length==0){                                                      
+                                                        if(mapFieldLabelVsApi[inputText]!=undefined)                                            
+                                                            strDealLeftColField = mapFieldLabelVsApi[inputText]; 
+                                                    }else{
+                                                        if(inputText!=undefined){                                                       
+                                                            if(mapFieldLabelVsApi[inputText]!=undefined)                
+                                                                strDealLeftColField = strDealLeftColField +','+mapFieldLabelVsApi[inputText];
+                                                        }
+                                                    }                                                   
+                                                }
+                                            }
+                                            i++;
+                                        } 
+                                         
+                                        //used for Deal information right column
+                                        var j=0; 
+                                        while (j<arrDealRightColFieldIndex.length) { 
+                                                             
+                                            var inputText = '';                            
+                                            var strInputFieldId = 'dealinputrightcolmn'+arrDealRightColFieldIndex[j]+'';
+                                            var inputColmnVal = document.getElementById("dealinputrightcolmn"+arrDealRightColFieldIndex[j]+"").value;                    
+                                            if(inputColmnVal.length>0){     
+                                                if(mapInputFieldIdVsFieldLabel[strInputFieldId]!=undefined){   
+                                                    inputText = mapInputFieldIdVsFieldLabel[strInputFieldId];
+                                                }else{
+                                                    inputText ='';
+                                                }                                           
+                                                                                            
+                                                if(mapFieldLabelVsApi[inputText]!=undefined){
+                                                    if(strFindDuplicateValue.indexOf(mapFieldLabelVsApi[inputText].toLowerCase())>-1){                                        
+                                                        isDuplicateValueFound = true;                                               
+                                                        document.getElementById('duplicateErr').style.display = 'block';
+                                                        document.getElementById('blurred').style.display = 'block'; 
+                                                    }else{
+                                                        strFindDuplicateValue = strFindDuplicateValue +','+ mapFieldLabelVsApi[inputText].toLowerCase();
+                                                    }
+                                                }   
+                                                
+                                                if(inputText.length >0 && inputText!=undefined){
+                                                    if(strDealRightColField.length==0){
+                                                        if(mapFieldLabelVsApi[inputText]!=undefined)                                            
+                                                        strDealRightColField = mapFieldLabelVsApi[inputText]; 
+                                                    }else{
+                                                        if(inputText!=undefined){
+                                                            if(mapFieldLabelVsApi[inputText]!=undefined)                
+                                                            strDealRightColField = strDealRightColField +','+mapFieldLabelVsApi[inputText];
+                                                        }
+                                                    }  
+                                                }
+                                            }
+                                            j++;
+                                        }
+                                        
+                                        //used for Source Firm information column
+                                        var k=0;
+                                        strFindDuplicateValue = '';                                        
+                                        while (k<arrFirmColFieldIndex.length) { 
+                                           
+                                            var inputText = ''; 
+                                            var strInputFieldId = 'accinputleftcolmn'+arrFirmColFieldIndex[k]+'';
+                                            var inputColmnVal = document.getElementById("accinputleftcolmn"+arrFirmColFieldIndex[k]+"").value;                    
+                                            if(inputColmnVal.length>0){ 
+                                                if(mapInputFieldIdVsFieldLabel[strInputFieldId]!=undefined){   
+                                                    inputText = mapInputFieldIdVsFieldLabel[strInputFieldId];
+                                                }else{
+                                                    inputText ='';
+                                                }                                             
+                                              
+                                                if(mapFieldLabelVsApi[inputText]!=undefined){
+                                                    if(strFindDuplicateValue.indexOf(mapFieldLabelVsApi[inputText].toLowerCase())>-1){                                        
+                                                        isDuplicateValueFound = true;                                                   
+                                                        document.getElementById('duplicateErr').style.display = 'block'; 
+                                                        document.getElementById('blurred').style.display = 'block'; 
+                                                    }else{
+                                                        strFindDuplicateValue = strFindDuplicateValue +','+ mapFieldLabelVsApi[inputText].toLowerCase();
+                                                    }
+                                                }  
+                                                
+                                                if(inputText.length >0 && inputText!=undefined){
+                                                    if(strSourceFirmColField.length==0){
+                                                        if(mapFieldLabelVsApi[inputText]!=undefined)                                            
+                                                        strSourceFirmColField = mapFieldLabelVsApi[inputText]; 
+                                                    }else{
+                                                        if(inputText!=undefined){
+                                                            if(mapFieldLabelVsApi[inputText]!= undefined)                
+                                                            strSourceFirmColField = strSourceFirmColField +','+mapFieldLabelVsApi[inputText];
+                                                        }
+                                                    }  
+                                                }
+                                            }
+                                            k++;
+                                        }
+                                        
+                                        //used for Source Contact information column
+                                        var l=0;
+                                        strFindDuplicateValue = '';  
+                                        strSourceContactColField = '';
+                                        while (l<arrContactColFieldIndex.length) { 
+                                            var inputText = ''; 
+                                            var strInputFieldId = 'coninputleftcolmn'+arrContactColFieldIndex[l]+'';                                            
+                                            var inputColmnVal = document.getElementById("coninputleftcolmn"+arrContactColFieldIndex[l]+"").value;                    
+                                                                                        
+                                            if(inputColmnVal.length>0){ 
+                                                if(mapInputFieldIdVsFieldLabel[strInputFieldId]!=undefined){   
+                                                    inputText = mapInputFieldIdVsFieldLabel[strInputFieldId];
+                                                }else{
+                                                    inputText ='';
+                                                } 
+                                                
+                                                if(mapFieldLabelVsApi[inputText]!=undefined){
+                                                    if(strFindDuplicateValue.indexOf(mapFieldLabelVsApi[inputText].toLowerCase())>-1){                                        
+                                                        isDuplicateValueFound = true;                                                   
+                                                        document.getElementById('duplicateErr').style.display = 'block';
+                                                        document.getElementById('blurred').style.display = 'block'; 
+                                                    }else{
+                                                        strFindDuplicateValue = strFindDuplicateValue +','+ mapFieldLabelVsApi[inputText].toLowerCase();
+                                                    }
+                                                }  
+                                                
+                                                if(inputText.length >0 && inputText!=undefined){
+                                                    if(strSourceContactColField.length==0){
+                                                        if(mapFieldLabelVsApi[inputText]!=undefined)                                            
+                                                        strSourceContactColField = mapFieldLabelVsApi[inputText]; 
+                                                    }else{
+                                                        if(inputText!=undefined){
+                                                            if(mapFieldLabelVsApi[inputText]!=undefined)                
+                                                            strSourceContactColField = strSourceContactColField +','+mapFieldLabelVsApi[inputText];
+                                                        }
+                                                    }  
+                                                }                                               
+                                            }                                                                                       
+                                            l++;
+                                        }
+                                        strSourceFirmColField=(strSourceFirmColField!=''?strSourceFirmColField:'NA');                                        
+                                        strContentData = (strDealLeftColField!=''?strDealLeftColField:'NA') +';'+(strDealRightColField!=''?strDealRightColField:'NA')+'<@>'+ '{!JSENCODE(selectedRecorTypeForAccount)}'+';'+ (strSourceFirmColField!=''?strSourceFirmColField:'NA')+'<@>'+(strSourceContactColField!=''?strSourceContactColField:'NA')+'<@>'+'{!JSENCODE(selectedRecorTypeForDeal)}';                       
+                                       
+                                        var checkboxVal = document.getElementById("checkbox-01").checked;                                     
+                                        if(isDuplicateValueFound != true){
+                                            saveDealSetup(strContentData,checkboxVal);    //update value in navatar satup object field
+                                            showProcessingImz();
+                                        }
+                                    }
+                                     
+                                    //use for Deal Section
+                                    var arrStrDealLeftColmApiName = '';
+                                    var arrStrDealRightColmApiName = '';                    
+                                    var arrDealfields =[];
+                                    arrDealfields = strFieldApiValueDeal.split(';');
+                                    
+                                    arrStrDealLeftColmApiName = arrDealfields[0].split(',');
+                                    arrStrDealRightColmApiName = arrDealfields[1].split(',');
+                                
+                                    //use for Source Firm Section
+                                    var arrStrFirmColmApiName = ''; 
+                                    var strFieldFirmAPiContentData = []; 
+                                    strFieldFirmAPiContentData= strFieldApiValueAccount.split(';');                                    
+                                    arrStrFirmColmApiName = strFieldFirmAPiContentData[1].split(',');
+                                     
+                                    //use for Source Contact Section
+                                    var arrStrContactColmApiName = '';  
+                                    arrStrContactColmApiName = strFieldApiValueContact.split(',');                                    
+                                    
+                                    // (SK: 1Nov2017)
+                                    function HTMLEncode1(str)
+                                    {
+                                        str = str.split("amp;").join("");
+                                        str = str.split("&#39;").join("'");
+                                        var i = str.length,
+                                        aRet = [];
+                        
+                                        while (i--) 
+                                        {
+                                            var iC = str[i].charCodeAt();
+                                            if (iC < 65 || iC > 127 || (iC>90 && iC<97)) 
+                                            {
+                                                aRet[i] = '&#'+iC+';';
+                                            } 
+                                            else 
+                                            {
+                                                aRet[i] = str[i];
+                                            }
+                                        }
+                                        return aRet.join('');    
+                                    }
+                                    
+                                    //This function is used for add dynamic row on Detail Page
+                                    function AddContentInDetailMode(){  
+                                     
+                                        //use for Deal left Section
+                                        if(arrStrDealLeftColmApiName!='' && arrStrDealLeftColmApiName!= null && arrStrDealLeftColmApiName!= "null" && arrStrDealLeftColmApiName!= "NA"){
+                                              
+                                            for(var i = 0; i < arrStrDealLeftColmApiName.length; i++) { 
+                                                 
+                                                var strArr ='';
+                                                if(arrStrDealLeftColmApiName[i].length>0){
+                                                    strArr = arrStrDealLeftColmApiName[i];
+                                                }
+                                                if(strArr!=''){
+                                                    if(strArr.length>0){
+                                                        var recOutputRow = '<table border="0" cellpadding="5" cellspacing="0" width="100%" class="TopBottomSpace"><tbody><td class="td1" width="50%"><label class="slds-form-element__label" for="text-input-01">'+HTMLEncode1(mapApiVsFieldLabel[strArr])+'</label></td><td class="td2"></td></tbody></table>'; 
+                                                        jQuery('#leftDealOutputColumn').append(recOutputRow);
+                                                    }
+                                                }
+                                            }
+                                        }
+                                                                                
+                                        //use for Deal right Section
+                                        if(arrStrDealRightColmApiName!='' && arrStrDealRightColmApiName!= null && arrStrDealRightColmApiName!= "null" && arrStrDealRightColmApiName!= "NA"){
+                                            for(var i = 0; i < arrStrDealRightColmApiName.length; i++) { 
+                                               
+                                                var strArr ='';
+                                                if(arrStrDealRightColmApiName[i].length>0){
+                                                    strArr = arrStrDealRightColmApiName[i];
+                                                }
+                                                if(strArr!=''){
+                                                    if(strArr.length>0){
+                                                        if(mapApiVsFieldLabel[strArr]!=undefined){
+                                                            var recOutputRow2 ='<table border="0" cellpadding="5" cellspacing="0" width="100%" class="TopBottomSpace"><tbody><tr><td class="td1" width="50%"><label class="slds-form-element__label" for="text-input-01">'+HTMLEncode1(mapApiVsFieldLabel[strArr])+'</label></td><td class="td2"> </td></tr></tbody></table>';
+                                                            jQuery('#rightDealOutputColumn').append(recOutputRow2);
+                                                        }                                            
+                                                    }
+                                                }
+                                            }
+                                        }                                        
+                                        
+                                        //use for Source Firm Section
+                                        if(arrStrFirmColmApiName!='' && arrStrFirmColmApiName!=null && arrStrFirmColmApiName!="null" && arrStrFirmColmApiName!= "NA"){
+                                            for(var i = 0; i < arrStrFirmColmApiName.length; i++) { 
+                                                
+                                                var strArr ='';
+                                                if(arrStrFirmColmApiName[i].length>0){
+                                                    strArr = arrStrFirmColmApiName[i];
+                                                }
+                                                if(strArr!=''){
+                                                    if(strArr.length>0){
+                                                        var recOutputRow3 = '<table border="0" cellpadding="5" cellspacing="0" width="100%" class="TopBottomSpace"><tbody><td class="td1" width="25%"><label class="slds-form-element__label" for="text-input-01">'+HTMLEncode1(mapApiVsFieldLabel[strArr])+'</label></td><td class="td2"></td></tbody></table>'; 
+                                                        jQuery('#firmOutputColumn').append(recOutputRow3);
+                                                    }
+                                                }
+                                            }
+                                        }
+                                        
+                                        //use for Source Contact Section
+                                        if(arrStrContactColmApiName!='' && arrStrContactColmApiName!=null && arrStrContactColmApiName!="null" && arrStrContactColmApiName!="NA"){
+                                            for(var i = 0; i < arrStrContactColmApiName.length; i++) { 
+                                                 
+                                                var strArr ='';
+                                                if(arrStrContactColmApiName[i].length>0){
+                                                    strArr = arrStrContactColmApiName[i];
+                                                }
+                                                if(strArr!=''){
+                                                    if(strArr.length>0){
+                                                        if(mapApiVsFieldLabel[strArr]!=undefined){
+                                                            var recOutputRow4 ='<table border="0" cellpadding="5" cellspacing="0" width="100%" class="TopBottomSpace"><tbody><tr><td class="td1" width="25%"><label style="width: 150px;" class="slds-form-element__label" for="text-input-01">'+HTMLEncode1(mapApiVsFieldLabel[strArr])+'</label></td><td class="td2"> </td></tr></tbody></table>';
+                                                            jQuery('#contactOutputColumn').append(recOutputRow4);
+                                                        }                                            
+                                                    }
+                                                }
+                                            }
+                                        }  
+                                    }
+                                </script>                               
+                             
+                                <div class="grid">                
+                                    <div class="slds-box slds-theme--warning" id="hidethisdmsg" style="border-radius: 0; position:relative; border:none; display:none;">
+                                        <a href="javascript:void(0);" onclick="hidewarningmsg();" title="Hide" style="position:absolute; top:5px; right:5px"><img style="width:22px" src="{!URLFOR($Resource.PE_35, 'PE_3.5/images/close_white_60.png')}" /></a>
+                                        <p><img src="{!URLFOR($Resource.SLDS100, '/assets/icons/utility/warning_60.png')}" style="width:23px; height:20px; position:relative; top:-2px" />&nbsp;{!strErrorMessage}</p>
+                                    </div>
+                                </div> 
+                                
+                                 <div id="adminIDCheck" class="slds-box slds-theme--error" style="display:{!IF((isAdminSettingOn),'none','block')}">
+                                     <img src="{!URLFOR($Resource.PE_35, 'PE_3.5/images/Cancel-32.png')}"/>
+                                     <p style="margin-left:40px; margin-top:-26px">Error Code: 12355. Please contact Navatar Support. System setup improperly.</p>
+                                 </div>
+                                
+                                <script>
+                                    //hide it when clicking anywhere else except the popup and the trigger
+                                    $(document).on('click touch', function(event) {
+                                        if (!$(event.target).parents().addBack().is('.slds-icon')) {
+                                            $('.tip-yellow').hide();
+                                        }
+                                    });
+                                    
+                                    var strErrorMessage = '{!JSENCODE(strErrorMessage)}';       //to show record type error message on page.
+                                    if(strErrorMessage.length >0){        
+                                        document.getElementById('hidethisdmsg').style.display = 'block';
+                                    } 
+                                    
+                                    function hidewarningmsg(){
+                                        document.getElementById('hidethisdmsg').style.display = 'none';
+                                    }
+                                </script>  
+                                
+                                <div class="ContentStart div_a" style="{!(IF(showdetailSection ==true && isAdminSettingOn==true, 'display : block;','display : none;'))}">                                
+                                    <div class="slds-page-header" role="banner">
+                                        <div class="slds-media" style="padding-bottom:10px;">
+                                            <div class="slds-media__figure float_l">
+                                            <div class="slds-icon slds-icon-custom-3 slds-icon--large">
+                                            <img src="{!URLFOR($Resource.SLDS100, '/assets/icons/custom/custom67_60.png')}" />
+                                            </div>
+                                            </div>
+                                            <div class="slds-media__body float_l">
+                                            <p class="slds-page-header__title slds-truncate slds-align-middle" style="padding-top:8px">Deal Creation 
+                                            <span class="YellowTooltip" title="Use this setting to quickly create deals (both Company and Pipeline) in the system.">
+                                            <span class="slds-icon icon-utility-info slds-icon-text-default">
+                                            <img src="{!URLFOR($Resource.SLDS100, '/assets/icons/utility/info_60_white.png')}" style="width:22px; height:22px; position:relative; top:-7px" />
+                                            </span>   
+                                            </span>  
+                                            </p>                        
+                                            </div>
+
+                                            <div class="slds-button-group float_r">
+                                                <apex:commandButton styleClass="slds-button slds-button--neutral" reRender="userinfor" title="Edit" onclick="InsufficientPermissions_Fancybox();" value="Edit"/>  
+                                            </div>                                          
+                                        </div>
+                                        <div class="cl"></div>  
+                                    </div>
+                                  
+                                    <div class="popupLayoutHeading_Top" style="margin:15px 15px 0 15px;padding:6px 8px;">
+                                       <label class="slds-checkbox">
+                                        <input type="checkbox" name="options" id="checkbox-02" disabled="true"/>
+                                        <span class="slds-checkbox--faux"></span>                               
+                                      </label>
+                                      <span data-aura-rendered-by="23510:1;0" class="title primaryPaletteBorder">Enable Deal Creation</span>   
+                                    </div>
+                                    
+                                    <div class="cl"></div>
+                                    <!-- Start Content Box -->
+                                    <div class="ContentBox" style="margin-top:20px;">
+                                        <div class="popupLayoutHeading">
+                                            <h4 data-aura-rendered-by="23510:1;0" class="title primaryPaletteBorder">Page Layout</h4>
+                                        </div> 
+                                        <!--start-->
+                                        <div class="ContentBox contentBox_shadow" style="margin:0 !important; margin-top:10px !important;">
+                                        
+                                            <h2 style="border-bottom:#fcb141 1px solid !important">
+                                                <table border="0" cellpadding="0" cellspacing="0" width="100%" class="table">
+                                                    <tr>
+                                                        <td width="50%"><span class="slds-section__title" style="border-bottom:0 !important; color:#5c7d87 !important; background:none !important; padding:0 !important">Deal Information</span></td>
+                                                        <td>
+                                                            <span style="min-width:200px; float:right; background:#eff5f7; padding:0 10px; border:#dbe7ea 1px solid;">
+                                                                <table border="0" cellpadding="5" cellspacing="0" width="100%" class="table">
+                                                                    <tr>
+                                                                        <td style="font-size:13px;"><label class="slds-form-element__label" for="text-input-01">Assigned Record Type: </label></td>
+                                                                        <td><label class="slds-form-element__label" for="text-input-01" style="margin-right:0 !important; font-size:13px !important; color:#fcb141 !important;"><b><apex:outputPanel id="rctPnl">{!JSENCODE(strDealRTDetailPage)}</apex:outputPanel></b></label></td>
+                                                                    </tr>
+                                                                </table>
+                                                            </span>
+                                                        </td>
+                                                    </tr>
+                                                </table>
+                                            </h2>
+                                            <div class="cl"></div>
+                                            <table border="0" cellpadding="0" cellspacing="0" width="100%" class="table" style="margin-top:17px; ">
+                                                <tr>
+                                                <td valign="top" width="50%">
+                                                <table border="0" cellpadding="5" cellspacing="0" width="100%" class="TopBottomSpace"> 
+                                                    <tbody>
+                                                        <tr>
+                                                        <tr>
+                                                            <!--Added dynamic Label for Company Name in PE v4.5  By Rahulk  -->
+                                                            <td class="td1" style="width:50%;"><label class="slds-form-element__label" for="text-input-01">{!$ObjectType.Pipeline__c.fields[sCompanyName].Label}</label></td>
+                                                        <td class="td2"></td>
+                                                        </tr>
+                                                                <td class="td1">
+                                                        <label class="slds-form-element__label" for="text-input-01">{!$ObjectType.Pipeline__c.fields.name.Label}</label></td>
+                                                        <td class="td2"></td>
+                                                        </tr>
+                                                        <tr>
+                                                        <td class="td1"><label class="slds-form-element__label" for="text-input-01">{!$ObjectType.Pipeline__c.fields.Stage__c.Label}</label></td>
+                                                        <td class="td2"></td>
+                                                        </tr>   
+                                                    </tbody>
+                                                </table>
+                                                <div id="leftDealOutputColumn"></div>
+                                                </td>
+                                                <td valign="top">
+                                                <table border="0" cellpadding="5" cellspacing="0" width="100%" class="TopBottomSpace">
+                                                    <tbody>
+                                                       
+                                                        <tr>
+                                                        <td class="td1"><label class="slds-form-element__label" for="text-input-01">{!$ObjectType.Pipeline__c.fields.Source_Company__c.Label}</label></td>
+                                                        <td class="td2"></td>
+                                                        </tr>
+                                                        <tr>
+                                                        <td class="td1"><label class="slds-form-element__label" for="text-input-01">{!$ObjectType.Pipeline__c.fields.Source_Contact__c.Label}</label></td>
+                                                        <td class="td2"></td>
+                                                        </tr>
+                                                        <tr>
+                                                        <td class="td1" style="width:50%;"><label class="slds-form-element__label" for="text-input-01">{!$ObjectType.Pipeline__c.fields.Source__c.Label}</label></td>
+                                                        <td class="td2"></td>
+                                                        </tr>
+
+                                                    </tbody>
+                                                </table>
+                                                <div id="rightDealOutputColumn"></div>
+                                                </td>
+                                                </tr>
+                                            </table>                                    
+                                    </div>
+                                    <!---End--->
+                                    
+                                    </div>
+                                    <!-- End Content Box -->
+                                    <div class="cl"></div>
+
+                                    <!-- Start Content Box -->
+                                    <div class="ContentBox" style="margin-top:20px;">
+                                        <!--start--->
+                                        <div class="popupLayoutHeading">
+                                            <h4 data-aura-rendered-by="23510:1;0" class="title primaryPaletteBorder">Pop-up Layout</h4>                 
+                                        </div>
+                                        <div class="cl"></div>
+                                        <!---End---->
+                                        
+                                        <!--Start-->
+                                        <div class="ContentBox contentBox_shadow" style="margin:0 !important; margin-top:10px !important;">
+                                            <h2 style="border-bottom:#fcb141 1px solid !important">
+                                                <table border="0" cellpadding="0" cellspacing="0" width="100%" class="table">
+                                                    <tr>
+                                                        <td width="50%"><span class="slds-section__title" style="border-bottom:0 !important; color:#5c7d87 !important; background:none !important; padding:0 !important">Fields for New {!$ObjectType.Pipeline__c.fields.Source_Company__c.Label}</span></td>
+                                                        <td>
+                                                            <span style="min-width:200px; float:right; background:#eff5f7; padding:0 10px; border:#dbe7ea 1px solid;">
+                                                                <table border="0" cellpadding="5" cellspacing="0" width="100%" class="table">
+                                                                    <tr>
+                                                                        <td style="font-size:13px;"><label class="slds-form-element__label" for="text-input-01">Assigned Record Type: </label></td>
+                                                                        <td><label class="slds-form-element__label" for="text-input-01" style="margin-right:0 !important; font-size:13px !important; color:#fcb141 !important;"><b><apex:outputPanel id="rctPnl2">{!JSENCODE(strFirmRTDetailPage)}</apex:outputPanel></b></label></td>
+                                                                    </tr>
+                                                                </table>
+                                                            </span>
+                                                        </td>
+                                                    </tr>
+                                                </table>
+                                            </h2>
+                                            <div class="cl"></div>
+                                            <table border="0" cellpadding="0" cellspacing="0" width="100%" class="table" style="margin-top:17px">
+                                                <tr>
+                                                    <td valign="top">
+                                                    <table border="0" cellpadding="5" cellspacing="0" width="100%" class="TopBottomSpace">
+                                                        <tbody>
+                                                            <tr>
+                                                            <td class="td1" style="width:25%;">
+                                                            <label class="slds-form-element__label" for="text-input-01">{!$ObjectType.Account.fields.name.Label}</label></td>
+                                                            <td class="td2"></td>
+                                                            </tr>                                                    
+                                                        </tbody>
+                                                    </table>  
+                                                    <div id="firmOutputColumn"></div>
+                                                    </td>
+                                                </tr>
+                                            </table>
+                                        </div>
+                                        <!--End-->
+                                        
+                                        <!-- Start-->
+                                        <div class="ContentBox contentBox_shadow" style="margin:0 !important; margin-top:20px !important;">
+                                            <h2 style="border-bottom:#fcb141 1px solid !important">
+                                                <table border="0" cellpadding="0" cellspacing="0" width="100%" class="table">
+                                                    <tr>
+                                                        <td><span class="slds-section__title" style="border-bottom:0 !important; color:#5c7d87 !important; background:none !important; padding:0 !important">Fields for New {!$ObjectType.Pipeline__c.fields.Source_Contact__c.Label}</span></td>
+                                                     </tr>
+                                                </table>
+                                            </h2>
+                                            <div class="cl"></div>
+                                            <table border="0" cellpadding="0" cellspacing="0" width="100%" class="table" style="margin-top:17px">
+                                                <tr>
+                                                    <td valign="top">
+                                                        <table border="0" cellpadding="5" cellspacing="0" width="100%" class="TopBottomSpace">
+                                                            <tbody>
+                                                                <tr>
+                                                                    <td class="td1" style="width:25%;"><label class="slds-form-element__label" for="text-input-01">{!$ObjectType.Contact.fields.LastName.Label}</label></td>                                                           
+                                                                    <td class="td2"></td>
+                                                                </tr>
+                                                                
+                                                            </tbody>
+                                                        </table>     
+                                                        <div id="contactOutputColumn"></div>
+                                                    </td>
+                                                </tr>
+                                            </table>
+                                        </div>
+                                        <!--End-->
+                                        
+                                    </div>
+                                    <!-- End Content Box -->
+                                </div>
+                            </apex:outputPanel>
+
+                            <!-- End Div A -->
+                            
+                            <!-- Start Div B -->
+                            <apex:outputPanel id="editSection">
+                            
+                            <script type="text/javascript"> 
+                                                                  
+                                var j$ = jQuery.noConflict();  
+                                var strNameSpace = '{!JSENCODE(nameSpace)}';
+                                var strAccountObj= 'Account:';
+                                var strContactObj= 'Contact:';                               
+                                var strPartnershipObj= 'Partnership__c:';
+                                var dealUrl='Account<@>Partnership__c&id='+'{!JSENCODE(selectedRecorTypeForDeal)}';
+                                var accURL='Account&id='+'{!JSENCODE(selectedRecorTypeForAccount)}';
+                                 
+                                var mapApiVsFieldLabel = {};
+                                var mapApiVsObjFieldLabel = {};
+                                var apexAccountAndPipeLineList =[]; 
+                                var apexAccount= [];
+                                var apexContact= [];
+                                var defaultFieldApi = '{!lstDefaultField}';
+                                defaultFieldApi = defaultFieldApi.toLowerCase();
+                                            
+                                <apex:repeat value="{!AccountAndPipelineFieldLabelVsApi}" var="lst"> 
+                                    var strMapKey= '{!JSENCODE(lst)}';
+                                    var strMapValue= '{!JSENCODE(AccountAndPipelineFieldLabelVsApi[lst])}';
+                                    mapFieldLabelVsApi[""+strMapValue+""] = ""+strMapKey+"";
+                                    mapApiVsObjFieldLabel[""+strMapKey+""] = ""+strMapValue+"";
+                                    if(strMapValue.length >0 && strMapValue.indexOf(':') > -1){
+                                        strMapValue = strMapValue.split(':');
+                                        strMapValue = strMapValue[1];
+                                    }
+                                    mapApiVsFieldLabel[""+strMapKey+""] = ""+strMapValue+""; 
+                                    if(defaultFieldApi.indexOf(strMapKey.toLowerCase())==-1)
+                                        apexAccountAndPipeLineList.push('{!JSENCODE(AccountAndPipelineFieldLabelVsApi[lst])}');            
+                                </apex:repeat>
+                                
+                                <apex:repeat value="{!AccountFieldLabelVsApi}" var="lst">
+                                    var strMapKey= '{!JSENCODE(lst)}';                                  
+                                    var strMapValue= '{!JSENCODE(AccountFieldLabelVsApi[lst])}';
+                                    mapFieldLabelVsApi[""+strMapValue+""] = ""+strMapKey+"";
+                                    mapApiVsObjFieldLabel[""+strMapKey+""] = ""+strMapValue+"";
+                                    if(strMapValue.length >0 && strMapValue.indexOf(':') > -1){
+                                        strMapValue = strMapValue.split(':');
+                                        strMapValue = strMapValue[1];
+                                    }
+                                    mapApiVsFieldLabel[""+strMapKey+""] = ""+strMapValue+"";
+                                    if(defaultFieldApi.indexOf(strMapKey.toLowerCase())==-1)
+                                        apexAccount.push('{!JSENCODE(AccountFieldLabelVsApi[lst])}');               
+                                </apex:repeat>
+                                
+                                <apex:repeat value="{!ContactFieldLabelVsApi}" var="lst">                                     
+                                    var strMapKey= '{!JSENCODE(lst)}';
+                                    var strMapValue= '{!JSENCODE(ContactFieldLabelVsApi[lst])}';
+                                                                        
+                                    mapFieldLabelVsApi[""+strMapValue+""] = ""+strMapKey+"";
+                                    mapApiVsObjFieldLabel[""+strMapKey+""] = ""+strMapValue+"";
+                                    if(strMapValue.length >0 && strMapValue.indexOf(':') > -1){
+                                        strMapValue = strMapValue.split(':');
+                                        strMapValue = strMapValue[1];
+                                    }                                   
+                                    mapApiVsFieldLabel[""+strMapKey+""] = ""+strMapValue+"";
+                                    if(defaultFieldApi.indexOf(strMapKey.toLowerCase())==-1)    
+                                        apexContact.push('{!JSENCODE(ContactFieldLabelVsApi[lst])}');               
+                                </apex:repeat>
+
+                                j$(document).ready(function()
+                                {
+                                    /* Account and Pipeline Object Fields */
+                                    j$(".apexaccountandPipelineautocomplete").autocomplete({source : apexAccountAndPipeLineList}); 
+                                    $("input[name^='dealinputleftcolmn']").autocomplete({
+                                        minLength: 0,
+                                        source: apexAccountAndPipeLineList
+                                    }).focus(function () {
+                                    $(this).autocomplete("search", "");
+                                    });
+
+                                    /* Account Object Fields */
+                                    j$(".apexaccountautocomplete").autocomplete({source : apexAccount});    
+                                    $("input[name^='accinputleftcolmn']").autocomplete({
+                                        minLength: 0, 
+                                        source: apexAccount
+                                    }).focus(function () {
+                                    $(this).autocomplete("search", "");
+                                    });
+
+                                    /* Contact Object Fields */
+                                    j$(".apexContactautocomplete").autocomplete({source : apexContact});
+                                    $("input[name^='coninputleftcolmn']").autocomplete({
+                                        minLength: 0,
+                                        source: apexContact
+                                    }).focus(function () {
+                                    $(this).autocomplete("search", "");
+                                    });
+                                    
+                                    var strInputColumnId= 'dealinputleftcolmn1';
+                                    jQueryUtilityOfAutoComplete(strInputColumnId, apexAccountAndPipeLineList);                              
+                                    strInputColumnId= 'dealinputrightcolmn1';
+                                    jQueryUtilityOfAutoComplete(strInputColumnId, apexAccountAndPipeLineList);                              
+                                    strInputColumnId= 'accinputleftcolmn1';
+                                    jQueryUtilityOfAutoComplete(strInputColumnId, apexAccount);
+                                    strInputColumnId= 'coninputleftcolmn1';
+                                    jQueryUtilityOfAutoComplete(strInputColumnId, apexContact);
+                                    
+                                });
+    
+                            </script> 
+                            
+                            <script src="../../soap/ajax/38.0/connection.js" type="text/javascript"></script>
+                            <script type="text/javascript">
+                                var sfdcSessionId = '{!GETSESSIONID()}';    
+                                sforce.connection.sessionId = '{!$Api.Session_ID}';         
+                                var result = sforce.connection.describeAllTabs();                
+                                var tabURL = '';
+                                
+                                strContactObj = strContactObj.substring(0, strContactObj.length - 1);
+                                strAccountObj = strAccountObj.substring(0, strAccountObj.length - 1);
+                                var strPipeline = ''+strNameSpace+'Pipeline__c';
+                                
+                                for (var i=0; i<result.length; i++) 
+                                {   
+                                    if(result[i].sobjectName != '' && result[i].sobjectName == strContactObj)
+                                    {
+                                        tabURL = result[i].iconUrl; 
+                                        var style = document.createElement('style');
+                                        style.type = 'text/css';
+                                        style.innerHTML = '.icon_33LightContact {background:url("'+tabURL+'") 0px #fff no-repeat; padding: 1px 8px 0px 32px !important; background-size: 24px 24px;}   .ui-menu .ui-menu-item .mycontact_cls{background:url("'+tabURL+'") 0px -1px #fff no-repeat; padding: 1px 8px 0px 32px !important; background-size: 24px 24px; text-decoration: none;}';
+                                        document.getElementsByTagName('head')[0].appendChild(style);                                        
+                                    }
+                                    else if(result[i].sobjectName != '' && result[i].sobjectName == strAccountObj)
+                                    {
+                                        tabURL = result[i].iconUrl; 
+                                        var style = document.createElement('style');
+                                        style.type = 'text/css';
+                                        style.innerHTML = '.icon_33LightAccount {background:url("'+tabURL+'") 0px #fff no-repeat; padding: 1px 8px 0px 32px !important; background-size: 24px 24px;}  .ui-menu .ui-menu-item .myaccount_cls{background:url("'+tabURL+'") 0px -1px #fff no-repeat; padding: 1px 8px 0px 32px !important; background-size: 24px 24px; text-decoration: none;}';
+                                        document.getElementsByTagName('head')[0].appendChild(style);                                        
+                                    }
+                                    else if(result[i].sobjectName != '' && result[i].sobjectName.toLowerCase() == strPipeline.toLowerCase())
+                                    {
+                                        tabURL = result[i].iconUrl; 
+                                        var style = document.createElement('style');
+                                        style.type = 'text/css';
+                                        style.innerHTML = '.icon_33LightPipeline {background:url("'+tabURL+'") 0px #fff no-repeat; padding: 1px 8px 0px 32px !important; background-size: 24px 24px;}  .ui-menu .ui-menu-item .mypipeline_cls{background:url("'+tabURL+'") 0px -1px #fff no-repeat; padding: 1px 8px 0px 32px !important; background-size: 24px 24px; text-decoration: none;}';
+                                        document.getElementsByTagName('head')[0].appendChild(style);                                        
+                                    }                                   
+                                }
+                            </script>                           
+
+                            <script type="text/javascript"> 
+                                    function AddContentInEditMode(){  // This function is use for add dynamic row on Edit page
+                                        dealLeftRowCount = 0;
+                                        dealRightRowCount = 0;
+                                        sourceFirmRowCount = 0;
+                                        
+                                        rowCount6 = 0; 
+                                        //use for Deal left Section
+                                        if(arrStrDealLeftColmApiName!= null && arrStrDealLeftColmApiName!="null" && arrStrDealLeftColmApiName!=''){
+                                            for(var i = 0; i < arrStrDealLeftColmApiName.length; i++) 
+                                            {  
+                                                dealLeftRowCount++;
+                                                var strArr ='';                                                
+                                                if(arrStrDealLeftColmApiName[i].length>0){
+                                                    strArr = arrStrDealLeftColmApiName[i];
+                                                }
+                                               
+                                                if(dealLeftRowCount==1){   
+                                                    if(strArr.length>0){
+                                                        if(mapApiVsFieldLabel[strArr]!=undefined){
+                                                            document.getElementById("dealinputleftcolmn"+dealLeftRowCount+"").value = mapApiVsFieldLabel[strArr];                                                                                                               
+                                                            if(strArr.indexOf("account:")!= -1){
+                                                                document.getElementById("dealinputleftcolmn"+dealLeftRowCount+"").className += " icon_33LightAccount";
+                                                            }
+                                                            else{
+                                                                document.getElementById("dealinputleftcolmn"+dealLeftRowCount+"").className += " icon_33LightPipeline";
+                                                            }                                                            
+                                                            strNameIds = 'dealinputleftcolmn1';
+                                                            mapInputFieldIdVsFieldLabel[""+strNameIds+""] = ""+mapApiVsObjFieldLabel[strArr]+"";
+                                                        }
+                                                    }
+                                                }else{    
+                                                    var recRow = '<p style="margin-top:20px;"><table border="0" cellpadding="0" cellspacing="0" width="100%" id="dealLeftRowCount'+dealLeftRowCount+'"><tbody><tr><td class="td1" style="padding-right:0 !important;"></td><td class="td2"><div class="select-editable float_l"><select size="0" disabled="disabled"><input onkeydown="fixedFieldsFun(this);" id="dealinputleftcolmn'+dealLeftRowCount+'" type="text" placeholder="None" class="apexaccountandPipelineautocomplete" name="dealinputleftcolmn'+dealLeftRowCount+'[]" value="{!selField}" style="width:237px; padding-left:9px; height:30px; color:#16325c !important;" /></select></div><a onclick="addDealInfoLeftRow(this.id);" id="Auto_dealLeftRowCount'+dealLeftRowCount+'" class="btn_icon_add" title="Add" style="position:relative !important; top:5px !important;"></a>&nbsp;<a onclick="removeRow('+dealLeftRowCount+');" class="btn_icon_delete" title="Delete" style="position:relative !important; top:5px !important;"></a><div id="addedRows"></div></td></tr></tbody></table></p>'; 
+                                                    jQuery('#addedRows').append(recRow); 
+                                                    
+                                                    if(strArr!=''){
+                                                        if(strArr.length>0){
+                                                            if(mapApiVsFieldLabel[strArr]!= undefined){
+                                                                document.getElementById("dealinputleftcolmn"+dealLeftRowCount+"").value = mapApiVsFieldLabel[strArr];
+                                                                if(strArr.indexOf("account:")!= -1){
+                                                                    document.getElementById("dealinputleftcolmn"+dealLeftRowCount+"").className += " icon_33LightAccount";
+                                                                }
+                                                                else{
+                                                                    document.getElementById("dealinputleftcolmn"+dealLeftRowCount+"").className += " icon_33LightPipeline";
+                                                                }
+                                                                strNameIds = 'dealinputleftcolmn'+dealLeftRowCount;
+                                                                mapInputFieldIdVsFieldLabel[""+strNameIds+""] = ""+mapApiVsObjFieldLabel[strArr]+"";
+                                                           }
+                                                        }
+                                                    }
+                                                    arrDealLeftColFieldIndex.push(dealLeftRowCount);
+                                                    strNameIds = 'dealinputleftcolmn'+dealLeftRowCount;
+                                                    jQueryUtilityOfAutoComplete(strNameIds,apexAccountAndPipeLineList);
+                                                }
+                                            }
+                                        }else{dealLeftRowCount++;}
+                                        
+                                        //use for Deal right Section  
+                                        if(arrStrDealRightColmApiName!= null && arrStrDealRightColmApiName!= "null" && arrStrDealRightColmApiName!='')
+                                        {
+                                            for(var i = 0; i < arrStrDealRightColmApiName.length; i++) { 
+                                                 
+                                                dealRightRowCount++; 
+                                                var strArr ='';
+                                                if(arrStrDealRightColmApiName[i].length>0){
+                                                    strArr = arrStrDealRightColmApiName[i];
+                                                }
+                                                
+                                                if(dealRightRowCount==1){   
+                                                    if(strArr.length>0){
+                                                        if(mapApiVsFieldLabel[strArr]!=undefined){
+                                                            document.getElementById("dealinputrightcolmn"+dealRightRowCount+"").value = mapApiVsFieldLabel[strArr];
+                                                            if(strArr.indexOf("account:")!= -1){
+                                                                document.getElementById("dealinputrightcolmn"+dealRightRowCount+"").className += " icon_33LightAccount";
+                                                            }
+                                                            else{
+                                                                document.getElementById("dealinputrightcolmn"+dealRightRowCount+"").className += " icon_33LightPipeline";
+                                                            }
+                                                            strNameIds = 'dealinputrightcolmn1';
+                                                            mapInputFieldIdVsFieldLabel[""+strNameIds+""] = ""+mapApiVsObjFieldLabel[strArr]+"";
+                                                        }
+                                                            
+                                                    }
+                                                }else{
+                                                    var recRow = '<p style="margin-top:20px;"><table border="0" cellpadding="0" cellspacing="0" width="100%" id="dealRightRowCount'+dealRightRowCount+'"><tbody><tr><td class="td1" style="padding-right:0 !important;"></td><td class="td2"><div class="select-editable float_l"><select size="0" disabled="disabled"><input onkeydown="fixedFieldsFun(this);" id="dealinputrightcolmn'+dealRightRowCount+'" style="width:237px; padding-left:9px; height:30px; color:#16325c !important;" placeholder="None" type="text" class="apexaccountandPipelineautocomplete" name="dealinputrightcolmn'+dealRightRowCount+'[]" value="{!selField}" /></select></div><a onclick="addDealInfoRightRow(this.id);" id="Auto_dealRightRowCount'+dealRightRowCount+'" class="btn_icon_add" title="Add" style="position:relative !important; top:5px !important;"></a>&nbsp;<a onclick="removeRow2('+dealRightRowCount+');" class="btn_icon_delete" title="Delete" style="position:relative !important; top:5px !important;"></a><div id="addedRows_2"></div></td></tr></tbody></table></p>'; 
+                                                    jQuery('#addedRows_2').append(recRow);  
+                                                    if(strArr!=''){
+                                                        if(strArr.length>0){
+                                                            if(mapApiVsFieldLabel[strArr]!= undefined){
+                                                                document.getElementById("dealinputrightcolmn"+dealRightRowCount+"").value = mapApiVsFieldLabel[strArr];
+                                                                if(strArr.indexOf("account:")!= -1){
+                                                                    document.getElementById("dealinputrightcolmn"+dealRightRowCount+"").className += " icon_33LightAccount";
+                                                                }
+                                                                else{
+                                                                    document.getElementById("dealinputrightcolmn"+dealRightRowCount+"").className += " icon_33LightPipeline";
+                                                                }
+                                                                strNameIds = 'dealinputrightcolmn'+dealRightRowCount;
+                                                                mapInputFieldIdVsFieldLabel[""+strNameIds+""] = ""+mapApiVsObjFieldLabel[strArr]+"";
+                                                            }
+                                                        }
+                                                    }
+                                                    arrDealRightColFieldIndex.push(dealRightRowCount);  
+                                                    strNameIds = 'dealinputrightcolmn'+dealRightRowCount;
+                                                    jQueryUtilityOfAutoComplete(strNameIds,apexAccountAndPipeLineList);
+                                                }
+                                            }
+                                        }else{dealRightRowCount++;}                                        
+                                        
+                                        //use for Source Firm Section
+                                        if(arrStrFirmColmApiName!= null && arrStrFirmColmApiName!= "null" && arrStrFirmColmApiName!=''){
+                                            for(var i = 0; i < arrStrFirmColmApiName.length; i++) { 
+                                                 
+                                                sourceFirmRowCount++; 
+                                                var strArr ='';
+                                                if(arrStrFirmColmApiName [i].length>0){
+                                                    strArr = arrStrFirmColmApiName[i];
+                                                }
+                                                 
+                                                if(sourceFirmRowCount==1){   
+                                                    if(strArr.length>0){
+                                                        if(mapApiVsFieldLabel[strArr]!=undefined){
+                                                            document.getElementById("accinputleftcolmn"+sourceFirmRowCount+"").value = mapApiVsFieldLabel[strArr];
+                                                            document.getElementById("accinputleftcolmn"+sourceFirmRowCount+"").className += " icon_33LightAccount";
+                                                            strNameIds = 'accinputleftcolmn1';
+                                                            mapInputFieldIdVsFieldLabel[""+strNameIds+""] = ""+mapApiVsObjFieldLabel[strArr]+"";
+                                                        }
+                                                            
+                                                    }
+                                                }else {
+                                                    var recRow = '<p style="margin-top:20px;"><table border="0" cellpadding="0" cellspacing="0" width="100%" id="sourceFirmRowCount'+sourceFirmRowCount+'"><tbody><tr><td class="td1" style="padding-right:0 !important;"></td><td class="td2"><div class="select-editable float_l"><select class="icon_3" size="0" disabled="disabled"><input onkeydown="fixedFieldsFun(this);" id="accinputleftcolmn'+sourceFirmRowCount+'" style="width:237px; padding-left:12px; height:30px; color:#16325c !important;" type="text" class="apexaccountautocomplete icon_33LightAccount" name="accinputleftcolmn'+sourceFirmRowCount+'[]" value="{!selField}" placeholder="None" /></select></div><a onclick="addNewSourceFirm(this.id);" id="Auto_sourceFirmRowCount'+sourceFirmRowCount+'" class="btn_icon_add" title="Add" style="position:relative !important; top:5px !important;"></a>&nbsp;<a onclick="removeRow5('+sourceFirmRowCount+');" class="btn_icon_delete" title="Delete" style="position:relative !important; top:5px !important;"></a><div id="addedRows_5"></div></td></tr></tbody></table></p>'; 
+                                                    jQuery('#addedRows_5').append(recRow); 
+                                                    
+                                                    if(strArr!=''){
+                                                        if(strArr.length>0){
+                                                            if(mapApiVsFieldLabel[strArr]!= undefined){
+                                                                document.getElementById("accinputleftcolmn"+sourceFirmRowCount+"").value = mapApiVsFieldLabel[strArr];
+                                                                document.getElementById("accinputleftcolmn"+sourceFirmRowCount+"").className += " icon_33LightAccount";
+                                                                strNameIds = 'accinputleftcolmn'+sourceFirmRowCount;
+                                                                mapInputFieldIdVsFieldLabel[""+strNameIds+""] = ""+mapApiVsObjFieldLabel[strArr]+"";
+                                                            }
+                                                        }
+                                                    }                                                    
+                                                                                                       
+                                                    arrFirmColFieldIndex.push(sourceFirmRowCount);   
+                                                    strNameIds = 'accinputleftcolmn'+sourceFirmRowCount;
+                                                    jQueryUtilityOfAutoComplete(strNameIds,apexAccount);
+                                                }
+                                            }   
+                                        }else{sourceFirmRowCount++;}                                        
+                                        
+                                        //use for Source Contact Section
+                                        if(arrStrContactColmApiName!= null && arrStrContactColmApiName!= "null" && arrStrContactColmApiName!=''){
+                                            for(var i = 0; i < arrStrContactColmApiName.length; i++) { 
+                                                  
+                                                rowCount6++; 
+                                                var strArr ='';
+                                                if(arrStrContactColmApiName [i].length>0){
+                                                    strArr = arrStrContactColmApiName[i];
+                                                }
+                                                 
+                                                if(rowCount6==1){    
+                                                    if(strArr.length>0){
+                                                        if(mapApiVsFieldLabel[strArr]!= undefined){
+                                                            document.getElementById("coninputleftcolmn"+rowCount6+"").value = mapApiVsFieldLabel[strArr];
+                                                            document.getElementById("coninputleftcolmn"+rowCount6+"").className += " icon_33LightContact";
+                                                            strNameIds = 'coninputleftcolmn1';
+                                                            mapInputFieldIdVsFieldLabel[""+strNameIds+""] = ""+mapApiVsObjFieldLabel[strArr]+"";
+                                                        }
+                                                            
+                                                    }
+                                                }else{
+                                                    var recRow = '<p style="margin-top:20px;"><table border="0" cellpadding="0" cellspacing="0" width="100%" id="rowCount6'+rowCount6+'"><tbody><tr><td class="td1" style="padding-right:0 !important;"></td><td class="td2"><div class="select-editable float_l"><select class="icon_3" size="0" disabled="disabled"></select><input onkeydown="fixedFieldsFun(this);" id="coninputleftcolmn'+rowCount6+'" style="width:237px; padding-left:12px; height:30px; color:#16325c !important;" type="text"  class="apexContactautocomplete icon_33LightContact" name="coninputleftcolmn'+rowCount6+'[]" value="{!selField}" placeholder="None" /></div><a onclick="addNewSourceContact(this.id);" id="Auto_rowCount6'+rowCount6+'" class="btn_icon_add" title="Add" style="position:relative !important; top:5px !important;"></a>&nbsp;<a onclick="removeRow6('+rowCount6+');" class="btn_icon_delete" title="Delete" style="position:relative !important; top:5px !important;"></a><div id="addedRows_6"></div></td></tr></tbody></table></p>'; 
+                                                    jQuery('#addedRows_6').append(recRow);
+                                                    
+                                                    if(strArr!=''){
+                                                        if(strArr.length>0){
+                                                            if(mapApiVsFieldLabel[strArr]!= undefined){
+                                                                document.getElementById("coninputleftcolmn"+rowCount6+"").value = mapApiVsFieldLabel[strArr];
+                                                                document.getElementById("coninputleftcolmn"+rowCount6+"").className += " icon_33LightContact";
+                                                                strNameIds = 'coninputleftcolmn'+rowCount6;
+                                                                mapInputFieldIdVsFieldLabel[""+strNameIds+""] = ""+mapApiVsObjFieldLabel[strArr]+"";
+                                                            }
+                                                        }
+                                                    }
+                                                    
+                                                    arrContactColFieldIndex.push(rowCount6); 
+                                                    strNameIds = 'coninputleftcolmn'+rowCount6;
+                                                    jQueryUtilityOfAutoComplete(strNameIds,apexContact);
+                                                }                                              
+                                            }  
+                                        }else{rowCount6++; }
+                                                                          
+                                    }
+                            </script> 
+                            
+                            <!-- Add Remove Row -->
+                            <script type="text/javascript"> 
+                                
+                                var columnIndexId = '';
+                                var arrIndex = '';
+                                
+                                //This Function is used for remove row from array based on index-->
+                                Array.prototype.remove = function(value) {
+                                    if (this.indexOf(value)!==-1) {
+                                       this.splice(this.indexOf(value), 1);
+                                       return true;
+                                    } else {
+                                       return false;
+                                    };
+                                } 
+                                
+                                Array.prototype.insert = function (index, item) {
+                                    this.splice(index, 0, item);
+                                };
+                                
+                                if (!Array.prototype.indexOf)
+                                {
+                                    Array.prototype.indexOf = function(elt /*, from*/)
+                                    {
+                                       var len = this.length;
+                                       
+                                       var from = Number(arguments[1]) || 0;
+                                       from = (from < 0)
+                                       ? Math.ceil(from)
+                                       : Math.floor(from);
+                                       
+                                       if (from < 0)
+                                       from += len;
+                                       
+                                       for (; from < len; from++)
+                                       {
+                                          if (from in this &&
+                                          this[from] === elt)
+                                          return from;
+                                       }
+                                       return -1;
+                                    };
+                                }
+                                
+                                function addDealInfoLeftRow(passedId) { 
+                                    dealLeftRowCount ++; 
+                                    columnIndexId = '';
+                                    arrIndex = '';
+                                    
+                                    passedId = passedId.substring(5,passedId.length);
+                                    var recRow = '<p style="margin-top:20px;"><table border="0" cellpadding="0" cellspacing="0" width="100%" id="dealLeftRowCount'+dealLeftRowCount+'"><tbody><tr><td class="td1" style="padding-right:0 !important;"></td><td class="td2"><div class="select-editable float_l"><select size="0" disabled="disabled"><input onkeydown="fixedFieldsFun(this);" id="dealinputleftcolmn'+dealLeftRowCount+'" type="text" placeholder="None" class="apexaccountandPipelineautocomplete  " name="dealinputleftcolmn'+dealLeftRowCount+'[]" value="" style="width:237px; padding-left:9px; height:30px; color:#16325c !important;" /></select></div><a onclick="addDealInfoLeftRow(this.id);" id="Auto_dealLeftRowCount'+dealLeftRowCount+'" class="btn_icon_add" title="Add" style="position:relative !important; top:5px !important;"></a>&nbsp;<a onclick="removeRow('+dealLeftRowCount+');" class="btn_icon_delete" title="Delete" style="position:relative !important; top:5px !important;"></a><div id="addedRows"></div></td></tr></tbody></table></p>'; 
+                                  
+                                    $(recRow).insertAfter('#'+passedId);        
+                                    strNameIds = 'dealinputleftcolmn'+dealLeftRowCount+'';                                    
+                                    jQueryUtilityOfAutoComplete(strNameIds,apexAccountAndPipeLineList); 
+                                    columnIndexId = passedId.substring(16,passedId.length);                                 
+                                    
+                                    if(columnIndexId.length==0){  
+                                        arrDealLeftColFieldIndex.insert(1,dealLeftRowCount); // add index of added row in this array
+                                    }else{                                      
+                                        arrIndex = arrDealLeftColFieldIndex.indexOf(parseInt(columnIndexId));
+                                        arrIndex ++;                                        
+                                        arrDealLeftColFieldIndex.insert(arrIndex, dealLeftRowCount); // add index of added row in this array
+                                    }
+                                } 
+
+                                function removeRow(removeNum) { 
+                                    jQuery('#dealLeftRowCount'+removeNum).remove();
+                                    arrDealLeftColFieldIndex.remove(removeNum); // remove row from array on click remove button based on index
+                                } 
+                                 
+                                function addDealInfoRightRow(passedId) {                                      
+                                    dealRightRowCount ++;
+                                    columnIndexId = '';
+                                    arrIndex = '';
+                                    
+                                    passedId = passedId.substring(5,passedId.length);
+                                    var recRow = '<p style="margin-top:20px;"><table border="0" cellpadding="0" cellspacing="0" width="100%" id="dealRightRowCount'+dealRightRowCount+'"><tbody><tr><td class="td1" style="padding-right:0 !important;"></td><td class="td2"><div class="select-editable float_l"><select size="0" disabled="disabled"><input onkeydown="fixedFieldsFun(this);" id="dealinputrightcolmn'+dealRightRowCount+'" style="width:237px; padding-left:9px; height:30px; color:#16325c !important;" placeholder="None" type="text" class="apexaccountandPipelineautocomplete" name="dealinputrightcolmn'+dealRightRowCount+'[]" value="{!selField}" /></select></div><a onclick="addDealInfoRightRow(this.id);" id="Auto_dealRightRowCount'+dealRightRowCount+'" class="btn_icon_add" title="Add" style="position:relative !important; top:5px !important;"></a>&nbsp;<a onclick="removeRow2('+dealRightRowCount+');" class="btn_icon_delete" title="Delete" style="position:relative !important; top:5px !important;"></a><div id="addedRows_2"></div></td></tr></tbody></table></p>'; 
+                                    $(recRow).insertAfter('#'+passedId);                
+                                    strNameIds = 'dealinputrightcolmn'+dealRightRowCount+'';
+                                    jQueryUtilityOfAutoComplete(strNameIds,apexAccountAndPipeLineList);                                 
+                                    columnIndexId = passedId.substring(17,passedId.length);
+                                                                        
+                                    if(columnIndexId.length==0){                      
+                                        arrDealRightColFieldIndex.insert(1,dealRightRowCount); // add index of added row in this array
+                                    }else{                                      
+                                        arrIndex = arrDealRightColFieldIndex.indexOf(parseInt(columnIndexId));
+                                        arrIndex ++;                                        
+                                        arrDealRightColFieldIndex.insert(arrIndex, dealRightRowCount); // add index of added row in this array
+                                    }
+                                } 
+
+                                function removeRow2(removeNum) {
+                                    jQuery('#dealRightRowCount'+removeNum).remove(); 
+                                    arrDealRightColFieldIndex.remove(removeNum); // remove row from array on click remove button based on index
+                                }
+                            </script>
+                            
+                            <script type="text/javascript"> 
+                                
+                                function addNewSourceFirm(passedId) { 
+                                    sourceFirmRowCount ++; 
+                                    passedId = passedId.substring(5,passedId.length);
+                                    var recRow = '<p style="margin-top:20px;"><table border="0" cellpadding="0" cellspacing="0" width="100%" id="sourceFirmRowCount'+sourceFirmRowCount+'"><tbody><tr><td class="td1" style="padding-right:0 !important;"></td><td class="td2"><div class="select-editable float_l"><select class="icon_3" size="0" disabled="disabled"><input onkeydown="fixedFieldsFun(this);" id="accinputleftcolmn'+sourceFirmRowCount+'" style="width:237px; padding-left:12px; height:30px; color:#16325c !important;" type="text" class="apexaccountautocomplete" name="accinputleftcolmn'+sourceFirmRowCount+'[]" value="{!selField}" placeholder="None" /></select></div><a onclick="addNewSourceFirm(this.id);" id="Auto_sourceFirmRowCount'+sourceFirmRowCount+'" class="btn_icon_add" title="Add" style="position:relative !important; top:5px !important;"></a>&nbsp;<a onclick="removeRow5('+sourceFirmRowCount+');" class="btn_icon_delete" title="Delete" style="position:relative !important; top:5px !important;"></a><div id="addedRows_5"></div></td></tr></tbody></table></p>'; 
+                                    
+                                    $(recRow).insertAfter('#'+passedId);    
+                                    strNameIds = 'accinputleftcolmn'+sourceFirmRowCount+'';
+                                    jQueryUtilityOfAutoComplete(strNameIds,apexAccount); 
+                                    columnIndexId = passedId.substring(18,passedId.length);
+                                    
+                                    if(columnIndexId.indexOf('ow')==0){
+                                        arrFirmColFieldIndex.insert(1,sourceFirmRowCount); // add index of added row in this array
+                                    }else{                                      
+                                        arrIndex = arrFirmColFieldIndex.indexOf(parseInt(columnIndexId));
+                                        arrIndex ++;                                        
+                                        arrFirmColFieldIndex.insert(arrIndex, sourceFirmRowCount); // add index of added row in this array
+                                    } 
+                                } 
+                                function removeRow5(removeNum) { 
+                                    jQuery('#sourceFirmRowCount'+removeNum).remove(); 
+                                    arrFirmColFieldIndex.remove(removeNum); // remove row from array on click remove button based on index
+                                }
+
+                            </script>
+
+                            <script type="text/javascript"> 
+                                 
+                                function addNewSourceContact(passedId) { 
+                                    rowCount6 ++;  
+                                    passedId = passedId.substring(5,passedId.length);   
+                                    var recRow = '<p style="margin-top:20px;"><table border="0" cellpadding="0" cellspacing="0" width="100%" id="rowCount6'+rowCount6+'"><tbody><tr><td class="td1" style="padding-right:0 !important;"></td><td class="td2"><div class="select-editable float_l"><select class="icon_3" size="0" disabled="disabled"></select><input onkeydown="fixedFieldsFun(this);" id="coninputleftcolmn'+rowCount6+'" style="width:237px; padding-left:12px; height:30px; color:#16325c !important;" type="text"  class="apexContactautocomplete" name="coninputleftcolmn'+rowCount6+'[]" value="{!selField}" placeholder="None" /></div><a onclick="addNewSourceContact(this.id);" id="Auto_rowCount6'+rowCount6+'" class="btn_icon_add" title="Add" style="position:relative !important; top:5px !important;"></a>&nbsp;<a onclick="removeRow6('+rowCount6+');" class="btn_icon_delete" title="Delete" style="position:relative !important; top:5px !important;"></a><div id="addedRows_6"></div></td></tr></tbody></table></p>'; 
+                                    $(recRow).insertAfter('#'+passedId);                
+                                    strNameIds = 'coninputleftcolmn'+rowCount6+'';
+                                    jQueryUtilityOfAutoComplete(strNameIds, apexContact);
+                                    columnIndexId = passedId.substring(9,passedId.length);
+                                   
+                                    if(columnIndexId.indexOf('eftcolmnRow')==0){                        
+                                        arrContactColFieldIndex.insert(1, rowCount6); // add index of added row in this array
+                                    }else{                                      
+                                        arrIndex = arrContactColFieldIndex.indexOf(parseInt(columnIndexId));
+                                        arrIndex ++;                                        
+                                        arrContactColFieldIndex.insert(arrIndex, rowCount6); // add index of added row in this array
+                                    }                          
+                                } 
+
+                                function removeRow6(removeNum) { 
+                                    jQuery('#rowCount6'+removeNum).remove(); 
+                                    arrContactColFieldIndex.remove(removeNum);
+                                } 
+
+                            </script>
+                            
+                            <!-- Start Yellow Tooltip --> 
+                            <script type="text/javascript">         
+                                $(function(){
+                                    $('.YellowTooltip').poshytip();
+                                });
+                              
+                                j$(document).ready(function(){
+                                 
+                                    $(".RequiredInfoToggleA1").hide();
+                                    $(".clickCollapseBI").hide();
+                                    
+                                    $(".clickCollapseAI").click(function(){
+                                        getLayoutNameAccountRequireCompId('Account');
+                                        getLayoutNamePipelineRequireCompId(strNameSpace+'Pipeline__c');
+                                        $(".clickCollapseAI").hide();
+                                        $(".clickCollapseBI").show();
+                                        $(".RequiredInfoToggleA1").slideToggle(500);
+                                        
+                                    });
+                                    
+                                    $(".clickCollapseBI").click(function(){
+                                        $(".clickCollapseBI").hide();
+                                        $(".clickCollapseAI").show();
+                                        $(".RequiredInfoToggleA1").slideToggle(500);
+                                    });
+                                    
+                                    $(".RequiredInfoToggleA2").hide();
+                                    $(".clickCollapseBI2").hide();
+                                    
+                                    $(".clickCollapseAI2").click(function(){
+                                        getLayoutNameSourceFirmRequireCompId('Account');
+                                        $(".clickCollapseAI2").hide();
+                                        $(".clickCollapseBI2").show();
+                                        $(".RequiredInfoToggleA2").slideToggle(500);
+                                        
+                                    });
+                                    
+                                    $(".clickCollapseBI2").click(function(){
+                                        $(".clickCollapseBI2").hide();
+                                        $(".clickCollapseAI2").show();
+                                        $(".RequiredInfoToggleA2").slideToggle(500);
+                                    });
+                                    
+                                    $(".RequiredInfoToggleA3").hide();
+                                    $(".clickCollapseBI3").hide();
+                                    
+                                    $(".clickCollapseAI3").click(function(){
+                                        getLayoutNameSourceContactRequireCompId('Contact');
+                                        $(".clickCollapseAI3").hide();
+                                        $(".clickCollapseBI3").show();
+                                        $(".RequiredInfoToggleA3").slideToggle(500);
+                                        
+                                    });
+                                    
+                                    $(".clickCollapseBI3").click(function(){
+                                        $(".clickCollapseBI3").hide();
+                                        $(".clickCollapseAI3").show();
+                                        $(".RequiredInfoToggleA3").slideToggle(500);
+                                    });
+                                });
+                             
+                            </script>
+                            <style>
+                                .tip-yellow { padding:15px !important; box-shadow:#ccc 0px 0px 5px !important; }
+                            </style>    
+                            <!-- End Yellow Tooltip --> 
+                         
+                            <div class="ContentStart div_b" style="{!(IF(showEditSection ==true, 'display : block;','display : none;'))}">                         
+                            <div class="slds-page-header" role="banner">
+                                <div class="slds-media" style="padding-bottom:10px;">
+                                    <div class="slds-media__figure float_l">
+                                        <div class="slds-icon slds-icon-custom-3 slds-icon--large">
+                                            <img src="{!URLFOR($Resource.SLDS100, '/assets/icons/custom/custom67_60.png')}" />
+                                        </div>
+                                    </div>
+                                    <div class="slds-media__body float_l">
+                                        <p class="slds-page-header__title slds-truncate slds-align-middle" style="padding-top:8px">Deal Creation 
+                                            <span class="YellowTooltip" title="Use this setting to quickly create deals (both Company and Pipeline) in the system.">
+                                                <span class="slds-icon icon-utility-info slds-icon-text-default">
+                                                <img src="{!URLFOR($Resource.SLDS100, '/assets/icons/utility/info_60_white.png')}" style="width:22px; height:22px; position:relative; top:-7px" />
+                                                </span>   
+                                            </span> 
+                                        </p>                        
+                                    </div>
+                                </div>
+                                <div class="cl"></div>
+                            </div>
+                            <!--<apex:pageMessages /> -->
+                            
+                            <div style="margin:15px 17px 0 30px;" class="float_r">
+                                <apex:commandButton value="Cancel" action="{!onCancel}" title="Cancel" styleClass="slds-button slds-button--neutral click_Two" />
+                                <apex:commandButton value="Revert to Defaults" title="Revert to Defaults" styleClass="slds-button slds-button--neutral" onclick="Warning_Fancybox();return false;" />
+                                <apex:commandButton id="bn2" value="Save" onclick="saveLayout();" title="Save" styleClass="slds-button slds-button--brand click_for_step_2 click_Two" reRender="rctPnl,rctPnl2"/>                                
+                            </div>
+                            <div class="cl"></div>
+
+                            <div class="popupLayoutHeading_Top" style="margin:15px 15px 0 15px;padding:6px 8px;">
+                              <label class="slds-checkbox">
+                                    <input type="checkbox" name="options" id="checkbox-01" />
+                                    <span class="slds-checkbox--faux"></span>                               
+                              </label>
+                              <span data-aura-rendered-by="23510:1;0" class="title primaryPaletteBorder">Enable Deal Creation</span>   
+                            </div>
+                           
+                            <!-- Start Content Box -->
+                            <div class="cl"></div>  
+                            
+                            <div class="ContentBox" style="margin-top:20px;">
+                            <div class="popupLayoutHeading">
+                                <h4 data-aura-rendered-by="23510:1;0" class="title primaryPaletteBorder">Page Layout</h4>   
+                            </div>
+                            <div class="cl"></div>
+                            
+                            <!---Start-->
+                            <div class="ContentBox contentBox_shadow" style="margin:0 !important; margin-top:10px !important;">
+                                <div style="border-bottom:#fcb141 1px solid !important; padding-bottom:10px;">
+                                    <table border="0" cellpadding="0" cellspacing="0" width="100%" class="table">
+                                        <tr>
+                                            <td width="50%"><span class="slds-section__title" style="border-bottom:0 !important; color:#5c7d87 !important; background:none !important; padding:0 !important">Deal Information</span></td>
+                                            <td>
+                                                <span style="min-width:255px; float:right; background:#eff5f7; padding:0 10px; border:#dbe7ea 1px solid;">
+                                                    <table border="0" cellpadding="5" cellspacing="0" width="100%" class="table">
+                                                        <tr>
+                                                            <td style="font-size:13px;" class="td1"><label class="slds-form-element__label" for="text-input-01" style="margin-right:5px !important; position:relative; top:2px;">Assigned Record Type:</label></td>
+                                                            <td class="td2">
+                                                                <div class="slds-form-element" style="margin:5px 0!important;">
+                                                                    <div class="slds-form-element__control" style="width:170px;">
+                                                                        <div class="slds-select_container">                                                                         
+                                                                            <apex:selectList id="slct2" value="{!selectedRecorTypeForDeal}" size="1" styleClass="slds-select">
+                                                                                <apex:selectOptions value="{!RecordType}"/>
+                                                                            </apex:selectList>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </td>
+                                                        </tr>
+                                                    </table>
+                                                </span>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </div>
+
+                                <div class="cl"></div>
+
+                                <table border="0" cellpadding="0" cellspacing="0" width="100%" class="table" style="margin-top:24px;">
+                                    <tr>
+                                        <td valign="top" width="50%">
+                                            <table border="0" cellpadding="5" cellspacing="0" class="" width="100%">
+                                                <tbody>
+                                                    <tr>
+                                                        <td class="td1" style="width:14%;"></td>
+                                                        <td class="td2">
+                                                            <div class="slds-form-element">
+                                                                <div class="slds-form-element__control" style="width:260px;">
+                                                                    <div class="slds-select_container">
+                                                                        <!--Added dynamic Label for Company Name in PE v4.5  By Rahulk  -->
+                                                                        <apex:selectList size="1" styleClass="slds-select icon_33LightPipeline" disabled="true">
+                                                                           <apex:selectOption itemValue="{!$ObjectType.Pipeline__c.fields[sCompanyName].Label}" itemLabel="{!$ObjectType.Pipeline__c.fields[sCompanyName].Label}" />
+                                                                        </apex:selectList>
+                                                                        
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="td1"></td>
+                                                        <td class="td2">
+                                                            <div class="slds-form-element">
+                                                                <div class="slds-form-element__control" style="width:260px;">
+                                                                    <div class="slds-select_container">
+                                                                       <apex:selectList size="1" styleClass="slds-select icon_33LightPipeline" disabled="true">
+                                                                            <apex:selectOption itemValue="{!$ObjectType.Pipeline__c.fields.name.Label}" itemLabel="{!$ObjectType.Pipeline__c.fields.name.Label}" />
+                                                                        </apex:selectList>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="td1"></td>
+                                                        <td class="td2">
+                                                            <div class="slds-form-element">
+                                                                <div class="slds-form-element__control" style="width:260px;">
+                                                                    <div class="slds-select_container">
+                                                                        <apex:selectList size="1" styleClass="slds-select icon_33LightPipeline" disabled="true">
+                                                                            <apex:selectOption itemValue="{!$ObjectType.Pipeline__c.fields.Stage__c.Label}" itemLabel="{!$ObjectType.Pipeline__c.fields.Stage__c.Label}" />
+                                                                        </apex:selectList>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </td>  
+                                                    </tr>
+
+                                                    <tr>
+                                                        <td colspan="2">                                         
+                                                            <table border="0" cellpadding="5" cellspacing="0" width="100%">
+                                                                <tbody>
+                                                                    <tr>
+                                                                        <td class="td1" style="width:14%;"></td>
+                                                                        <td class="td2">                                                                    
+                                                                        <div class="select-editable float_l" style="margin-top:10px; margin-bottom:20px">
+                                                                        <select size="0" disabled="disabled"></select><input onkeydown="fixedFieldsFun(this);" type="text" id="dealinputleftcolmn1" placeholder="None" class="apexaccountandPipelineautocomplete" name="dealinputleftcolmn1[]" value="{!selField}" style="width:237px; padding-left:9px; height:30px; color:#16325c !important;" />
+                                                                        </div>
+                                                                        <a  onclick="addDealInfoLeftRow(this.id);" id="Auto_dealinputleftRow" class="btn_icon_add btn_icon_addA" title="Add" style="line-height:35px;"></a>
+                                                                        <div id="dealinputleftRow"></div>
+                                                                        <div id="addedRows"></div>
+                                                                        </td>
+                                                                    </tr>
+                                                                </tbody>
+                                                            </table>
+                                                        </td>
+                                                    </tr>
+
+                                                </tbody>
+                                            </table>                                
+                                            </td>
+                                        <td valign="top">
+                                            
+                                            <table border="0" cellpadding="5" cellspacing="0" width="100%">
+                                                <tbody>
+                                                    <tr>
+                                                        <td class="td1" style="width:14%;"></td>
+                                                        <td class="td2">
+                                                        <div class="slds-form-element">
+                                                        <div class="slds-form-element__control" style="width:260px;">
+                                                        <div class="slds-select_container">                                                        
+                                                        <apex:selectList size="1" styleClass="slds-select icon_33LightPipeline" disabled="true">
+                                                            <apex:selectOption itemValue="{!$ObjectType.Pipeline__c.fields.Source_Company__c.Label}" itemLabel="{!$ObjectType.Pipeline__c.fields.Source_Company__c.Label}" />
+                                                        </apex:selectList>
+                                                        </div>
+                                                        </div>
+                                                        </div>
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="td1"></td>
+                                                        <td class="td2">
+                                                        <div class="slds-form-element">
+                                                        <div class="slds-form-element__control" style="width:260px;">
+                                                        <div class="slds-select_container">
+                                                        <apex:selectList size="1" styleClass="slds-select icon_33LightPipeline" disabled="true">
+                                                            <apex:selectOption itemValue="{!$ObjectType.Pipeline__c.fields.Source_Contact__c.Label}" itemLabel="{!$ObjectType.Pipeline__c.fields.Source_Contact__c.Label}" />
+                                                        </apex:selectList>      
+                                                        
+                                                        </div>
+                                                        </div>
+                                                        </div>
+                                                        </td>                                        
+                                                    </tr>
+
+                                                    <tr>
+                                                        <td class="td1"></td>
+                                                        <td class="td2">
+                                                        <div class="slds-form-element">
+                                                        <div class="slds-form-element__control" style="width:260px;">
+                                                        <div class="slds-select_container">
+                                                        <apex:selectList size="1" styleClass="slds-select icon_33LightPipeline" disabled="true">
+                                                            <apex:selectOption itemValue="{!$ObjectType.Pipeline__c.fields.Source__c.Label}" itemLabel="{!$ObjectType.Pipeline__c.fields.Source__c.Label}" />
+                                                        </apex:selectList>                                                 
+                                                        </div>
+                                                        </div>
+                                                        </div>
+                                                        </td>                                        
+                                                    </tr>
+                                                    <tr>
+                                                        <td colspan="2">                                         
+                                                            <table border="0" cellpadding="5" cellspacing="0" width="100%">
+                                                                <tbody>
+                                                                    <tr>
+                                                                        <td class="td1" style="width:14%;"></td>
+                                                                        <td class="td2">
+                                                                            <div class="select-editable float_l" style="margin-top:10px; margin-bottom:20px">
+                                                                                <select size="0" disabled="disabled"></select><input onkeydown="fixedFieldsFun(this);" type="text" id="dealinputrightcolmn1" placeholder="None" class="apexaccountandPipelineautocomplete" name="dealinputrightcolmn1[]" value="{!selField}" style="width:237px; padding-left:9px; height:30px; color:#16325c !important;" />
+                                                                            </div>
+                                                                            <a  onclick="addDealInfoRightRow(this.id);" id="Auto_dealinputrightRow" class="btn_icon_add" title="Add" style="line-height:35px;"></a>
+                                                                            <div id="dealinputrightRow"></div>
+                                                                            <div id="addedRows_2"></div>
+                                                                        </td>
+                                                                    </tr>
+                                                                </tbody>
+                                                            </table>
+                                                        </td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>                                    
+                                        </td>
+                                    </tr>
+                                </table> 
+                                <script type="text/javascript">
+                                    function ref(urls) {                                        
+                                        var ur= 'apex/RequiredFieldInfo?Source='+urls;
+                                        window.open(ur, '_blank');
+                                    }                                    
+                                    var strEnableDealCreation= '{!if(isEnableDealCreation==true,'true','false')}';//Added By Qadier Khan for PE 3.5 11 OCT 2017.
+                                    if(strEnableDealCreation=='true'){                                  
+                                        document.getElementById("checkbox-01").checked=true;
+                                        document.getElementById("checkbox-02").checked=true;
+                                    }else{
+                                        document.getElementById("checkbox-01").checked=false;
+                                        document.getElementById("checkbox-02").checked=false;
+                                    }                               
+                                </script>
+                               
+                                <div style="margin-top:12px;">
+                                    <span style="display:inline; padding:10px 0" class="clickCollapseAI"><span class="clsA float_l"><img src="{!URLFOR($Resource.PE_35, 'PE_3.5/images/icon_left_thin_arrow.png')}" style="position:relative; top:-1px; left:2px;" /></span><a title="Required Fields List" class="float_l" style="font-size:13px;">Required Fields List</a><abbr class="slds-required float_l" style="text-decoration:none;">*</abbr></span>
+                                    <span style="display:inline; padding:10px 0" class="clickCollapseBI"><span class="clsB float_l"><img src="{!URLFOR($Resource.PE_35, 'PE_3.5/images/icon_down_thin_arrow.png')}" style="position:relative; top:-1px;" /></span><a title="Required Fields List" class="float_l" style="font-size:13px;">Required Fields List</a><abbr class="slds-required float_l" style="text-decoration:none;">*</abbr></span>
+                                </div>
+                                
+                                <div class="cl"></div> 
+                                <!------Start Toggle Section----->
+                                <div style="margin-top:12px;" class="RequiredInfoToggleA1">
+                                    Following are the required fields on the page layout:
+                                    <c:RequireFieldComp id="AccComp" ObjectName="Account" ComponentId="AccountRequireCompId"></c:RequireFieldComp>
+                                    <c:RequireFieldComp id="PipelineComp" ObjectName="{!JSENCODE(nameSpace)}Pipeline__c" ComponentId="PipelineRequireCompId"></c:RequireFieldComp>
+                                </div>                              
+                                <!------End Toggle Section----->                                 
+                                
+                             </div>
+                            <!---End-->                                
+                             
+                            </div>                        
+                            <!-- End Content Box -->
+                            <div class="cl"></div>                        
+
+                                <!-- Start Content Box -->
+                                <div class="ContentBox" style="margin-top:20px;">
+                                    <!--start--->
+                                    <div class="popupLayoutHeading">
+                                        <h4 data-aura-rendered-by="23510:1;0" class="title primaryPaletteBorder">Pop-up Layout</h4>                     
+                                    </div>
+                                    <div class="cl"></div>
+                                    <!---End----> 
+                                    
+                                    <!---Start--->
+                                    <div class="ContentBox contentBox_shadow" style="margin:0 !important; margin-top:10px !important;">
+                                    <!--<addedRows_6>-->
+                                        <div style="border-bottom:#fcb141 1px solid !important; padding-bottom:10px;">
+                                            <table border="0" cellpadding="0" cellspacing="0" width="100%" class="table">
+                                                <tr>
+                                                    <td width="50%"><span class="slds-section__title" style="border-bottom:0 !important; color:#5c7d87 !important; background:none !important; padding:0 !important">Fields for New {!$ObjectType.Pipeline__c.fields.Source_Company__c.Label}</span></td>
+                                                    <td>
+                                                        <span style="min-width:255px; float:right; background:#eff5f7; padding:0 10px; border:#dbe7ea 1px solid;">
+                                                            <table border="0" cellpadding="0" cellspacing="0" width="100%" class="table">
+                                                                <tr>
+                                                                    <td style="font-size:13px;" class="td1"><label class="slds-form-element__label" for="text-input-01" style="margin-right:5px !important; position:relative; top:2px;">Assigned Record Type:</label></td>
+                                                                    <td class="td2">
+                                                                        <div class="slds-form-element" style="margin:5px 0!important;">
+                                                                            <div class="slds-form-element__control" style="width:170px;">
+                                                                                <div class="slds-select_container">
+                                                                                    <apex:selectList id="slct1" value="{!selectedRecorTypeForAccount}" size="0" styleClass="slds-select">
+                                                                                        <apex:selectOptions value="{!RecordType}"/>
+                                                                                    </apex:selectList>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                    </td>
+                                                                </tr>
+                                                            </table>
+                                                        </span>
+                                                    </td>
+                                                </tr>
+                                            </table>
+                                        </div>  
+                                    <!---</addedRows_6>--->
+                                    <div class="cl"></div>
+                                        <table border="0" cellpadding="0" cellspacing="0" width="100%" class="table" style="margin-top:19px;">
+                                            <tr>
+                                                <td valign="top">
+                                                <table border="0" cellpadding="5" cellspacing="0" width="100%">
+                                                    <tr>
+                                                        <td class="td1" style="width:7%;"></td>
+                                                        <td class="td2">
+                                                        <div class="slds-form-element">
+                                                            <div class="slds-form-element__control" style="width:260px;">
+                                                                <div class="slds-select_container">
+                                                                    <apex:selectList size="1" styleClass="slds-select icon_33LightAccount" disabled="true">
+                                                                        <apex:selectOption itemValue="{!$ObjectType.Account.fields.name.Label}" itemLabel="{!$ObjectType.Account.fields.name.Label}" />
+                                                                    </apex:selectList>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="td1"></td>
+                                                        <td class="td2">
+                                                        <div class="select-editable float_l" style="margin-top:10px; margin-bottom:20px">
+                                                            <select size="0" disabled="disabled"></select> 
+                                                            <input type="text" onkeydown="fixedFieldsFun(this);" id="accinputleftcolmn1" placeholder="None" class="apexaccountautocomplete" name="accinputleftcolmn1[]" value="{!selField}" style="width:237px; padding-left:9px; height:30px; color:#16325c !important;" />
+                                                        </div>  
+                                                        <a  onclick="addNewSourceFirm(this.id);" id="Auto_accinputleftcolmnRow" class="btn_icon_add btn_icon_addA" title="Add" style="line-height:35px;"></a>
+                                                        <div id="accinputleftcolmnRow"></div>
+                                                        <div id="addedRows_5"></div>
+
+                                                        </td>                                                                
+                                                    </tr>
+                                                </table>
+                                                </td>
+                                            </tr>                           
+                                        </table>
+                                        <!--<span style="display:block; padding:10px 0;"><abbr class="slds-required float_l" title="Required">*</abbr><a href="" target="_blank" title="Required Fields Info" class="float_l" style="font-size:13px;" onclick="ref(accURL);return false;" >Required Fields Info</a></span>-->
+                                        
+                                        <div style="margin-top:12px;">
+                                            <span style="display:inline; padding:10px 0" class="clickCollapseAI2"><span class="clsA float_l"><img src="{!URLFOR($Resource.PE_35, 'PE_3.5/images/icon_left_thin_arrow.png')}" style="position:relative; top:-1px; left:2px;" /></span><a title="Required Fields List" class="float_l" style="font-size:13px;">Required Fields List</a><abbr class="slds-required float_l" style="text-decoration:none;">*</abbr></span>
+                                            <span style="display:inline; padding:10px 0" class="clickCollapseBI2"><span class="clsB float_l"><img src="{!URLFOR($Resource.PE_35, 'PE_3.5/images/icon_down_thin_arrow.png')}" style="position:relative; top:-1px;" /></span><a title="Required Fields List" class="float_l" style="font-size:13px;">Required Fields List</a><abbr class="slds-required float_l" style="text-decoration:none;">*</abbr></span>
+                                        </div>
+                                        
+                                        <div class="cl"></div> 
+                                        <!------Start Toggle Section----->
+                                        <div style="margin-top:12px;" class="RequiredInfoToggleA2">
+                                            Following are the required fields on the page layout:
+                                            <c:RequireFieldComp id="SourceFirm" ObjectName="Account" ComponentId="SourceFirmRequireCompId"></c:RequireFieldComp>                                        
+                                        </div>                              
+                                        <!------End Toggle Section----->
+                                        
+                                </div>
+                                <!---End--->
+                                
+                                <!----Start--->
+                                <div class="ContentBox contentBox_shadow" style="margin:0 !important; margin-top:20px !important;">
+                                    <div style="border-bottom:#fcb141 1px solid !important; padding-bottom:10px;">
+                                        <table border="0" cellpadding="0" cellspacing="0" width="100%" class="table">
+                                            <tr>
+                                                <td><span class="slds-section__title" style="border-bottom:0 !important; color:#5c7d87 !important; background:none !important; padding:0 !important">Fields for New {!$ObjectType.Pipeline__c.fields.Source_Contact__c.Label}</span></td>
+                                             </tr>
+                                        </table>
+                                    </div>
+                                    <div class="cl"></div>
+                                    <table border="0" cellpadding="0" cellspacing="0" width="100%" class="table" style="margin-top:24px;">
+                                        <tr>
+                                            <td valign="top">
+                                                <table border="0" cellpadding="5" cellspacing="0" width="100%">
+                                                <tr>
+                                                    <td class="td1" style="width:7%;"></td>
+                                                    <td class="td2">
+                                                    <div class="slds-form-element" style="margin:5px 0 10px 0!important;">
+                                                        <div class="slds-form-element__control" style="width:260px;">
+                                                            <div class="slds-select_container">
+                                                                <apex:selectList size="1" styleClass="slds-select icon_33LightContact" disabled="true">
+                                                                    <apex:selectOption itemValue="{!$ObjectType.Contact.fields.lastname.Label}" itemLabel="{!$ObjectType.Contact.fields.lastname.Label}" />
+                                                                </apex:selectList>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="td1"></td>
+                                                    <td class="td2">                                                    
+                                                        <div class="select-editable float_l" style="margin-top:10px; margin-bottom:20px">
+                                                            <select disabled="disabled"></select>
+                                                            <input onkeydown="fixedFieldsFun(this);" id="coninputleftcolmn1" type="text" placeholder="None" class="apexContactautocomplete" name="coninputleftcolmn1[]" value="" style="width:237px; padding-left:9px; height:30px; color:#16325c !important;"/>  
+                                                        </div>
+                                                        <a onclick="addNewSourceContact(this.id);" id="Auto_coninputleftcolmnRow" class="btn_icon_add btn_icon_addA" title="Add" style="line-height:35px;"></a>
+                                                        <div id="coninputleftcolmnRow"></div>  
+                                                        <div id="addedRows_6"></div>  
+                                                    </td>                                                                
+                                                </tr>
+                                            </table>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                    <!--<span style="padding:10px 0; display:block;"><abbr class="slds-required float_l" title="Required">*</abbr><a href="apex/RequiredFieldInfo?Source=Contact" target="_blank" title="Required Fields Info" class="float_l" style="font-size:13px;">Required Fields Info</a></span>-->
+                                    
+                                    <div style="margin-top:12px;">
+                                        <span style="display:inline; padding:10px 0" class="clickCollapseAI3"><span class="clsA float_l"><img src="{!URLFOR($Resource.PE_35, 'PE_3.5/images/icon_left_thin_arrow.png')}" style="position:relative; top:-1px; left:2px;" /></span><a title="Required Fields List" class="float_l" style="font-size:13px;">Required Fields List</a><abbr class="slds-required float_l" style="text-decoration:none;">*</abbr></span>
+                                        <span style="display:inline; padding:10px 0" class="clickCollapseBI3"><span class="clsB float_l"><img src="{!URLFOR($Resource.PE_35, 'PE_3.5/images/icon_down_thin_arrow.png')}" style="position:relative; top:-1px;" /></span><a title="Required Fields List" class="float_l" style="font-size:13px;">Required Fields List</a><abbr class="slds-required float_l" style="text-decoration:none;">*</abbr></span>
+                                    </div>
+                                    
+                                    <div class="cl"></div> 
+                                    <!------Start Toggle Section----->
+                                    <div style="margin-top:12px;" class="RequiredInfoToggleA3">
+                                        Following are the required fields on the page layout:
+                                        <c:RequireFieldComp id="SourceContact" ObjectName="Contact" ComponentId="SourceContactRequireCompId"></c:RequireFieldComp>                                       
+                                    </div>                              
+                                    <!------End Toggle Section----->
+                                    
+                                </div>
+                                <!---End---->
+                                
+                               </div>
+                                <!-- End Content Box -->
+
+                            <!-- End Content Box -->             
+                                <div class="float_r" style="margin:8px 17px 0 0px;">                    
+                                    <apex:commandButton value="Cancel" action="{!onCancel}" title="Cancel" reRender="rctPnl,rctPnl2" styleClass="slds-button slds-button--neutral click_Two" />
+                                    <apex:commandButton value="Revert to Defaults" title="Revert to Defaults"  styleClass="slds-button slds-button--neutral" onclick="Warning_Fancybox();return false;" />                                    
+                                    <apex:commandButton id="btn1" onclick="saveLayout();" title="Save" value="Save" styleClass="slds-button slds-button--brand click_for_step_2 click_Two" reRender="rctPnl,rctPnl2"/>                                   
+                                </div>
+                                <div class="cl"></div> <br />
+                            </div>
+
+                        </apex:outputPanel>
+                    <!-- End Div B -->
+
+                    </div>
+
+                    <div class="cl"></div>
+                    </td>
+                    </tr>
+                </table>
+                </div>
+
+                </div>
+                <!-- Start PRIMARY CONTENT WRAPPER -->
+                </div>
+                <!-- End REQUIRED SLDS WRAPPER -->                
+              
+        </body>
+    </html>
+    </apex:form>
+</apex:page>

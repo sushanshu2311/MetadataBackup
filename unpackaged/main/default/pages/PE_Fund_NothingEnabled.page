@@ -1,0 +1,18 @@
+<apex:page standardController="Fund__c"  extensions="clsPEFundNothingEnabled">
+  <script>
+        var ipurl = ''; 
+        
+        var erromsg = '{!JSENCODE(error)}';
+        
+        if(erromsg== 'msg')   
+            ipurl = '{!$Label.navpeII_dev18__IP_Url}'+'Show_Error_onfund_Page1?Errorpage=Fund' ; 
+        // IP V1.8 Remove Co-Investment restriction
+        //else if(erromsg == 'Co-investment')      
+        //  ipurl = '{!$Label.navpeII_dev18__IP_Url}'+'Show_Error_onfund_Page?Errorpage=Fund&Fundtype=Co-investment' ; 
+        else if(erromsg == 'false' || erromsg == false)             
+           ipurl = '{!$Label.navpeII_dev18__IP_Url}'+'apex/Gateway?startURL={!JSENCODE(pageUrl)}';   
+        else if(erromsg == 'true' || erromsg == true)   
+            ipurl = '{!$Label.navpeII_dev18__IP_Url}'+'Show_Error_onfund_Page?Errorpage=Fund' ; 
+        window.location=ipurl;    
+    </script>
+</apex:page>

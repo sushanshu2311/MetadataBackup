@@ -1,0 +1,27 @@
+.slds-border_around{
+   
+    /* line-height: 35px; */
+    padding: 5px 10px;
+    
+}
+.align_center{
+    align-items: center;
+}
+.font_bold{
+    font-weight:700;
+}
+.font_18{
+    font-size:18px;
+}
+
+.min_heiggt_44{
+    min-height:44px;
+}
+.clrChangeShade{
+    background: #f3f3f3;
+    border-top:1px solid #e5e5e5;
+    border-bottom:1px solid #e5e5e5;
+}
+.font_500{
+    font-weight:500;
+}

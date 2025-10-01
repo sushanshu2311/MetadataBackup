@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomMetadata xmlns="http://soap.sforce.com/2006/04/metadata" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+    <label>Banker Report</label>
+    <protected>false</protected>
+    <values>
+        <field>Rpt_Description__c</field>
+        <value xsi:type="xsd:string">Profile summary of this contact</value>
+    </values>
+    <values>
+        <field>Rpt_Record_Type__c</field>
+        <value xsi:type="xsd:string">Master</value>
+    </values>
+    <values>
+        <field>Rpt_Report_Name__c</field>
+        <value xsi:type="xsd:string">Banker Summary</value>
+    </values>
+    <values>
+        <field>Rpt_Report_URL__c</field>
+        <value xsi:type="xsd:string">/apex/navpeII_dev18__Banker_Report?id={!Contact.Id}</value>
+    </values>
+</CustomMetadata>

@@ -1,0 +1,13 @@
+<aura:component implements="force:hasRecordId,lightning:actionOverride,force:lightningQuickAction,flexipage:availableForAllPageTypes" access="global" >
+    <aura:attribute name="recordId" type="String" default=""/>
+    <aura:attribute name="redirectId" type="String" default=""/>
+    <aura:attribute name="taskType" type="String" default=""/>
+    <aura:attribute name="isRedirectToRecord" type="boolean" default="true"/>
+    <aura:attribute name="isCalledfromMobile" type="boolean" default="true"/>
+    <aura:attribute name="isRedirectToParent" type="boolean" default="true"/>
+    <aura:attribute name="isFollowup" type="boolean" default="false"/>
+    <aura:attribute name="isUtilityBar" type="boolean" default="false"/>
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}" />
+    <!-- isUtilityBar="{!v.isUtilityBar}" -->
+	<c:navatarNotesMobileLwc isRedirectToParent = "{!v.isRedirectToParent}" isCalledfromMobile = "{!v.isCalledfromMobile}" recordId="{!v.recordId}" objectName="Task" redirectId="{!v.redirectId}" isRedirectToRecord="{!v.isRedirectToRecords}" taskType="{!v.taskType}" isFollowup="{!v.isFollowup}" ></c:navatarNotesMobileLwc>
+</aura:component>

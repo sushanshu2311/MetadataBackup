@@ -1,0 +1,32 @@
+a[aria-disabled="true"] {
+    display: inline-block;
+    /* For IE11/ MS Edge bug */
+    pointer-events: none;
+    text-decoration: none;
+    opacity: 0.6;
+  }
+  
+  .marginLeftMinus {
+    margin-left: -9px;
+  }
+  
+  .add_pos {
+   padding-top: 13px;
+  }
+  .plusiconcss{
+    width:4%;
+    position: absolute;
+    right: 5%;
+  }
+  
+  @media (max-width: 1480px) { /* Ui fixes for bug #00041377 by salauddin sheikh*/
+    .plusiconcss{
+      width:4%;
+      position: absolute;
+      right: 3.5%; /* bug #00042409 fixes by salauddin sheikh */
+    }
+  }
+  .headers{
+    margin-left: 1.3em;
+      margin-top: 0.8em;
+  }

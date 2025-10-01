@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Check_Allow_Changes_Child</fullName>
+    <active>true</active>
+    <errorConditionFormula>IF( AND(AllowChange__c = false, ISCHANGED( Commitment_Amount_nearest__c ), Has_Child__c =false), true, false)</errorConditionFormula>
+    <errorMessage>The commitment amount cannot be edited because it was created as a result of a transfer from a commitment. Please delete the transfer that created this commitment, which would delete the commitment too; then create a new transfer with the correct amount.</errorMessage>
+</ValidationRule>

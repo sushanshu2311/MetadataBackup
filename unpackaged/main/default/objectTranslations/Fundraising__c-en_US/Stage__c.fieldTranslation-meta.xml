@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomFieldTranslation xmlns="http://soap.sforce.com/2006/04/metadata">
+        <label><!-- Stage --></label>
+        <name>Stage__c</name>
+        <picklistValues>
+            <masterLabel>Declined</masterLabel>
+            <translation><!-- Declined --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Follow up Diligence</masterLabel>
+            <translation><!-- Follow up Diligence --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Initial Meeting</masterLabel>
+            <translation><!-- Initial Meeting --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Interested</masterLabel>
+            <translation><!-- Interested --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Legal Closed</masterLabel>
+            <translation><!-- Legal Closed --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Prospect</masterLabel>
+            <translation><!-- Prospect --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Second Meeting</masterLabel>
+            <translation><!-- Second Meeting --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Sent PPM</masterLabel>
+            <translation><!-- Sent PPM --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Soft Circle</masterLabel>
+            <translation><!-- Soft Circle --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Verbal Commitment</masterLabel>
+            <translation><!-- Verbal Commitment --></translation>
+        </picklistValues>
+    </CustomFieldTranslation>

@@ -1,0 +1,89 @@
+<!--
+** Module Name : Acuity 2.0 - Acuity
+** Description : Displays all the clips records
+** Throws : NA
+** Calls : NA
+** Organization : Navatar Group
+** Product Name & Version : Acuity 2.0
+** Revision History:-
+** Version    Date(YYYY-MM-DD)    Author         Description of Action
+** 1.0        2022-11-28          Hema
+-->
+<template>
+  <div class="main-Container-clip">
+    <div class="slds-page-header slds-m-bottom_small">
+        <div class="slds-page-header__row">
+          <div class="slds-page-header__col-title">
+            <div class="slds-media" style="align-items: center;"> 
+              <div class="slds-media__figure">
+                <lightning-icon  icon-name="standard:groups"></lightning-icon>
+              </div>
+              <div class="slds-media__body">
+                <div class="slds-page-header__name">
+                  <div class="slds-page-header__name-title">
+                    <h1>
+                      <span class="slds-page-header__title slds-truncate" title="All Clips">All Clips</span>
+                    </h1>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+    </div>
+    <div class="slds-theme_shade slds-m-bottom_small">
+        <lightning-layout>
+            <lightning-layout-item size="12" padding="around-small">
+                <div class="slds-grid ">
+                    <div class="slds-size_3-of-12">
+                        <div onkeyup={handleKeyUp}>
+                         <!-- Added by Hema - Changed placehoder - 00035042 -->
+                            <lightning-input
+                                name="Search"
+                                variant="label-hidden"
+                                type="search"
+                                autocomplete="off"
+                                onchange={handleKeyUp}
+                                placeholder="Search this list..."
+                            ></lightning-input>
+                        </div>
+                    </div>
+                </div>
+            </lightning-layout-item>
+        </lightning-layout>
+        <lightning-layout>
+            <lightning-layout-item size="12" padding="vertical-small">
+              <template if:true={isExistData}>
+                  <div class="slds-border_left slds-border_right slds-border_top slds-m-bottom_small">
+                      <lightning-datatable key-field="id" data={clipsList}  for:index="index" columns={clipCol} onrowaction={handleRowActions}
+                          hide-checkbox-column class="viewallScreen">
+                      </lightning-datatable>
+                  </div>
+                
+                  </template>
+                  <template if:false={isExistData}>
+                      <div class="slds-border_left slds-border_right slds-border_top slds-m-bottom_small">
+                          <lightning-datatable key-field="id" data={clipsList}  for:index="index" columns={clipCol}  onrowaction={handleRowActions}
+                              hide-checkbox-column class="viewallScreen">
+                          </lightning-datatable>
+                      </div>
+                      <div class="slds-p-around_x-small slds-text-align_left">
+                          No items to display
+                       </div>
+                  </template>
+               
+            </lightning-layout-item>
+        </lightning-layout>
+    </div>
+  </div>
+  <c-navatar-Acuity-Interaction-Column-Popup-Lwc>
+  </c-navatar-Acuity-Interaction-Column-Popup-Lwc>
+    <c-navatar-All-Clips-View-Modal-Lwc clip-icon ={clipIcon} onchildmethod={handleNotePopup}></c-navatar-All-Clips-View-Modal-Lwc>
+    <!--SPINNER : START-->
+   <template if:true={enableSpinner}>
+    <lightning-spinner alternative-text="Loading..."
+                       style="z-index:15002">
+    </lightning-spinner>
+</template>
+<!--SPINNER : END-->
+</template>

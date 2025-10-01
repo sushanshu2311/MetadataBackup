@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomFieldTranslation xmlns="http://soap.sforce.com/2006/04/metadata">
+        <help><!-- Note for Admin- Please do not change these picklist values, since it may impact certain features of Navatar Deal Connect. --></help>
+        <label><!-- Transaction Type --></label>
+        <name>Transaction_Type__c</name>
+        <picklistValues>
+            <masterLabel>Buyout</masterLabel>
+            <translation><!-- Buyout --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Debt Raise</masterLabel>
+            <translation><!-- Debt Raise --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Distressed Investment</masterLabel>
+            <translation><!-- Distressed Investment --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Equity Raise</masterLabel>
+            <translation><!-- Equity Raise --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Growth Capital</masterLabel>
+            <translation><!-- Growth Capital --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Leveraged Buyout</masterLabel>
+            <translation><!-- Leveraged Buyout --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Mezzanine Capital</masterLabel>
+            <translation><!-- Mezzanine Capital --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Venture Capital</masterLabel>
+            <translation><!-- Venture Capital --></translation>
+        </picklistValues>
+    </CustomFieldTranslation>

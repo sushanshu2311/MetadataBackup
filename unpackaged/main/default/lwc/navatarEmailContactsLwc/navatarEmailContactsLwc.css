@@ -1,0 +1,45 @@
+.mainAccordion {
+    /*border: 1px solid #fcb141 !important; raju - 08-06-02021*/
+    border: 0 !important;
+    border-bottom: 1px solid #dddbda !important;
+    border-radius: 0 !important;
+  }
+  .slds-card {
+    /*min-height: 3rem; by raju 24-06-2021*/
+    min-height: 1.5rem
+  }
+  
+  .slds-card_boundary{
+    border-width: 0!important;
+  }
+  
+  .slds-tabs_card.slds-tabs_card .slds-card_boundary .slds-card__header{padding-bottom: 0.75rem !important;}
+  /*CSS Raju - 08-06-2021*/
+  .cls_box_boxShadow {box-shadow: 0 2px 2px 0 rgba(0,0,0,.1)!important;}
+  .cls_fontWeight {font-weight: var(--lwc-fontWeightBold,700) !important;}
+  .cls_mainHeadingSize {font-size: 1.20rem !important; margin-top: -5px !important;}
+  .cls_postionFrmTop {margin-top: -2px;}
+  .cls_stepLeftPositon { margin-left: -0.7rem; }
+  .cls_bordrNone {border: 0 !important;}
+  .cls_headingStyle {background:rgb(243, 242, 242); text-transform: capitalize; margin: 0.5rem 0rem; letter-spacing: 0px; height: 32px; border-radius: .25rem; line-height: 14px;}
+  /*Commented below CSS by Lakshya on 2021-12-22 to resolve 00030344*/
+  /*Purpose : No longer used after bug resolution*/
+  /*.cls_fontNormal {font-weight:normal}*/
+  .cls_myCart {position: relative; }
+  .cls_myCart .slds-button{position: absolute; top: 0; left: 0; z-index: 0; padding-left: 30px; font-size: 15px;}
+  .cls_pos {position: absolute; top:7px; left: 8px; z-index: 1;}
+  .cls_leftRight_p {padding-left: 2px; padding-right: 2px;}
+  .cls_leftRight_pNew {padding-left: 17px; padding-right: 17px;}
+  /*Commented below CSS by Lakshya on 2021-12-22 to resolve 00030344*/
+  /*Purpose : No longer used after bug resolution*/
+  /*.cls_textPos {    position: absolute; top: 5px;}*/
+  .cls_containerShadow{box-shadow: 0px 0px 5px 0px rgba(0,0,0,.16); border: 0;}
+  .cls_borderRadius {border-radius: 0.25rem;}
+  /*Added below CSS by Lakshya on 2021-12-22 to resolve 00030344*/
+  .cls_wrenchPos{
+    padding-left: 5.6%;
+    display: flex;
+  }
+  .slds-box .slds-box_xx-small{
+    border: 0px;
+  }

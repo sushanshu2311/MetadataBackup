@@ -1,0 +1,55 @@
+<template>
+    <div class="slds-box slds-grid slds-wrap slds-m-bottom_medium cls_myTableContainer" style="position: relative;">
+        <div style="width: 2%;">
+        </div>
+        <div class="slds-p-left_none slds-form-element__label" style="width: 31%;">
+            <span class="marginLeftMinus">Field</span>
+        </div>
+        <div class="slds-p-left_xxx-small slds-form-element__label" style="width: 31%;">
+            Operator
+        </div>
+        <div class="slds-p-left_x-small slds-form-element__label" style="width: 31%;">
+            Value
+        </div>
+        <!-- <div style="width: 5%;position: absolute;right: 58px;top: 55px;">
+            <template if:true={enableAddRow}>
+               
+                    <lightning-icon icon-name="utility:add" onclick={handleRowInsertion} title = "Add Row" aria-disabled={disableMoreRows} class="slds-m-left_xx-small" alternative-text="Add" size="x-small"></lightning-icon>
+                
+            </template>
+        </div> -->
+        <!--template if:true={filterList}-->
+            <div class="slds-col slds-size_12-of-12">
+                <template for:each={filterList} for:item="filter">
+                    <div key={filter.index}>
+                        <c-navatar-expression-builder-lwc index={filter.index} field-struct={fieldStruct} comp-data={filter.filterData}
+                            row-size={rowSize} ondeleterows={handleRowDeletion} onaddrow={handleRowInsertion}
+                            is-filter-logic-enabled={enableFilterLogic}>
+                        </c-navatar-expression-builder-lwc>
+                    </div>
+                </template>
+            </div>
+        <!--/template-->
+    </div>
+
+    
+    <!-- <template if:true={enableAddFilterLogic}>
+        <a onclick={handleAdvanceFilterToggle} title={filterLogicTitle}>
+            {filterLogicTitle}
+        </a>
+        <br />
+    </template> -->
+    <template if:true={enableFilterLogic}>
+        <div class="slds-grid slds-wrap">
+            <lightning-input class="slds-size_2-of-12" style="width:24%" type="text" variant="standard" name="Filter Logic"
+                label="Filter Logic" value={filterLogicVal} onchange={handleFilterChange}
+                placeholder="1 AND 2, 1 OR 2, (1 OR 2) AND 3">
+            </lightning-input>
+            <!--Added content attribute by Lakshya on 2021-12-16 to resolve 00030297-->
+            <lightning-helptext content="Example: (1 OR 2) AND 3" class="slds-p-left_xxx-small slds-p-top_large" onclick={handleShowInfo}>
+            </lightning-helptext><!--Modified by Anshika Ahuja 10-3-2021 slds-var-p-left_x-small slds-var-p-top_xx-large  style="width:24%"-->
+        </div>
+    </template>
+    <lightning-formatted-text style="color: red;" value={filterErrMsg}>
+    </lightning-formatted-text>
+</template>

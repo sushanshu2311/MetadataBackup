@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObjectTranslation xmlns="http://soap.sforce.com/2006/04/metadata">
+    <caseValues>
+        <plural>false</plural>
+        <value>Sortable Data Grid</value>
+    </caseValues>
+    <caseValues>
+        <plural>true</plural>
+        <value>Sortable Data Grids</value>
+    </caseValues>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <fieldSets>
+        <label><!-- default --></label>
+        <name>default</name>
+    </fieldSets>
+    <layouts>
+        <layout>SDG Layout</layout>
+        <sections>
+            <label><!-- Custom Links --></label>
+            <section>Custom Links</section>
+        </sections>
+    </layouts>
+    <quickActions>
+        <label><!-- Export Wizard --></label>
+        <name>Export_Wizard</name>
+    </quickActions>
+    <quickActions>
+        <label><!-- Help --></label>
+        <name>Help</name>
+    </quickActions>
+    <startsWith>Vowel</startsWith>
+    <validationRules>
+        <errorMessage><!-- You can either fill &apos;Filter&apos; or &apos;List View Name&apos; to save the record. --></errorMessage>
+        <name>ListViewName_Check</name>
+    </validationRules>
+    <validationRules>
+        <errorMessage><!-- sObjectName is mandatory --></errorMessage>
+        <name>Make_sObjectName_Mandatory</name>
+    </validationRules>
+    <validationRules>
+        <errorMessage><!-- Inline editing is restricted for this object. --></errorMessage>
+        <name>Valid_sObject_for_Editable_SDG</name>
+    </validationRules>
+</CustomObjectTranslation>

@@ -1,0 +1,86 @@
+<!--
+** Module Name : Acuity 2.0 - Acuity
+** Description : Displays all the theme records & allows to create new Theme record
+** Throws : NA
+** Calls : NA
+** Organization : Navatar Group
+** Product Name & Version : Acuity 2.0
+** Revision History:-
+** Version    Date(YYYY-MM-DD)    Author         Description of Action
+** 1.0        2022-11-28          Hema
+-->
+<template>
+  <!--SPINNER : START-->
+  <template if:true={enableSpinner}>
+     <lightning-spinner alternative-text="Loading..."
+     style="z-index:15002" class="spinner_css">
+     </lightning-spinner>
+ </template>
+ <!--SPINNER : END-->
+ <div class="main-Container-alltheme">
+<template if:true={newThemePop}>
+		<c-navatar-Theme-Record-Popup-Lwc show-new-screen={showNewScreen} is-all-themes={spinnerVar} onchildsuccess ={handleChildComplete}></c-navatar-Theme-Record-Popup-Lwc>
+<div class="slds-backdrop slds-backdrop_open modalbackdrop" role="presentation"></div>
+</template> 
+<div class="slds-page-header slds-m-bottom_small">
+ <div class="slds-media" style="align-items:center;justify-content:space-between;">
+   <lightning-layout style="gap:10px;align-items:center;">
+     <lightning-layout-item>
+       <div style="display: flex;gap: 10px;align-items: center;">
+         <lightning-icon  icon-name="standard:groups"></lightning-icon>
+         <span class="slds-page-header__title slds-truncate" title="All Themes">All Themes</span>
+       </div>
+     </lightning-layout-item>
+   </lightning-layout>
+   <lightning-layout>
+     <lightning-layout-item>
+       <lightning-button label="New Theme" title="New Theme" onclick={addNewTheme} class="slds-m-left_x-small"></lightning-button>
+     </lightning-layout-item>
+   </lightning-layout>
+ </div>
+</div>
+<div class="slds-theme_shade slds-m-bottom_small">
+   <lightning-layout>
+       <lightning-layout-item size="12" padding="around-small">
+           <div class="slds-grid ">
+               <div class="slds-size_3-of-12">
+                   <div onkeyup={handleKeyUp} >
+                       <!-- Added by Hema - Changed placehoder - 00035040 -->
+                       <lightning-input
+                           name="Search"
+                           variant="label-hidden"
+                           type="search"
+                          autocomplete="off"
+                          onchange={handleKeyUp}
+                          placeholder="Search this list..."
+                       ></lightning-input>
+                   </div>
+               </div>
+           </div>
+       </lightning-layout-item>
+   </lightning-layout>
+   <lightning-layout>
+       <lightning-layout-item size="12" padding="vertical-small">
+         <div class="heightC">
+         <template if:true={isExistData}>
+           <div class="slds-border_left slds-border_right slds-border_top slds-m-bottom_small">
+           <lightning-datatable data={themeList} columns={themeCol} key-field="Id" hide-checkbox-column="true" class="viewallScreen tab-ht">
+           </lightning-datatable>
+         </div>
+           </template>
+           <template if:false={isExistData}>
+             <div class="slds-border_left slds-border_right slds-border_top slds-m-bottom_small">
+               <lightning-datatable data={themeList} columns={themeCol} key-field="Id" hide-checkbox-column="true" class="viewallScreen tab-ht">
+               </lightning-datatable>
+             </div>
+               <div class="slds-p-around_x-small slds-text-align_left">
+                <!-- Bug 00047801 fixed by Sudhanshu -->
+                   No items to display.
+                </div>
+           </template>
+         </div>
+       </lightning-layout-item>
+   </lightning-layout>
+</div>
+</div>
+</template>

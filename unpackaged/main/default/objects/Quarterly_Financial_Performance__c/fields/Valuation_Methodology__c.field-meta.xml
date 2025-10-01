@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Valuation_Methodology__c</fullName>
+    <label>Valuation Methodology</label>
+    <required>false</required>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Picklist</type>
+    <valueSet>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>EBITDA Multiple</fullName>
+                <default>false</default>
+                <label>EBITDA Multiple</label>
+            </value>
+            <value>
+                <fullName>DCF</fullName>
+                <default>false</default>
+                <label>DCF</label>
+            </value>
+            <value>
+                <fullName>YTM</fullName>
+                <default>false</default>
+                <label>YTM</label>
+            </value>
+            <value>
+                <fullName>Revenue Multiple</fullName>
+                <default>false</default>
+                <label>Revenue Multiple</label>
+            </value>
+            <value>
+                <fullName>Marked to Market (Discounted)</fullName>
+                <default>false</default>
+                <label>Marked to Market (Discounted)</label>
+            </value>
+            <value>
+                <fullName>Marked to Market (Not discounted)</fullName>
+                <default>false</default>
+                <label>Marked to Market (Not discounted)</label>
+            </value>
+            <value>
+                <fullName>Black Scholes</fullName>
+                <default>false</default>
+                <label>Black Scholes</label>
+            </value>
+            <value>
+                <fullName>Other</fullName>
+                <default>false</default>
+                <label>Other</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
+</CustomField>

@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ListView xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>TestView</fullName>
+    <columns>FULL_NAME</columns>
+    <columns>CONTACT.SALUTATION</columns>
+    <columns>CONTACT.FIRST_NAME</columns>
+    <columns>CONTACT.LAST_NAME</columns>
+    <columns>ACCOUNT.NAME</columns>
+    <filterScope>Everything</filterScope>
+    <filters>
+        <field>FULL_NAME</field>
+        <operation>startsWith</operation>
+    </filters>
+    <label>TestView</label>
+    <language>en_US</language>
+</ListView>

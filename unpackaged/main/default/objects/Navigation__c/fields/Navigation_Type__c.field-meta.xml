@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Navigation_Type__c</fullName>
+    <label>Navigation Type</label>
+    <required>false</required>
+    <trackTrending>false</trackTrending>
+    <type>Picklist</type>
+    <valueSet>
+        <restricted>true</restricted>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>New Interactions</fullName>
+                <default>false</default>
+                <label>New Interactions</label>
+            </value>
+            <value>
+                <fullName>Bulk Actions</fullName>
+                <default>false</default>
+                <label>Bulk Actions</label>
+            </value>
+            <value>
+                <fullName>Create New</fullName>
+                <default>false</default>
+                <label>Create New</label>
+            </value>
+            <value>
+                <fullName>Create</fullName>
+                <default>false</default>
+                <label>Create</label>
+            </value>
+            <value>
+                <fullName>New Interaction</fullName>
+                <default>false</default>
+                <isActive>false</isActive>
+                <label>New Interaction</label>
+            </value>
+            <value>
+                <fullName>New Interactive</fullName>
+                <default>false</default>
+                <isActive>false</isActive>
+                <label>New Interactive</label>
+            </value>
+            <value>
+                <fullName>New Relationship</fullName>
+                <default>false</default>
+                <isActive>false</isActive>
+                <label>New Relationship</label>
+            </value>
+            <value>
+                <fullName>Quick Action</fullName>
+                <default>false</default>
+                <isActive>false</isActive>
+                <label>Quick Action</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
+</CustomField>

@@ -1,0 +1,19 @@
+.small_modal .slds-modal__container{
+    max-width:20rem !important;
+}
+.gap_10{
+    gap:10px;
+}
+.no_underline{
+    text-decoration: none;
+    font-size:14px;
+}
+.cursor_pointer{
+    cursor: pointer;
+}
+.cur_default{
+    cursor: default;
+}
+.hidebackdrop{
+    display: none;
+}

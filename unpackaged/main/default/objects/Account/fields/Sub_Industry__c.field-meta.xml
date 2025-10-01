@@ -1,0 +1,231 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Sub_Industry__c</fullName>
+    <label>Sub-Industry</label>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <type>Picklist</type>
+    <valueSet>
+        <controllingField>Industry</controllingField>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>Business Services</fullName>
+                <default>false</default>
+                <label>Business Services</label>
+            </value>
+            <value>
+                <fullName>Consumer - Apparel</fullName>
+                <default>false</default>
+                <label>Consumer - Apparel</label>
+            </value>
+            <value>
+                <fullName>Consumer - Food and Beverage</fullName>
+                <default>false</default>
+                <label>Consumer - Food and Beverage</label>
+            </value>
+            <value>
+                <fullName>Consumer - Home Furnishing and Appliances</fullName>
+                <default>false</default>
+                <label>Consumer - Home Furnishing and Appliances</label>
+            </value>
+            <value>
+                <fullName>Consumer - Leisure</fullName>
+                <default>false</default>
+                <label>Consumer - Leisure</label>
+            </value>
+            <value>
+                <fullName>Consumer  - Personal Products</fullName>
+                <default>false</default>
+                <label>Consumer  - Personal Products</label>
+            </value>
+            <value>
+                <fullName>Consumer - Retail</fullName>
+                <default>false</default>
+                <label>Consumer - Retail</label>
+            </value>
+            <value>
+                <fullName>Consumer - Other Services</fullName>
+                <default>false</default>
+                <label>Consumer - Other Services</label>
+            </value>
+            <value>
+                <fullName>Financial Services</fullName>
+                <default>false</default>
+                <label>Financial Services</label>
+            </value>
+            <value>
+                <fullName>Media and Communications</fullName>
+                <default>false</default>
+                <label>Media and Communications</label>
+            </value>
+            <value>
+                <fullName>Niche Industrials - Automobiles</fullName>
+                <default>false</default>
+                <label>Niche Industrials - Automobiles</label>
+            </value>
+            <value>
+                <fullName>Niche Industrials -  Building Products</fullName>
+                <default>false</default>
+                <label>Niche Industrials -  Building Products</label>
+            </value>
+            <value>
+                <fullName>Niche Industrials - Chemicals</fullName>
+                <default>false</default>
+                <label>Niche Industrials - Chemicals</label>
+            </value>
+            <value>
+                <fullName>Niche Industrials - Logistics and Transportation</fullName>
+                <default>false</default>
+                <label>Niche Industrials - Logistics and Transportation</label>
+            </value>
+            <value>
+                <fullName>Niche Industrials - Metals and Mining</fullName>
+                <default>false</default>
+                <label>Niche Industrials - Metals and Mining</label>
+            </value>
+            <value>
+                <fullName>Niche Industrials - Paper and Packaging</fullName>
+                <default>false</default>
+                <label>Niche Industrials - Paper and Packaging</label>
+            </value>
+            <value>
+                <fullName>Niche Industrials - Utilities</fullName>
+                <default>false</default>
+                <label>Niche Industrials - Utilities</label>
+            </value>
+            <value>
+                <fullName>Niche Industrials - Other</fullName>
+                <default>false</default>
+                <label>Niche Industrials - Other</label>
+            </value>
+            <value>
+                <fullName>Other - Environmental</fullName>
+                <default>false</default>
+                <label>Other - Environmental</label>
+            </value>
+            <value>
+                <fullName>Other - Healthcare</fullName>
+                <default>false</default>
+                <label>Other - Healthcare</label>
+            </value>
+            <value>
+                <fullName>Other - Technology</fullName>
+                <default>false</default>
+                <label>Other - Technology</label>
+            </value>
+            <value>
+                <fullName>Other - REITS</fullName>
+                <default>false</default>
+                <label>Other - REITS</label>
+            </value>
+            <value>
+                <fullName>Other - Natural Resources</fullName>
+                <default>false</default>
+                <label>Other - Natural Resources</label>
+            </value>
+            <value>
+                <fullName>Other</fullName>
+                <default>false</default>
+                <label>Other</label>
+            </value>
+        </valueSetDefinition>
+        <valueSettings>
+            <controllingFieldValue>Other</controllingFieldValue>
+            <valueName>Other - Environmental</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Other</controllingFieldValue>
+            <valueName>Other - Healthcare</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Other</controllingFieldValue>
+            <valueName>Other - Technology</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Other</controllingFieldValue>
+            <valueName>Other - REITS</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Other</controllingFieldValue>
+            <valueName>Other - Natural Resources</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Other</controllingFieldValue>
+            <valueName>Other</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Business Services</controllingFieldValue>
+            <valueName>Business Services</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Consumer</controllingFieldValue>
+            <valueName>Consumer - Apparel</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Consumer</controllingFieldValue>
+            <valueName>Consumer - Food and Beverage</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Consumer</controllingFieldValue>
+            <valueName>Consumer - Home Furnishing and Appliances</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Consumer</controllingFieldValue>
+            <controllingFieldValue>Leisure</controllingFieldValue>
+            <valueName>Consumer - Leisure</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Consumer</controllingFieldValue>
+            <valueName>Consumer  - Personal Products</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Consumer</controllingFieldValue>
+            <valueName>Consumer - Retail</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Consumer</controllingFieldValue>
+            <valueName>Consumer - Other Services</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Financial Services</controllingFieldValue>
+            <valueName>Financial Services</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Media/ Communications</controllingFieldValue>
+            <valueName>Media and Communications</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Niche Industrials</controllingFieldValue>
+            <valueName>Niche Industrials - Automobiles</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Niche Industrials</controllingFieldValue>
+            <valueName>Niche Industrials -  Building Products</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Niche Industrials</controllingFieldValue>
+            <valueName>Niche Industrials - Chemicals</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Niche Industrials</controllingFieldValue>
+            <valueName>Niche Industrials - Logistics and Transportation</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Niche Industrials</controllingFieldValue>
+            <valueName>Niche Industrials - Metals and Mining</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Niche Industrials</controllingFieldValue>
+            <valueName>Niche Industrials - Paper and Packaging</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Niche Industrials</controllingFieldValue>
+            <valueName>Niche Industrials - Utilities</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Niche Industrials</controllingFieldValue>
+            <valueName>Niche Industrials - Other</valueName>
+        </valueSettings>
+    </valueSet>
+</CustomField>

@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ListView xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>All_Intermediaries</fullName>
+    <columns>ACCOUNT.NAME</columns>
+    <columns>forTotalDealsShown__c</columns>
+    <columns>forAverageDealQualityScore__c</columns>
+    <columns>Tier__c</columns>
+    <columns>Total_Fees__c</columns>
+    <filterScope>Everything</filterScope>
+    <filters>
+        <field>Institution_Type__c</field>
+        <operation>includes</operation>
+        <value>Advisors,Bank,Broker,Intermediaries</value>
+    </filters>
+    <label>All Intermediaries</label>
+</ListView>

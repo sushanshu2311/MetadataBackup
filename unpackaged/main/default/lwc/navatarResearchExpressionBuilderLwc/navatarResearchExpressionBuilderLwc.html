@@ -1,0 +1,94 @@
+<template>
+    
+    <div class="slds-grid slds-gutters main-searchlook slds-m-top_x-small main-Container-searchlook" style="padding-left:7px;">
+       	<!-- <div style="width:2%;align-self: center;"> -->
+            <!--<p>
+                <lightning-formatted-number value={index}></lightning-formatted-number>
+            </p>-->
+        <!-- </div> -->
+        <div style="width: 31%;">
+            <template if:true={fieldStruct}>
+                <template if:true={boolVar}>
+                <c-navatar-Research-Combobox-With-Search-Lwc onoptionsearch={handleOptionSearch} onoptionselect={handleOptionSelect}
+                    fieldstructure={fieldStruct} class="zIndex_Css" position={compData.position}>
+                </c-navatar-Research-Combobox-With-Search-Lwc>
+                </template>
+                <template if:false={boolVar}>
+                    <c-navatar-Research-Combobox-With-Search-Lwc onoptionsearch={handleOptionSearch} onoptionselect={handleOptionSelect}
+                    fieldstructure={fieldStruct} class="zIndex_Css" position={compData.position}>
+                </c-navatar-Research-Combobox-With-Search-Lwc>
+                </template>
+            </template>
+        </div>
+        <div style="width: 31%;">
+            <!-- Bug Id 00045308 fixed by Raju Release bug variant="label-hidden" added -->
+            <lightning-combobox placeholder={optionPlaceHolder} disabled={isFieldSelected}
+                style="display: grid;margin: auto;" name="" label="" variant="label-hidden" value={compData.filter}
+                options={compData.filterOptions} onchange={handleFilterChange} class="zIndex_Css">
+            </lightning-combobox>
+        </div>
+        <div style="width: 32%;padding-left: 4px;display: inline-flex;">
+            <template if:true={compData.isDateType}>
+                <div class="headers datefield" style="width: 83%;">
+                    <lightning-input disabled={isFieldSelected} type={curType} variant="label-hidden" date-style="short"
+                        time-style="short" onchange={handleUpdateSearch} label="" value={compData.filterVal}>
+                    </lightning-input>
+                </div>
+            </template>
+            <template if:false={compData.isDateType}>
+                <div style="width: 83%;">
+                    <!-- Bug Id 00045308 fixed by Raju Release bug variant="label-hidden" added -->
+                    <template if:true={onlyNumber}>
+                        <lightning-input disabled={isFieldSelected} style="display:grid" type="number"
+                        value={compData.filterVal} label="" variant="label-hidden" onchange={handleUpdateSearch}>
+                    </lightning-input>
+                    </template>
+                    <!-- Bug Id 00045308 fixed by Raju Release bug variant="label-hidden" added -->
+                    <template if:false={onlyNumber}>
+                    <lightning-input disabled={isFieldSelected} style="display:grid" type={curType}
+                        value={compData.filterVal} label="" variant="label-hidden" onchange={handleUpdateSearch}>
+                    </lightning-input>
+                    </template>
+                </div>
+             
+                <template if:true={showPickList}> 
+                    
+                    <c-navatar-Research-Exp-Builder-Lookup-Pop-Up-Lwc onclosemodal={handleCloseModal} oninsertvalues={handlePicklistPopupSave}
+                        objectname={compData.objName} pickval={compData.fieldName} fieldtype={compData.fDataType}
+                        operation="search" isopenmodal={showPickList} existingvalues={compData.filterVal}>
+                    </c-navatar-Research-Exp-Builder-Lookup-Pop-Up-Lwc>
+                </template> 
+
+            </template>
+            <template if:true={compData.isSearchable}>
+                <template if:true={hideSearchIconAccordingToInnerFunctionality}> 
+                <div class="addMinus searchposition">
+                    <lightning-icon icon-name="utility:search" alternative-text="search" title="search"
+                        size="x-small" onclick={handlePicklistSearch}>
+                    </lightning-icon>
+                </div>
+                </template>
+            </template>
+            <template if:true={enableDelete}>
+                <div class="addMinus banpostion">
+                 <!-- <lightning-icon icon-name="utility:add" alternative-text="Add Row" title="Add Row" class="back"
+                        size="xx-small">
+                    </lightning-icon>-->
+                    <!-- <lightning-icon icon-name="utility:close" alternative-text="Remove Row" title="Remove Row"
+                        class="back slds-p-left_xx-large" size="xx-small" onclick={handleDelete}>
+                    </lightning-icon> -->
+                  
+                    <lightning-icon icon-name="utility:ban" alternative-text="Remove Row" onclick={handleDelete} title="Remove Row" size="xx-small" class="cur_point back"></lightning-icon>
+                </div>
+            </template>
+            <template if:true={enableAnd}>
+               <div style="width:auto;align-self: center;">
+                    <p>
+                     <!--  <lightning-formatted-text value="OR" class="slds-form-element__label"></lightning-formatted-text>-->
+                    </p>
+                </div>
+            </template>
+        </div>
+    </div>
+   
+</template>

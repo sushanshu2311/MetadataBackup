@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomFieldTranslation xmlns="http://soap.sforce.com/2006/04/metadata">
+        <label><!-- Reason for Decline --></label>
+        <name>Decline_Reason__c</name>
+        <picklistValues>
+            <masterLabel>Audit / Financial Issues</masterLabel>
+            <translation><!-- Audit / Financial Issues --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Business Uncertainty</masterLabel>
+            <translation><!-- Business Uncertainty --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Company Too Small</masterLabel>
+            <translation><!-- Company Too Small --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Lack of Audit</masterLabel>
+            <translation><!-- Lack of Audit --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Lack of Industry Fit</masterLabel>
+            <translation><!-- Lack of Industry Fit --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Not Met Investment Criteria</masterLabel>
+            <translation><!-- Not Met Investment Criteria --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Not a Good Fit</masterLabel>
+            <translation><!-- Not a Good Fit --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Operational Issues</masterLabel>
+            <translation><!-- Operational Issues --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Outbid</masterLabel>
+            <translation><!-- Outbid --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Pricing</masterLabel>
+            <translation><!-- Pricing --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Structure</masterLabel>
+            <translation><!-- Structure --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Valuation Expectations</masterLabel>
+            <translation><!-- Valuation Expectations --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Weak Investment Thesis</masterLabel>
+            <translation><!-- Weak Investment Thesis --></translation>
+        </picklistValues>
+    </CustomFieldTranslation>

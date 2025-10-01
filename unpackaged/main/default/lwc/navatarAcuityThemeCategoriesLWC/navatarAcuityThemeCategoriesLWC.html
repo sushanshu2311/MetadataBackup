@@ -1,0 +1,1750 @@
+<!--
+** Module Name : Acuity 2.0 - Acuity
+** Description : Displays the Categories section on Themes Acuity Page.
+** Throws : NA
+** Calls : NA
+** Organization : Navatar Group
+** Product Name & Version : Acuity 2.0
+** Revision History:-
+** Version    Date(YYYY-MM-DD)    Author         Description of Action
+** 1.0        2022-11-14          Anshika Ahuja  Acuity Phase 2
+-->
+<template>
+    <template if:true={enableSpinner}>
+        <lightning-spinner alternative-text="Loading..."
+                            style="z-index:15002">
+        </lightning-spinner>
+    </template>
+    <div class="slds-grid slds-wrap main-Container">
+        <div class="slds-col slds-size_3-of-12">
+            <div class="slds-theme_shade clsFullHeight tabhead slds-m-right_small slds-m-top_small">
+                <!-- Bug Id 00045746 fixed by Raju Release Bug added removeLeftBlueBorder-->
+                <lightning-vertical-navigation selected-item="allgrids" class="removeHyperlink removeLeftBlueBorder" shaded>
+                    <lightning-vertical-navigation-section label="Categories" title="Categories">
+                        <lightning-vertical-navigation-item-badge data-id="all_id" label="All" name="allgrids"
+                            badge-count={totalRecLength} onclick={onAllClick} title="All" class="all-category-for-active all_id">
+                        </lightning-vertical-navigation-item-badge>
+						<template if:true={accIsAccessible}>
+                            <template for:each={accountRecordTypeList}  for:item="object" for:index="index">
+                                <div key={object.name}>
+                                    <lightning-vertical-navigation-item-badge label={object.name} title={object.name} name={object.name}
+                                    badge-count={object.count} data-name={object.name} data-value="Firms" onclick={onClickFirmTableChange} class="all-category-for-active firm_id" data-id={object.name} id={object.name}>
+                                    </lightning-vertical-navigation-item-badge>
+                                </div>
+                            </template>
+							</template>	
+                         <template if:true={conIsAccessible}>
+                            <!--<lightning-vertical-navigation-item-badge label={contactobjLabel} title={contactobjLabel} name="Contacts"
+                                badge-count={conDataSize} data-name="Contacts" data-value="Contacts" onclick={onClickContactTableChange} class="all-category-for-active contact_id" data-id="Contacts" id="Contacts">
+                            </lightning-vertical-navigation-item-badge>-->
+                            <template if:false={isShowContactObject}>
+                            <template for:each={contactRecordTypeList}  for:item="object" for:index="index">
+                                <div key={object.name}>
+                                    <lightning-vertical-navigation-item-badge label={object.name} title={object.name} name={object.name}
+                                    badge-count={object.count} data-name={object.name} data-value="Contacts" onclick={onClickContactTableChange} class="all-category-for-active firm_id" data-id={object.name} id={object.name}>
+                                    </lightning-vertical-navigation-item-badge>
+                                </div>
+                            </template>
+                         </template>
+                         <template if:true={isShowContactObject}>
+                             <lightning-vertical-navigation-item-badge label={contactobjLabel} title={contactobjLabel} name="Contacts"
+                                badge-count={conDataSize} data-name="Contacts" data-value="Contacts" onclick={onClickContactTableChange} class="all-category-for-active contact_id" data-id="Contacts" id="Contacts">
+                            </lightning-vertical-navigation-item-badge>
+                         </template>
+
+                        </template>	
+
+
+                         <template if:true={dealIsAccessible}>
+                            <!--For Deal Side Category Start-->
+                            <template if:false={isShowDealObject}>
+                            <template for:each={dealRecordTypeList}  for:item="object" for:index="index">
+                                <div key={object.name}>
+                                    <lightning-vertical-navigation-item-badge label={object.name} title={object.name} name={object.name}
+                                    badge-count={object.count} data-name={object.name} data-value="Deals" onclick={onClickDealtableChange} class="all-category-for-active firm_id" data-id={object.name} id={object.name}>
+                                    </lightning-vertical-navigation-item-badge>
+                                </div>
+                            </template>
+                             </template>
+                            <template if:true={isShowDealObject}>
+                                <lightning-vertical-navigation-item-badge label={dealobjLabel} title={dealobjLabel} name="Deals"
+                                badge-count={dealDataSize} data-name="Deals" data-value="Deals" onclick={onClickDealtableChange} class="all-category-for-active deal_id" data-id="Deals" id="Deals">
+                                </lightning-vertical-navigation-item-badge>
+                            </template>
+                            </template>	
+                            <!--For Deal Side Category END-->
+							
+                            <template if:true={fundIsAccessible}>
+                             <template if:true={isShowfundObject}> 
+                            <lightning-vertical-navigation-item-badge label={fundObjLabel} title={fundObjLabel} name="Funds"
+                                badge-count={fundDataSize} data-name="Funds" data-value="Funds" onclick={onClickFundTableChange} class="all-category-for-active fund_id" data-id="Funds" id="Funds">
+                            </lightning-vertical-navigation-item-badge>
+                             </template>
+                            <!--For Fund Side Category Start-->
+                            <template if:false={isShowfundObject}>
+                            <template for:each={fundRecordTypeList}  for:item="object" for:index="index">
+                                <div key={object.name}>
+                                    <lightning-vertical-navigation-item-badge label={object.name} title={object.name} name={object.name}
+                                    badge-count={object.count} data-name={object.name} data-value="Funds" onclick={onClickFundTableChange} class="all-category-for-active firm_id" data-id={object.name} id={object.name}>
+                                    </lightning-vertical-navigation-item-badge>
+                                </div>
+                            </template>    
+                            </template>
+                            <!--For Fund Side Category END-->
+							</template>	
+                            <template if:true={fundraisingAccess}>
+                           
+                            <!--For FundRaising Side Category Start-->
+                             <template if:false={isShowFundraisingObject}>   
+                            <template for:each={fundraisingRecordTypeList}  for:item="object" for:index="index">
+                                <div key={object.name}>
+                                    <lightning-vertical-navigation-item-badge label={object.name} title={object.name} name={object.name}
+                                    badge-count={object.count} data-name={object.name} data-value="Fundraisings" onclick={onClickFundraisingTableChange} class="all-category-for-active firm_id" data-id={object.name} id={object.name}>
+                                    </lightning-vertical-navigation-item-badge>
+                                </div>
+                            </template>    
+                            </template>
+                             <template if:true={isShowFundraisingObject}>  
+                            <lightning-vertical-navigation-item-badge label={fundraisingObjLabel} title={fundraisingObjLabel} name="Fundraisings" 
+                                badge-count={fdrDataSize} data-name="Fundraisings" onclick={onClickFundraisingTableChange} class="all-category-for-active fundraising_id" data-id="Fundraisings" id="Fundraisings">
+                            </lightning-vertical-navigation-item-badge>
+                            </template>
+                            <!--For FundRaising Side Category END-->
+							</template>	
+                            <template if:true={themeIsAccessible}>
+                            <lightning-vertical-navigation-item-badge label={themeObjLabel} title={themeObjLabel} name="Themes"
+                                    badge-count={themeDataSize} data-name="Themes" data-value="Themes" onclick={onClickThemeTableChange} class="all-category-for-active theme_id" data-id="Themes" id="Themes">
+                            </lightning-vertical-navigation-item-badge>
+							 </template>	
+                            <template if:true={clipIsAccessible}>
+                            <lightning-vertical-navigation-item-badge label={clipObjLabel} title={clipObjLabel} name="Clips"
+                                badge-count={clipDataSize} data-name="Clips" data-value="Clips" onclick={onClickClipTableChange} class="all-category-for-active clip_id" data-id="Clips" id="Clips">
+                            </lightning-vertical-navigation-item-badge>
+							</template>
+                    </lightning-vertical-navigation-section>
+                </lightning-vertical-navigation>
+            </div>
+        </div>
+        <template if:true={isDeafultGrid}>
+            <div class="slds-col slds-size_9-of-12 main-Container">
+                <!--Account grid for record types-->
+				<template if:true={accIsAccessible}>
+                <template if:true={accountRecordTypeList}>
+                    <template for:each={accountRecordTypeList} for:item="object" for:index="index">
+                        <div key={object.name} >
+                            <div class="slds-grid slds-wrap slds-box slds-theme_shade slds-p-vertical_xx-small slds-p-horizontal_medium slds-m-top_small">
+                            <div class="slds-col slds-size_1-of-1">
+                                <div class="slds-grid slds-wrap" style="align-items: center;">
+                                    <div class="slds-col slds-size_8-of-12">
+                                        <ul class="slds-list_horizontal slds-has-block-links_space" style="align-items:center;">
+                                            <li><span class="slds-page-header__title slds-text-align_left slds-m-top_x-small" title={object.name}> {object.name} ({object.count})</span></li></ul>
+                                            <ul class="slds-list_horizontal slds-has-block-links_space" style="align-items:center;">
+                                                <!--<template if:true={object.showRemoveIcon}> Modified by Anshika Ahuja W.R.To Critical_Bug #00035275-->
+                                                    <!--Added by tejaswini 00035019/ 00033368-->
+                                                <li><span>Sorted by</span></li>
+                                                <template if:true={object.recordTypeCompCheck}>
+                                                    <li><lightning-combobox class="sortedbycss" name="progress" 
+                                                        value={object.sortbyContact}
+                                                        placeholder={object.placeholderContact} 
+                                                        options={optionsforsortingCompany}
+                                                        onchange={handleChangesorting} 
+                                                        data-id={object.name}
+                                                        data-name={object.name}></lightning-combobox>
+                                                    </li>
+                                                </template>
+                                                <template if:true={object.recordTypeAdvisorCheck}>
+                                                    <li><lightning-combobox class="sortedbycss" name="progress" 
+                                                        value={object.sortbyContact}
+                                                        placeholder={object.placeholderContact} 
+                                                        options={optionsforsortingIntermediary}
+                                                        onchange={handleChangesorting} 
+                                                        data-id={object.name}
+                                                        data-name={object.name}></lightning-combobox>
+                                                    </li>
+                                                </template>
+                                                <template if:false={object.recordTypeAdvisorCheck}>
+                                                    <template if:false={object.recordTypeCompCheck}>
+                                                        <li><lightning-combobox class="sortedbycss" name="progress" 
+                                                            value={object.sortbyContact}
+                                                            placeholder={object.placeholderContact} 
+                                                            options={optionsforsortingFirm}
+                                                            onchange={handleChangesorting} 
+                                                            data-id={object.name}
+                                                            data-name={object.name}></lightning-combobox>
+                                                        </li>
+                                                    </template>
+                                                </template>
+                                                <!-- End by Anshika Ahuja W.R.To Critical_Bug# 00035298,00035297-->
+                                                <!--</template>-->
+                                            </ul>
+                                        </div>
+    
+                                    <lightning-layout-item size="4" class="addto addMinus slds-p-top_xx-small">
+                                        <lightning-icon icon-name="utility:new" alternative-text="Add"
+                                                    onclick={addThemeRecordPop} title="Add To Theme" size="x-small"
+                                                    class="cur_point slds-m-right_x-small" data-name="Account" data-id="Account"></lightning-icon>
+                                                    <!--Added by Tejaswini Bug Fix - 00035020-->
+                                                    <template if:true={object.showRemoveIcon}>
+                                                    <lightning-icon icon-name="utility:ban" class="slds-m-left_xx-small cur_point"
+                                                        alternative-text="Settings" title="Remove" onclick={delFirms} 
+                                                        data-name={object.name} data-id="Account" size="x-small"> <!--Modified by Hema 14-04-2023--><!--Modified by Anshika Ahuja W.R.TO Critical_Bug and #00035274 and 00035273-->
+                                                    </lightning-icon>
+                                                </template>
+                                    </lightning-layout-item>
+                                </div>
+                            </div>
+                        </div>
+                        <template if:true={object.showTable}>
+                        <div class="slds-box slds-box_x-small slds-p-around_none tabhead">
+                            <div class="slds-grid slds-wrap">
+                                <div class="slds-col slds-size_1-of-1 slds-text-align_left">
+                                    <div>
+                                        <template if:true={object.outerList}>
+                                            <lightning-datatable class="heightDataTable power-btn" key-field="Id" data={object.outerList}
+                                                hide-checkbox-column={firmChecbox} columns={accCols} onrowaction={handleContactRow}>
+                                            </lightning-datatable>
+                                        </template>
+                                    </div>
+                                </div>
+                                <template if:true={object.veiwMore}>
+                                    <div class="slds-col slds-size_1-of-1 slds-theme_shade slds-text-align_right slds-p-right_x-small">
+                                        <div class="slds-page-header__col-actions">
+                                            <lightning-button variant="base" label="View All" title="View All"
+                                                class="slds-m-left_x-small view-hover" onclick={onClickFirmTableChange} data-name={object.name}></lightning-button>
+                                        </div>
+                                    </div>
+                                </template>
+                            </div>
+                        </div>
+                    </template>
+                        </div>
+                    </template>
+                </template>
+    
+                <template if:false={accountRecordTypeList}>
+                    <div class="slds-grid slds-wrap slds-box slds-theme_shade slds-p-vertical_xx-small slds-p-horizontal_medium slds-m-top_small">
+                        <div class="slds-col slds-size_1-of-1">
+                            <div class="slds-grid slds-wrap" style="align-items: center;">
+                                <div class="slds-col slds-size_8-of-12">
+                                    <ul class="slds-list_horizontal slds-has-block-links_space" style="align-items:center;">
+                                        <li><span class="slds-page-header__title slds-text-align_left slds-m-top_xx-small"
+                                                title="Firms">Firms ({accDataSize})</span></li></ul>
+                                </div>
+                                <lightning-layout-item size="4" class="addto addMinus slds-p-top_xx-small">
+                                    <ul class="slds-list_horizontal slds-has-block-links_space" style="align-items:center;">
+                                        <li><span>Sorted by</span> </li>
+                                        <li><lightning-combobox class="sortedbycss" name="progress" 
+                                                value={sortbyContact}
+                                                placeholder={placeholderContact} 
+                                                options={optionsforsortingCompany}
+                                                onchange={handleChangesorting}></lightning-combobox>
+                                        </li>
+                                        <!--Added by Tejaswini Bug Fix - 00035020-->
+                                        <li><lightning-icon icon-name="utility:new" alternative-text="Add"
+                                                onclick={addThemeRecordPop} title="Add To Theme" size="x-small"
+                                                class="cur_point slds-m-right_x-small" data-name="Account" data-id="Account"></lightning-icon>
+                                            <lightning-icon icon-name="utility:ban" class="slds-m-left_xx-small cur_point"
+                                                alternative-text="Settings" title="Remove" onclick={delContacts}
+                                                size="x-small" data-id="Account" data-name="Account">
+                                            </lightning-icon>
+                                        </li>
+                                    </ul>
+                                </lightning-layout-item>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="slds-box slds-box_x-small slds-p-around_none tabhead">
+                        <div class="slds-grid slds-wrap">
+                            <div class="slds-col slds-size_1-of-1 slds-text-align_left">
+                                <div><lightning-datatable class="heightDataTable power-btn" key-field="id"
+                                        data={accData} hide-checkbox-column="true" columns={accCols}
+                                        onrowaction={handleContactRow}>
+                                    </lightning-datatable>
+                                </div>
+                            </div>
+                            <template if:true={viewAllAcc}>
+                                <div class="slds-col slds-size_1-of-1 slds-text-align_right slds-p-right_x-small slds-theme_shade">
+                                    <div class="slds-page-header__col-actions">
+                                        <lightning-button variant="base" label="View All" title="View All"
+                                            class="slds-m-left_x-small view-hover" onclick={onClickFirmTableChange}></lightning-button>
+                                    </div>
+                                </div>
+                            </template>
+                        </div>
+                    </div>
+    
+                </template>        
+                 </template>	
+
+                <!--FOr Contact recordTypeSTart-->
+                 <template if:true={conIsAccessible}>
+                 <template if:false={isShowContactObject}>  
+                 <template for:each={contactRecordTypeList} for:item="object" for:index="index">
+                    <div key={object.name} >
+                        <div class="slds-grid slds-wrap slds-box slds-theme_shade slds-p-vertical_xx-small slds-p-horizontal_medium slds-m-top_small">
+                        <div class="slds-col slds-size_1-of-1">
+                            <div class="slds-grid slds-wrap" style="align-items: center;">
+                                <div class="slds-col slds-size_8-of-12">
+                                    <ul class="slds-list_horizontal slds-has-block-links_space" style="align-items:center;">
+                                        <li><span class="slds-page-header__title slds-text-align_left slds-m-top_x-small" title={object.name}> {object.name} ({object.count})</span></li></ul>
+                                        <ul class="slds-list_horizontal slds-has-block-links_space" style="align-items:center;">
+                                            <!--<template if:true={object.showRemoveIcon}> Modified by Anshika Ahuja W.R.To Critical_Bug #00035275-->
+                                                <!--Added by tejaswini 00035019/ 00033368-->
+                                            <li><span>Sorted by</span></li>
+                                           
+                    
+                                                    <li><lightning-combobox class="sortedbycss" name="progress" 
+                                                        value={object.sortbyContact}
+                                                        placeholder={object.placeholderContact} 
+                                                        options={optionsforsortingContact}
+                                                        onchange={handleChangesorting} 
+                                                        data-id={object.name}
+                                                        data-name={object.name}></lightning-combobox>
+                                                    </li>
+                                             
+                                            
+                                            <!-- End by Anshika Ahuja W.R.To Critical_Bug# 00035298,00035297-->
+                                            <!--</template>-->
+                                        </ul>
+                                    </div>
+
+                                <lightning-layout-item size="4" class="addto addMinus slds-p-top_xx-small">
+                                    <lightning-icon icon-name="utility:new" alternative-text="Add"
+                                                onclick={addThemeRecordPop} title="Add To Theme" size="x-small"
+                                                class="cur_point slds-m-right_x-small" data-name="Contact" data-id="Contact"></lightning-icon>
+                                                <!--Added by Tejaswini Bug Fix - 00035020-->
+                                                <template if:true={object.showRemoveIcon}>
+                                                <lightning-icon icon-name="utility:ban" class="slds-m-left_xx-small cur_point"
+                                                    alternative-text="Settings" title="Remove" onclick={delContacts} 
+                                                    data-name={object.name} data-id="Contact" size="x-small"> <!--Modified by Hema 14-04-2023--><!--Modified by Anshika Ahuja W.R.TO Critical_Bug and #00035274 and 00035273-->
+                                                </lightning-icon>
+                                            </template>
+                                </lightning-layout-item>
+                            </div>
+                        </div>
+                    </div>
+                    <template if:true={object.showTable}>
+                    <div class="slds-box slds-box_x-small slds-p-around_none tabhead">
+                        <div class="slds-grid slds-wrap">
+                            <div class="slds-col slds-size_1-of-1 slds-text-align_left">
+                                <div>
+                                    <template if:true={object.outerList}>
+                                        <lightning-datatable class="heightDataTable power-btn" key-field="Id" data={object.outerList}
+                                            hide-checkbox-column={contactChecbox} columns={conCols} onrowaction={handleContactRow}>
+                                        </lightning-datatable>
+                                    </template>
+                                </div>
+                            </div>
+                            <template if:true={object.veiwMore}>
+                                <div class="slds-col slds-size_1-of-1 slds-theme_shade slds-text-align_right slds-p-right_x-small">
+                                    <div class="slds-page-header__col-actions">
+                                        <lightning-button variant="base" label="View All" title="View All"
+                                            class="slds-m-left_x-small view-hover" onclick={onClickContactTableChange} data-name={object.name}></lightning-button>
+                                    </div>
+                                </div>
+                            </template>
+                        </div>
+                    </div>
+                </template>
+                    </div>
+                </template>
+            
+            
+            
+            
+            </template>
+            <template if:true={isShowContactObject}>
+
+                    <template if:true={conIsAccessible}>
+             <div class="slds-grid slds-wrap slds-box slds-theme_shade slds-p-vertical_xx-small slds-p-horizontal_medium slds-m-top_small">
+                    <div class="slds-col slds-size_1-of-1">
+                        <div class="slds-grid slds-wrap" style="align-items: center;">
+                            <div class="slds-col slds-size_8-of-12">
+                                <ul class="slds-list_horizontal slds-has-block-links_space" style="align-items:center;">
+                                    <li><span class="slds-page-header__title slds-text-align_left slds-m-top_xx-small"
+                                            title={contactobjLabel}>{contactobjLabel} ({conDataSize})</span></li></ul>
+                                            <!--<template if:true={contactRemoveIcon}> Modified by Anshika Ahuja W.R.To Critical_Bug #00035275 --> <!--Tejaswini 00033368-->
+                                            <ul class="slds-list_horizontal slds-has-block-links_space" style="align-items:center;">
+                                                <li><span>Sorted by</span> </li>
+                                                <li><lightning-combobox class="sortedbycss" name="progress" 
+                                                        value={sortbyContact}
+                                                        placeholder={placeholderContact}  
+                                                        options={optionsforsortingContact}
+                                                        onchange={handleChangesorting}
+                                                        data-id={contactobjLabel}
+                                                        data-name={contactobjLabel}></lightning-combobox>
+                                                </li>
+                                                </ul>
+                                            <!--</template>-->
+                            </div>
+                            <lightning-layout-item size="4" class="addto addMinus slds-p-top_xx-small">
+                                <lightning-icon icon-name="utility:new" alternative-text="Add"
+                                            onclick={addThemeRecordPop} title="Add To Theme" size="x-small"
+                                            class="cur_point slds-m-right_x-small" data-name="Contact" data-id="Contact"></lightning-icon>
+                                            <!--Added by Tejaswini Bug Fix - 00035020-->
+                                            <template if:true={contactRemoveIcon}>
+                                            <lightning-icon icon-name="utility:ban" class="slds-m-left_xx-small cur_point"
+                                                alternative-text="Settings" title="Remove" onclick={delContacts}
+                                                size="x-small" data-name="Contacts" data-id="Contact"><!--Modified by Anshika Ahuja W.R.TO Critical_Bug #00035273-->
+                                            </lightning-icon>
+                                        </template>
+                            </lightning-layout-item>
+                        </div>
+                    </div>
+                </div>
+                <template if:true={conDataShow}>
+                    <div class="slds-box slds-box_x-small slds-p-around_none tabhead">
+                        <div class="slds-grid slds-wrap">
+                            <div class="slds-col slds-size_1-of-1 slds-text-align_left">
+                                <div><lightning-datatable class="heightDataTable power-btn" key-field="id"
+                                        data={conSlicedData} hide-checkbox-column="true" columns={conCols}
+                                        onrowaction={handleContactRow}>
+                                    </lightning-datatable>
+                                </div>
+                            </div>
+                            <template if:true={viewAllCon}>
+                                <div class="slds-col slds-size_1-of-1 slds-text-align_right slds-p-right_x-small slds-theme_shade">
+                                    <div class="slds-page-header__col-actions">
+                                        <lightning-button variant="base" label="View All" title="View All"
+                                            class="slds-m-left_x-small view-hover" onclick={onClickContactTableChange} data-id="Contacts" data-name="Contacts"></lightning-button>
+                                    </div>
+                                </div>
+                            </template>
+                        </div>
+                    </div>
+                </template>
+                </template>	
+
+
+
+            </template>
+             </template>
+            <!--For Contact recordTypeSTart End-->
+
+
+            <!--FOr Deal recordTypeSTart-->
+                <template if:true={dealIsAccessible}>
+                 <template if:false={isShowDealObject}>   
+                 <template for:each={dealRecordTypeList} for:item="object" for:index="index">
+                    <div key={object.name} >
+                        <div class="slds-grid slds-wrap slds-box slds-theme_shade slds-p-vertical_xx-small slds-p-horizontal_medium slds-m-top_small">
+                        <div class="slds-col slds-size_1-of-1">
+                            <div class="slds-grid slds-wrap" style="align-items: center;">
+                                <div class="slds-col slds-size_8-of-12">
+                                    <ul class="slds-list_horizontal slds-has-block-links_space" style="align-items:center;">
+                                        <li><span class="slds-page-header__title slds-text-align_left slds-m-top_x-small" title={object.name}> {object.name} ({object.count})</span></li></ul>
+                                        <ul class="slds-list_horizontal slds-has-block-links_space" style="align-items:center;">
+                                            <!--<template if:true={object.showRemoveIcon}> Modified by Anshika Ahuja W.R.To Critical_Bug #00035275-->
+                                                <!--Added by tejaswini 00035019/ 00033368-->
+                                            <li><span>Sorted by</span></li>
+                                           
+                    
+                                                    <li><lightning-combobox class="sortedbycss" name="progress" 
+                                                        value={object.sortbyContact}
+                                                        placeholder={object.placeholderContact} 
+                                                        options={optionsforsortingDeals}
+                                                        onchange={handleChangesorting} 
+                                                        data-id={object.name}
+                                                        data-name={object.name}></lightning-combobox>
+                                                    </li>
+                                             
+                                            
+                                            <!-- End by Anshika Ahuja W.R.To Critical_Bug# 00035298,00035297-->
+                                            <!--</template>-->
+                                        </ul>
+                                    </div>
+
+                                <lightning-layout-item size="4" class="addto addMinus slds-p-top_xx-small">
+                                    <lightning-icon icon-name="utility:new" alternative-text="Add"
+                                                onclick={addThemeRecordPop} title="Add To Theme" size="x-small"
+                                                class="cur_point slds-m-right_x-small" data-name="navpeII_dev18__Pipeline__c" data-id="navpeII_dev18__Pipeline__c"></lightning-icon>
+                                                <!--Added by Tejaswini Bug Fix - 00035020-->
+                                                <template if:true={object.showRemoveIcon}>
+                                                <lightning-icon icon-name="utility:ban" class="slds-m-left_xx-small cur_point"
+                                                    alternative-text="Settings" title="Remove" onclick={delDeals} 
+                                                    data-name={object.name} data-id="navpeII_dev18__Pipeline__c" size="x-small"> <!--Modified by Hema 14-04-2023--><!--Modified by Anshika Ahuja W.R.TO Critical_Bug and #00035274 and 00035273-->
+                                                </lightning-icon>
+                                            </template>
+                                </lightning-layout-item>
+                            </div>
+                        </div>
+                    </div>
+                    <template if:true={object.showTable}>
+                    <div class="slds-box slds-box_x-small slds-p-around_none tabhead">
+                        <div class="slds-grid slds-wrap">
+                            <div class="slds-col slds-size_1-of-1 slds-text-align_left">
+                                <div>
+                                    <template if:true={object.outerList}>
+                                        <lightning-datatable class="heightDataTable power-btn" key-field="Id" data={object.outerList}
+                                            hide-checkbox-column={dealChecbox} columns={dealCols} onrowaction={handleContactRow}>
+                                        </lightning-datatable>
+                                    </template>
+                                </div>
+                            </div>
+                            <template if:true={object.veiwMore}>
+                                <div class="slds-col slds-size_1-of-1 slds-theme_shade slds-text-align_right slds-p-right_x-small">
+                                    <div class="slds-page-header__col-actions">
+                                        <lightning-button variant="base" label="View All" title="View All"
+                                            class="slds-m-left_x-small view-hover" onclick={onClickDealtableChange} data-name={object.name}></lightning-button>
+                                    </div>
+                                </div>
+                            </template>
+                        </div>
+                    </div>
+                </template>
+                    </div>
+                </template>
+            </template>
+                <template if:true={isShowDealObject}>
+                   <template if:true={dealIsAccessible}>
+                <div class="slds-grid slds-wrap slds-box slds-theme_shade slds-p-vertical_xx-small slds-p-horizontal_medium slds-m-top_small">
+                    <div class="slds-col slds-size_1-of-1">
+                        <div class="slds-grid slds-wrap" style="align-items: center;">
+                            <div class="slds-col slds-size_8-of-12">
+                                <ul class="slds-list_horizontal slds-has-block-links_space" style="align-items:center;">
+                                    <li><span class="slds-page-header__title slds-text-align_left slds-m-top_xx-small"
+                                            title={dealobjLabel}>{dealobjLabel}({dealDataSize})</span></li></ul>
+                                            <!--<template if:true={dealRemoveIcon}> Modified by Anshika Ahuja W.R.To Critical_Bug #00035275--><!--Added by Tejaswini 00033368-->
+                                            <ul class="slds-list_horizontal slds-has-block-links_space" style="align-items:center;">
+                                                <!--Added by tejaswini 00035019-->
+                                                <li><span>Sorted by</span></li>
+                                                <li><lightning-combobox class="sortedbycss" name="progress" 
+                                                        value={sortbyContact}
+                                                        placeholder={placeholderDeal} 
+                                                        options={optionsforsortingDeals}
+                                                        onchange={handleChangesorting}
+                                                        data-id={dealobjLabel}
+                                                        data-name={dealobjLabel}>
+                                                        
+                                                        </lightning-combobox>
+                                                </li>
+                                            </ul>
+                                        <!--</template>-->
+                            </div>
+                            <lightning-layout-item size="4" class="addto addMinus slds-p-top_xx-small">
+                                <lightning-icon icon-name="utility:new" alternative-text="Add"
+                                            onclick={addThemeRecordPop} title="Add To Theme" size="x-small"
+                                            class="cur_point slds-m-right_x-small" data-name="navpeII_dev18__Pipeline__c" data-id="navpeII_dev18__Pipeline__c"></lightning-icon>
+                                            <!--Added by Tejaswini Bug Fix - 00035020-->
+                                            <template if:true={dealRemoveIcon}>
+                                            <lightning-icon icon-name="utility:ban" class="slds-m-left_xx-small cur_point"
+                                                alternative-text="Settings" title="Remove" onclick={delDeals}
+                                                size="x-small" data-name="Deals" data-id="navpeII_dev18__Pipeline__c"><!--Modified by Anshika Ahuja W.R.TO Critical_Bug #00035273-->
+                                            </lightning-icon>
+                                        </template>
+                            </lightning-layout-item>
+                        </div>
+                    </div>
+                </div>
+                <template if:true={dealDataShow}>
+                <div class="slds-box slds-box_x-small slds-p-around_none tabhead">
+                    <div class="slds-grid slds-wrap">
+                        <div class="slds-col slds-size_1-of-1 slds-text-align_left">
+                            <div><lightning-datatable class="heightDataTable power-btn" key-field="id"
+                                    data={dealSlicedData} hide-checkbox-column="true" columns={dealCols}
+                                    onrowaction={handleContactRow}>
+                                </lightning-datatable>
+                            </div>
+                        </div>
+                        <template if:true={viewAllDeal}>
+                            <div class="slds-col slds-size_1-of-1 slds-text-align_right slds-p-right_x-small slds-theme_shade">
+                                <div class="slds-page-header__col-actions">
+                                    <lightning-button variant="base" label="View All" title="View All"
+                                        class="slds-m-left_x-small view-hover" onclick={onClickDealtableChange} data-id="Deals" data-name="Deals"></lightning-button>
+                                </div>
+                            </div>
+                        </template>
+                    </div>
+                </div>
+                </template>
+                 </template>
+
+
+                </template>
+                </template>
+            <!--For Deal recordTypeSTart End-->    
+
+
+            <!--FOr Fund  recordType STart-->
+                <template if:true={fundIsAccessible}>
+                 <template if:false={isShowfundObject}>   
+                 <template for:each={fundRecordTypeList} for:item="object" for:index="index">
+                    <div key={object.name} >
+                        <div class="slds-grid slds-wrap slds-box slds-theme_shade slds-p-vertical_xx-small slds-p-horizontal_medium slds-m-top_small">
+                        <div class="slds-col slds-size_1-of-1">
+                            <div class="slds-grid slds-wrap" style="align-items: center;">
+                                <div class="slds-col slds-size_8-of-12">
+                                    <ul class="slds-list_horizontal slds-has-block-links_space" style="align-items:center;">
+                                        <li><span class="slds-page-header__title slds-text-align_left slds-m-top_x-small" title={object.name}> {object.name} ({object.count})</span></li></ul>
+                                        <ul class="slds-list_horizontal slds-has-block-links_space" style="align-items:center;">
+                                            <!--<template if:true={object.showRemoveIcon}> Modified by Anshika Ahuja W.R.To Critical_Bug #00035275-->
+                                                <!--Added by tejaswini 00035019/ 00033368-->
+                                            <li><span>Sorted by</span></li>
+                                           
+                    
+                                                    <li><lightning-combobox class="sortedbycss" name="progress" 
+                                                        value={object.sortbyContact}
+                                                        placeholder={object.placeholderContact} 
+                                                        options={optionsforsortingFund}
+                                                        onchange={handleChangesorting} 
+                                                        data-id={object.name}
+                                                        data-name={object.name}></lightning-combobox>
+                                                    </li>
+                                             
+                                            
+                                            <!-- End by Anshika Ahuja W.R.To Critical_Bug# 00035298,00035297-->
+                                            <!--</template>-->
+                                        </ul>
+                                    </div>
+
+                                <lightning-layout-item size="4" class="addto addMinus slds-p-top_xx-small">
+                                    <lightning-icon icon-name="utility:new" alternative-text="Add"
+                                                onclick={addThemeRecordPop} title="Add To Theme" size="x-small"
+                                                class="cur_point slds-m-right_x-small" data-name="navpeII_dev18__Fund__c" data-id="navpeII_dev18__Fund__c"></lightning-icon>
+                                                <!--Added by Tejaswini Bug Fix - 00035020-->
+                                                <template if:true={object.showRemoveIcon}>
+                                                <lightning-icon icon-name="utility:ban" class="slds-m-left_xx-small cur_point"
+                                                    alternative-text="Settings" title="Remove" onclick={delFund} 
+                                                    data-name={object.name} data-id="navpeII_dev18__Fund__c" size="x-small"> <!--Modified by Hema 14-04-2023--><!--Modified by Anshika Ahuja W.R.TO Critical_Bug and #00035274 and 00035273-->
+                                                </lightning-icon>
+                                            </template>
+                                </lightning-layout-item>
+                            </div>
+                        </div>
+                    </div>
+                    <template if:true={object.showTable}>
+                    <div class="slds-box slds-box_x-small slds-p-around_none tabhead">
+                        <div class="slds-grid slds-wrap">
+                            <div class="slds-col slds-size_1-of-1 slds-text-align_left">
+                                <div>
+                                    <template if:true={object.outerList}>
+                                        <lightning-datatable class="heightDataTable power-btn" key-field="Id" data={object.outerList}
+                                            hide-checkbox-column={fundChecbox} columns={fundCols} onrowaction={handleContactRow}>
+                                        </lightning-datatable>
+                                    </template>
+                                </div>
+                            </div>
+                            <template if:true={object.veiwMore}>
+                                <div class="slds-col slds-size_1-of-1 slds-theme_shade slds-text-align_right slds-p-right_x-small">
+                                    <div class="slds-page-header__col-actions">
+                                        <lightning-button variant="base" label="View All" title="View All"
+                                            class="slds-m-left_x-small view-hover" onclick={onClickFundTableChange} data-name={object.name}></lightning-button>
+                                    </div>
+                                </div>
+                            </template>
+                        </div>
+                    </div>
+                </template>
+                    </div>
+                </template>
+            </template>
+            <template if:true={isShowfundObject}>
+              <template if:true={fundIsAccessible}>
+                <div class="slds-grid slds-wrap slds-box slds-theme_shade slds-p-vertical_xx-small slds-p-horizontal_medium slds-m-top_small">
+                    <div class="slds-col slds-size_1-of-1">
+                        <div class="slds-grid slds-wrap" style="align-items: center;">
+                            <div class="slds-col slds-size_8-of-12">
+                                <ul class="slds-list_horizontal slds-has-block-links_space" style="align-items:center;">
+                                    <li><span class="slds-page-header__title slds-text-align_left slds-m-top_xx-small"
+                                            title={fundObjLabel}>{fundObjLabel} ({fundDataSize})</span></li></ul>
+                                            <!--<template if:true={fundRemoveIcon}> Modified by Anshika Ahuja W.R.To Critical_Bug #00035275-->
+                                            <ul class="slds-list_horizontal slds-has-block-links_space" style="align-items:center;">
+                                                <!--Added by tejaswini 00035019-->
+                                                <li><span>Sorted by</span> </li>
+                                                <li><lightning-combobox class="sortedbycss" name="progress" 
+                                                        value={sortbyContact}
+                                                        placeholder={placeholderFund} 
+                                                        options={optionsforsortingFund}
+                                                        onchange={handleChangesorting}></lightning-combobox>
+                                                    </li>
+                                                </ul>
+                                            <!--</template>-->
+                            </div>
+                            <lightning-layout-item size="4" class="addto addMinus slds-p-top_xx-small">
+                                <lightning-icon icon-name="utility:new" alternative-text="Add"
+                                            onclick={addThemeRecordPop} title="Add To Theme" size="x-small"
+                                            class="cur_point slds-m-right_x-small" data-name="navpeII_dev18__Fund__c" data-id="navpeII_dev18__Fund__c"></lightning-icon>
+                                        <!--Added by Tejaswini Bug Fix - 00035020-->
+                                        <template if:true={fundRemoveIcon}>
+                                            <lightning-icon icon-name="utility:ban" class="slds-m-left_xx-small cur_point"
+                                                alternative-text="Settings" title="Remove" onclick={delFund}
+                                                size="x-small" data-name="Funds" data-id="navpeII_dev18__Fund__c"><!--Modified by Anshika Ahuja W.R.TO Critical_Bug #00035273-->
+                                            </lightning-icon>
+                                        </template>
+                            </lightning-layout-item>
+                        </div>
+                    </div>
+                </div>
+                <template if:true={fundDataShow}>
+                <div class="slds-box slds-box_x-small slds-p-around_none tabhead">
+                    <div class="slds-grid slds-wrap">
+                        <div class="slds-col slds-size_1-of-1 slds-text-align_left">
+                            <div><lightning-datatable class="heightDataTable power-btn" key-field="id"
+                                    data={fundSlicedData} hide-checkbox-column="true" columns={fundCols}
+                                    onrowaction={handleContactRow}>
+                                </lightning-datatable>
+                            </div>
+                        </div>
+                        <template if:true={viewAllFund}>
+                            <div class="slds-col slds-size_1-of-1 slds-text-align_right slds-p-right_x-small slds-theme_shade">
+                                <div class="slds-page-header__col-actions">
+                                    <lightning-button variant="base" label="View All" title="View All"
+                                        class="slds-m-left_x-small view-hover" onclick={onClickFundTableChange} data-id="Funds" data-name="Funds"></lightning-button>
+                                </div>
+                            </div>
+                        </template>
+                    </div>
+                </div>
+                </template>
+                </template>	 
+
+
+            </template>
+            </template>
+            <!--For Fund recordTypeSTart End-->    
+
+            <!--FOr FundRaising  recordType STart-->
+                <template if:true={fundraisingAccess}>
+                 <template if:false={isShowFundraisingObject}>
+                 <template for:each={fundraisingRecordTypeList} for:item="object" for:index="index">
+                    <div key={object.name} >
+                        <div class="slds-grid slds-wrap slds-box slds-theme_shade slds-p-vertical_xx-small slds-p-horizontal_medium slds-m-top_small">
+                        <div class="slds-col slds-size_1-of-1">
+                            <div class="slds-grid slds-wrap" style="align-items: center;">
+                                <div class="slds-col slds-size_8-of-12">
+                                    <ul class="slds-list_horizontal slds-has-block-links_space" style="align-items:center;">
+                                        <li><span class="slds-page-header__title slds-text-align_left slds-m-top_x-small" title={object.name}> {object.name} ({object.count})</span></li></ul>
+                                        <ul class="slds-list_horizontal slds-has-block-links_space" style="align-items:center;">
+                                            <!--<template if:true={object.showRemoveIcon}> Modified by Anshika Ahuja W.R.To Critical_Bug #00035275-->
+                                                <!--Added by tejaswini 00035019/ 00033368-->
+                                            <li><span>Sorted by</span></li>
+                                           
+                    
+                                                    <li><lightning-combobox class="sortedbycss" name="progress" 
+                                                        value={object.sortbyContact}
+                                                        placeholder={object.placeholderContact} 
+                                                        options={optionsforsortingFundraising}
+                                                        onchange={handleChangesorting} 
+                                                        data-id={object.name}
+                                                        data-name={object.name}></lightning-combobox>
+                                                    </li>
+                                             
+                                            
+                                            <!-- End by Anshika Ahuja W.R.To Critical_Bug# 00035298,00035297-->
+                                            <!--</template>-->
+                                        </ul>
+                                    </div>
+
+                                <lightning-layout-item size="4" class="addto addMinus slds-p-top_xx-small">
+                                    <lightning-icon icon-name="utility:new" alternative-text="Add"
+                                                onclick={addThemeRecordPop} title="Add To Theme" size="x-small"
+                                                class="cur_point slds-m-right_x-small" data-name="navpeII_dev18__Fundraising__c" data-id="navpeII_dev18__Fundraising__c"></lightning-icon>
+                                                <!--Added by Tejaswini Bug Fix - 00035020-->
+                                                <template if:true={object.showRemoveIcon}>
+                                                <lightning-icon icon-name="utility:ban" class="slds-m-left_xx-small cur_point"
+                                                    alternative-text="Settings" title="Remove" onclick={delFdr} 
+                                                    data-name={object.name} data-id="Fundraisings" size="x-small"> <!--Modified by Hema 14-04-2023--><!--Modified by Anshika Ahuja W.R.TO Critical_Bug and #00035274 and 00035273-->
+                                                </lightning-icon>
+                                            </template>
+                                </lightning-layout-item>
+                            </div>
+                        </div>
+                    </div>
+                    <template if:true={object.showTable}>
+                    <div class="slds-box slds-box_x-small slds-p-around_none tabhead">
+                        <div class="slds-grid slds-wrap">
+                            <div class="slds-col slds-size_1-of-1 slds-text-align_left">
+                                <div>
+                                    <template if:true={object.outerList}>
+                                        <lightning-datatable class="heightDataTable power-btn" key-field="Id" data={object.outerList}
+                                            hide-checkbox-column={fdrChecbox} columns={fdrCols} onrowaction={handleContactRow}>
+                                        </lightning-datatable>
+                                    </template>
+                                </div>
+                            </div>
+                            <template if:true={object.veiwMore}>
+                                <div class="slds-col slds-size_1-of-1 slds-theme_shade slds-text-align_right slds-p-right_x-small">
+                                    <div class="slds-page-header__col-actions">
+                                        <lightning-button variant="base" label="View All" title="View All"
+                                            class="slds-m-left_x-small view-hover" onclick={onClickFundraisingTableChange} data-name={object.name}></lightning-button>
+                                    </div>
+                                </div>
+                            </template>
+                        </div>
+                    </div>
+                </template>
+                    </div>
+                </template>
+            </template>
+            <template if:true={isShowFundraisingObject}>
+
+               <template if:true={fundraisingAccess}>
+                <div class="slds-grid slds-wrap slds-box slds-theme_shade slds-p-vertical_xx-small slds-p-horizontal_medium slds-m-top_small">
+                    <div class="slds-col slds-size_1-of-1">
+                        <div class="slds-grid slds-wrap" style="align-items: center;">
+                            <div class="slds-col slds-size_8-of-12">
+                                <ul class="slds-list_horizontal slds-has-block-links_space" style="align-items:center;">
+                                    <li><span class="slds-page-header__title slds-text-align_left slds-m-top_xx-small"
+                                            title={fundraisingObjLabel}>{fundraisingObjLabel} ({fdrDataSize})</span></li></ul>
+                                            <!--<template if:true={fdrRemoveIcon}> Modified by Anshika Ahuja W.R.To Critical_Bug #00035275-->
+                                            <ul class="slds-list_horizontal slds-has-block-links_space" style="align-items:center;">
+                                                <!--Added by tejaswini 00035019-->
+                                                <li><span>Sorted by</span></li>
+                                                <li><lightning-combobox class="sortedbycss" name="progress" 
+                                                        value={sortbyContact}
+                                                        placeholder={placeholderfdr}  
+                                                        options={optionsforsortingFundraising}
+                                                        onchange={handleChangesorting}
+                                                        data-id={fundraisingObjLabel}
+                                                        data-name={fundraisingObjLabel}></lightning-combobox>
+                                                    </li>
+                                                </ul>
+                                            <!--</template>-->
+    
+                            </div>
+                            <lightning-layout-item size="4" class="addto addMinus slds-p-top_xx-small">
+                                <lightning-icon icon-name="utility:new" alternative-text="Add"
+                                            onclick={addThemeRecordPop} title="Add To Theme" size="x-small"
+                                            class="cur_point slds-m-right_x-small" data-name="navpeII_dev18__Fundraising__c" data-id="navpeII_dev18__Fundraising__c"></lightning-icon>
+                                            <!--Added by Tejaswini Bug Fix - 00035020-->
+                                            <template if:true={fdrRemoveIcon}>
+                                                <lightning-icon icon-name="utility:ban" class="slds-m-left_xx-small cur_point"
+                                                    alternative-text="Settings" title="Remove" onclick={delFdr}
+                                                    size="x-small" data-name="Fundraisings" data-id="navpeII_dev18__Fundraising__c">
+                                                </lightning-icon><!--Modified by Anshika Ahuja W.R.TO Critical_Bug #00035273-->
+                                            </template>
+                            </lightning-layout-item>
+                        </div>
+                    </div>
+                </div>
+                <template if:true={fdrDataShow}>
+                <div class="slds-box slds-box_x-small slds-p-around_none tabhead">
+                    <div class="slds-grid slds-wrap">
+                        <div class="slds-col slds-size_1-of-1 slds-text-align_left">
+                            <div><lightning-datatable class="heightDataTable power-btn" key-field="id"
+                                    data={fdrSlicedData} hide-checkbox-column="true" columns={fdrCols}
+                                    onrowaction={handleContactRow}>
+                                </lightning-datatable>
+                            </div>
+                        </div>
+                        <template if:true={viewAllFDR}>
+                            <div class="slds-col slds-size_1-of-1 slds-text-align_right slds-p-right_x-small slds-theme_shade">
+                                <div class="slds-page-header__col-actions">
+                                    <lightning-button variant="base" label="View All" title="View All"
+                                        class="slds-m-left_x-small view-hover" onclick={onClickFundraisingTableChange} data-id="Fundraisings" data-name="Fundraisings"></lightning-button>
+                                </div>
+                            </div>
+                        </template>
+                    </div>
+                </div>
+                </template>
+    </template>	
+
+            </template>
+                </template>
+            <!--FOr FundRaising  recordType End-->
+
+
+                 
+                	
+                
+                
+                <template if:true={themeIsAccessible}>
+                <div class="slds-grid slds-wrap slds-box slds-theme_shade slds-p-vertical_xx-small slds-p-horizontal_medium slds-m-top_small">
+                    <div class="slds-col slds-size_1-of-1">
+                        <div class="slds-grid slds-wrap">
+                            <div class="slds-col slds-size_8-of-12">
+                                <ul class="slds-list_horizontal slds-has-block-links_space" style="align-items:center;">
+                                    <li><span class="slds-page-header__title slds-text-align_left slds-m-top_xx-small"
+                                            title={themeObjLabel}>{themeObjLabel} ({themeDataSize})</span></li></ul>
+                            </div>
+                            <lightning-layout-item size="4" class="addto addMinus slds-p-top_xx-small">
+                                <ul class="slds-list_horizontal slds-has-block-links_space" style="align-items:center;">
+                                    <li><lightning-icon icon-name="utility:new" alternative-text="Add"
+                                            onclick={addThemeRecordPop} title="Add To Theme" size="x-small"
+                                            class="cur_point slds-m-right_x-small" data-name="navpeII_dev18__Theme__c"></lightning-icon>
+                                            <!--Added by Tejaswini Bug Fix - 00035020-->
+                                            <template if:true={themeRemoveIcon}>
+                                                <lightning-icon icon-name="utility:ban" class="slds-m-left_xx-small cur_point"
+                                                    alternative-text="Settings" title="Remove" onclick={delTheme}
+                                                    size="x-small" data-name="Themes">
+                                                </lightning-icon>
+                                            </template>
+                                    </li>
+                                </ul>
+                            </lightning-layout-item>
+                        </div>
+                    </div>
+                </div>
+                <template if:true={themeDataShow}>
+                <div class="slds-box slds-box_x-small slds-p-around_none tabhead">
+                    <div class="slds-grid slds-wrap">
+                        <div class="slds-col slds-size_1-of-1 slds-text-align_left">
+                            <div><lightning-datatable class="heightDataTable power-btn" key-field="id"
+                                    data={themeSlicedData} hide-checkbox-column="true" columns={themeCols}
+                                    onrowaction={handleContactRow}>
+                                </lightning-datatable>
+                            </div>
+                        </div>
+                        <template if:true={viewAllTheme}>
+                            <div class="slds-col slds-size_1-of-1 slds-text-align_right slds-p-right_x-small slds-theme_shade">
+                                <div class="slds-page-header__col-actions">
+                                    <lightning-button variant="base" label="View All" title="View All"
+                                        class="slds-m-left_x-small view-hover" onclick={onClickThemeTableChange} data-id="Themes" data-name="Themes"></lightning-button>
+                                </div>
+                            </div>
+                        </template>
+                    </div>
+                </div>
+                </template>
+				</template>	
+                <template if:true={clipIsAccessible}>
+                <div class="slds-grid slds-wrap slds-box slds-theme_shade slds-p-vertical_xx-small slds-p-horizontal_medium slds-m-top_small">
+                    <div class="slds-col slds-size_1-of-1">
+                        <div class="slds-grid slds-wrap">
+                            <div class="slds-col slds-size_8-of-12">
+                                <ul class="slds-list_horizontal slds-has-block-links_space" style="align-items:center;">
+                                    <li><span class="slds-page-header__title slds-text-align_left slds-m-top_xx-small"
+                                            title={clipObjLabel}>{clipObjLabel} ({clipDataSize})</span></li></ul>
+                            </div>
+                            <lightning-layout-item size="4" class="addto addMinus slds-p-top_xx-small">
+                                <ul class="slds-list_horizontal slds-has-block-links_space" style="align-items:center;">
+                                    <li><lightning-icon icon-name="utility:new" alternative-text="Add"
+                                            onclick={addThemeRecordPop} title="Add To Theme" size="x-small"
+                                            class="cur_point slds-m-right_x-small" data-name="navpeII_dev18__Clip__c"></lightning-icon>
+                                            <!--Added by Tejaswini Bug Fix - 00035020-->
+                                            <template if:true={clipRemoveIcon}>
+                                                <lightning-icon icon-name="utility:ban" class="slds-m-left_xx-small cur_point"
+                                                    alternative-text="Settings" title="Remove" onclick={delClip}
+                                                    size="x-small" data-name="Clips">
+                                                </lightning-icon>
+                                            </template>
+                                    </li>
+                                </ul>
+                            </lightning-layout-item>
+                        </div>
+                    </div>
+                </div>
+                <template if:true={clipDataShow}>
+                <div class="slds-box slds-box_x-small slds-p-around_none tabhead">
+                    <div class="slds-grid slds-wrap">
+                        <div class="slds-col slds-size_1-of-1 slds-text-align_left">
+                            <div><lightning-datatable class="heightDataTable power-btn" key-field="id"
+                                    data={clipSlicedData} hide-checkbox-column="true" columns={clipCols}
+                                    onrowaction={handleContactRow}>
+                                </lightning-datatable>
+                            </div>
+                        </div>
+                        <template if:true={viewAllClip}>
+                            <div class="slds-col slds-size_1-of-1 slds-text-align_right slds-p-right_x-small slds-theme_shade">
+                                <div class="slds-page-header__col-actions">
+                                    <lightning-button variant="base" label="View All" title="View All"
+                                        class="slds-m-left_x-small view-hover" onclick={onClickClipTableChange} data-id="Clips" data-name="Clips"></lightning-button>
+                                </div>
+                            </div>
+                        </template>
+                    </div>
+                </div>
+                </template>
+				</template>	
+            </div>
+        </template>
+        
+    
+    
+        <template if:true={isDataTableFirmClick}>
+            <div class="slds-col slds-size_9-of-12">
+                <div class="slds-grid slds-wrap slds-p-around_medium slds-box slds-theme_shade slds-box slds-m-top_small">
+                    <div class="slds-col slds-size_1-of-1">
+                        <div>
+                            <div class="slds-grid slds-wrap" style="align-items: center;">
+                                <div class="slds-col slds-size_4-of-12">
+                                    <ul class="slds-list_horizontal slds-has-block-links_space"
+                                        style="align-items:center;">
+                                        <li><span class="slds-page-header__title slds-text-align_left slds-m-top_xx-small"
+                                                title={accountRTName}>{accountRTName} ({accountRTCount})</span></li>
+                                    </ul>
+                                    <!--<template if:true={innerAccountListShow}> Modified by Anshika Ahuja W.R.To Critical_Bug #00035275-->
+                                    <ul class="slds-list_horizontal slds-has-block-links_space"
+                                        style="align-items:center;">
+                                        <li><span>Sorted by</span></li>
+                                        <!--Modified by Anshika Ahuja W.R.To Critical_Bug #00035280-->
+                                       <!-- Added by Anshika Ahuja W.R.To Critical_Bug# 00035298,00035297-->
+                                    <template if:true={recordTypeCompCheck}>
+                                        <li><lightning-combobox class="sortedbycss" name="progress" 
+                                            value={sortbyContact}
+                                            placeholder={placeholderAcc} 
+                                            options={optionsforsortingCompany}
+                                            onchange={handleChangesorting}
+                                            data-id={accountRTName}
+                                            data-name={accountRTName} 
+                                            ></lightning-combobox>
+                        
+                                        </li>
+                                    </template>
+                                    <template if:true={recordTypeAdvisorCheck}>
+                                        <li><lightning-combobox class="sortedbycss" name="progress" 
+                                            value={sortbyContact}
+                                            placeholder={placeholderAcc} 
+                                            options={optionsforsortingIntermediary}
+                                            onchange={handleChangesorting} 
+                                            data-id={accountRTName}
+                                            data-name={accountRTName}></lightning-combobox>
+                                        </li>
+                                    </template>
+                                    <template if:false={recordTypeAdvisorCheck}>
+                                        <template if:false={recordTypeCompCheck}>
+                                            <li><lightning-combobox class="sortedbycss" name="progress" 
+                                                value={sortbyContact}
+                                                placeholder={placeholderAcc} 
+                                                options={optionsforsortingFirm}
+                                                onchange={handleChangesorting} 
+                                                data-id={accountRTName}
+                                                data-name={accountRTName}></lightning-combobox>
+                                            </li>
+                                        </template>
+                                    </template>
+                                    <!-- End by Anshika Ahuja W.R.To Critical_Bug# 00035298,00035297-->
+                                    </ul>
+                                <!--</template>-->
+                                </div>
+                                <div class="slds-col slds-size_4-of-12">
+                                    <template if:true={cancelSave}>
+                                        <div
+                                            class="slds-col slds-size_1-of-1 slds-theme_shade slds-text-align_right slds-p-right_small slds-p-top_x-small slds-align_absolute-center">
+                                            <div class="slds-page-header__col-actions">
+                                                <lightning-button variant="neutral" label="Cancel" title="Cancel"
+                                                    class="slds-m-left_x-small" onclick={cancelSelection}>
+                                                </lightning-button>
+                                                <lightning-button variant="brand" label="Remove" title="Remove"
+                                                    class="slds-m-left_x-small" onclick={removeContacts}>
+                                                </lightning-button>
+                                            </div>
+                                        </div>
+                                    </template>
+                                </div>
+                                <div class="slds-col slds-size_4-of-12">
+                                    <lightning-layout-item size="2"
+                                                class="addto addMinus slds-p-top_xx-small slds-float_right">
+                                                <template if:true={addDisable}>
+                                                    <lightning-icon icon-name="utility:new" alternative-text="Add"
+                                                        onclick={addThemeRecordPop} title="Add To Theme" size="x-small"
+                                                        class="cur_point slds-m-right_x-small" data-name="Account"></lightning-icon>
+                                                </template>
+                                                <!--Added by Tejaswini Bug Fix - 00035020-->
+                                                <template if:true={innerAccountListShow}>
+                                                <lightning-icon icon-name="utility:ban"
+                                                    class="slds-m-left_xx-small cur_point" alternative-text="Settings"
+                                                    title="Remove" onclick={delFirms} size="x-small" data-name={accountRTName}>
+                                                </lightning-icon>
+                                            </template>
+                                            </lightning-layout-item>
+                                </div></div> </div></div>
+                </div>
+                <template if:true={innerAccountListShow}>
+                <div class="slds-box slds-box_x-small slds-p-around_none">
+                    <div class="slds-grid slds-wrap">
+                        <div class="slds-col slds-size_1-of-1 slds-text-align_left">
+                            <div>
+                                <lightning-datatable class="heightDataTable power-btn" key-field="id" data={representAccountList}
+                                    hide-checkbox-column={firmChecbox} columns={accCols}
+                                    onrowaction={handleContactRow} onrowselection={handleContactSelection}>
+                                </lightning-datatable>
+                            </div>
+                        </div>
+                        <template if:true={cancelSave}>
+                            <div class="slds-col slds-size_1-of-1 slds-theme_shade slds-text-align_right slds-p-right_small slds-p-top_medium slds-p-bottom_small">
+                                <div class="slds-page-header__col-actions slds-align_absolute-center">
+                                    <lightning-button variant="neutral" label="Cancel" title="Cancel"
+                                        class="slds-m-left_x-small" onclick={cancelSelection}>
+                                    </lightning-button>
+                                    <lightning-button variant="brand" label="Remove" title="Remove"
+                                        class="slds-m-left_x-small" onclick={removeContacts}>
+                                    </lightning-button>
+                                </div>
+                            </div>
+                        </template>
+                    </div>
+                </div>
+            </template>
+            </div>
+        </template>
+    
+    
+        <template if:true={isDataTableContactClick}>
+            <div class="slds-col slds-size_9-of-12">
+                <div class="slds-grid slds-wrap slds-p-around_medium slds-box slds-theme_shade slds-box slds-m-top_small">
+                    <div class="slds-col slds-size_1-of-1">
+                        <div>
+                            <div class="slds-grid slds-wrap" style="align-items: center;">
+                                <div class="slds-col slds-size_4-of-12">
+                                    <ul class="slds-list_horizontal slds-has-block-links_space"
+                                        style="align-items:center;">
+                                        <template if:false={isShowContactObject}>
+                                       <li><span class="slds-page-header__title slds-text-align_left slds-m-top_xx-small"
+                                                title={contactobjLabel}>{contactRTName} ({contactRTCount})</span></li>
+                                        </template>  
+                                        <template if:true={isShowContactObject}>
+                                        <li><span class="slds-page-header__title slds-text-align_left slds-m-top_xx-small"
+                                                title={contactobjLabel}>{contactobjLabel} ({conDataSize})</span></li><!-- 00045547 Bug Fix by Manonit-->
+                                    </template>       
+                                        
+                                    </ul>
+                                    <!--<template if:true={conDataShow}> Modified by Anshika Ahuja W.R.To Critical_Bug #00035275-->
+                                    <ul class="slds-list_horizontal slds-has-block-links_space"
+                                        style="align-items:center;">
+                                        <li><span>Sorted by</span></li>
+                                        <li><lightning-combobox class="sortedbycss" name="progress" 
+                                                value={sortbyContact}
+                                                placeholder={placeholderContact} 
+                                                options={optionsforsortingContact}
+                                                onchange={handleChangesorting} 
+                                                data-id={contactRTName}
+                                                data-name={contactRTName}></lightning-combobox>
+                                            </li>
+
+                                       
+                                    </ul>
+                                    <!--</template>-->
+                                </div>
+                                <div class="slds-col slds-size_4-of-12">
+                                    <template if:true={cancelSave}>
+                                        <div
+                                            class="slds-col slds-size_1-of-1 slds-theme_shade slds-text-align_right slds-p-right_small slds-p-top_x-small slds-align_absolute-center">
+                                            <div class="slds-page-header__col-actions">
+                                                <lightning-button variant="neutral" label="Cancel" title="Cancel"
+                                                    class="slds-m-left_x-small" onclick={cancelSelection}>
+                                                </lightning-button>
+                                                <lightning-button variant="brand" label="Remove" title="Remove"
+                                                    class="slds-m-left_x-small" onclick={removeContacts}>
+                                                </lightning-button>
+                                            </div>
+                                        </div>
+                                    </template>
+                                </div>
+                                <div class="slds-col slds-size_4-of-12">
+                                    <lightning-layout-item size="2"
+                                                class="addto addMinus slds-p-top_xx-small slds-float_right">
+                                                <template if:true={addDisable}>
+                                                    <lightning-icon icon-name="utility:new" alternative-text="Add"
+                                                        onclick={addThemeRecordPop} title="Add To Theme" size="x-small"
+                                                        class="cur_point slds-m-right_x-small" data-name="Contact"></lightning-icon>
+                                                </template>
+                                                <!--Added by Tejaswini Bug Fix - 00035020-->
+                                                  <template if:true={isShowContactObject}>
+                                                <lightning-icon icon-name="utility:ban"
+                                                    class="slds-m-left_xx-small cur_point" alternative-text="Settings"
+                                                    title="Remove" onclick={delContacts} size="x-small" data-name="Contact">
+                                                </lightning-icon>
+                                                </template>   
+                                            <template if:true={innerContactListShow}>
+                                                <lightning-icon icon-name="utility:ban"
+                                                    class="slds-m-left_xx-small cur_point" alternative-text="Settings"
+                                                    title="Remove" onclick={delContacts} size="x-small" data-name={contactRTName}>
+                                                </lightning-icon>
+                                            </template>
+                                            </lightning-layout-item>
+                                </div></div> </div></div>
+                </div>
+                <template if:true={isShowContactObject}>
+                <div class="slds-box slds-box_x-small slds-p-around_none">
+                    <div class="slds-grid slds-wrap">
+                        <div class="slds-col slds-size_1-of-1 slds-text-align_left">
+                            <div>
+                                <template if:true={conDataShow}><!--00045316 Bug fixed By Manonit-->
+                                <lightning-datatable class="heightDataTable power-btn" key-field="id" data={conData}
+                                    hide-checkbox-column={contactChecbox} columns={conCols}
+                                    onrowaction={handleContactRow} onrowselection={handleContactSelection}>
+                                </lightning-datatable>
+                                </template>
+                            </div>
+                        </div>
+                        <template if:true={cancelSave}>
+                            <div class="slds-col slds-size_1-of-1 slds-theme_shade slds-text-align_right slds-p-right_small slds-p-top_medium slds-p-bottom_small">
+                                <div class="slds-page-header__col-actions slds-align_absolute-center">
+                                    <lightning-button variant="neutral" label="Cancel" title="Cancel"
+                                        class="slds-m-left_x-small" onclick={cancelSelection}>
+                                    </lightning-button>
+                                    <lightning-button variant="brand" label="Remove" title="Remove"
+                                        class="slds-m-left_x-small" onclick={removeContacts}>
+                                    </lightning-button>
+                                </div>
+                            </div>
+                        </template>
+                    </div>
+                </div>
+            </template>
+            <template if:true={innerContactListShow}>
+                <div class="slds-box slds-box_x-small slds-p-around_none">
+                    <div class="slds-grid slds-wrap">
+                        <div class="slds-col slds-size_1-of-1 slds-text-align_left">
+                            <div>
+                                <lightning-datatable class="heightDataTable power-btn" key-field="id" data={representContactList}
+                                    hide-checkbox-column={contactChecbox} columns={conCols}
+                                    onrowaction={handleContactRow} onrowselection={handleContactSelection}>
+                                </lightning-datatable>
+                            </div>
+                        </div>
+                        <template if:true={cancelSave}>
+                            <div class="slds-col slds-size_1-of-1 slds-theme_shade slds-text-align_right slds-p-right_small slds-p-top_medium slds-p-bottom_small">
+                                <div class="slds-page-header__col-actions slds-align_absolute-center">
+                                    <lightning-button variant="neutral" label="Cancel" title="Cancel"
+                                        class="slds-m-left_x-small" onclick={cancelSelection}>
+                                    </lightning-button>
+                                    <lightning-button variant="brand" label="Remove" title="Remove"
+                                        class="slds-m-left_x-small" onclick={removeContacts}>
+                                    </lightning-button>
+                                </div>
+                            </div>
+                        </template>
+                    </div>
+                </div>
+            </template>
+            </div>
+        </template>
+        
+    
+    
+        <template if:true={isDataTableDealClick}>
+            <div class="slds-col slds-size_9-of-12 ">
+                <div class="slds-grid slds-wrap slds-p-around_medium slds-box slds-theme_shade slds-box slds-m-top_small">
+                    <div class="slds-col slds-size_1-of-1">
+                        <div>
+                            <div class="slds-grid slds-wrap" style="align-items: center;">
+                                <div class="slds-col slds-size_4-of-12">
+                                    <ul class="slds-list_horizontal slds-has-block-links_space"
+                                        style="align-items:center;">
+                                        <template if:false={isShowDealObject}>
+                                        <li><span class="slds-page-header__title slds-text-align_left slds-m-top_xx-small"
+                                                title={dealobjLabel}>{dealRTName} ({dealRTCount})</span></li>
+                                        </template>  
+                                        <template if:true={isShowDealObject}>
+                                        <li><span class="slds-page-header__title slds-text-align_left slds-m-top_xx-small"
+                                                title={dealobjLabel}>{dealobjLabel} ({dealDataSize})</span></li><!-- 00045547 Bug Fix by Manonit-->
+                                        </template>       
+                                    </ul>
+                                    <!--<template if:true={dealDataShow}> Modified by Anshika Ahuja W.R.To Critical_Bug #00035275-->
+                                    <ul class="slds-list_horizontal slds-has-block-links_space"
+                                        style="align-items:center;">
+                                        <!--Added by tejaswini 00035019-->
+                                        <li><span>Sorted by</span></li>
+                                        <li><lightning-combobox class="sortedbycss" name="progress" 
+                                                value={sortbyContact}
+                                                placeholder={placeholderDeal}  
+                                                options={optionsforsortingDeals}
+                                                onchange={handleChangesorting}
+                                                data-id={dealRTName}
+                                                data-name={dealRTName}>
+                                                </lightning-combobox>
+                                        </li>
+                                    </ul>
+                                    <!--</template>-->
+                                </div>
+                                <div class="slds-col slds-size_4-of-12">
+                                    <template if:true={cancelSave}>
+                                        <div class="slds-col slds-size_1-of-1 slds-theme_shade slds-text-align_right slds-p-right_small slds-p-top_x-small ">
+                                            <div class="slds-page-header__col-actions slds-align_absolute-center">
+                                                <lightning-button variant="neutral" label="Cancel" title="Cancel"
+                                                    class="slds-m-left_x-small" onclick={cancelSelection}>
+                                                </lightning-button>
+                                                <lightning-button variant="brand" label="Remove" title="Remove"
+                                                    class="slds-m-left_x-small" onclick={removeContacts}></lightning-button>
+                                            </div>
+                                        </div>
+                                    </template>
+                                </div>
+                                <div class="slds-col slds-size_4-of-12">
+                                    <lightning-layout-item size="2"
+                                                class="addto addMinus slds-p-top_xx-small slds-float_right">
+                                                <template if:true={addDisable}>
+                                                    <lightning-icon icon-name="utility:new" alternative-text="Add"
+                                                        onclick={addThemeRecordPop} title="Add To Theme" size="x-small"
+                                                        class="cur_point slds-m-right_x-small" data-name="navpeII_dev18__Pipeline__c"></lightning-icon>
+                                                </template>
+                                                <!--Added by Tejaswini Bug Fix - 00035020-->
+                                               <template if:true={isShowDealObject}>
+                                                <lightning-icon icon-name="utility:ban"
+                                                    class="slds-m-left_xx-small cur_point" alternative-text="Settings"
+                                                    title="Remove" onclick={delDeals} size="x-small" data-name="Deals">
+                                                </lightning-icon>
+                                                </template>
+                                                 <template if:true={innerDealListShow}>
+                                                <lightning-icon icon-name="utility:ban"
+                                                    class="slds-m-left_xx-small cur_point" alternative-text="Settings"
+                                                    title="Remove" onclick={delDeals} size="x-small" data-name={dealRTName}>
+                                                </lightning-icon>
+                                            </template>
+                                            </lightning-layout-item>
+                                        </div></div> </div></div> </div>
+            <template if:true={isShowDealObject}>                  
+                <div class="slds-box slds-box_x-small slds-p-around_none">
+                    <div class="slds-grid slds-wrap">
+                        <div class="slds-col slds-size_1-of-1 slds-text-align_left">
+                            <div>
+                                <template if:true={dealDataShow}> <!--00045316 Bug fixed By Manonit-->
+                                <lightning-datatable class="heightDataTable power-btn"
+                                    hide-checkbox-column={dealChecbox} key-field="id" data={dealData}
+                                    columns={dealCols} onrowaction={handleContactRow} onrowselection={handleContactSelection}>
+                                </lightning-datatable>
+                                </template>
+                            </div>
+                        </div>
+                        <template if:true={cancelSave}>
+                            <div class="slds-col slds-size_1-of-1 slds-theme_shade slds-text-align_right slds-p-right_small slds-p-top_medium slds-p-bottom_small">
+                                <div class="slds-page-header__col-actions slds-align_absolute-center">
+                                    <lightning-button variant="neutral" label="Cancel" title="Cancel"
+                                        class="slds-m-left_x-small" onclick={cancelSelection}>
+                                    </lightning-button>
+                                    <lightning-button variant="brand" label="Remove" title="Remove"
+                                        class="slds-m-left_x-small" onclick={removeContacts}></lightning-button>
+                                </div>
+                            </div>
+                        </template>
+                    </div>
+                </div>
+                </template>
+                <template if:true={innerDealListShow}>
+                <div class="slds-box slds-box_x-small slds-p-around_none">
+                    <div class="slds-grid slds-wrap">
+                        <div class="slds-col slds-size_1-of-1 slds-text-align_left">
+                            <div>
+                                <lightning-datatable class="heightDataTable power-btn" key-field="id" data={representdealList}
+                                    hide-checkbox-column={dealChecbox} columns={dealCols}
+                                    onrowaction={handleContactRow} onrowselection={handleContactSelection}>
+                                </lightning-datatable>
+                            </div>
+                        </div>
+                        <template if:true={cancelSave}>
+                            <div class="slds-col slds-size_1-of-1 slds-theme_shade slds-text-align_right slds-p-right_small slds-p-top_medium slds-p-bottom_small">
+                                <div class="slds-page-header__col-actions slds-align_absolute-center">
+                                    <lightning-button variant="neutral" label="Cancel" title="Cancel"
+                                        class="slds-m-left_x-small" onclick={cancelSelection}>
+                                    </lightning-button>
+                                    <lightning-button variant="brand" label="Remove" title="Remove"
+                                        class="slds-m-left_x-small" onclick={removeContacts}>
+                                    </lightning-button>
+                                </div>
+                            </div>
+                        </template>
+                    </div>
+                </div>
+            </template>
+            </div>
+        </template>
+    
+    
+        <template if:true={isDataTableFundClick}>
+            <div class="slds-col slds-size_9-of-12 ">
+                <div class="slds-grid slds-wrap slds-p-around_medium slds-box slds-theme_shade slds-box slds-m-top_small">
+                    <div class="slds-col slds-size_1-of-1">
+                        <div>
+                            <div class="slds-grid slds-wrap" style="align-items: center;">
+                                <div class="slds-col slds-size_4-of-12">
+                                    <ul class="slds-list_horizontal slds-has-block-links_space"
+                                        style="align-items:center;">
+                                        <template if:false={isShowfundObject}>
+                                        <li><span class="slds-page-header__title slds-text-align_left slds-m-top_xx-small"
+                                            title={fundObjLabel}>{fundRTName} ({fundRTCount})</span></li>
+                                        </template>  
+                                        <template if:true={isShowfundObject}>
+                                        <li><span class="slds-page-header__title slds-text-align_left slds-m-top_xx-small"
+                                                title={fundObjLabel}>{fundObjLabel} ({fundDataSize})</span></li><!-- 00045547 Bug Fix by Manonit-->
+                                        </template>     
+                                        
+                                    </ul>
+                                    <!--<template if:true={fundDataShow}> Modified by Anshika Ahuja W.R.To Critical_Bug #00035275-->
+                                    <ul class="slds-list_horizontal slds-has-block-links_space"
+                                    style="align-items:center;">
+                                    <!--Added by tejaswini 00035019-->
+                                        <li><span>Sorted by</span></li>
+                                        <li><lightning-combobox class="sortedbycss" name="progress" 
+                                                value={sortbyContact}
+                                                placeholder={placeholderFund}  
+                                                options={optionsforsortingFund}
+                                                onclick={handleChangesorting}
+                                                data-id={fundRTName}
+                                                data-name={fundRTName}></lightning-combobox>
+                                        </li>
+                                    </ul>
+                                <!--</template>-->
+                                </div>
+                                <div class="slds-col slds-size_4-of-12">
+                                    <template if:true={cancelSave}>
+                                        <div class="slds-col slds-size_1-of-1 slds-theme_shade slds-text-align_right slds-p-right_small slds-p-top_x-small ">
+                                            <div class="slds-page-header__col-actions slds-align_absolute-center">
+                                                <lightning-button variant="neutral" label="Cancel" title="Cancel"
+                                                    class="slds-m-left_x-small" onclick={cancelSelection}>
+                                                </lightning-button>
+                                                <lightning-button variant="brand" label="Remove" title="Remove"
+                                                    class="slds-m-left_x-small" onclick={removeContacts}></lightning-button>
+                                            </div>
+                                        </div>
+                                    </template>
+                                </div>
+                                <div class="slds-col slds-size_4-of-12">
+                                    <lightning-layout-item size="2"
+                                                class="addto addMinus slds-p-top_xx-small slds-float_right">
+                                                <template if:true={addDisable}>
+                                                    <lightning-icon icon-name="utility:new" alternative-text="Add"
+                                                        onclick={addThemeRecordPop} title="Add To Theme" size="x-small"
+                                                        class="cur_point slds-m-right_x-small" data-name="navpeII_dev18__Fund__c"></lightning-icon>
+                                                </template>
+                                                <!--Added by Tejaswini Bug Fix - 00035020-->
+                                                <template if:true={isShowfundObject}>
+                                                <lightning-icon icon-name="utility:ban"
+                                                    class="slds-m-left_xx-small cur_point" alternative-text="Settings"
+                                                    title="Remove" onclick={delFund} size="x-small" data-name="Funds"> 
+                                                </lightning-icon>
+                                                </template>
+                                                <template if:true={innerFundListShow}>
+                                                <lightning-icon icon-name="utility:ban"
+                                                    class="slds-m-left_xx-small cur_point" alternative-text="Settings"
+                                                    title="Remove" onclick={delFund} size="x-small" data-name={fundRTName}>
+                                                </lightning-icon>
+                                            </template>
+                                            </lightning-layout-item>
+                                        </div></div> </div></div> </div>
+            <template if:true={isShowfundObject}>
+                <div class="slds-box slds-box_x-small slds-p-around_none">
+                    <div class="slds-grid slds-wrap">
+                        <div class="slds-col slds-size_1-of-1 slds-text-align_left">
+                            <div>
+                                <template if:true={fundDataShow}><!--00045316 Bug fixed By Manonit-->
+                                <lightning-datatable class="heightDataTable power-btn" hide-checkbox-column={fundChecbox}
+                                    key-field="id" data={fundData} columns={fundCols}
+                                    onrowaction={handleContactRow} onrowselection={handleContactSelection}>
+                                </lightning-datatable>
+                                </template>
+                            </div>
+                        </div>
+                        <template if:true={cancelSave}>
+                            <div class="slds-col slds-size_1-of-1 slds-theme_shade slds-text-align_right slds-p-right_small slds-p-top_medium slds-p-bottom_small">
+                                <div class="slds-page-header__col-actions slds-align_absolute-center">
+                                    <lightning-button variant="neutral" label="Cancel" title="Cancel"
+                                        class="slds-m-left_x-small" onclick={cancelSelection}>
+                                    </lightning-button>
+                                    <lightning-button variant="brand" label="Remove" title="Remove"
+                                        class="slds-m-left_x-small" onclick={removeContacts}></lightning-button>
+                                </div>
+                            </div>
+                        </template>
+                    </div>
+                </div>
+                </template>
+               <template if:true={innerFundListShow}>
+                <div class="slds-box slds-box_x-small slds-p-around_none">
+                    <div class="slds-grid slds-wrap">
+                        <div class="slds-col slds-size_1-of-1 slds-text-align_left">
+                            <div>
+                                <lightning-datatable class="heightDataTable power-btn" key-field="id" data={representFundList}
+                                    hide-checkbox-column={fundChecbox} columns={fundCols}
+                                    onrowaction={handleContactRow} onrowselection={handleContactSelection}>
+                                </lightning-datatable>
+                            </div>
+                        </div>
+                        <template if:true={cancelSave}>
+                            <div class="slds-col slds-size_1-of-1 slds-theme_shade slds-text-align_right slds-p-right_small slds-p-top_medium slds-p-bottom_small">
+                                <div class="slds-page-header__col-actions slds-align_absolute-center">
+                                    <lightning-button variant="neutral" label="Cancel" title="Cancel"
+                                        class="slds-m-left_x-small" onclick={cancelSelection}>
+                                    </lightning-button>
+                                    <lightning-button variant="brand" label="Remove" title="Remove"
+                                        class="slds-m-left_x-small" onclick={removeContacts}>
+                                    </lightning-button>
+                                </div>
+                            </div>
+                        </template>
+                    </div>
+                </div>
+            </template> 
+            </div>
+        </template>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+        <template if:true={isDataTableFundraisingClick}>
+            <div class="slds-col slds-size_9-of-12 ">
+                <div class="slds-grid slds-wrap slds-p-around_medium slds-box slds-theme_shade slds-box slds-m-top_small">
+                    <div class="slds-col slds-size_1-of-1">
+                        <div>
+                            <div class="slds-grid slds-wrap" style="align-items: center;">
+                                <div class="slds-col slds-size_4-of-12">
+                                    <ul class="slds-list_horizontal slds-has-block-links_space"
+                                        style="align-items:center;">
+                                        <template if:false={isShowFundraisingObject}>
+                                        <li><span class="slds-page-header__title slds-text-align_left slds-m-top_xx-small"
+                                            title={fundraisingObjLabel}>{fdrRTName} ({fdrRTCount})</span></li>
+                                        </template>  
+                                        <template if:true={isShowFundraisingObject}>
+                                        <li><span class="slds-page-header__title slds-text-align_left slds-m-top_xx-small"
+                                                title={fundraisingObjLabel}>{fundraisingObjLabel} ({fdrDataSize})</span></li><!-- 00045547 Bug Fix by Manonit-->
+                                        </template> 
+                                    </ul>
+                                    <!--<template if:true={fdrDataShow}> Modified by Anshika Ahuja W.R.To Critical_Bug #00035275-->
+                                    <ul class="slds-list_horizontal slds-has-block-links_space"
+                                        style="align-items:center;">
+                                        <!--Added by tejaswini 00035019-->
+                                        <li><span>Sorted by</span></li>
+                                        <li><lightning-combobox class="sortedbycss" name="progress" 
+                                            value={sortbyContact}
+                                            placeholder={placeholderfdr}  
+                                            options={optionsforsortingFundraising}
+                                            onchange={handleChangesorting}
+                                            data-id={fdrRTName}
+                                            data-name={fdrRTName}></lightning-combobox>
+                                        </li>
+                                    </ul><!--</template>-->
+                                </div>
+                                <div class="slds-col slds-size_4-of-12">
+                                    <template if:true={cancelSave}>
+                                        <div class="slds-col slds-size_1-of-1 slds-theme_shade slds-text-align_right slds-p-right_small slds-p-top_x-small ">
+                                            <div class="slds-page-header__col-actions slds-align_absolute-center">
+                                                <lightning-button variant="neutral" label="Cancel" title="Cancel"
+                                                    class="slds-m-left_x-small" onclick={cancelSelection}>
+                                                </lightning-button>
+                                                <lightning-button variant="brand" label="Remove" title="Remove"
+                                                    class="slds-m-left_x-small" onclick={removeContacts}></lightning-button>
+                                            </div>
+                                        </div>
+                                    </template>
+                                </div>
+                                <div class="slds-col slds-size_4-of-12">
+                                    <lightning-layout-item size="2"
+                                                class="addto addMinus slds-p-top_xx-small slds-float_right">
+                                                <template if:true={addDisable}>
+                                                    <lightning-icon icon-name="utility:new" alternative-text="Add"
+                                                        onclick={addThemeRecordPop} title="Add To Theme" size="x-small"
+                                                        class="cur_point slds-m-right_x-small" data-name="navpeII_dev18__Fundraising__c"></lightning-icon>
+                                                </template>
+                                                <!--Added by Tejaswini Bug Fix - 00035020-->
+                                               <template if:true={isShowFundraisingObject}>
+                                                <lightning-icon icon-name="utility:ban"
+                                                    class="slds-m-left_xx-small cur_point" alternative-text="Settings"
+                                                    title="Remove" onclick={delFdr} size="x-small" data-name="Fundraisings">
+                                                </lightning-icon>
+                                                </template>
+                                                <template if:true={innerFdrListShow}>
+                                                <lightning-icon icon-name="utility:ban"
+                                                    class="slds-m-left_xx-small cur_point" alternative-text="Settings"
+                                                    title="Remove" onclick={delFdr} size="x-small" data-name={fdrRTName}>
+                                                </lightning-icon>
+                                            </template>
+                                            </lightning-layout-item>
+                                        </div></div> </div></div> </div>
+            <template if:true={isShowFundraisingObject}>
+                <div class="slds-box slds-box_x-small slds-p-around_none">
+                    <div class="slds-grid slds-wrap">
+                        <div class="slds-col slds-size_1-of-1 slds-text-align_left">
+                            <div>
+                                <template if:true={fdrDataShow}><!--00045316 Bug fixed By Manonit-->
+                                <lightning-datatable class="heightDataTable power-btn" hide-checkbox-column={fdrChecbox}
+                                    key-field="id" data={fdrData} columns={fdrCols}
+                                    onrowaction={handleContactRow} onrowselection={handleContactSelection}>
+                                </lightning-datatable>
+                                </template>
+                            </div>
+                        </div>
+                        <template if:true={cancelSave}>
+                            <div class="slds-col slds-size_1-of-1 slds-theme_shade slds-text-align_right slds-p-right_small slds-p-top_medium slds-p-bottom_small">
+                                <div class="slds-page-header__col-actions slds-align_absolute-center">
+                                    <lightning-button variant="neutral" label="Cancel" title="Cancel"
+                                        class="slds-m-left_x-small" onclick={cancelSelection}>
+                                    </lightning-button>
+                                    <lightning-button variant="brand" label="Remove" title="Remove"
+                                        class="slds-m-left_x-small" onclick={removeContacts}></lightning-button>
+                                </div>
+                            </div>
+                        </template>
+                    </div>
+                </div>
+                </template>
+                <template if:true={innerFdrListShow}>
+                <div class="slds-box slds-box_x-small slds-p-around_none">
+                    <div class="slds-grid slds-wrap">
+                        <div class="slds-col slds-size_1-of-1 slds-text-align_left">
+                            <div>
+                                <lightning-datatable class="heightDataTable power-btn" key-field="id" data={representFdrList}
+                                    hide-checkbox-column={fdrChecbox} columns={fdrCols}
+                                    onrowaction={handleContactRow} onrowselection={handleContactSelection}>
+                                </lightning-datatable>
+                            </div>
+                        </div>
+                        <template if:true={cancelSave}>
+                            <div class="slds-col slds-size_1-of-1 slds-theme_shade slds-text-align_right slds-p-right_small slds-p-top_medium slds-p-bottom_small">
+                                <div class="slds-page-header__col-actions slds-align_absolute-center">
+                                    <lightning-button variant="neutral" label="Cancel" title="Cancel"
+                                        class="slds-m-left_x-small" onclick={cancelSelection}>
+                                    </lightning-button>
+                                    <lightning-button variant="brand" label="Remove" title="Remove"
+                                        class="slds-m-left_x-small" onclick={removeContacts}>
+                                    </lightning-button>
+                                </div>
+                            </div>
+                        </template>
+                    </div>
+                </div>
+            </template>
+            </div>
+        </template>
+    
+    
+    
+        <template if:true={isDataTableThemeClick}>
+            <div class="slds-col slds-size_9-of-12 ">
+                <div class="slds-grid slds-wrap slds-p-around_medium slds-box slds-theme_shade slds-box slds-m-top_small">
+                    <div class="slds-col slds-size_1-of-1">
+                        <div> <div class="slds-grid slds-wrap center_align">
+                                <div class="slds-col slds-size_4-of-12">
+                                    <ul class="slds-list_horizontal slds-has-block-links_space"
+                                        style="align-items:center;">
+                                        <li><span class="slds-page-header__title slds-text-align_left slds-m-top_xx-small"
+                                                title={themeObjLabel}>{themeObjLabel} ({themeDataSize})</span></li></ul>
+                                </div>
+                                <div class="slds-col slds-size_4-of-12">
+                                    <template if:true={cancelSave}>
+                                        <div class="slds-col slds-size_1-of-1 slds-theme_shade slds-text-align_right slds-p-right_small slds-p-top_x-small slds-align_absolute-center">
+                                            <div class="slds-page-header__col-actions">
+                                                <lightning-button variant="neutral" label="Cancel" title="Cancel"
+                                                    class="slds-m-left_x-small" onclick={cancelSelection}>
+                                                </lightning-button>
+                                                <lightning-button variant="brand" label="Remove" title="Remove"
+                                                    class="slds-m-left_x-small" onclick={removeContacts}>
+                                                </lightning-button>
+                                            </div>
+                                        </div>
+                                    </template>
+                                </div>
+                                <div class="slds-col slds-size_4-of-12">
+                                    <ul class="slds-list_horizontal slds-has-block-links_space"
+                                        style="align-items:center;float: right;">
+                                        <li><lightning-layout-item size="2"
+                                                class="addto addMinus slds-p-top_xx-small slds-float_right">
+                                                <template if:true={addDisable}>
+                                                    <lightning-icon icon-name="utility:new" alternative-text="Add"
+                                                        onclick={addThemeRecordPop} title="Add To Theme" size="x-small"
+                                                        class="cur_point slds-m-right_x-small" data-name="navpeII_dev18__Theme__c"></lightning-icon>
+                                                </template>
+                                                <!--Added by Tejaswini Bug Fix - 00035020-->
+                                                <template if:true={themeDataShow}>
+                                                <lightning-icon icon-name="utility:ban"
+                                                    class="slds-m-left_xx-small cur_point" alternative-text="Settings"
+                                                    title="Remove" onclick={delTheme} size="x-small" data-name="Themes"></lightning-icon>
+                                            </template>
+                                                </lightning-layout-item>
+                                        </li>
+                                    </ul>
+                                </div></div></div></div></div>
+                                <template if:true={themeDataShow}>
+                <div class="slds-box slds-box_x-small slds-p-around_none">
+                    <div class="slds-grid slds-wrap">
+                        <div class="slds-col slds-size_1-of-1 slds-text-align_left">
+                            <div><lightning-datatable class="heightDataTable power-btn"
+                                    hide-checkbox-column={themeChecbox} key-field="id" data={themeData}
+                                    columns={themeCols} onrowaction={handleContactRow} onrowselection={handleContactSelection}>
+                                </lightning-datatable>
+                            </div>
+                        </div>
+                        <template if:true={cancelSave}>
+                            <div class="slds-col slds-size_1-of-1 slds-theme_shade slds-text-align_right slds-p-right_small slds-p-top_medium slds-p-bottom_small">
+                                <div class="slds-page-header__col-actions slds-align_absolute-center">
+                                    <lightning-button variant="neutral" label="Cancel" title="Cancel"
+                                        class="slds-m-left_x-small" onclick={cancelSelection}>
+                                    </lightning-button>
+                                    <lightning-button variant="brand" label="Remove" title="Remove"
+                                        class="slds-m-left_x-small" onclick={removeContacts}>
+                                    </lightning-button>
+                                </div>
+                            </div></template></div></div>
+                        </template>
+                        </div>
+        </template>
+    
+    
+        <template if:true={isDataTableClipClick}>
+            <div class="slds-col slds-size_9-of-12 ">
+                <div class="slds-grid slds-wrap slds-p-around_medium slds-box slds-theme_shade slds-box slds-m-top_small">
+                    <div class="slds-col slds-size_1-of-1">
+                        <div>
+                            <div class="slds-grid slds-wrap center_align">
+                                <div class="slds-col slds-size_4-of-12">
+                                    <ul class="slds-list_horizontal slds-has-block-links_space"
+                                        style="align-items:center;">
+                                        <li><span class="slds-page-header__title slds-text-align_left slds-m-top_xx-small"
+                                                title={clipObjLabel}>{clipObjLabel} ({clipDataSize})</span></li> </ul>
+                                </div>
+                                <div class="slds-col slds-size_4-of-12">
+                                    <template if:true={cancelSave}>
+                                        <div class="slds-col slds-size_1-of-1 slds-theme_shade slds-text-align_right slds-p-right_small slds-p-top_x-small slds-align_absolute-center">
+                                            <div class="slds-page-header__col-actions">
+                                                <lightning-button variant="neutral" label="Cancel" title="Cancel"
+                                                    class="slds-m-left_x-small" onclick={cancelSelection}>
+                                                </lightning-button>
+                                                <lightning-button variant="brand" label="Remove" title="Remove"
+                                                    class="slds-m-left_x-small" onclick={removeContacts}>
+                                                </lightning-button>
+                                            </div>
+                                        </div>
+                                    </template>
+                                </div>
+                                <div class="slds-col slds-size_4-of-12">
+                                    <ul class="slds-list_horizontal slds-has-block-links_space"
+                                        style="align-items:center;float: right;">
+                                        <li><lightning-layout-item size="2"
+                                                class="addto addMinus slds-p-top_xx-small slds-float_right">
+                                                <template if:true={addDisable}>
+                                                    <lightning-icon icon-name="utility:new" alternative-text="Add"
+                                                        onclick={addThemeRecordPop} title="Add To Theme" size="x-small"
+                                                        class="cur_point slds-m-right_x-small" data-name="navpeII_dev18__Clip__c"></lightning-icon>
+                                                </template>
+                                                <!--Added by Tejaswini Bug Fix - 00035020-->
+                                                <template if:true={clipDataShow}>
+                                                <lightning-icon icon-name="utility:ban"
+                                                    class="slds-m-left_xx-small cur_point" alternative-text="Settings"
+                                                    title="Remove" onclick={delClip} size="x-small" data-name="Clips"></lightning-icon>
+                                                </template>
+                                                </lightning-layout-item>
+                                        </li>
+                                    </ul>
+                                </div></div></div></div></div>
+                                <template if:true={clipDataShow}>
+                <div class="slds-box slds-box_x-small slds-p-around_none">
+                    <div class="slds-grid slds-wrap">
+                        <div class="slds-col slds-size_1-of-1 slds-text-align_left">
+                            <div> <lightning-datatable class="heightDataTable power-btn"
+                                    hide-checkbox-column={clipChecbox} key-field="id" data={clipData}
+                                    columns={clipCols} onrowaction={handleContactRow} onrowselection={handleContactSelection}>
+                                </lightning-datatable> </div>
+                        </div>
+                        <template if:true={cancelSave}>
+                            <div class="slds-col slds-size_1-of-1 slds-theme_shade slds-text-align_right slds-p-right_small slds-p-top_medium slds-p-bottom_small">
+                                <div class="slds-page-header__col-actions slds-align_absolute-center">
+                                    <lightning-button variant="neutral" label="Cancel" title="Cancel"
+                                        class="slds-m-left_x-small" onclick={cancelSelection}>
+                                    </lightning-button>
+                                    <lightning-button variant="brand" label="Remove" title="Remove"
+                                        class="slds-m-left_x-small" onclick={removeContacts}>
+                                    </lightning-button>
+                                </div></div></template></div></div>
+                            </template>
+                        </div> </template>
+        
+            </div>
+    <!--<c-add-record-to-theme record-id={recordId}></c-add-record-to-theme>-->
+    <!--Added by Tejaswini - Naming Convention-->
+    <c-navatar-acuity-theme-add-to-theme-lwc record-id = {recordId}></c-navatar-acuity-theme-add-to-theme-lwc>
+    <c-navatar-all-interactions-view-modal-lwc onchildmethod={handleNoteClick}>
+    </c-navatar-all-interactions-view-modal-lwc>
+    <template if:true={isCallLogOpen}>
+        <!--Added by Tejaswini Naming Convention-->
+        <c-navatar-notes-modal-lwc redirect-id={recordId} object-name="Task" task-type = 'Call' is-redirect-to-record='false' onclosemodal={noteModalClosed} oncancelchanges={noteModalClosed} additional-tagged-ids={recordDetail}>
+        </c-navatar-notes-modal-lwc>    
+    </template> 
+    <template if:true={exportThemeRecord}><c-navatar-theme-export-lwc popup-data-to-display={allCategoryToDisplay} export-map-whole-data={allExportDataList} global-field-type-casting={fieldLabelArray} is-modal-open={modelPopup} onclosepopup={closePopup} ></c-navatar-theme-export-lwc></template>
+    </template>

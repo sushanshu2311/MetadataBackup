@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>CTS_Advanced__c</fullName>
+    <label>CTS Advanced</label>
+    <required>false</required>
+    <trackTrending>false</trackTrending>
+    <type>Picklist</type>
+    <valueSet>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>Contact Only</fullName>
+                <default>false</default>
+                <label>Contact Only</label>
+            </value>
+            <value>
+                <fullName>Contact and Institution</fullName>
+                <default>false</default>
+                <label>Contact and Institution</label>
+            </value>
+            <value>
+                <fullName>Contact, Institution and Custom Object</fullName>
+                <default>false</default>
+                <label>Contact, Institution and Custom Object</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
+</CustomField>

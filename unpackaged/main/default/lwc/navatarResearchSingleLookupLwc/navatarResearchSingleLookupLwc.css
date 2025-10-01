@@ -1,0 +1,82 @@
+:host {
+    --sds-c-textarea-sizing-min-height: 200px;
+}
+.topic2{
+    --sds-c-icon-color-foreground-default: #FFFFFF;
+    --sds-c-icon-color-background: #006DCC;
+}
+.pillClass{
+    --lwc-brandTextLink:#006DCC;
+    --slds-c-pill-line-height:20px;
+}
+.cutomFooter{
+    --slds-c-modal-footer-color-background:#F3F2F2;
+}
+.customBrandButton{
+    --slds-c-button-brand-color-background:#0070D2;
+}
+.accordation{
+    --slds-c-accordion-heading-text-color:var(--lwc-brandTextLink)
+}
+.cur_point{
+    cursor:pointer;
+}
+.mt_1{
+    margin-top: -3px;
+}
+.dropLists{
+    display:flex;
+    gap:5px;   
+}
+.dropLists:hover{
+    background: #ecf4fe;
+    cursor: pointer;
+}
+.drop_ul{
+    box-shadow: 0px 2px 2px rgb(0 0 0 / 10%);
+    border:1px solid #ddd;
+    border-radius:4px;
+}
+.d_flex{
+    display:flex;
+    align-items: center;;
+}
+
+/* UI-BUG FIX- 14-OCT ----------------!!!!!!!!!!!!````````````` */
+.pill_div{
+    padding-left: 5px;
+    padding-right: 5px;
+}
+.pillwidth{
+    width:100%; 
+}
+
+/* UI-NEW-CHANGE-ul.drop_ul */
+ul.drop_ul {
+    box-shadow: 0px 2px 2px rgb(0 0 0 / 10%);
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    position: absolute;
+    top: 100%;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    z-index: 15003 !important;
+    height: fit-content;
+    background: #fff;
+    
+
+}
+ul.droup_ul_alt{
+    box-shadow: 0px 2px 2px rgb(0 0 0 / 10%);
+     border: 1px solid #ddd;
+     border-radius: 4px;
+     z-index: 15003 !important;
+     height: fit-content;
+     background: #fff;
+     position: fixed;
+     width: 91%;
+     margin-top: 32px;
+     max-height: 150px;
+     overflow-y: auto; 
+}

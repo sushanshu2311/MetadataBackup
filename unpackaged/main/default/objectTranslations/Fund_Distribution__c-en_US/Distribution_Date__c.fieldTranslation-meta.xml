@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomFieldTranslation xmlns="http://soap.sforce.com/2006/04/metadata">
+        <help><!-- Warning: If you edit this field Investor Distribution(s) linked with this Fund Distribution will not reflect the change. --></help>
+        <label><!-- Distribution Date --></label>
+        <name>Distribution_Date__c</name>
+    </CustomFieldTranslation>

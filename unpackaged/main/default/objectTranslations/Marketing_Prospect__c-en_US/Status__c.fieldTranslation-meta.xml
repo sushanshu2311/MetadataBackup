@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomFieldTranslation xmlns="http://soap.sforce.com/2006/04/metadata">
+        <label><!-- Status --></label>
+        <name>Status__c</name>
+        <picklistValues>
+            <masterLabel>Appointment Scheduled</masterLabel>
+            <translation><!-- Appointment Scheduled --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Contact After 1 Year</masterLabel>
+            <translation><!-- Contact After 1 Year --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Follow Up Call Made</masterLabel>
+            <translation><!-- Follow Up Call Made --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Initial Call Made</masterLabel>
+            <translation><!-- Initial Call Made --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Mass Email Sent</masterLabel>
+            <translation><!-- Mass Email Sent --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Prospect Not Interested</masterLabel>
+            <translation><!-- Prospect Not Interested --></translation>
+        </picklistValues>
+    </CustomFieldTranslation>

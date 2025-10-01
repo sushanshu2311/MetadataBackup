@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomFieldTranslation xmlns="http://soap.sforce.com/2006/04/metadata">
+        <label><!-- Team Member Role --></label>
+        <name>Team_Member_Role__c</name>
+        <picklistValues>
+            <masterLabel>Accountant</masterLabel>
+            <translation><!-- Accountant --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Analyst</masterLabel>
+            <translation><!-- Analyst --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Attorney</masterLabel>
+            <translation><!-- Attorney --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Banker</masterLabel>
+            <translation><!-- Banker --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Company Executive</masterLabel>
+            <translation><!-- Company Executive --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Company Staff</masterLabel>
+            <translation><!-- Company Staff --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Consultant</masterLabel>
+            <translation><!-- Consultant --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Partner</masterLabel>
+            <translation><!-- Partner --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Vice President</masterLabel>
+            <translation><!-- Vice President --></translation>
+        </picklistValues>
+    </CustomFieldTranslation>

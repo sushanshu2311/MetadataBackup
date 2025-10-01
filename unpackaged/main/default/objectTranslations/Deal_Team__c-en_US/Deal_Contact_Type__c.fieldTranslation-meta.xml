@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomFieldTranslation xmlns="http://soap.sforce.com/2006/04/metadata">
+        <label><!-- Deal Contact Type --></label>
+        <name>Deal_Contact_Type__c</name>
+        <picklistValues>
+            <masterLabel>Company Advisor</masterLabel>
+            <translation><!-- Company Advisor --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Company Team</masterLabel>
+            <translation><!-- Company Team --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Intermediary Team</masterLabel>
+            <translation><!-- Intermediary Team --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Our Advisor</masterLabel>
+            <translation><!-- Our Advisor --></translation>
+        </picklistValues>
+    </CustomFieldTranslation>

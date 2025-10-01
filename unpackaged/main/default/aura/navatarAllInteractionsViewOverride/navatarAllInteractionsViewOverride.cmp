@@ -1,0 +1,5 @@
+<aura:component implements="force:hasRecordId,lightning:actionOverride,force:lightningQuickAction" access="global" >
+     <aura:attribute name="recordId" type="String" default=""/>
+    <aura:attribute name="taskType" type="String" default=""/>
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}" />	
+</aura:component>

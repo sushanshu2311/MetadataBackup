@@ -1,0 +1,17 @@
+<apex:page Controller="InvestorPortal_Alertscls" showHeader="false" sidebar="false"> 
+    <script>
+    var ipurl = '';
+    var erromsg = '{!JSENCODE(error)}';
+    
+    if(erromsg == 'false' || erromsg == false)             
+    {
+        ipurl = '{!$Label.navpeII_dev18__IP_Url}'+'apex/Gateway?startURL=/apex/pe_alerts?id={!JSENCODE(session)}_@_{!JSENCODE(passhost)}_@_{!JSENCODE(orgid)}';
+        ipurl = ipurl.replace(' ','%2B');        
+    }
+    else if(erromsg == 'msg')    
+        ipurl = '{!$Label.navpeII_dev18__IP_Url}'+'showerrormessage_alerts';    
+    else
+        ipurl = '{!$Label.navpeII_dev18__IP_Url}'+'showerrormessage' + '?Profile={!JSENCODE(LoginUserProfile)}';  // SK: 11Dec2017
+    window.location=ipurl;
+    </script>
+</apex:page>

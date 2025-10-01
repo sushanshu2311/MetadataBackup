@@ -1,0 +1,15 @@
+<aura:component implements="force:appHostable,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId,forceCommunity:availableForAllPageTypes,force:lightningQuickAction" access="global" >
+    
+    <aura:attribute name="recordValue" type="String" />
+    <aura:attribute name="checkBoolean" type="Boolean" />
+    <!-- <aura:registerEvent name="ClipBoardEvent" type="c:ClipBoardEvent"/> -->
+    <lightning:utilityBarAPI aura:id="utilitybar" />
+    
+    <lightning:messageChannel
+                              type="navpeII_dev18__navatarClipAuraUtilityBarChannel__c"
+                              onMessage="{!c.handleMessage}"/>
+    <lightning:messageChannel type="navpeII_dev18__navatarClipLwcAuraChannel__c"
+                              aura:id="clipIdChannel"/>
+    <!--<c:clipBoardLWC auraValue="{!v.recordValue}"  />-->
+    
+</aura:component>

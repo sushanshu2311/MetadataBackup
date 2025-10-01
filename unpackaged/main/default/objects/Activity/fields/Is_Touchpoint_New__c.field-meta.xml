@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Is_Touchpoint_New__c</fullName>
+    <formula>(((&quot;ON&quot; == $CustomMetadata.Acuity_Setting__mdt.Acuity_LTouchpoint_Event_Switch.Value__c ) &amp;&amp; !IsTask &amp;&amp; ((!IsAllDayEvent &amp;&amp; ((ActivityDateTime + (DurationInMinutes / 1440))&lt;=NOW())) || 
+(IsAllDayEvent &amp;&amp; ((ActivityDate + (DurationInMinutes / 1440))&lt;=TODAY()))) )
+||
+( IsTask &amp;&amp; IsClosed &amp;&amp; (ActivityDate &lt;=TODAY()) &amp;&amp;
+(NOT(ISNULL(TEXT(ActivitySubtype)) ||
+ISBLANK(TEXT(ActivitySubtype))) &amp;&amp; (
+(TEXT(ActivitySubtype) == $CustomMetadata.Acuity_Setting__mdt.Acuity_LTouchpoint_TaskSubtype_Value1.Value__c ) ||
+(TEXT(ActivitySubtype) == $CustomMetadata.Acuity_Setting__mdt.Acuity_LTouchpoint_TaskSubtype_Value2.Value__c ) ||
+(TEXT(ActivitySubtype) == $CustomMetadata.Acuity_Setting__mdt.Acuity_LTouchpoint_TaskSubtype_Value3.Value__c ) ||
+(TEXT(ActivitySubtype) == $CustomMetadata.Acuity_Setting__mdt.Acuity_LTouchpoint_TaskSubtype_Value4.Value__c ) ))))</formula>
+    <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+    <label>Is Touchpoint New</label>
+    <type>Checkbox</type>
+</CustomField>

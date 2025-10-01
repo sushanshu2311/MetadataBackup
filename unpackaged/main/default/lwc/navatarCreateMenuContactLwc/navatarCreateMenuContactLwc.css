@@ -1,0 +1,28 @@
+.contact_scroll_css{
+    height: 46vh; 
+    overflow-y:auto;
+}
+@media (max-width: 1512px) {
+    .contact_scroll_css{
+        height: 40vh; 
+        overflow-y:auto;
+    }
+}
+.for_mob{
+    display:none;
+}
+.text_center{
+    text-align: center;
+}
+@media (max-width:600px){
+    .for_desk{
+        display:none;
+    }
+    .for_mob{
+        display:block;
+    }
+    .contact_scroll_css{
+        height: auto; 
+        overflow-y:auto;
+    }
+}

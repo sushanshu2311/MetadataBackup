@@ -1,0 +1,31 @@
+<template>
+    <div class="listdiv">
+        <template if:false={hideChildClone}>
+        <lightning-quick-action-panel header={importLabel}>
+            
+            <div class="slds-form-element__control slds-m-horizontal_medium slds-grow ">
+                <lightning-layout multiple-rows="true">
+                    <lightning-layout-item size="12">
+                        <div class="slds-text-heading_small">Select Information From Company To Copy To The Deal</div>
+                    </lightning-layout-item>
+                    <lightning-layout-item size="12" class="mainDiv slds-m-top_medium">
+                        <lightning-datatable key-field="id" data={datadeal} resize-column-disabled="true"
+                            columns={columnsdeal} selected-rows={selectedRows} onrowselection={getSelectedRec}
+                            class="seletedtag_datatable tabcont">
+                        </lightning-datatable>
+                    </lightning-layout-item>
+                </lightning-layout>
+            </div>
+
+                <!-- Modal/Popup Box LWC footer starts here -->
+            
+        </lightning-quick-action-panel>
+        <footer class="slds-modal__footer cutomFooter">
+            <lightning-button label="Cancel" title="Cancel" onclick={closeModal} class="slds-m-left_x-small">
+            </lightning-button>
+            <lightning-button variant="brand" label='Save' title= 'Save' onclick={handleCloneSave}
+                class="slds-m-left_x-small customBrandButton"></lightning-button>
+        </footer>
+    </template>
+    </div>
+</template>

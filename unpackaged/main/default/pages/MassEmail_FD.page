@@ -1,0 +1,17 @@
+<!--
+Project: PE 3.5
+Start: 09-June-2016
+Module: MassEmail_FD
+Class use: MassEmail_CC_ID
+Common Class use: NA
+Standard Controller: NA
+Developer: Lalit 
+Last Modified: Lalit (11-Nov-2016)
+-->
+<apex:page id="pageId" controller="MassEmail_CC_ID" showHeader="true" standardStylesheets="false" sidebar="true" applyHtmlTag="true" applyBodyTag="false" docType="html-5.0" title="MassEmail_FD">    
+  <apex:form id="formId"> 
+        <apex:pageBlock id="pageBlockId">        
+            <c:SendMassMail id="compSendMail"  queryString="{!queryString}" objectForWrench="{!objectPassToWrenchComponent}" passNameOfPage="bulkEmailFD" typeOfPage="{!typeOfPage}" nameSpace="{!nameSpacePrefix}"/>
+        </apex:pageBlock>  
+    </apex:form>
+</apex:page>

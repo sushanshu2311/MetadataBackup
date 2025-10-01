@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomFieldTranslation xmlns="http://soap.sforce.com/2006/04/metadata">
+        <label><!-- Role --></label>
+        <name>Role__c</name>
+        <picklistValues>
+            <masterLabel>Accountant - Financial</masterLabel>
+            <translation><!-- Accountant - Financial --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Accountant - Tax</masterLabel>
+            <translation><!-- Accountant - Tax --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Bank Debt</masterLabel>
+            <translation><!-- Bank Debt --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Bank M&amp;A</masterLabel>
+            <translation><!-- Bank M&amp;A --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Broker</masterLabel>
+            <translation><!-- Broker --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Consultant</masterLabel>
+            <translation><!-- Consultant --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Insurance</masterLabel>
+            <translation><!-- Insurance --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Legal</masterLabel>
+            <translation><!-- Legal --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Management Affiliate/Executive Board</masterLabel>
+            <translation><!-- Management Affiliate/Executive Board --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Other</masterLabel>
+            <translation><!-- Other --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Sell-side Advisor</masterLabel>
+            <translation><!-- Sell-side Advisor --></translation>
+        </picklistValues>
+    </CustomFieldTranslation>

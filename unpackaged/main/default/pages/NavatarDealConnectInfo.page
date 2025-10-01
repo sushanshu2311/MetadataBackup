@@ -1,0 +1,18 @@
+<apex:page showHeader="false" sidebar="false" controller="Cls_DealPortalInfo">
+<body style="background-color:#CFEEF8">
+
+
+<apex:form id="form1">
+<a href="http://www.navatargroup.com/support.html" target="_blank">Click here to contact support.</a>
+<apex:actionFunction action="{!deleteInfo}" name="deleteInfo1" reRender="form1"/>
+</apex:form>
+</body>
+<script>
+var a="{!JSENCODE(info)}";
+if(a.length!=0)
+{
+ alert(a);
+ deleteInfo1();
+} 
+</script>
+</apex:page>

@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ListView xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>PE_Fund</fullName>
+    <columns>NAME</columns>
+    <columns>Fund_Type__c</columns>
+    <columns>Investment_Category__c</columns>
+    <columns>Target_Commitments_USD_mn__c</columns>
+    <columns>Total_Capital_Called_mn__c</columns>
+    <columns>Remaining_Commitments_USD_mn__c</columns>
+    <filterScope>Everything</filterScope>
+    <filters>
+        <field>Fund_Type__c</field>
+        <operation>equals</operation>
+        <value>Fund</value>
+    </filters>
+    <label>Fund</label>
+</ListView>

@@ -1,0 +1,74 @@
+<!--
+** Module Name : Acuity 2.0 - Acuity
+** Description : To add the corresponding record to the selected theme record
+** Throws : NA
+** Calls : NA
+** Organization : Navatar Group
+** Product Name & Version : Acuity 2.0
+** Revision History:-
+** Version    Date(YYYY-MM-DD)    Author         Description of Action
+** 1.0        2022-11-22          Hema
+** 2.0        2022-03-08          Manonit        Add to Theme Realated Object Implementation
+--> 
+<template>
+    <div class="listdiv">  
+        <template if:true={displayModal}>
+        <lightning-quick-action-panel header="Add To Theme">
+            <div class="dd createdealtheme_main">            
+                <div class="slds-form-element__control slds-m-horizontal_medium slds-grow ">
+                    <template if:true={isError}>
+                        <div class="slds-p-bottom_medium">
+                        <div class="slds-notify slds-notify_alert slds-alert_error" role="alert">
+                        <span class="slds-assistive-text">error</span>
+                        <span class="slds-icon_containerslds-icon-utility-error slds-m-right_x-small" title="Description of icon when needed">
+                        </span>
+                        <h2 class="slds-p-left_medium slds-text-align_left errorleft">Review the errors on this page.</h2>
+                        </div>
+                        <template if:true={errorMessage}>
+                        <p class="slds-p-left_medium slds-text-align_left"  style="color:red">{errorMessage}</p>
+                        </template>
+                    </div>
+                </template>
+                    <lightning-layout>
+                        <lightning-layout-item size="12" flexibility="auto" class="lookup_css_h">
+                        <!-- 46387 Bug Fix By Manonit-->
+                                    <c-navatar-Single-Lookup-Lwc obj-name="navpeII_dev18__Theme__c"  field-label-name="Theme Name"  search-placeholder="Search..." is-theme-page ={isThemePage}  onlookupselected ={handleSelectedRecord} onremovedata={handleRemove} ></c-navatar-Single-Lookup-Lwc>
+                        </lightning-layout-item><!--Modified by Hema 14-04-2023-->
+                    </lightning-layout>
+               
+                <lightning-layout>
+                        <lightning-layout-item size="12">
+                            <div class="slds-section slds-is-open">
+                                <button aria-controls="expando-unique-id" aria-expanded="true" class="slds-button expandablebtn" onclick={isExpandadvance}>
+                                    <lightning-icon icon-name="utility:chevronright" size="xx-small" alternative-text="Advanced" title="Advanced" class="slds-m-right_xx-small hovLink" if:true={isCollapse}></lightning-icon>
+                                    <lightning-icon icon-name="utility:chevrondown" size="xx-small" alternative-text="Advanced" title="Advanced" class="slds-m-right_xx-small hovLink" if:true={isExpand}></lightning-icon>
+                                    <span class="slds-truncate" title="Advanced" style="font-size:14px;">Advanced</span> <!--45104 &45689 Bug Fix By Manonit-->
+                                </button>
+                                <div class="slds-section__content expandableSection" if:true={isExpandCollapseBox}>
+                                    <lightning-layout>
+                                        <lightning-layout-item size="12">
+                                            <!-- 00045680 fiexd by raju 20-05-2024*-->
+                                            <div class="slds-border_left slds-border_right slds-border_top clsThemeTable">
+                                                <lightning-datatable key-field="label" data={relatedObjects}
+                                                    resize-column-disabled="true" columns={columnsCatogry}
+                                                    selected-rows={selectedRows} onrowselection={handleChange}></lightning-datatable>
+                                            </div>
+                                        </lightning-layout-item>
+                                    </lightning-layout>
+                                </div>
+                            </div>
+                        </lightning-layout-item>
+                    </lightning-layout>
+                  <!--   <div>
+                        <lightning-checkbox-group label="Select Related Records to be added to theme" options={relatedObjects}  value={selectedCheckboxes} onchange={handleChange} ></lightning-checkbox-group>
+                    </div>-->
+               </div>
+            </div>
+            <div slot="footer">
+                <lightning-button variant="neutral" label="Cancel" title="Cancel" onclick={closeModal}></lightning-button>
+                <lightning-button variant="brand" class="slds-m-left_small" label="Save" title="Save" onclick={handleAdd}></lightning-button>
+            </div>
+        </lightning-quick-action-panel> 
+        </template>
+    </div>    
+ </template>

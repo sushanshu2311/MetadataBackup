@@ -1,0 +1,107 @@
+<!--
+** Module Name : Acuity 2.0 - Acuity
+** Description : To create the contact record from navigation action
+** Throws : NA
+** Calls : NA
+** Organization : Navatar Group
+** Product Name & Version : Acuity 2.0
+** Revision History:-
+** Version    Date(YYYY-MM-DD)    Author         Description of Action
+** 1.0        2022-11-22          Nikita Suresh
+-->
+
+<template>
+    <template if:true={isModalOpen}>
+        <div class="mainContainer">
+            <template if:false={areDetailsVisible}>
+                <lightning-spinner alternative-text="Loading..." style="z-index:15002" class="spinner_css">
+                </lightning-spinner>
+            </template>
+              <!--new change error message start-->
+   
+    <!--new change error message end-->
+            <lightning-record-edit-form object-api-name="Contact" onload={handleLoad}>
+                <div class="slds-modal__content slds-p-top_xx-small slds-p-bottom_xx-small contact_scroll_css" id="modal-content-id-1">
+                    <h2 class="slds-text-heading_medium slds-hyphenate slds-p-vertical_small for_mob text_center">Add Contact</h2>
+                        <template if:true={isError}>
+                            <div class="slds-p-horizontal_large slds-p-top_medium slds-p-bottom_medium">
+                                <div class="slds-notify slds-notify_alert slds-alert_error" style="display: -webkit-box;" role="alert">
+                                    <span class="slds-assistive-text">error</span>
+                                    <span class="slds-icon_container slds-icon-utility-error slds-m-right_x-small" title="Error">
+                                    </span>
+                                    <h2>Review the errors on this page.</h2>
+                                </div>
+                                <p class="slds-p-left_medium" style="color:red">{errorMessage} </p>
+                            </div>
+                        </template>
+                    <lightning-layout class="slds-p-horizontal_large">
+                        <lightning-layout-item size="12" flexibility="auto" class="slds-m-right_small">
+                            <lightning-input-field field-name={firstName} data-id="name1" onchange={handleFirstName}>
+                            </lightning-input-field>
+                        </lightning-layout-item>
+                    </lightning-layout>
+                    <lightning-layout class="slds-p-horizontal_large error_custom_css">
+                        <lightning-layout-item size="12" flexibility="auto" class="slds-m-right_small" style="padding-bottom: 10px;">
+                            <lightning-input-field field-name={lastName} data-id="name2" onchange={handleLastName} value={lastNameValue}
+                                required> </lightning-input-field>
+                        </lightning-layout-item>
+                    </lightning-layout>
+                    <lightning-layout class="slds-p-horizontal_large slds-p-bottom_small">
+                        <lightning-layout-item size="12" flexibility="auto" class="slds-m-right_small lookup_css_h" >
+                            <div>
+                                <div class="slds-form-element">
+                                    <div class="slds-form-element__control">
+                                        <div class="slds-combobox_container">
+                                            <div id="box" class={boxClass} aria-expanded="true" aria-haspopup="listbox"
+                                                role="combobox">
+                                                <div class="slds-combobox__form-element slds-input-has-icon slds-input-has-icon_right"
+                                                    role="none" style="padding: 0 3px;">
+                                                    <template if:false={isValueSelected}>
+                                                        <div class="slds-p-top_none">
+                                                            <label
+                                                                class="slds-form-element__label slds-p-left_xx-small">{legalName}</label>
+                                                            <c-navatar-single-lookup-lwc obj-name="Account"
+                                                                search-placeholder="Search"
+                                                                onlookupselected={handleSelectedFirmRecord}
+                                                                is-rec-selected="true"
+                                                                onaccountselected={handleAccountName}
+                                                                contact-check="true"></c-navatar-single-lookup-lwc>
+                                                        </div>
+                                                    </template>
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </lightning-layout-item>
+
+                    </lightning-layout>
+                    <lightning-layout class="slds-p-horizontal_large">
+                        <lightning-layout-item size="12" flexibility="auto" class="slds-m-right_small">
+                            <lightning-input-field field-name={email} data-id="emailVal" onchange={handleEmail}>
+                            </lightning-input-field>
+                        </lightning-layout-item>
+                    </lightning-layout>
+                    <lightning-layout class="slds-p-horizontal_large">
+                        <lightning-layout-item size="12" flexibility="auto" class="slds-m-right_small">
+                            <lightning-input-field field-name={phone} data-id="phoneVal" onchange={handlePhone}>
+                            </lightning-input-field>
+                        </lightning-layout-item>
+                    </lightning-layout>
+                </div>
+
+                <!-- Modal/Popup Box LWC footer starts here -->
+                <footer class="slds-modal__footer cutomFooter">
+                    <lightning-button label="Cancel" title="Cancel" onclick={closeModal} class="for_desk slds-m-left_x-small">
+                    </lightning-button>
+                    <lightning-button variant="brand" class="slds-m-left_x-small customBrandButton" onclick={handleSave}
+                        title="Save" label="Save"></lightning-button>
+                </footer>
+
+            </lightning-record-edit-form>
+        </div>
+    </template>
+    <!-- jagriti UI FIX 8 DEC -->
+</template>

@@ -1,0 +1,79 @@
+<template>
+    
+
+
+    <template if:true={isModalOpen}>
+        
+        <div class="mainContainer ">
+            
+
+            <template if:true={isLoading}>
+                <lightning-spinner alternative-text="Loading" size="large" variant="brand"></lightning-spinner>
+            </template>
+            <div class="slds-modal__content slds-p-vertical_small" id="modal-content-id-3">
+                
+                <template if:true={isError}>
+                    <div class="slds-p-horizontal_large slds-p-top_medium slds-p-bottom_medium">
+                        <div class="slds-notify slds-notify_alert slds-alert_error" role="alert">
+                            <span class="slds-assistive-text">error</span>
+                            <span class="slds-icon_container slds-icon-utility-error slds-m-right_x-small" title="Error">
+                            </span>
+                            <h2>Review the errors on this page.</h2>
+                        </div>
+                        <p class="slds-p-left_medium" style="color:red">{errorMessage} </p>
+                    </div>
+                </template>
+
+                <div class="slds-form-element slds-m-horizontal_medium slds-p-horizontal_medium">
+                    <lightning-input type="text" required label={nameLabel} value={clipName} onchange={handleChangeName}></lightning-input>
+                </div>
+                <div class="slds-form-element slds-m-horizontal_medium slds-p-horizontal_medium max_ht_css">
+                    <lightning-textarea name={summaryLabel} label={summaryLabel} value={clipSummary} onchange={handleChangeSummary}></lightning-textarea>
+                </div>
+            </div>
+
+            <footer class="slds-modal__footer cutomFooter">
+                <button class="slds-button slds-button_neutral" aria-label="Cancel" title="Cancel" onclick={closeModal}>Cancel</button>
+                <button class="slds-button slds-button_brand" title="Save" onclick={handleSaveClip}>Save</button>
+            </footer>
+        </div>
+    </template>
+
+
+    <template if:true={isDiscoverOpen}>
+                <div class="slds-modal__content slds-p-around_x-small " id="modal-content-id-2">
+                    <div class="slds-form-element__control slds-m-horizontal_medium slds-grow ">
+                        <lightning-layout>
+                            <lightning-layout-item size="12">
+                                <div class="slds-text-heading_small font_500" >Suggested Tags</div>
+                                <div class="slds-border_left slds-border_right slds-border_top slds-m-top_small">
+                                    <lightning-datatable key-field="id" 
+                                                         data={data} 
+                                                         resize-column-disabled="true"
+                                                         columns={columns} 
+                                                         selected-rows={selectedRows} 
+                                                         onrowselection={getSelectedRec}>
+                                    </lightning-datatable>
+                                </div>
+                                <p class="slds-m-top_small"> {itemCount} items selected</p>
+                            </lightning-layout-item>
+                        </lightning-layout>
+                    </div>
+                </div>
+
+                <footer class="slds-modal__footer cutomFooter">
+                    <lightning-button label="Cancel" 
+                                      title="Cancel" 
+                                      onclick={closeModalSuggested} 
+                                      class="slds-m-left_x-small">
+                    </lightning-button>
+                    
+                    <lightning-button variant="brand" 
+                                      label="Tag" 
+                                      title="Tag" 
+                                      onclick={handleSaveSuggestion} 
+                                      class="slds-m-left_x-small customBrandButton">
+                    </lightning-button>
+                </footer>
+    </template>
+</template>

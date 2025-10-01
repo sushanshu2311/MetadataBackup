@@ -1,0 +1,35 @@
+.input_css {
+    width: 368px;
+}
+
+.input_css:focus {
+    outline-width: 0;
+}
+.emaildropbox{
+    position: relative;
+}
+.dropLists{
+    display:flex;
+    gap:5px;   
+}
+.dropLists:hover{
+    background: #dbeafd;
+    cursor: pointer;
+}
+li.slds-nav-vertical__item.slds-p-left_x-small:hover{
+    background: #dbeafd73;
+}
+.drop_ul{
+    position: absolute;
+    top: 100%;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    z-index: 15003 !important;
+    height: fit-content;
+    background: #fff;
+    width: 99%;
+    max-height: 163px;
+    overflow-y: auto;
+    box-shadow: rgb(0 0 0 / 12%) 0px 1px 3px, rgb(0 0 0 / 24%) 0px 1px 2px;
+}

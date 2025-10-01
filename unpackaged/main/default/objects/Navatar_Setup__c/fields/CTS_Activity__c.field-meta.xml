@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>CTS_Activity__c</fullName>
+    <label>CTS Activity</label>
+    <required>false</required>
+    <trackTrending>false</trackTrending>
+    <type>Picklist</type>
+    <valueSet>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>Old Institution Only</fullName>
+                <default>false</default>
+                <label>Old Institution Only</label>
+            </value>
+            <value>
+                <fullName>Old and New Institutions</fullName>
+                <default>false</default>
+                <label>Old and New Institutions</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
+</CustomField>

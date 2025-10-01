@@ -1,0 +1,1355 @@
+<!--
+** Module Name : Acuity 1.0 - Acuity
+** Description : Displays the Acuity information of Acuity 1.0 including Referenced, Contacts/Connections, Interactions Section.
+** Throws : NA
+** Calls : NA
+** Organization : Navatar Group
+** Product Name & Version : Acuity 1.0
+** Revision History:-
+** Version    Date(YYYY-MM-DD)    Author         Description of Action
+** 1.0        2022-09-07          Lakshya        Acuity Phase 1
+** 2.0        2022-12-04          Lakshya        Acuity Phase 2
+** 2.1        2023-09-22          Lakshya        PE Patch 3 Fix
+** 3.0        2024-02-13          Lakshya        Sharing Model Implementation/Acuity Phase 3
+-->
+<template>
+    <!--SPINNER : START-->
+    <template if:true={enableSpinner}>
+        <lightning-spinner alternative-text="Loading..." style="z-index:15002">
+        </lightning-spinner>
+    </template>
+    <!--SPINNER : END-->
+
+    <div class="slds-theme_default main-Container main-cont padding_lr_mob">
+        <div class="slds-grid slds-wrap">
+            <div class="slds-col slds-size_1-of-1">
+                <div class="slds-grid slds-wrap">
+                    <!-- Moved existing code inside template if by LK on 2024-10-15 to fix 00047628 -->
+                    <template if:false={isMobile}>
+                        <!--Start Notifications-->
+                        <div class="slds-col slds-size_1-of-1 slds-m-bottom_x-small for_desk">
+                            <!-- Custom Notification Part Start-->
+                            <c-navatar-acuity-notification-lwc record-id={recordId}></c-navatar-acuity-notification-lwc>
+                            <!-- Custom Notification Part End-->
+                        </div>
+                        <!--End Notifications-->
+                    </template>
+
+                    <!--Start Mobile all interaction -->
+                    <div class="for_mob slds-m-top_small">
+                        <template if:true={displayInteractionsMob}>
+                            <c-navatar-acuity-redirection-lwc header={interactionsMobHeader}
+                                                        act-id-list={interactionsMobActIdList}
+                                                        namespace-prefix={namespacePrefix}
+                                                        empty-modal-keyword={interactionsMobEmptyModalKeyword}
+                                                        is-mobile={displayInteractionsMob}
+                                                        record-id={recordId}> <!--Modified by Nikita W.R.To UI Fix-->
+                            </c-navatar-acuity-redirection-lwc>
+                        </template>
+                    </div>
+                    <!--End Mobile all interaction-->
+
+                    <!--TAGGED SECTION : START-->
+                    <div class="for_desk slds-col slds-size_3-of-12">
+                        <div class="slds-p-right_small">
+                            <lightning-layout>
+                                <lightning-layout-item size="12">
+                                    <div class="slds-box slds-theme_shade">
+                                        <div style="display: flex; align-items: center">
+                                            <span class="slds-page-header__title slds-text-align_left slds-m-left_xx-small fit-width-content"
+                                                  title="Tagged">
+                                                Tagged
+                                            </span>
+                                            <lightning-helptext content={infoHelpText}
+                                                                class="info cls_helpText"><!--Modified by Anshika Ahuja W.R.To Critical_Bug #00035166, 00035171 Help Text Info Icon 09-02-2023-->
+                                            </lightning-helptext>
+                                        </div>
+                                    </div>
+                                </lightning-layout-item>
+                            </lightning-layout>
+                            <!--Removed "name="radioGroup"" by LK on 2024-05-28 to fix 00045762 ; 00045798 ; 00045815 ; 00045826 ; 00045296 ; 00045304-->
+                            <lightning-radio-group options={taggedSecOptions}
+                                                   onchange={handleReferenced}
+                                                   value={refTabValue}
+                                                   type="button"
+                                                   class="radioBtns radiofourbtns">
+                            </lightning-radio-group>
+
+                            <div class="slds-box slds-box_small slds-p-horizontal_none slds-p-around_none">
+                                <!--Start Container-->
+                                <div class="slds-grid slds-wrap">
+                                    <div class="slds-col slds-size_1-of-1 slds-text-align_left">
+                                        <!--Start Company-->
+                                        <template if:true={companyData}>
+                                            <div class="iconC heightC remove_height">
+                                                <template if:true={compRefData}>
+                                                    <lightning-datatable key-field="comp"
+                                                                         hide-checkbox-column
+                                                                         data={compRefData}
+                                                                         onrowaction={fetchActInfo}
+                                                                         columns={referencedCols}
+                                                                         class="companyTable shadowremovedatatable">
+                                                    </lightning-datatable>
+                                                </template>
+                                                <template if:false={compRefData}>
+                                                    <lightning-datatable key-field="comp"
+                                                                         hide-checkbox-column="true"
+                                                                         data={noData}
+                                                                         onrowaction={fetchActInfo}
+                                                                         columns={referencedCols}
+                                                                         class="companyTable no-data-main-tab shadowremovedatatable">
+                                                    </lightning-datatable>
+                                                    <div class="slds-p-around_x-small">
+                                                        {errMsg}
+                                                    </div>
+                                                </template>
+                                            </div>
+                                        </template>
+                                        <!--End Company-->
+
+                                        <!--Start People-->
+                                        <template if:true={peopleData}>
+                                            <div class="iconC heightC remove_height">
+                                                <template if:true={peopleRefData}>
+                                                    <lightning-datatable key-field="people"
+                                                                         hide-checkbox-column
+                                                                         data={peopleRefData}
+                                                                         onrowaction={fetchActInfo}
+                                                                         columns={referencedCols}
+                                                                         class="peopleTable shadowremovedatatable">
+                                                    </lightning-datatable>
+                                                </template>
+                                                <template if:false={peopleRefData}>
+                                                    <lightning-datatable key-field="people"
+                                                                         hide-checkbox-column="true"
+                                                                         data={noData}
+                                                                         onrowaction={fetchActInfo}
+                                                                         columns={referencedCols}
+                                                                         class="peopleTable shadowremovedatatable no-data-main-tab">
+                                                    </lightning-datatable>
+                                                    <div class="slds-p-around_x-small">
+                                                        {errMsg}
+                                                    </div>
+                                                </template>
+                                            </div>
+                                        </template>
+                                        <!--End People-->
+
+                                        <!--Start Deal-->
+                                        <template if:true={dealData}>
+                                            <div class="iconC heightC remove_height">
+                                                <template if:true={dealsRefData}>
+                                                    <lightning-datatable key-field="deals"
+                                                                         hide-checkbox-column
+                                                                         data={dealsRefData}
+                                                                         onrowaction={fetchActInfo}
+                                                                         columns={referencedCols}
+                                                                         class="dealTable shadowremovedatatable">
+                                                    </lightning-datatable>
+                                                </template>
+                                                <template if:false={dealsRefData}>
+                                                    <lightning-datatable class="dealTable shadowremovedatatable no-data-main-tab"
+                                                                         hide-checkbox-column="true"
+                                                                         key-field="deals"
+                                                                         data={noData}
+                                                                         columns={referencedCols}
+                                                                         onrowaction={fetchActInfo}
+                                                                         >
+                                                    </lightning-datatable>
+                                                    <div class="slds-p-around_x-small">
+                                                        {errMsg}
+                                                    </div>
+                                                </template>
+                                            </div>
+                                        </template>
+                                        <!--End Deal-->
+
+                                        <!--Start Fund-->
+                                        <template if:true={fundData}>
+                                            <div class="iconC heightC remove_height">
+                                                <template if:true={dealsRefData}>
+                                                    <lightning-datatable key-field="funds"
+                                                                         hide-checkbox-column
+                                                                         data={dealsRefData}
+                                                                         onrowaction={fetchActInfo}
+                                                                         columns={referencedCols}
+                                                                         class="dealTable shadowremovedatatable">
+                                                    </lightning-datatable>
+                                                </template>
+                                                <template if:false={dealsRefData}>
+                                                    <lightning-datatable class="dealTable shadowremovedatatable no-data-main-tab"
+                                                                         hide-checkbox-column="true"
+                                                                         key-field="funds"
+                                                                         data={noData}
+                                                                         columns={referencedCols}
+                                                                         onrowaction={fetchActInfo}>
+                                                    </lightning-datatable>
+                                                    <div class="slds-p-around_x-small">
+                                                        {errMsg}
+                                                    </div>
+                                                </template>
+                                            </div>
+                                        </template>
+                                        <!--End Fund-->
+
+                                        <!--Start Themes-->
+                                        <template if:true={themeData}>
+                                            <div class="iconC heightC remove_height">
+                                                <template if:true={themesRefData}>
+                                                    <lightning-datatable key-field="themes"
+                                                                         hide-checkbox-column
+                                                                         data={themesRefData}
+                                                                         columns={referencedCols}
+                                                                         class="dealTable shadowremovedatatable">
+                                                    </lightning-datatable>
+                                                </template>
+                                                <template if:false={themesRefData}>
+                                                    <lightning-datatable class="dealTable shadowremovedatatable no-data-main-tab"
+                                                                         hide-checkbox-column="true"
+                                                                         key-field="themes"
+                                                                         data={noData}
+                                                                         columns={referencedCols}
+                                                                         onrowaction={fetchActInfo}>
+                                                    </lightning-datatable>
+                                                    <div class="slds-p-around_x-small">
+                                                        {errMsg}
+                                                    </div>
+                                                </template>
+                                            </div>
+                                        </template>
+                                        <!--End Themes-->
+
+                                        <!--Start Clips-->
+                                        <template if:true={clipData}>
+                                            <div class="iconC heightC remove_height">
+                                                <template if:true={clipsRefData}>    
+                                                    <!--Modified by Anshika Ahuja class W.R.To Bug #00034794-->
+                                                    <lightning-datatable key-field="clips"
+                                                                         hide-checkbox-column
+                                                                         data={clipsRefData}
+                                                                         columns={referencedCols}
+                                                                         class="clipTable shadowremovedatatable" 
+                                                                         onrowaction={fetchActInfo}>
+                                                    </lightning-datatable>
+                                                </template>
+                                                <template if:false={clipsRefData}>
+                                                    <!--Modified by Anshika Ahuja class W.R.To Bug #00034794-->
+                                                    <lightning-datatable class="clipTable shadowremovedatatable no-data-main-tab"
+                                                                         hide-checkbox-column="true"
+                                                                         key-field="clips"
+                                                                         data={noData}
+                                                                         columns={referencedCols}>
+                                                    </lightning-datatable>
+                                                    <div class="slds-p-around_x-small">
+                                                        {errMsg}
+                                                    </div>
+                                                </template>
+                                            </div>
+                                        </template>
+                                        <!--End Clips-->
+                                    </div>
+                                </div>
+                                <!--End Container-->
+                            </div>
+                        </div>
+                    </div>
+                    <!--TAGGED SECTION : END-->
+
+                    <div class="slds-col slds-large-size_9-of-12 slds-small-size_12-of-12">
+                        <!--INTERACTIONS SECTION : START-->
+                        <div class="slds-p-bottom_none slds-m-bottom_small slds-theme_shade slds-box slds-p-horizontal_none main-Container main-cont for_desk">
+                            <div class="slds-grid slds-p-bottom_medium slds-wrap slds-p-horizontal_small slds-theme_shade"
+                                 style="align-items:center;height:66px;">
+                                <div class="slds-col slds-size_6-of-12">
+                                    <div style="display: flex; align-items: center">
+                                        <span class="slds-page-header__title slds-text-align_left slds-m-left_xx-small"
+                                              title="Interactions">
+                                            Interactions
+                                        </span>
+                                        <!--Added "for_desk" CSS class by LK on 2024-07-26 to fix 00046925-->
+                                        <lightning-helptext content="Each interaction represents notes from a meeting with this company or with another company where this company was discussed and tagged to the note. An interaction may also represent an email exchange that was tagged by a user. Click on an interaction to view details. Click View All to see additional interactions."
+                                                            class="info for_desk">
+                                        </lightning-helptext><!--Modified by Anshika Ahuja W.R.To Help Text Info Icon #00035167, 00035172 09-02-2023-->
+                                    </div>
+                                </div>
+                                <div class="slds-col slds-size_6-of-12 slds-text-align_right">
+                                    <lightning-icon icon-name="utility:new_direct_message"
+                                                    onclick={callViewpopup}
+                                                    alternative-text="Log a Call"
+                                                    size="x-small"
+                                                    title="Log a Call"
+                                                    class="cur_point logcallbtn bg-color-blue">
+                                    </lightning-icon>
+                                </div>
+                            </div>
+
+                            <!--Start Next Preview-->
+                            <div class={interactionSecCls}>
+                                <!--Start Box-->
+                                <template if:true={interactionsPartialInfoArray}>
+                                    <template for:each={interactionsPartialInfoArray}
+                                              for:item="actInfo">
+                                        <div class="slds-col slds-medium-size_3-of-12 slds-large-size_3-of-12 pl_2_150"
+                                             key={actInfo.actId}>
+                                            <c-navatar-acuity-interaction-tile-lwc act-info={actInfo}
+                                                                                   act-date={actInfo.date}
+                                                                                   act-type={actInfo.type}
+                                                                                   act-icon-name={actInfo.iconName}
+                                                                                   button-title={actInfo.buttonTitle}
+                                                                                   act-subject={actInfo.subject}
+                                                                                   act-id={actInfo.id}
+                                                                                   act-detail={actInfo.detail}
+                                                                                   act-associates={actInfo.tagsInfo}
+                                                                                   is-future-activity={actInfo.isFutureActivity}
+                                                                                   record-id={recordId}>
+                                            </c-navatar-acuity-interaction-tile-lwc>
+                                        </div>
+                                    </template>
+                                </template>
+                                <template if:false={interactionsPartialInfoArray}>
+                                    <div class="slds-align_absolute-center">
+                                        {errMsg}
+                                    </div>
+                                </template>
+                                <!--End Box-->
+                            </div>
+
+                            <div class="slds-col slds-size_1-of-1 slds-theme_shade slds-text-align_right slds-p-around_x-small" style="min-height:39.5px;">
+                                <div class="slds-page-header__col-actions">
+                                    <template if:true={displayViewAll}>
+                                        <a onclick={handleViewAllClick}
+                                           target="_blank"
+                                           title="View All"
+                                           style="width: max-content;display: inline-block;">
+                                            View All
+                                        </a>
+                                    </template>
+                                </div>
+                            </div>
+                        </div>
+                        <!--INTERACTIONS SECTION : END-->
+
+                        <div class="slds-grid slds-wrap">
+                            <!--FOR ACCOUNT/CONTACT ACUITY : START-->
+                            <template if:true={displayAccConAcuityConDealSec}>
+                                <!--CONTACTS/CONNECTIONS SECTION : START-->
+                                <!--#00038817 - Added by Anshika Ahuja W.R.To handle Custom RTs-->
+                                <div class={contactSecCls} style="position: relative">
+                                    <div class="slds-col slds-small-size_12-of-12 slds-p-right_x-small_desk"> <!--Update by Anshika Ahuja-->
+                                        <div class="slds-m-bottom_xx-small">
+                                            <!--Start Header-->
+                                            <!--Added "curr-rec-name = {currRecName}" by LK on 2024-05-27 to fix 00037882 ; 00045898 ; 00045899-->
+                                            <!--Added "isMobile" parameter by LK on 2024-08-09 to fix 00046350-->
+                                            <c-navatar-acuity-contacts-section-lwc 
+                                                is-mobile = {isMobile}
+                                                rec-id = {recordId}
+                                                obj-name = {objectApiName}
+                                                contact-table-lable = {contactTableLable}
+                                                namespace-prefix = {namespacePrefix}
+                                                contact-email = {contactEmail}
+                                                act-id-list = {actIdList}
+                                                internal-data = {internalData}
+                                                con-data = {conData}
+                                                con-cols = {conCols}
+                                                con-cols-mob = {conColsMob}
+                                                internal-table-cols = {internalTableCols}
+                                                internal-table-cols-mob = {internalTableColsMob}
+                                                is-deal-accessible = {isDealAccessible}
+                                                tagged-sec-options = {taggedSecOptions}
+                                                is-rg-api-error = {isRgApiError}
+                                                is-email-drill-down-enabled = {isEmailDrillDownEnabled}
+                                                curr-rec-name = {currRecName}>
+                                            </c-navatar-acuity-contacts-section-lwc>
+                                            <!--Modified by LK on 2024-04-11 to fix 00044459-->
+                                        </div>
+                                    </div>
+                                </div>
+                                <!--CONTACTS/CONNECTIONS SECTION : END-->
+
+                                <!--DEALS SECTION : START-->
+                                <!--#00038817 - Added by Anshika Ahuja W.R.To handle Custom RTs-->
+                                <template if:false={hideDealSection}>
+                                    <div class="slds-col slds-large-size_6-of-12 slds-small-size_12-of-12 slds-p-left_x-small_desk mt_mob">
+                                        <div class="slds-m-bottom_xx-small">
+                                            <div class="slds-grid slds-wrap slds-box slds-theme_shade slds-p-vertical_xx-small div_deal_css"
+                                                style="align-items:center;justify-content: space-between;">
+                                                <!-- <div class="slds-col slds-size_5-of-12"> -->
+                                                <!--00046038 fixed by raju on 11-06-2024-->
+                                                <div class="slds-col slds-size_6-of-12 slds-large-size_5-of-12">
+                                                    <div style="display: flex;align-items: center;">
+                                                        <!--00045464 fixed by raju on dated 21-05-2024 ; Added "clsHeadingWidth"-->
+                                                        <span class="slds-page-header__title slds-text-align_left slds-m-left_xx-small fit-width-content clsHeadingWidth"
+                                                            title={dealTitle}>
+                                                                {dealTitle}
+                                                        </span>
+                                                        <!-- Help text changes by Virendra Kumar as part of 00035170,00035201,00035120,00035119,00035121,00035141 -->
+                                                        <!--Added "for_desk" CSS class by LK on 2024-07-26 to fix 00046925-->
+                                                        <lightning-helptext content={helpTextForDealSection} class="info for_desk"></lightning-helptext>
+                                                    </div>
+                                                    <!--FIRM ACUITY (PRIVATE EQUITY) : DEAL SECTION SORT BY : START-->
+                                                    <template if:true={isFirmPE}>
+                                                        <ul class="for_desk slds-list_horizontal slds-has-block-links_space slds-m-left_xx-small"
+                                                            style="align-items:center;height: 22px;">
+                                                            <!-- <template if:true={showHideRemoveIcon}> -->    <!-- 00035328 - Fix By Kushal - 17-02-23 -->
+                                                                <li class="sortby_css">
+                                                                    <span style="font-size:12px;white-space: nowrap;">
+                                                                        Sorted by
+                                                                    </span>
+                                                                    <lightning-combobox class="sortedbycss"
+                                                                                        name="progress"
+                                                                                        value={fieldNameForSortPe}
+                                                                                        placeholder={placeholderValue}
+                                                                                        options={optionsforsortingPE}
+                                                                                        onchange={handleChangeSorting}
+                                                                                        dropdown-alignment="top-right">
+                                                                    </lightning-combobox>
+                                                                </li>
+                                                            <!-- </template> -->    <!-- 00035328 - Fix By Kushal - 17-02-23 -->
+                                                        </ul>
+                                                    </template>
+                                                    <!--FIRM ACUITY (PRIVATE EQUITY) : DEAL SECTION SORT BY : END-->
+                                                    
+                                                    <!--FIRM ACUITY : DEAL SECTION SORT BY : START-->
+                                                    <template if:true={displayDealSecSort}>
+                                                        <ul class="for_desk slds-list_horizontal slds-has-block-links_space slds-m-left_xx-small"
+                                                            style="align-items:center;height: 22px;">
+                                                            <li class="sortby_css">
+                                                                <span style="font-size:12px;white-space: nowrap;">
+                                                                    Sorted by
+                                                                </span>
+                                                                <template if:true={isInstitution}>
+                                                                    <lightning-combobox class="sortedbycss"
+                                                                                        name="progress"
+                                                                                        value={dealSecSortValue}
+                                                                                        placeholder={prevDealSecSortValue}
+                                                                                        options={dealSecSortOptnsForFundraising}
+                                                                                        onchange={handleDealSecValueChange}
+                                                                                        dropdown-alignment="topright">
+                                                                    </lightning-combobox>
+                                                                </template>
+                                                                <template if:false={isInstitution}>
+                                                                <lightning-combobox class="sortedbycss"
+                                                                                    name="progress"
+                                                                                    value={dealSecSortValue}
+                                                                                    placeholder={prevDealSecSortValue}
+                                                                                    options={dealSecSortOptns}
+                                                                                    onchange={handleDealSecValueChange}
+                                                                                    dropdown-alignment="topright">
+                                                                </lightning-combobox>
+                                                                </template>
+                                                            </li>
+                                                        </ul>
+                                                    </template>
+                                                    <!--FIRM ACUITY : DEAL SECTION SORT BY : END-->
+                                                </div>
+                                                <template if:true={displayDealSecToggle}>
+                                                    <!-- <div class="slds-col slds-large_6-of-12 slds-small_8-of-12  slds-text-align_left"> -->
+                                                    <!--00046038 fixed by raju on 11-06-2024-->
+                                                    <div class="slds-col slds-size_6-of-12 slds-large-size_6-of-12  slds-text-align_left">
+                                                        <!--Removed "name="radioGroupss"" by LK on 2024-05-28 to fix 00045762 ; 00045798 ; 00045815 ; 00045826 ; 00045296 ; 00045304-->
+                                                        <lightning-radio-group options={optnsFundCoInv}
+                                                                            onchange={handleDealSecTabSwitch}
+                                                                            value={dealSecTabValue}
+                                                                            type="button"
+                                                                            class="radioBtnsInterExterFund">
+                                                        </lightning-radio-group>
+                                                    </div>
+                                                    <ul class="for_desk slds-list_horizontal slds-has-block-links_space"
+                                                        style="align-items:center;justify-content:end">
+                                                        <!--Added "template if:true" by LK on 2024-06-21 to fix 00046176-->
+                                                        <template if:true={displayNewFdrPlusIcon}>
+                                                            <li>
+                                                                <lightning-icon icon-name="utility:new"
+                                                                                size="x-small"
+                                                                                alternative-text="New Fundraising"
+                                                                                title="New Fundraising"
+                                                                                onclick={handleNewFdr}
+                                                                                class="cur_point addMinus">
+                                                                </lightning-icon>
+                                                            </li>
+                                                        </template>
+                                                        <template if:true={displayNewFdrCon}>
+                                                            <li>
+                                                                <lightning-icon icon-name="utility:adduser"
+                                                                                size="x-small"
+                                                                                alternative-text="New Fundraising Contact"
+                                                                                onclick={handleFundraisingContactCreate}
+                                                                                title="New Fundraising Contact"
+                                                                                class="for_desk cur_point addMinus slds-m-right_x-small">
+                                                                </lightning-icon>
+                                                            </li>
+                                                        </template>
+                                                    </ul>
+                                                </template>
+                                                <template if:true={displayDealPlusIcon}>
+                                                    <ul class="for_desk slds-list_horizontal slds-has-block-links_space"
+                                                        style="align-items:center;justify-content:end">
+                                                        <li>
+                                                            <lightning-icon icon-name="utility:new"
+                                                                            size="x-small"
+                                                                            alternative-text={dealPlusIconText}
+                                                                            title={dealPlusIconText}
+                                                                            onclick={handleNewDealAction}
+                                                                            class="cur_point addMinus slds-m-right_x-small">
+                                                            </lightning-icon>
+                                                        </li>
+                                                        <template if:true={displayAddDealTeamMember}>
+                                                            <li>
+                                                                <lightning-icon icon-name="utility:adduser"
+                                                                                size="x-small"
+                                                                                alternative-text="New Deal Contact"
+                                                                                title="New Deal Contact"
+                                                                                onclick={handleNewDealTeamMemberAction}
+                                                                                class="cur_point addMinus">
+                                                                </lightning-icon>
+                                                            </li>
+                                                        </template>
+                                                    </ul>
+                                                </template>
+                                                <!--For Firm (PE) Acuity > Deals Section : Start-->
+                                                <template if:true={displayPEDealSecToggle}>
+                                                    <!--Moved existing code inside div for 00045497 by raju on dated 27-05-2024-->
+                                                    <div class="clsViewDsktop">
+                                                        <div class="slds-col slds-large_5-of-12 slds-small_9-of-12 slds-text-align_center">
+                                                            <!--Removed "name="radioGroups"" by LK on 2024-05-28 to fix 00045762 ; 00045798 ; 00045815 ; 00045826 ; 00045296 ; 00045304-->
+                                                            <lightning-radio-group options={optionPEDeals}
+                                                                                   onchange={handleReferencedinterexter}
+                                                                                   value={peTabValue}
+                                                                                   variant="label-hidden"
+                                                                                   type="button"
+                                                                                   class="radioBtnsInterExterFund mr_vertical">
+                                                            </lightning-radio-group>
+                                                        </div>
+                                                        <div class="slds-col slds-size_2-of-12  addMinus">
+                                                            <template if:true={isFundTabPopup}>
+                                                                <ul class="for_desk">
+                                                                    <li>
+                                                                        <lightning-icon icon-name="utility:new"
+                                                                                        size="x-small"
+                                                                                        alternative-text="New Deal"
+                                                                                        title="New Deal"
+                                                                                        onclick={handleNewDeal_PrivateEquity}
+                                                                                        class="cur_point slds-float_right addMinus">
+                                                                        </lightning-icon>
+                                                                    </li>
+                                                                </ul>
+                                                            </template>
+                                                            <template if:true={isSourcedTabPopup}>
+                                                                <ul class="for_desk slds-list_horizontal slds-has-block-links_space"
+                                                                    style="align-items:center;justify-content:end">
+                                                                    <li>
+                                                                        <lightning-icon icon-name="utility:new" size="x-small"
+                                                                            alternative-text="New Sourced Deal"
+                                                                            title="New Sourced Deal"
+                                                                            onclick={handleNewDeal_PrivateEquity_SourcedFirm}
+                                                                            class="cur_point addMinus"></lightning-icon>
+                                                                    </li>
+                                                                </ul>
+                                                            </template>
+                                                        </div>
+                                                    </div>
+                                                    <!-- Added below code for 00045497 by raju on dated 27-05-2024 -->
+                                                    <div class="clsViewMob">
+                                                        <div class="slds-col slds-large_12-of-12 slds-small_12-of-12 slds-text-align_right">
+                                                            <lightning-radio-group
+                                                                                options={optionPEDeals}
+                                                                                onchange={handleReferencedinterexter}
+                                                                                value={peTabValue}
+                                                                                variant="label-hidden"
+                                                                                type="button"
+                                                                                class="radioBtnsInterExterFund mr_vertical">
+                                                            </lightning-radio-group>
+                                                        </div>
+                                                    </div>
+                                                </template>
+                                                <!--For Firm (PE) Acuity > Deals Section : End-->
+                                            </div>
+                                            <div class="slds-box slds-box_x-small slds-p-around_none">
+                                                <div class="slds-grid slds-wrap">
+                                                    <div class="slds-col slds-size_1-of-1 slds-text-align_left">
+                                                        <div class="cont-tab-height">
+                                                            <template if:false={displayPEDealSecToggle}>
+                                                                <template if:false={displayDealSecToggle}>
+                                                                    <template if:true={dealsData}>
+                                                                        <lightning-datatable class="for_desk dealDataTable tabcont shadowremovedatatable"
+                                                                                            hide-checkbox-column="true"
+                                                                                            key-field="id"
+                                                                                            data={dealsData}
+                                                                                            columns={dealsCols}>
+                                                                        </lightning-datatable>
+                                                                        <lightning-datatable class="for_mob dealDataTable tabcont shadowremovedatatable"
+                                                                                            hide-checkbox-column="true"
+                                                                                            key-field="id"
+                                                                                            data={dealsData}
+                                                                                            resize-column-disabled
+                                                                                            columns={dealsColsMob}>
+                                                                        </lightning-datatable>
+                                                                    </template>
+                                                                    <template if:false={dealsData}>
+                                                                        <lightning-datatable class="for_desk dealDataTable tabcont shadowremovedatatable no-data-main-tab"
+                                                                                            hide-checkbox-column="true"
+                                                                                            key-field="id"
+                                                                                            data={noData}
+                                                                                            columns={dealsCols}>
+                                                                        </lightning-datatable>
+                                                                        <lightning-datatable class="for_mob dealDataTable tabcont shadowremovedatatable no-data-main-tab"
+                                                                                            hide-checkbox-column="true"
+                                                                                            key-field="id"
+                                                                                            data={noData}
+                                                                                            columns={dealsColsMob}>
+                                                                        </lightning-datatable>
+                                                                        <div class="slds-p-around_x-small">
+                                                                            {errMsg}
+                                                                        </div>
+                                                                    </template>
+                                                                </template>
+
+                                                                <!--Toggle : Start-->
+                                                                <template if:true={displayDealSecToggle}>
+                                                                    <!--Start Internal-->
+                                                                    <template if:true={isFund}>
+                                                                        <template if:true={fundsData}>
+                                                                            <lightning-datatable key-field="fund"
+                                                                                                hide-checkbox-column
+                                                                                                data={fundsData}
+                                                                                                columns={fundTableCols}
+                                                                                                class="for_desk dealDataTable tabcont shadowremovedatatable">
+                                                                            </lightning-datatable>
+                                                                            <lightning-datatable key-field="fund"
+                                                                                                hide-checkbox-column
+                                                                                                data={fundsData}
+                                                                                                resize-column-disabled
+                                                                                                columns={fundTableColsMob}
+                                                                                                class="dealDataTable tabcont shadowremovedatatable for_mob">
+                                                                            </lightning-datatable>
+                                                                        </template>
+                                                                        <template if:false={fundsData}>
+                                                                            <div class="min_ht_160">
+                                                                                <lightning-datatable key-field="fund" 
+                                                                                                    hide-checkbox-column
+                                                                                                    data={noData}
+                                                                                                    columns={fundTableCols}
+                                                                                                    class="for_desk dealDataTable tabcont shadowremovedatatable">
+                                                                                </lightning-datatable>
+                                                                                <lightning-datatable key-field="fund" 
+                                                                                                    hide-checkbox-column
+                                                                                                    data={noData}
+                                                                                                    columns={fundTableColsMob}
+                                                                                                    class="for_mob dealDataTable tabcont shadowremovedatatable">
+                                                                                </lightning-datatable>
+                                                                                <p class="slds-p-around_x-small nodata-popup2">
+                                                                                    {errMsg}
+                                                                                </p>
+                                                                            </div>
+                                                                        </template>
+                                                                    </template>
+                                                                    <!--End Internal-->
+
+                                                                    <!--Start CoInv-->
+                                                                    <template if:true={isCoInv}>
+                                                                        <template if:true={coInvsData}>
+                                                                            <lightning-datatable key-field="coInv"
+                                                                                                hide-checkbox-column
+                                                                                                data={coInvsData}
+                                                                                                columns={coInvTableCols}
+                                                                                                class="for_desk dealDataTable tabcont shadowremovedatatable">
+                                                                            </lightning-datatable>
+                                                                            <lightning-datatable key-field="coInv"
+                                                                                                hide-checkbox-column
+                                                                                                data={coInvsData}
+                                                                                                resize-column-disabled
+                                                                                                columns={coInvTableColsMob}
+                                                                                                class="dealDataTable for_mob tabcont shadowremovedatatable">
+                                                                            </lightning-datatable>
+                                                                        </template>
+                                                                        <template if:false={coInvsData}>
+                                                                            <div class="min_ht_160">
+                                                                                <lightning-datatable key-field="coInv" 
+                                                                                                    hide-checkbox-column                     
+                                                                                                    data={noData} 
+                                                                                                    columns={coInvTableCols}
+                                                                                                    class="for_desk dealDataTable tabcont shadowremovedatatable">
+                                                                                </lightning-datatable>
+                                                                                <lightning-datatable key-field="coInv" 
+                                                                                                    hide-checkbox-column                     
+                                                                                                    data={noData} 
+                                                                                                    columns={coInvTableColsMob}
+                                                                                                    class="for_mob dealDataTable tabcont shadowremovedatatable">
+                                                                                </lightning-datatable>
+                                                                                <p class="slds-p-around_x-small nodata-popup2">
+                                                                                    {errMsg}
+                                                                                </p>
+                                                                            </div>
+                                                                        </template>
+                                                                    </template>
+                                                                    <!--End CoInv-->
+                                                                </template>
+                                                            </template>
+                                                            <template if:true={displayPEDealSecToggle}>
+                                                                <template if:true={showHideRemoveIcon}>
+                                                                    <lightning-datatable class="for_desk dealDataTable tabcont shadowremovedatatable"
+                                                                                        hide-checkbox-column="true"
+                                                                                        key-field="id"
+                                                                                        data={dealsData}
+                                                                                        columns={dealsCols}>
+                                                                    </lightning-datatable>
+                                                                    <lightning-datatable class="for_mob dealDataTable tabcont shadowremovedatatable"
+                                                                                        hide-checkbox-column="true"
+                                                                                        key-field="id"
+                                                                                        resize-column-disabled
+                                                                                        data={dealsData}
+                                                                                        columns={dealsColsMob}>
+                                                                    </lightning-datatable>
+                                                                </template>
+                                                                <template if:false={showHideRemoveIcon}>
+                                                                    <lightning-datatable class="for_desk dealDataTable tabcont shadowremovedatatable no-data-main-tab"
+                                                                                        hide-checkbox-column="true"
+                                                                                        key-field="con"
+                                                                                        data={noData}
+                                                                                        columns={dealsCols}
+                                                                                        onrowaction={fetchActInfo}>
+                                                                    </lightning-datatable>
+                                                                    <lightning-datatable class="for_mob dealDataTable tabcont shadowremovedatatable no-data-main-tab"
+                                                                                        hide-checkbox-column="true"
+                                                                                        key-field="id"
+                                                                                        resize-column-disabled
+                                                                                        data={noData}
+                                                                                        columns={dealsColsMob}>
+                                                                    </lightning-datatable>
+                                                                    <div class="slds-p-around_x-small">
+                                                                        {errMsg}
+                                                                    </div>
+                                                                </template>
+                                                            </template>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </template>
+                                <!--DEALS SECTION : END-->
+                            </template>
+                            <!--FOR ACCOUNT/CONTACT ACUITY : END-->
+
+                            <!--FOR DEAL ACUITY : START-->
+                            <template if:true={displayDealAcuityDTSec}>
+                                <!-- <div class="slds-grid slds-wrap slds-m-top_medium"> -->
+                                    <!--Start Deal Team-->
+                                    <div class="slds-col slds-size_12-of-12">
+                                        <!--  <div class="sep_border"></div>-->
+                                        <div class="slds-bottom-vertical_small">
+                                            <!--Start Header-->
+                                            <div class="slds-grid slds-wrap slds-p-vertical_xx-small slds-box slds-theme_shade header_tab"
+                                                style="align-items:center">
+                                                <!--Added Popover by LK on 2024-08-30 to fix 00047233-->
+                                                <!--Start Popover-->
+                                                <lightning-layout class="errorMsgPopoverFullWidthTableDT slds-hide">
+                                                    <lightning-layout-item size="12">
+                                                        <template if:true={showPopoverErrorMsg}>
+                                                            <section aria-describedby="dialog-body-id-110" aria-labelledby="dialog-heading-id-3" class="slds-popover slds-popover_error slds-nubbin_bottom-right slds-popover_small" role="dialog">
+                                                                <header class="slds-popover__header">
+                                                                    <div class="slds-media slds-media_center slds-has-flexi-truncate ">
+                                                                        <div class="slds-media__body">
+                                                                            <h2 class="slds-text-body_small" id="dialog-heading-id-3">It seems there's an issue in connecting with external services. Please contact your system admin.</h2>
+                                                                        </div>
+                                                                    </div>
+                                                                </header>
+                                                            </section>
+                                                        </template>
+                                                    </lightning-layout-item>
+                                                </lightning-layout>
+                                                <!--End Popover-->
+                                                <div class="slds-col slds-size_3-of-12">
+                                                    <ul class="slds-list_horizontal slds-has-block-links_space"
+                                                        style="align-items:center;">
+                                                        <li>
+                                                            <span
+                                                                class="slds-page-header__title slds-text-align_left slds-m-left_xx-small fit-width-content"
+                                                                title="Deal Team">{dealTeamTableLabel}
+                                                            </span>
+                                                        </li>
+                                                        <li><!--Added by Tejaswini Info Icons - 00035098, 00035098--> 
+                                                            <!--Added "for_desk" CSS class by LK on 2024-07-26 to fix 00046925-->
+                                                            <lightning-helptext content= "View the deal team of external contacts and internal professionals for this deal. These team members can be advisors from a third party, members of the company’s team, or members of your firm’s team. Any time an individual contact serves in some capacity on a deal, they should be added to the deal team. Click the contact to view or edit their details. Click the plus icon to add new team members."
+                                                                class="info for_desk"></lightning-helptext>
+                                                        </li>
+                                                    </ul>
+                                                </div>
+                                                <div class="slds-col slds-large-size_6-of-12 slds-small-size_9-of-12 mob_alignment slds-text-align_center">
+                                                    <template if:true={interexterbtn}>
+                                                        <!--Added by Tejaswini BugFix-00035104-->
+                                                        <!--Removed "name="radioGroups"" by LK on 2024-05-28 to fix 00045762 ; 00045798 ; 00045815 ; 00045826 ; 00045296 ; 00045304-->
+                                                        <lightning-radio-group options={optionsInterExter}
+                                                        onchange={handleToggleinterexterDT} value={dealTeamTabValue}
+                                                        type="button" class="radioBtnsInterExter mob_alignment"></lightning-radio-group>
+                                                    </template>
+                                                    <template if:true={cancelRemove}>
+                                                        <button class="slds-button slds-button_neutral" onclick={hidechecketr}
+                                                            title="Cancel">Cancel</button>
+                                                        <button class="slds-button  slds-button_brand" onclick={removeDealTeam}
+                                                            title="Remove">Remove</button>
+                                                    </template>
+                                                    <template if:true={cancelRemoveinter}>
+                                                        <button class="slds-button slds-button_neutral" onclick={hidecheckintr}
+                                                            title="Cancel">Cancel</button>
+                                                        <button class="slds-button  slds-button_brand" onclick={removeDealTeam}
+                                                            title="Remove">Remove</button>
+                                                    </template>
+                                                </div>
+                                                <div class="slds-col slds-size_3-of-12 slds-text-align_right addMinus for_desk">
+                                                    <template if:true={externalAdd}>
+                                                        <template if:true={addDisableexter}>
+                                                            <!--Added by Tejaswini 20th Feb 00035333-->
+                                                            <lightning-icon icon-name="utility:new"
+                                                                alternative-text="New Deal Contact" onclick={handleNewDealTeamMember}
+                                                                title="New Deal Contact" size="x-small"
+                                                                class="cur_point slds-m-right_x-small"></lightning-icon>
+                                                        </template>
+                                                        <template if:true={showHideRemoveIcon}>
+                                                            <lightning-icon icon-name="utility:ban" onclick={showCheckexter}
+                                                                alternative-text="Remove Deal Contact" class="cur_point slds-m-left_xx-small"
+                                                                title="Remove Deal Contact" size="x-small"></lightning-icon>
+                                                        </template>
+                                                    </template>
+                                                    <template if:true={internalAdd}>
+                                                        <template if:true={addDisableinter}>
+                                                            <!--Added by Tejaswini 20th Feb 00035333-->
+                                                            <lightning-icon icon-name="utility:new"
+                                                                alternative-text="New Team Member" onclick={handleNewDealTeamMember}
+                                                                title="New Team Member" size="x-small"
+                                                                class="cur_point slds-m-right_x-small"></lightning-icon>
+                                                        </template>
+                                                        <template if:true={showHideRemoveIcon}>
+                                                            <lightning-icon icon-name="utility:ban" onclick={showCheckinter}
+                                                                alternative-text="Remove Team Member" class="cur_point slds-m-left_xx-small"
+                                                                title="Remove Team Member" size="x-small"></lightning-icon>
+                                                        </template>
+                                                    </template>
+                                                </div>
+                                            </div>
+                                            <!--End Header-->
+                            
+                                            <!--Start-->
+                                            <template if:true={exterTable}>
+                                                <div class="slds-box slds-box_x-small slds-p-around_none">
+                                                    <div class="slds-grid slds-wrap">
+                                                        <div class="slds-col slds-size_1-of-1 slds-text-align_left">
+                                                            <div class="cont-tab-height zinde">
+                                                            <template if:true={showHideRemoveIcon}>
+                                                                <!-- Added by LK on 2024-10-21 to fix 00047544 -->
+                                                                <template if:true={isRgApiError}>
+                                                                    <lightning-icon icon-name="utility:warning" size="xx-small" alternative-text="Error" class="my-icon slds-is-absolute iconErrClsDT for_desk" onmouseleave={hideErrorMsgPopoverDT} onmouseover={showErrorMsgPopoverDT}></lightning-icon>
+                                                                </template>
+                                                                <!--Added by Tejaswini BugFix-00035104-->
+                                                                <c-navatar-inline-picklist-lwc
+                                                                    key-field="Id" data={externalDataDealTeam} class="for_desk tabcont contactDataTable shadowremovedatatable rt_3" columns={conCols} 
+                                                                    onsave={handleSave} hide-checkbox-column={chckBoxAdvisorexter}
+                                                                    draft-values={fldsItemValues} onpicklistchanged={dtPicklistChanged}
+                                                                    onrowaction={fetchActInfo} onrowselection={getSelectedDealTeam}
+                                                                    oncellchange={handleCellChange} >
+                                                                </c-navatar-inline-picklist-lwc>
+                                                                <!--Added by Tejaswini BugFix-00035104-->
+                                                                <c-navatar-inline-picklist-lwc
+                                                                    key-field="Id" data={externalDataDealTeam} class="tabcont for_mob contactDataTable shadowremovedatatable rt_3" columns={conColsMob} 
+                                                                    resize-column-disabled
+                                                                    onsave={handleSave} hide-checkbox-column={chckBoxAdvisorexter}
+                                                                    draft-values={fldsItemValues} onpicklistchanged={dtPicklistChanged}
+                                                                    onrowaction={fetchActInfo} onrowselection={getSelectedDealTeam}
+                                                                    oncellchange={handleCellChange} >
+                                                                </c-navatar-inline-picklist-lwc>
+                                                            </template>
+                                                            <template if:false={showHideRemoveIcon}>
+                                                                <lightning-datatable class="for_desk no-data-main-tab shadowremovedatatable contactDataTable"
+                                                                                        hide-checkbox-column="true"
+                                                                                        key-field="con"
+                                                                                        data={noData}
+                                                                                        columns={conCols}
+                                                                                        onrowaction={fetchActInfo}
+                                                                                        onrowselection={getSelectedDealTeam}>
+                                                                </lightning-datatable>
+                                                                <lightning-datatable class="for_mob no-data-main-tab shadowremovedatatable contactDataTable"
+                                                                                        hide-checkbox-column="true"
+                                                                                        key-field="con"
+                                                                                        data={noData}
+                                                                                        columns={conColsMob}
+                                                                                        onrowaction={fetchActInfo}
+                                                                                        onrowselection={getSelectedDealTeam}>
+                                                                </lightning-datatable>
+                                                                <div class="slds-p-around_x-small">
+                                                                    {errMsg}
+                                                                </div>
+                                                            </template>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <template if:true={cancelRemove}>
+                                                    <footer class="slds-modal__footer slds-align_absolute-center">
+                                                        <button class="slds-button slds-button_neutral" onclick={hidechecketr}
+                                                            title="Cancel">Cancel</button>
+                                                        <button class="slds-button  slds-button_brand" onclick={removeDealTeam}
+                                                            title="Remove">Remove</button>
+                                                    </footer>
+                                                </template>
+                            
+                                            </template>
+                                            
+                                            <template if:true={interTable}>
+                                                <div class="slds-box slds-box_x-small slds-p-around_none">
+                                                    <div class="slds-grid slds-wrap">
+                                                        <div class="slds-col slds-size_1-of-1 slds-text-align_left">
+                                                            <div class="cont-tab-height">
+                                                                <template if:true={showHideRemoveIcon}>
+                                                                    <!--Added by Tejaswini BugFix-00035104-->
+                                                                    <c-navatar-inline-picklist-lwc class="for_desk tabcont shadowremovedatatable rt_3"
+                                                                        key-field="Id" data={internalDataDealTeam} columns={dealTeamColumnList}
+                                                                        hide-checkbox-column={chckBoxAdvisorinter} onsave={handleSave}
+                                                                        draft-values={fldsItemValues} onpicklistchanged={dtPicklistChanged}
+                                                                        onrowselection={getSelectedDealTeam}
+                                                                        oncellchange={handleCellChange}>
+                                                                    </c-navatar-inline-picklist-lwc>
+                                                                    <!--onrowaction={handleContactRow}-->
+                                                                    <!--Added by Tejaswini BugFix-00035104-->
+                                                                    <c-navatar-inline-picklist-lwc
+                                                                        key-field="Id" data={internalDataDealTeam} columns={dealTeamColumnListMob}
+                                                                        hide-checkbox-column={chckBoxAdvisorinter} onsave={handleSave}
+                                                                        draft-values={fldsItemValues} onpicklistchanged={dtPicklistChanged}
+                                                                        onrowselection={getSelectedDealTeam}
+                                                                        resize-column-disabled
+                                                                        oncellchange={handleCellChange} class="for_mob">
+                                                                    </c-navatar-inline-picklist-lwc>
+                                                                </template>
+                                                                <template if:false={showHideRemoveIcon}>
+                                                                    <!-- UI-fix added new class pt-top when no data present styling-->
+                                                                    <lightning-datatable class="for_desk no-data-main-tab shadowremovedatatable"
+                                                                                        hide-checkbox-column="true"
+                                                                                        key-field="con"
+                                                                                        data={noData}
+                                                                                        columns={dealTeamColumnList}
+                                                                                        onrowaction={fetchActInfo}
+                                                                                        onrowselection={handleFundraisingContactSelection}>
+                                                                    </lightning-datatable>
+                                                                    <lightning-datatable class="for_mob no-data-main-tab shadowremovedatatable"
+                                                                                        hide-checkbox-column="true"
+                                                                                        key-field="con"
+                                                                                        data={noData}
+                                                                                        columns={dealTeamColumnListMob}
+                                                                                        onrowaction={fetchActInfo}
+                                                                                        onrowselection={handleFundraisingContactSelection}>
+                                                                    </lightning-datatable>
+                                                                    <div class="slds-p-around_x-small">
+                                                                        {errMsg}
+                                                                    </div>
+                                                                </template>
+                                                            </div>
+                                                        </div>
+                            
+                                                    </div>
+                                                </div>
+                                                <template if:true={cancelRemoveinter}>
+                                                    <footer class="slds-modal__footer slds-align_absolute-center">
+                                                        <button class="slds-button slds-button_neutral" onclick={hidecheckintr}
+                                                            title="Cancel">Cancel</button>
+                                                        <button class="slds-button  slds-button_brand" onclick={removeDealTeam}
+                                                            title="Remove">Remove</button>
+                                                    </footer>
+                                                </template>
+                                            </template>
+                                            <!--End-->
+                                        </div>
+                                    </div>
+                                    <!--End-->
+                                <!-- </div> -->
+                            </template>
+                            <!--FOR DEAL ACUITY : END-->
+
+                            <!--FOR FUND ACUITY : START-->
+                            <template if:true={displayFundAcuityFdrSec}>
+                                <!-- <div class="slds-grid slds-wrap slds-m-top_medium"> -->
+                                    <!-- <div class="slds-grid slds-wrap slds-m-top_medium"> -->
+                                        <!--Start Deal Team-->
+                                        <div class="slds-col slds-size_12-of-12">
+                                            <!-- <div class="sep_border"></div> -->
+                                            <div class="slds-m-bottom_xx-small ">
+                                                <!--Start Header-->
+                                                <div class="slds-grid slds-wrap slds-p-vertical_xx-small slds-box slds-theme_shade header_tab"
+                                                    style="align-items:center;">
+                                                    <div class="slds-col slds-size_3-of-12"
+                                                         style="display: flex;align-items: center;">
+                                                        <ul class="slds-has-block-links_space"
+                                                            style="align-items:center;">
+                                                            <li style="display: flex;align-items:center">
+                                                                <span class="slds-page-header__title slds-text-align_left"
+                                                                      title={fdrPluralLabel}>
+                                                                    <!--Updated above title and below text by LK on 2024-05-23 to fix 00045422-->
+                                                                    {fdrPluralLabel}
+                                                                </span>
+                                                                <!-- Added by Kushal as part of 33875 -->
+                                                                <!--Added "for_desk" CSS class by LK on 2024-07-26 to fix 00046925-->
+                                                                <lightning-helptext content="View fundraisings associated to this fund. Click the fundraising to view or edit details. Click the institution name to view or edit details. Click the plus icon to add new fundraisings." class="info for_desk"></lightning-helptext>
+                                                            </li>
+                                                            <template if:true={showHideRemoveIcon}> 
+                                                                <li class="sortby_css for_desk">
+                                                                    <!-- ui bug fix critical  1 march  00038071 -->
+                                                                    <span style="font-size:12px;white-space: nowrap;">
+                                                                        Sorted by
+                                                                    </span>
+                                                                    <lightning-combobox class="sortedbycss"
+                                                                                        name="progress"
+                                                                                        value={fieldNameForSort}
+                                                                                        placeholder={placeholderValueFdr} 
+                                                                                        options={optionsforsortingFundraising}
+                                                                                        onchange={handleChangesSorting}
+                                                                                        onselect={selectItem}>
+                                                                    </lightning-combobox>
+                                                                </li>
+                                                            </template>
+                                                        </ul>
+                                                    </div>
+                                                    <div class="slds-col slds-size_6-of-12 slds-text-align_right" style="display: flex;justify-content: center;">
+                                                        <template if:true={cancelRemove}>
+                                                            <button class="slds-button slds-button_neutral"
+                                                                    onclick={hideCheckBoxFdr}
+                                                                    title="Cancel">
+                                                                Cancel
+                                                            </button>
+                                                            <button class="slds-button slds-button_brand"
+                                                                    onclick={removeFundraising}
+                                                                    title="Remove">
+                                                                Remove
+                                                            </button>
+                                                        </template>
+                                                    </div>
+                                                    <div class="slds-col slds-size_3-of-12 addMinus">
+                                                        <lightning-layout style="justify-content: end;">
+                                                            <lightning-layout-item>
+                                                                <template if:true={addDisableexter}>
+                                                                    <!-- Added by Kushal as part of 33875  -->
+                                                                    <lightning-icon icon-name="utility:new"
+                                                                                    alternative-text="New Fundraising"
+                                                                                    onclick={handleNewFdrCon}
+                                                                                    title="New Fundraising"
+                                                                                    size="x-small"
+                                                                                    class="for_desk cur_point slds-m-right_x-small">
+                                                                    </lightning-icon>
+                                                                    <!-- Updated Tooltip as per 00037915 By Kushal Bagadia on 20-02-23-->
+                                                                </template>
+                                                                <template if:true={showHideRemoveIcon}>
+                                                                    <lightning-icon icon-name="utility:ban"
+                                                                                    onclick={chckBoxshow}
+                                                                                    alternative-text="Remove Fundraising"
+                                                                                    class="for_desk slds-m-left_xx-small cur_point"
+                                                                                    title="Remove Fundraising"
+                                                                                    size="x-small">
+                                                                    </lightning-icon>
+                                                            </template>
+                                                            </lightning-layout-item>
+                                                        </lightning-layout>
+                                                    </div>
+                                                </div>
+                                                <!--End Header-->
+            
+                                                <!--Start-->
+                                                <div class="slds-box slds-box_x-small slds-p-around_none">
+                                                    <div class="slds-grid slds-wrap">
+                                                        <div class="slds-col slds-size_1-of-1 slds-text-align_left">
+                                                            <div class="cont-tab-height">
+                                                                <template if:true={showHideRemoveIcon}>
+                                                                    <c-navatar-inline-picklist-lwc class="for_desk tabcont contactDataTableA shadowremovedatatable"
+                                                                                            key-field="Id"
+                                                                                            data={conData}
+                                                                                            show-row-number-column="false"
+                                                                                            columns={conCols}
+                                                                                            hide-checkbox-column={chckBoxdel}
+                                                                                            onsave={handleSave}
+                                                                                            oncancel={handleCancel}
+                                                                                            onrowaction={handleRowSelection}
+                                                                                            draft-values={fldsItemValues}
+                                                                                            onrowselection={getSelectedFundraising}
+                                                                                            onpicklistchanged={picklistChanged}
+                                                                                            oncellchange={handleCellChange}>
+                                                                    </c-navatar-inline-picklist-lwc>
+                                                                    <c-navatar-inline-picklist-lwc class="tabcont for_mob contactDataTableA shadowremovedatatable"
+                                                                                            key-field="Id"
+                                                                                            data={conData}
+                                                                                            resize-column-disabled
+                                                                                            columns={conColsMob}
+                                                                                            hide-checkbox-column={chckBoxdel}
+                                                                                            onsave={handleSave}
+                                                                                            onrowaction={handleRowSelection}
+                                                                                            draft-values={fldsItemValues}
+                                                                                            onrowselection={getSelectedFundraising}
+                                                                                            onpicklistchanged={fdrPicklistChanged}
+                                                                                            oncellchange={handleCellChange}>
+                                                                    </c-navatar-inline-picklist-lwc>
+                                                                </template>
+                                                                <template if:false={showHideRemoveIcon}>
+                                                                    <!-- UI-fix added new class pt-top when no data present styling-->
+                                                                    <lightning-datatable class="for_desk no-data-main-tab shadowremovedatatable"
+                                                                                         hide-checkbox-column="true"
+                                                                                         key-field="con"
+                                                                                         data={noData}
+                                                                                         columns={conCols}
+                                                                                         onrowaction={fetchActInfo}
+                                                                                         onrowselection={handleFundraisingContactSelection}>
+                                                                    </lightning-datatable>
+                                                                    <lightning-datatable class="for_mob no-data-main-tab shadowremovedatatable"
+                                                                                         hide-checkbox-column="true"
+                                                                                         key-field="con"
+                                                                                         data={noData}
+                                                                                         columns={conColsMob}
+                                                                                         onrowaction={fetchActInfo}
+                                                                                         onrowselection={handleFundraisingContactSelection}>
+                                                                    </lightning-datatable>
+                                                                    <div class="slds-p-around_x-small">
+                                                                        {errMsg}
+                                                                    </div>
+                                                                </template>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <template if:true={cancelRemove}>
+                                                        <footer class="slds-modal__footer slds-align_absolute-center">
+                                                            <button class="slds-button slds-button_neutral"
+                                                                    onclick={hideCheckBoxFdr}
+                                                                    title="Cancel">
+                                                                Cancel
+                                                            </button>
+                                                            <button class="slds-button slds-button_brand"
+                                                                    onclick={removeFundraising}
+                                                                    title="Remove">
+                                                                Remove
+                                                            </button>
+                                                        </footer>
+                                                    </template>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <!--End-->
+                                    <!-- </div> -->
+                                <!-- </div> -->
+                            </template>
+                            <!--FOR FUND ACUITY : END-->
+
+                            <!--FOR FUNDRAISING ACUITY : START-->
+                            <template if:true={displayFdrConSec}>
+                                <!--Start Fundraising Contact-->
+                                <div class="slds-col slds-size_12-of-12">
+                                    <div class="slds-m-bottom_xx-small">
+                                        <!--Start Header-->
+                                        <div class="slds-grid slds-wrap slds-box slds-theme_shade header_tab slds-is-relative"
+                                            style="align-items:center;height: 66px;">
+
+                                            <!--Start Popover-->
+                                            <lightning-layout class="errorMsgPopoverFullWidthTable slds-hide">
+                                                <lightning-layout-item size="12">
+                                                    <template if:true={showPopoverErrorMsg}>
+                                                        <section aria-describedby="dialog-body-id-110" aria-labelledby="dialog-heading-id-2" class="slds-popover slds-popover_error slds-nubbin_bottom-left" role="dialog">
+                                                            <!--<div  class="slds-text-align_right"><lightning-icon icon-name="utility:close" size="xx-small" alternative-text="Close" variant="base" title="Close" class="errorMsgPopover" onclick={showoffPopoverErrorMsg}></lightning-icon></div>-->        
+                                                            <header class="slds-popover__header">
+                                                                <div class="slds-media slds-media_center slds-has-flexi-truncate ">
+                                                                    <!--Commented below div by LK on 2024-05-13 to fix 00045687-->
+                                                                    <!--<div class="slds-media__figure">
+                                                                        <span class="slds-icon_container slds-icon-utility-error">
+                                                                            <lightning-icon icon-name="utility:error" size="xx-small" variant="inverse" alternative-text="Error" title="Error"></lightning-icon>
+                                                                        </span>
+                                                                    </div>-->
+                                                                    <div class="slds-media__body">
+                                                                        <h2 class="slds-text-body_small" id="dialog-heading-id-2" title="It seems there's an issue in connecting with external services. Please contact your system admin.">It seems there's an issue in connecting with external services. Please contact your system admin.</h2>
+                                                                    </div>
+                                                                </div>
+                                                            </header>
+                                                        </section>
+                                                    </template>
+                                                </lightning-layout-item>
+                                            </lightning-layout>
+                                            <!--End Popover-->
+
+                                            <div class="slds-col slds-size_3-of-12">
+                                                <ul class="slds-list_horizontal slds-has-block-links_space"
+                                                    style="align-items:center;">
+                                                    <li>
+                                                        <span class="slds-page-header__title slds-text-align_left slds-m-left_xx-small fit-width-content" title="Fundraising Contacts">{fndRngCntTableLabel}</span>
+                                                    </li>
+                                                    <li style="padding-left: 4px;margin-top: -2px;"><!--Added by Tejaswini Info Icons 35037-->
+                                                        <!--Added "for_desk" CSS class by LK on 2024-07-26 to fix 00046925-->
+                                                        <lightning-helptext content="View fundraising contacts for this. Click contact to view or edit details. Click the plus icon to add fundraising contacts." class="help_txt for_desk"></lightning-helptext>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                            <div class="slds-col slds-size_6-of-12 slds-text-align_center">
+                                                <template if:true={cancelRemove}>
+                                                    <button class="slds-button slds-button_neutral"
+                                                            onclick={hidechecketr}
+                                                            title="Cancel">
+                                                        Cancel
+                                                    </button>
+                                                    <button class="slds-button slds-button_brand"
+                                                            onclick={handleFRCDelete}
+                                                            title="Remove">
+                                                        Remove
+                                                    </button>
+                                                </template>
+                                            </div>
+                                            <div class="slds-col slds-size_3-of-12 slds-text-align_right addMinus">
+                                                <template if:true={addDisableexter}>
+                                                    <!--Added by Tejaswini Bug Fix- 00035036-->
+                                                    <!--Added by Tejaswini Bug fix 20thFeb 00037919/00035336-->
+                                                    <lightning-icon icon-name="utility:new"
+                                                                    alternative-text="New Fundraising Contact"
+                                                                    onclick={handleFundraisingContactCreate}
+                                                                    title="New Fundraising Contact"
+                                                                    size="x-small"
+                                                                    class="for_desk cur_point slds-m-right_x-small">
+                                                    </lightning-icon>
+                                                </template>
+                                                <template if:true={showHideRemoveIcon}>
+                                                    <lightning-icon icon-name="utility:ban"
+                                                                    onclick={showCheck}
+                                                                    alternative-text="Remove Fundraising Contacts"
+                                                                    class="for_desk slds-m-left_xx-small cur_point"
+                                                                    title="Remove Fundraising Contacts"
+                                                                    size="x-small">
+                                                    </lightning-icon>
+											    </template>
+                                            </div>
+                                        </div>
+                                        <!--End Header-->
+                                        <!--Start-->
+                                        <div class="slds-box slds-box_x-small slds-p-around_none">
+                                            <div class="slds-grid slds-wrap">
+                                                <div class="slds-col slds-size_1-of-1 slds-text-align_left">
+                                                    <div class="cont-tab-height">
+                                                        
+                                                        <template if:true={showHideRemoveIcon}>
+                                                            <lightning-layout>
+                                                                <lightning-layout-item size="12" class="slds-is-relative">
+                                                                    <template if:true={isRgApiError}>
+                                                                        <!--Removed title="Error" by LK on 2024-05-13 to fix 00045688-->
+                                                                        <!--Added for_desk by LK on 2024-06-10 to fix 00046022-->
+                                                                        <lightning-icon icon-name="utility:warning" size="xx-small" alternative-text="Error" class="my-icon slds-is-absolute iconErrCls for_desk" onmouseleave={hideErrorMsgPopover} onmouseover={showErrorMsgPopover}></lightning-icon>
+                                                                    </template>
+
+                                                                    <c-navatar-inline-picklist-lwc key-field="Id"
+                                                                                                   data={conData}
+                                                                                                   class="for_desk tabcont contactDataTable shadowremovedatatable connectionTableEmailFdr"
+                                                                                                   columns={conCols}
+                                                                                                   onsave={handleSave}
+                                                                                                   hide-checkbox-column={chckBoxAdvisor}
+                                                                                                   draft-values={fldsItemValues}
+                                                                                                   onpicklistchanged={picklistChanged}
+                                                                                                   onrowaction={fetchActInfo}
+                                                                                                   onrowselection={handleFundraisingContactSelection}
+                                                                                                   oncellchange={handleCellChangeFdr}>
+                                                                    </c-navatar-inline-picklist-lwc>
+                                                                    <c-navatar-inline-picklist-lwc key-field="Id"
+                                                                                                   data={conData}
+                                                                                                   class="tabcont for_mob contactDataTable shadowremovedatatable connectionTableEmailFdr"
+                                                                                                   columns={conColsMob}
+                                                                                                   onsave={handleSave}
+                                                                                                   hide-checkbox-column="true"
+                                                                                                   draft-values={fldsItemValues}
+                                                                                                   onpicklistchanged={picklistChanged}
+                                                                                                   onrowaction={fetchActInfo}
+                                                                                                   resize-column-disabled
+                                                                                                   onrowselection={handleFundraisingContactSelection}
+                                                                                                   oncellchange={handleCellChange}>
+                                                                    </c-navatar-inline-picklist-lwc>
+                                                                </lightning-layout-item>
+                                                            </lightning-layout>
+                                                        </template>
+                                                        <template if:false={showHideRemoveIcon}>
+                                                            <lightning-layout>
+                                                                <lightning-layout-item size="12" class="slds-is-relative">
+                                                                    <template if:true={isRgApiError}>
+                                                                        <!--Removed title="Error" by LK on 2024-05-13 to fix 00045688-->
+                                                                        <!--Added for_desk by LK on 2024-06-10 to fix 00046022-->
+                                                                        <lightning-icon icon-name="utility:warning" size="xx-small" alternative-text="Error" class="my-icon slds-is-absolute iconErrCls for_desk" onmouseleave={HideErrorMsgPopover} onmouseover={showErrorMsgPopover}></lightning-icon>
+                                                                    </template>
+                                                                    <!-- UI-fix added new class pt-top when no data present styling-->
+                                                                    <!--Code modified by Anshika Ahuja/Tejaswini-->
+                                                                    <lightning-datatable class="for_desk contactDataTable shadowremovedatatable no-data-main-tab"
+                                                                                         hide-checkbox-column="true"
+                                                                                         key-field="con"
+                                                                                         data={noData}
+                                                                                         columns={conCols}
+                                                                                         onrowaction={fetchActInfo}>
+                                                                    </lightning-datatable>
+                                                                    <lightning-datatable class="tabcont for_mob contactDataTable shadowremovedatatable"
+                                                                                         hide-checkbox-column="true"
+                                                                                         key-field="con"
+                                                                                         data={noData}
+                                                                                         columns={conColsMob}
+                                                                                         onrowaction={fetchActInfo}
+                                                                                         resize-column-disabled
+                                                                                         onrowselection={handleFundraisingContactSelection}>
+                                                                    </lightning-datatable>
+                                                                    <div class="slds-p-around_x-small">
+                                                                        {errMsg}
+                                                                    </div>
+                                                                </lightning-layout-item>
+                                                            </lightning-layout>
+                                                        </template>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <template if:true={cancelRemove}>
+                                                <footer class="slds-modal__footer slds-align_absolute-center">
+                                                    <button class="slds-button slds-button_neutral"
+                                                            onclick={hidechecketr}
+                                                            title="Cancel">
+                                                        Cancel
+                                                    </button>
+                                                    <button class="slds-button slds-button_brand"
+                                                            onclick={handleFRCDelete}
+                                                            title="Remove">
+                                                        Remove
+                                                    </button>
+                                                </footer>
+                                            </template>
+                                        </div>
+                                        <!--End-->
+                                    </div>
+                                </div>
+                                <!--End-->
+                            </template>
+                            <!--FOR FUNDRAISING ACUITY : END-->
+                            <!-- added by Sudhanshu for Citadel CR 03-06-2024 -->
+                            <div class="slds-col slds-size_12-of-12"> 
+                                <!-- Bug 00047762 fixed by Sudhanshu on 11-10-2024 -->
+                                <template if:false={isMobile}>
+                                    <template for:each={flowList} for:item="obj">
+                                        <lightning-flow key={obj} flow-api-name={obj}></lightning-flow>
+                                    </template>
+                                </template>
+                            </div>
+
+                        
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--Clip : Start-->
+    <c-navatar-all-clips-view-modal-lwc>
+    </c-navatar-all-clips-view-modal-lwc>
+    <!--Clip : End-->
+    <!--Log a Call : Start-->
+    <template if:true={isCallLogOpen}>
+        <c-navatar-notes-modal-lwc redirect-id={recordId} object-name="Task" task-type = 'Call' is-redirect-to-record={isRedirectToRecord} onclosemodal={noteModalClosed} oncancelchanges={noteModalClosed}>
+        </c-navatar-notes-modal-lwc>    
+    </template>
+    <!--Log a Call : End-->
+    <!--Download Icon : Start-->
+    <c-navatar-acuity-ext-connection-add-popup-lwc>
+    </c-navatar-acuity-ext-connection-add-popup-lwc>
+    <!--Download Icon : End-->
+    
+    <template if:true={displayAddCmp}>
+        <!--//Added landing-page-obj-api-name by LK on 2024-03-09 to fix 00044270-->
+        <c-navatar-acuity-fundraising-popuplwc selected-id={recordId} obj-name={plusIconObjApiName} oncheckselected={checkSelected} switch-tab-value={dealSecTabValue} landing-page-obj-api-name={objectApiName}></c-navatar-acuity-fundraising-popuplwc>
+    </template>
+</template>

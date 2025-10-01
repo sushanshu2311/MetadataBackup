@@ -1,0 +1,63 @@
+.closeIcon{
+    --sds-c-icon-color-foreground-default: #EDEBE9;;
+    --sds-c-icon-color-background: #B1B1B1;;
+}
+.iconShape{
+    --lwc-borderRadiusCircle:30%;
+}
+/* a.noti{
+    color: #000;
+} */
+.noti:hover,
+.noti:focus{
+    color:rgb(1 118 211);
+}
+/*phase 2*/
+.noti_back_clr{
+    background: #0176d314;
+    border-bottom:1px solid #ddd;
+}
+.white{
+    background:#fff;
+}
+.dynamicCSS{
+    display:none;
+}
+.hght{
+    min-height: 100px !important;
+    position: relative;
+}
+.slds-modal{
+    z-index:101;
+}
+.slds-backdrop{
+    z-index: 100;
+    height: 95vh !important;
+}
+/* BUG FIX 00032172 jagriti*/
+
+.fit-width-content {
+    width: fit-content;
+    white-space: nowrap;
+}
+.cur_point{
+    cursor: pointer;
+}
+
+.customButtonWidth {
+    width: 90px;
+    display: block;
+    margin: auto 0 0 auto;
+}
+.spinnerClass{
+    position :relative;
+
+}
+.spinnerCSS{
+    position: absolute;
+}
+@media (max-width:600px){
+    .for_desk{
+        display:none;
+    }
+}

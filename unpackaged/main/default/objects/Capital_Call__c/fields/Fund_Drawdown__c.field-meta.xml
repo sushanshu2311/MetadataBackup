@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Fund_Drawdown__c</fullName>
+    <label>Fund Drawdown</label>
+    <referenceTo>Fund_Drawdown__c</referenceTo>
+    <relationshipLabel>Capital Calls</relationshipLabel>
+    <relationshipName>Capital_Calls</relationshipName>
+    <relationshipOrder>1</relationshipOrder>
+    <reparentableMasterDetail>false</reparentableMasterDetail>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>MasterDetail</type>
+    <writeRequiresMasterRead>false</writeRequiresMasterRead>
+</CustomField>

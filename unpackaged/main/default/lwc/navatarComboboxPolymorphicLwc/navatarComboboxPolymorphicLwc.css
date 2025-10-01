@@ -1,0 +1,67 @@
+:host {
+    --sds-c-textarea-sizing-min-height: 200px;
+}
+.topic2{
+    --sds-c-icon-color-foreground-default: #FFFFFF;
+    --sds-c-icon-color-background: #006DCC;
+}
+.pillClass{
+    --lwc-brandTextLink:#006DCC;
+    --slds-c-pill-line-height:20px;
+}
+.cutomFooter{
+    --slds-c-modal-footer-color-background:#F3F2F2;
+}
+.customBrandButton{
+    --slds-c-button-brand-color-background:#0070D2;
+}
+.accordation{
+    --slds-c-accordion-heading-text-color:var(--lwc-brandTextLink)
+}
+.cur_point{
+    cursor:pointer;
+}
+.mt_1{
+    margin-top: -3px;
+}
+.dropLists{
+    display:flex;
+    /*gap:5px; change css by raju on dated 17-10-2024 ; 47979*/    
+    gap:10px;
+    align-items: center;
+}
+.dropLists:hover{
+    background: #ecf4fe;
+    cursor: pointer;
+}
+.drop_ul{
+    box-shadow: 0px 2px 2px rgb(0 0 0 / 10%);
+    border:1px solid #ddd;
+    border-radius:4px;
+}
+lightning-icon{
+    height: fit-content;
+}
+.for_mob{
+    display:none;
+}
+@media (max-width: 600px) {	
+    .for_mob{
+        display:block;
+    }
+    .for_desk{
+        display: none;
+    }
+}
+/*dropdown list by raju on 17-10-2024 RTA ; 47979*/
+.clsFontStyle{
+    /* font-size: 0.8125rem !important; */
+    font-size: 0.8rem !important;
+    line-height: 1.5 !important;
+    color: rgb(24, 24, 24) !important;
+}
+
+.clsFontSize{
+    /* font-size: 0.8125rem !important; */
+    font-size: 11.6px !important;
+}

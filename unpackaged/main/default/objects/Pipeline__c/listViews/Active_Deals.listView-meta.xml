@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ListView xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Active_Deals</fullName>
+    <columns>NAME</columns>
+    <columns>Stage__c</columns>
+    <columns>forDealQualityScore__c</columns>
+    <columns>Revenue__c</columns>
+    <columns>EBITDA__c</columns>
+    <columns>Source_Contact__c</columns>
+    <columns>Source_Company__c</columns>
+    <columns>Pipeline_Comments__c</columns>
+    <filterScope>Everything</filterScope>
+    <filters>
+        <field>Stage__c</field>
+        <operation>notEqual</operation>
+        <value>Closed,Declined/Dead,On Hold</value>
+    </filters>
+    <label>Active Deals</label>
+</ListView>

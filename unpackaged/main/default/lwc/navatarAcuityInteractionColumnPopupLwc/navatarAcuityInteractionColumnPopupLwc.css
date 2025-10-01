@@ -1,0 +1,16 @@
+.small_modal .slds-modal__container{
+    max-width:20rem !important;
+}
+.gap_10{
+    gap:10px;
+}
+.no_underline{
+    text-decoration: none;
+    font-size:14px;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    max-width: 228px;
+    display: block;
+    overflow: hidden;
+
+}

@@ -1,0 +1,37 @@
+<template>
+    <lightning-card>
+        <span slot="title">Tasks</span>
+        <div slot="actions" class="slds-grid slds-grid_vertical-align-center">
+            <lightning-badge label={openLabel} class="slds-m-right_x-small"></lightning-badge>
+            <lightning-button-icon
+                icon-name="utility:add"
+                variant="border-filled"
+                alternative-text="Add task"
+                title="Add task"
+                onclick={handleAdd}>
+            </lightning-button-icon>
+        </div>
+
+        <!-- Filter + search row -->
+        <div class="slds-grid slds-grid_vertical-align-center slds-wrap slds-p-horizontal_medium slds-p-vertical_x-small slds-border_bottom">
+            <lightning-button label="All"  variant={fAll}  data-filter="all"  onclick={handleFilter} class="slds-m-right_xx-small"></lightning-button>
+            <lightning-button label="Mine" variant={fMine} data-filter="mine" onclick={handleFilter} class="slds-m-right_small"></lightning-button>
+            <lightning-input
+                type="search"
+                variant="label-hidden"
+                placeholder="Search tasks…"
+                label="Search tasks"
+                class="slds-col"
+                onchange={handleSearch}>
+            </lightning-input>
+        </div>
+
+        <lightning-datatable
+            key-field="id"
+            data={filteredTasks}
+            columns={columns}
+            selected-rows={completedIds}
+            onrowselection={handleRowSelection}>
+        </lightning-datatable>
+    </lightning-card>
+</template>

@@ -1,0 +1,54 @@
+<template>
+    <lightning-card>
+        <span slot="title">Activity</span>
+        <!-- Filter + search row (side by side, single line) -->
+        <lightning-layout horizontal-align="spread" vertical-align="center"
+            class="slds-p-horizontal_medium slds-p-vertical_x-small slds-border_bottom slds-theme_shade">
+            <lightning-layout-item>
+                <lightning-button label="All"                variant={fAll}            data-filter="all"            onclick={handleFilter} class="slds-m-right_xx-small"></lightning-button>
+                <lightning-button label="Emails"             variant={fEmail}          data-filter="email"          onclick={handleFilter} class="slds-m-right_xx-small"></lightning-button>
+                <lightning-button label="Meetings"           variant={fMeeting}        data-filter="meeting"        onclick={handleFilter} class="slds-m-right_xx-small"></lightning-button>
+                <lightning-button label="Insights"           variant={fInsights}       data-filter="insights"       onclick={handleFilter} class="slds-m-right_xx-small"></lightning-button>
+                <lightning-button label="News"               variant={fNews}           data-filter="news"           onclick={handleFilter} class="slds-m-right_xx-small"></lightning-button>
+                <lightning-button label="AI Recommendations" variant={fRecommendation} data-filter="recommendation" onclick={handleFilter}></lightning-button>
+            </lightning-layout-item>
+            <lightning-layout-item>
+                <lightning-input
+                    type="search"
+                    variant="label-hidden"
+                    placeholder="Search activity..."
+                    label="Search activity"
+                    onchange={handleSearch}>
+                </lightning-input>
+            </lightning-layout-item>
+        </lightning-layout>
+
+        <!-- Feed list (lightning-layout rows; click a row to expand inline) -->
+        <ul class="slds-has-dividers_bottom-space">
+            <template for:each={decoratedFeed} for:item="item">
+                <li key={item.id} class="slds-item">
+                    <lightning-layout vertical-align="center"
+                        class="slds-p-horizontal_medium slds-p-vertical_x-small"
+                        data-id={item.id} role="button" tabindex="0"
+                        onclick={toggleItem} onkeydown={handleKey}>
+                        <lightning-layout-item flexibility="grow" class="slds-has-flexi-truncate">
+                            <p class="slds-text-body_regular">{item.title}</p>
+                            <p class="slds-m-top_xx-small">
+                                <lightning-badge label={item.badge}></lightning-badge>
+                                <span class="slds-text-body_small slds-text-color_weak slds-m-left_x-small">{item.meta}</span>
+                            </p>
+                        </lightning-layout-item>
+                        <lightning-layout-item class="slds-m-left_small">
+                            <lightning-icon icon-name={item.iconName} size="x-small" alternative-text="Toggle detail"></lightning-icon>
+                        </lightning-layout-item>
+                    </lightning-layout>
+                    <template if:true={item.isOpen}>
+                        <div class="slds-p-horizontal_medium slds-p-bottom_medium slds-text-longform">
+                            <lightning-formatted-rich-text value={item.body}></lightning-formatted-rich-text>
+                        </div>
+                    </template>
+                </li>
+            </template>
+        </ul>
+    </lightning-card>
+</template>

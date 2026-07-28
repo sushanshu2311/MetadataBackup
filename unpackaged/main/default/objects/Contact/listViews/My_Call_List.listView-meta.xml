@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ListView xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>My_Call_List</fullName>
+    <columns>FULL_NAME</columns>
+    <columns>ACCOUNT.NAME</columns>
+    <columns>CONTACT.TITLE</columns>
+    <columns>CONTACT.PHONE1</columns>
+    <columns>CONTACT.EMAIL</columns>
+    <columns>navpeII__Last_Touch_Point__c</columns>
+    <filterScope>Everything</filterScope>
+    <filters>
+        <field>Touchpoint_Overdue__c</field>
+        <operation>equals</operation>
+        <value>1</value>
+    </filters>
+    <label>My Call List</label>
+</ListView>

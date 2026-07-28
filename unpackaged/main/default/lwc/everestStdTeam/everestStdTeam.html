@@ -1,0 +1,70 @@
+<template>
+    <lightning-card>
+        <!-- Toolbar: filters left, search right – single row -->
+        <div class="slds-grid slds-grid_vertical-align-center slds-p-horizontal_medium slds-p-vertical_x-small slds-border_bottom">
+            <div class="slds-col slds-no-flex">
+                <lightning-button-group>
+                    <lightning-button label="All"            variant={fAll}      data-filter="all"      onclick={handleFilter}></lightning-button>
+                    <lightning-button label="External"       variant={fExternal} data-filter="external" onclick={handleFilter}></lightning-button>
+                    <lightning-button label="Internal"       variant={fInternal} data-filter="internal" onclick={handleFilter}></lightning-button>
+                    <lightning-button label="AI Recommended" variant={fAi}       data-filter="ai"       onclick={handleFilter}></lightning-button>
+                </lightning-button-group>
+            </div>
+            <div class="slds-col_bump-left" style="max-width:260px;">
+                <lightning-input
+                    type="search"
+                    variant="label-hidden"
+                    placeholder="Search people..."
+                    label="Search people"
+                    onchange={handleSearch}>
+                </lightning-input>
+            </div>
+        </div>
+
+        <c-everest-team-datatable
+            key-field="id"
+            data={filteredPeople}
+            columns={columns}
+            onrowaction={handleRowAction}
+            hide-checkbox-column
+            wrap-text-max-lines="2">
+        </c-everest-team-datatable>
+
+        <!-- Detail modal -->
+        <template if:true={selectedPerson}>
+            <section role="dialog" tabindex="-1" aria-modal="true" aria-labelledby="ppl-modal-heading"
+                class="slds-modal slds-fade-in-open">
+                <div class="slds-modal__container">
+                    <header class="slds-modal__header">
+                        <lightning-button-icon
+                            class="slds-modal__close"
+                            icon-name="utility:close"
+                            variant="bare-inverse"
+                            size="large"
+                            alternative-text="Close"
+                            onclick={handleCloseDetail}>
+                        </lightning-button-icon>
+                        <h2 id="ppl-modal-heading" class="slds-modal__title">{selectedPerson.name}</h2>
+                    </header>
+                    <div class="slds-modal__content slds-p-around_medium">
+                        <p class="slds-text-body_small slds-text-color_weak slds-m-bottom_small">{selectedPerson.role} · {selectedPerson.org}</p>
+                        <p class="slds-m-bottom_small">
+                            <lightning-badge label={selectedPerson.group}></lightning-badge>
+                            <span class="slds-text-body_small slds-m-left_x-small">{selectedPerson.contact}</span>
+                        </p>
+                        <p class="slds-text-title_caps slds-text-color_weak slds-m-bottom_xx-small">How they&apos;re involved</p>
+                        <p class="slds-text-body_small slds-text-longform slds-m-bottom_medium">{selectedPerson.how}</p>
+                        <p class="slds-text-title_caps slds-text-color_weak slds-m-bottom_xx-small">Related deals</p>
+                        <p class="slds-text-body_small slds-m-bottom_medium">{selectedPerson.deals}</p>
+                        <p class="slds-text-title_caps slds-text-color_weak slds-m-bottom_xx-small">Documents</p>
+                        <p class="slds-text-body_small">{selectedPerson.docs}</p>
+                    </div>
+                    <footer class="slds-modal__footer">
+                        <lightning-button label="Close" onclick={handleCloseDetail}></lightning-button>
+                    </footer>
+                </div>
+            </section>
+            <div class="slds-backdrop slds-backdrop_open"></div>
+        </template>
+    </lightning-card>
+</template>

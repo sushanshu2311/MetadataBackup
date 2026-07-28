@@ -1,0 +1,35 @@
+{
+  "required" : [ "dealId", "formattedText", "selectionMode" ],
+  "unevaluatedProperties" : false,
+  "properties" : {
+    "dealId" : {
+      "title" : "dealId",
+      "description" : "User will provide the deal name call action Identify Record by Name to get the deal id",
+      "lightning:type" : "lightning__textType",
+      "lightning:isPII" : false,
+      "copilotAction:isUserInput" : false
+    },
+    "formattedText" : {
+      "title" : "formattedText",
+      "description" : "Response from previous Prompt with related Deal details whic is stored in context variable Similar Deal Info",
+      "lightning:type" : "lightning__textType",
+      "lightning:isPII" : false,
+      "copilotAction:isUserInput" : false
+    },
+    "selectedIndexes" : {
+      "title" : "selectedIndexes",
+      "description" : "Comma-separated index numbers (e.g. \"1,3\")",
+      "lightning:type" : "lightning__textType",
+      "lightning:isPII" : false,
+      "copilotAction:isUserInput" : false
+    },
+    "selectionMode" : {
+      "title" : "selectionMode",
+      "description" : "Either ALL or INDEX",
+      "lightning:type" : "lightning__textType",
+      "lightning:isPII" : false,
+      "copilotAction:isUserInput" : false
+    }
+  },
+  "lightning:type" : "lightning__objectType"
+}

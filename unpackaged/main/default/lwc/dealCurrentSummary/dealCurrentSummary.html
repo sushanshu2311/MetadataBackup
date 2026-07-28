@@ -1,0 +1,56 @@
+<template>
+    <lightning-card title="Current Summary" class="slds-m-bottom_medium">
+        <lightning-button-group slot="actions">
+            <lightning-button label="AI"     variant={pillAiVariant}     data-mode="ai"     onclick={handlePillClick}></lightning-button>
+            <lightning-button label="Manual" variant={pillManualVariant} data-mode="manual" onclick={handlePillClick}></lightning-button>
+        </lightning-button-group>
+
+        <div class="slds-p-horizontal_medium slds-p-bottom_medium">
+
+            <!-- View mode -->
+            <template if:false={isEditing}>
+                <template if:true={hasSummary}>
+                    <lightning-layout vertical-align="start" class="slds-m-bottom_x-small">
+                        <lightning-layout-item flexibility="auto">
+                            <template if:true={isExpanded}>
+                                <lightning-formatted-rich-text value={summary}></lightning-formatted-rich-text>
+                            </template>
+                        </lightning-layout-item>
+                        <lightning-layout-item class="slds-no-flex slds-m-left_x-small">
+                            <lightning-button label="Edit" variant="base" onclick={handleEdit}></lightning-button>
+                        </lightning-layout-item>
+                    </lightning-layout>
+                    <lightning-button label={expandLabel} variant="base" onclick={toggleExpand}></lightning-button>
+                </template>
+                <template if:false={hasSummary}>
+                    <lightning-layout vertical-align="center">
+                        <lightning-layout-item flexibility="auto">
+                            <p class="slds-text-body_small slds-text-color_weak">No summary yet. Use the edit button to add one.</p>
+                        </lightning-layout-item>
+                        <lightning-layout-item class="slds-no-flex slds-m-left_x-small">
+                            <lightning-button label="Edit" variant="base" onclick={handleEdit}></lightning-button>
+                        </lightning-layout-item>
+                    </lightning-layout>
+                </template>
+            </template>
+
+            <!-- Edit mode -->
+            <template if:true={isEditing}>
+                <lightning-input-rich-text
+                    value={draftSummary}
+                    onchange={handleChange}
+                    formats={formats}>
+                </lightning-input-rich-text>
+                <lightning-layout horizontal-align="end" class="slds-m-top_small">
+                    <lightning-layout-item class="slds-m-right_x-small">
+                        <lightning-button label="Cancel" onclick={handleCancel}></lightning-button>
+                    </lightning-layout-item>
+                    <lightning-layout-item>
+                        <lightning-button label="Save" variant="brand" onclick={handleSave} disabled={isSaving}></lightning-button>
+                    </lightning-layout-item>
+                </lightning-layout>
+            </template>
+
+        </div>
+    </lightning-card>
+</template>

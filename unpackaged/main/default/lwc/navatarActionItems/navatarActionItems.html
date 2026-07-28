@@ -1,0 +1,61 @@
+<template>
+    <lightning-card title="Tasks">
+
+        <span slot="actions">
+            <lightning-button label="+ Add" variant="neutral"></lightning-button>
+        </span>
+
+        <!-- Filter bar: Mine / All | count badge | search -->
+        <div class="slds-p-horizontal_medium slds-p-vertical_small slds-border_bottom">
+            <lightning-layout vertical-align="center">
+                <lightning-layout-item flexibility="no-flex" class="slds-m-right_x-small">
+                    <lightning-button-group>
+                        <lightning-button label="Mine" variant={mineVariant} onclick={handleMine}></lightning-button>
+                        <lightning-button label="All"  variant={allVariant}  onclick={handleAll}></lightning-button>
+                    </lightning-button-group>
+                </lightning-layout-item>
+                <lightning-layout-item flexibility="no-flex" class="slds-m-right_x-small">
+                    <lightning-badge label={openLabel}></lightning-badge>
+                </lightning-layout-item>
+                <lightning-layout-item flexibility="auto">
+                    <lightning-input
+                        type="search"
+                        label="Search"
+                        variant="label-hidden"
+                        placeholder="Search tasks..."
+                        onchange={handleSearch}>
+                    </lightning-input>
+                </lightning-layout-item>
+            </lightning-layout>
+        </div>
+
+        <!-- Open tasks datatable — Task column has no initialWidth so it fills remaining space -->
+        <template lwc:if={hasOpenTasks}>
+            <lightning-datatable
+                key-field="id"
+                data={openTasksData}
+                columns={openColumns}
+                show-checkbox-column
+                onrowselection={handleOpenRowSelection}>
+            </lightning-datatable>
+        </template>
+
+        <!-- Completed tasks -->
+        <template lwc:if={hasCompletedTasks}>
+            <div class="slds-p-horizontal_medium slds-p-top_small slds-border_top slds-m-top_x-small">
+                <p class="slds-text-body_small slds-text-color_weak slds-m-bottom_x-small">
+                    Completed ({completedCount})
+                </p>
+                <lightning-datatable
+                    key-field="id"
+                    data={doneTasksData}
+                    columns={doneColumns}
+                    show-checkbox-column
+                    selected-rows={completedRowIds}
+                    onrowselection={handleCompletedRowSelection}>
+                </lightning-datatable>
+            </div>
+        </template>
+
+    </lightning-card>
+</template>

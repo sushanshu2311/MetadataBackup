@@ -1,0 +1,30 @@
+<template>
+    <div class="overview-tab">
+        <!-- Current Summary Card -->
+        <div class="summary-card">
+            <div class="summary-card__header">
+                <span class="summary-card__label">Current Summary</span>
+                <span class="summary-card__ai-badge">AI</span>
+            </div>
+            <div class="summary-card__body">
+                <button class="summary-edit-btn" onclick={handleEditSummary}>Edit</button>
+                <p class="summary-card__text">
+                    <template for:each={summarySegments} for:item="seg">
+                        <span key={seg.key} class={seg.cssClass}>{seg.text}</span>
+                    </template>
+                </p>
+            </div>
+        </div>
+
+        <!-- Two-column layout -->
+        <!-- <div class="overview-cols">
+            <div class="overview-col-left">
+                <c-custom-activity-feed-card onfeeditemselected={handleFeedItemSelected}></c-custom-activity-feed-card>
+            </div>
+            <div class="overview-col-right">
+                <c-custom-key-metrics-card></c-custom-key-metrics-card>
+                <c-custom-deal-tasks-card open-count={openCount}></c-custom-deal-tasks-card>
+            </div>
+        </div> -->
+    </div>
+</template>

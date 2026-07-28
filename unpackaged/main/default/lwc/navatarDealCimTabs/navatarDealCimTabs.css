@@ -1,0 +1,31 @@
+:host {
+    --navy: #0B2D5F;
+    --t1: #181818;
+    --t2: #706E6B;
+    --bd: #DDDBDA;
+    display: block;
+    font-family: 'Salesforce Sans', Arial, sans-serif;
+}
+.tb {
+    display: flex;
+    border-bottom: 1px solid var(--bd);
+    padding: 0 4px;
+    background: #fff;
+    overflow-x: auto;
+    overflow-y: hidden;
+    scrollbar-width: none;
+}
+.tb::-webkit-scrollbar { display: none; }
+.mt {
+    padding: 11px 14px;
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--t2);
+    cursor: pointer;
+    white-space: nowrap;
+    border-bottom: 2px solid transparent;
+    margin-bottom: -1px;
+    transition: color 0.15s;
+}
+.mt:hover { color: var(--t1); }
+.mt.active { color: var(--navy); border-bottom-color: var(--navy); }

@@ -1,0 +1,44 @@
+<template>
+    <div id="comp">
+        <div class="ch">
+            <div class="cha">
+                <span class="p">AI</span>
+                <input class="srch" placeholder="Search deals..." oninput={handleSearch} />
+            </div>
+        </div>
+        <table class="int-tbl">
+            <thead>
+                <tr>
+                    <th>Deal</th>
+                    <th>Sector</th>
+                    <th>Revenue</th>
+                    <th>Multiple</th>
+                    <th>Outcome</th>
+                    <th>Match</th>
+                </tr>
+            </thead>
+            <tbody>
+                <template for:each={rows} for:item="d">
+                    <tr key={d.key} class={d.rowClass} data-key={d.key} onclick={handleRowClick}>
+                        <td>
+                            <a href="#" class="rec-link" onclick={stopClick}>{d.name}</a>
+                            <div class="sub-sector">{d.sector}</div>
+                        </td>
+                        <td class="col-muted">{d.subSector}</td>
+                        <td class="col-val">{d.revenue}</td>
+                        <td class="col-val">{d.multiple}</td>
+                        <td><span class="p">{d.outcome}</span></td>
+                        <td class="col-match">{d.match}</td>
+                    </tr>
+                    <tr key={d.expKey} class="exp-row" style={d.expRowStyle}>
+                        <td colspan="6">
+                            <template if:true={d.isOpen}>
+                                <lightning-formatted-rich-text value={d.detail} class="exp-inner"></lightning-formatted-rich-text>
+                            </template>
+                        </td>
+                    </tr>
+                </template>
+            </tbody>
+        </table>
+    </div>
+</template>

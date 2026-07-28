@@ -1,0 +1,314 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObjectTranslation xmlns="http://soap.sforce.com/2006/04/metadata">
+    <caseValues>
+        <plural>false</plural>
+        <value>Firm</value>
+    </caseValues>
+    <caseValues>
+        <plural>true</plural>
+        <value>Firms</value>
+    </caseValues>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <layouts>
+        <layout>Advisor</layout>
+        <sections>
+            <label><!-- Advisor Information --></label>
+            <section>Advisor Information</section>
+        </sections>
+        <sections>
+            <label><!-- Please do not remove this section. --></label>
+            <section>Please do not remove this section.</section>
+        </sections>
+    </layouts>
+    <layouts>
+        <layout>Company</layout>
+        <sections>
+            <label><!-- Company Information --></label>
+            <section>Company Information</section>
+        </sections>
+        <sections>
+            <label><!-- Please do not remove this section. --></label>
+            <section>Please do not remove this section.</section>
+        </sections>
+    </layouts>
+    <layouts>
+        <layout>Individual Investor</layout>
+        <sections>
+            <label><!-- Assets Allocation --></label>
+            <section>Assets Allocation</section>
+        </sections>
+        <sections>
+            <label><!-- Individual Investor Information --></label>
+            <section>Individual Investor Information</section>
+        </sections>
+        <sections>
+            <label><!-- Investment Preferences --></label>
+            <section>Investment Preferences</section>
+        </sections>
+        <sections>
+            <label><!-- Please do not remove this section --></label>
+            <section>Please do not remove this section</section>
+        </sections>
+    </layouts>
+    <layouts>
+        <layout>Institution</layout>
+        <sections>
+            <label><!-- Assets Allocation --></label>
+            <section>Assets Allocation</section>
+        </sections>
+        <sections>
+            <label><!-- Institution Information --></label>
+            <section>Institution Information</section>
+        </sections>
+        <sections>
+            <label><!-- Investment Preferences --></label>
+            <section>Investment Preferences</section>
+        </sections>
+        <sections>
+            <label><!-- New Fields --></label>
+            <section>New Fields</section>
+        </sections>
+        <sections>
+            <label><!-- Please do not remove this section. --></label>
+            <section>Please do not remove this section.</section>
+        </sections>
+    </layouts>
+    <layouts>
+        <layout>Intermediary</layout>
+        <sections>
+            <label><!-- Fields --></label>
+            <section>Fields</section>
+        </sections>
+        <sections>
+            <label><!-- Intermediary Information --></label>
+            <section>Intermediary Information</section>
+        </sections>
+        <sections>
+            <label><!-- Please do not remove this section --></label>
+            <section>Please do not remove this section</section>
+        </sections>
+    </layouts>
+    <layouts>
+        <layout>Lender</layout>
+        <sections>
+            <label><!-- Lender Information --></label>
+            <section>Lender Information</section>
+        </sections>
+        <sections>
+            <label><!-- Please do not remove this section. --></label>
+            <section>Please do not remove this section.</section>
+        </sections>
+    </layouts>
+    <layouts>
+        <layout>Limited Partner</layout>
+        <sections>
+            <label><!-- Bank Information --></label>
+            <section>Bank Information</section>
+        </sections>
+        <sections>
+            <label><!-- Limited Partner Information --></label>
+            <section>Limited Partner Information</section>
+        </sections>
+        <sections>
+            <label><!-- Please do not remove this section. --></label>
+            <section>Please do not remove this section.</section>
+        </sections>
+    </layouts>
+    <layouts>
+        <layout>Portfolio Company</layout>
+        <sections>
+            <label><!-- Please do not remove this section. --></label>
+            <section>Please do not remove this section.</section>
+        </sections>
+        <sections>
+            <label><!-- Portfolio Company Information --></label>
+            <section>Portfolio Company Information</section>
+        </sections>
+    </layouts>
+    <layouts>
+        <layout>Private Equity</layout>
+        <sections>
+            <label><!-- Firm Information --></label>
+            <section>Firm Information</section>
+        </sections>
+    </layouts>
+    <quickActions>
+        <label><!-- Add To Theme --></label>
+        <name>Add_To_Theme</name>
+    </quickActions>
+    <quickActions>
+        <label><!-- Create Task --></label>
+        <name>Create_Task</name>
+    </quickActions>
+    <quickActions>
+        <label><!-- Export --></label>
+        <name>Export</name>
+    </quickActions>
+    <quickActions>
+        <label><!-- Log a Call --></label>
+        <name>Log_a_Call</name>
+    </quickActions>
+    <quickActions>
+        <label><!-- New Advisor --></label>
+        <name>New_Advisor</name>
+    </quickActions>
+    <quickActions>
+        <label><!-- New Affiliation --></label>
+        <name>New_Affiliation</name>
+    </quickActions>
+    <quickActions>
+        <label><!-- New Client --></label>
+        <name>New_Client</name>
+    </quickActions>
+    <quickActions>
+        <label><!-- New Commitment --></label>
+        <name>New_Commitment</name>
+    </quickActions>
+    <quickActions>
+        <label><!-- New Contact --></label>
+        <name>New_Contact</name>
+    </quickActions>
+    <quickActions>
+        <label><!-- New Deal --></label>
+        <name>New_Deal</name>
+    </quickActions>
+    <quickActions>
+        <label><!-- New Financing --></label>
+        <name>New_Financing</name>
+    </quickActions>
+    <quickActions>
+        <label><!-- New Fundraising --></label>
+        <name>New_Fundraising</name>
+    </quickActions>
+    <quickActions>
+        <label><!-- New Investment --></label>
+        <name>New_Investment</name>
+    </quickActions>
+    <quickActions>
+        <label><!-- New Sourced Deal --></label>
+        <name>New_Sourced_Deal</name>
+    </quickActions>
+    <recordTypes>
+        <description><!-- An Advisor is a consulting or advisory firm that supports deal processes but is not an Intermediary. --></description>
+        <label><!-- Advisor --></label>
+        <name>Advisor</name>
+    </recordTypes>
+    <recordTypes>
+        <description><!-- A Company is an operating asset that is a potential acquisition / investment target. --></description>
+        <label><!-- Company --></label>
+        <name>Company</name>
+    </recordTypes>
+    <recordTypes>
+        <description><!-- An Individual Investor is a high net worth existing or prospective investor. --></description>
+        <label><!-- Individual Investor --></label>
+        <name>Individual_Investor</name>
+    </recordTypes>
+    <recordTypes>
+        <description><!-- An Institution is an existing or prospective investor. --></description>
+        <label><!-- Institution --></label>
+        <name>Institution</name>
+    </recordTypes>
+    <recordTypes>
+        <description><!-- An Intermediary is a financial services firm that negotiates sell-side or buy-side transactions (e.g. investment banks, brokerages, advisors etc.) --></description>
+        <label><!-- Intermediary --></label>
+        <name>Intermediary</name>
+    </recordTypes>
+    <recordTypes>
+        <description><!-- A Lender is an investment firm specializing in lending or debt investments (e.g., mezzanine or distressed debt funds). --></description>
+        <label><!-- Lender --></label>
+        <name>Lender</name>
+    </recordTypes>
+    <recordTypes>
+        <description><!-- A Limited Partner is the legal entity an Institution uses to invest in your funds. --></description>
+        <label><!-- Limited Partner --></label>
+        <name>LimitedPartner</name>
+    </recordTypes>
+    <recordTypes>
+        <description><!-- A Portfolio Company is an operating asset that is currently or historically part of your firm’s portfolio. --></description>
+        <label><!-- Portfolio Company --></label>
+        <name>Portfolio_Company</name>
+    </recordTypes>
+    <recordTypes>
+        <description><!-- A Private Equity firm that is a potential target investment or a source for credit deals. --></description>
+        <label><!-- Private Equity --></label>
+        <name>Private_Equity</name>
+    </recordTypes>
+    <startsWith>Vowel</startsWith>
+    <webLinks>
+        <label><!-- AltavistaNews --></label>
+        <name>AltavistaNews</name>
+    </webLinks>
+    <webLinks>
+        <label><!-- GoogleMaps --></label>
+        <name>GoogleMaps</name>
+    </webLinks>
+    <webLinks>
+        <label><!-- GoogleNews --></label>
+        <name>GoogleNews</name>
+    </webLinks>
+    <webLinks>
+        <label><!-- GoogleSearch --></label>
+        <name>GoogleSearch</name>
+    </webLinks>
+    <webLinks>
+        <label><!-- HooversProfile --></label>
+        <name>HooversProfile</name>
+    </webLinks>
+    <webLinks>
+        <label><!-- YahooMaps --></label>
+        <name>YahooMaps</name>
+    </webLinks>
+</CustomObjectTranslation>

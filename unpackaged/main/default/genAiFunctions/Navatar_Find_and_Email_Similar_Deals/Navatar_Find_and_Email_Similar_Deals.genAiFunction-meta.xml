@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<GenAiFunction xmlns="http://soap.sforce.com/2006/04/metadata">
+    <description>This action is invoked only after Find_Similar_Deals, when the user confirms they want the full details emailed. Identify similar deals using deal criteria and send the results to the user by email.</description>
+    <developerName>Navatar_Find_and_Email_Similar_Deals</developerName>
+    <invocationTarget>NavatarFindSimilarDealsSendEmail</invocationTarget>
+    <invocationTargetType>apex</invocationTargetType>
+    <isConfirmationRequired>false</isConfirmationRequired>
+    <isIncludeInProgressIndicator>false</isIncludeInProgressIndicator>
+    <localDeveloperName>Navatar_Find_and_Email_Similar_Deals</localDeveloperName>
+    <masterLabel>Navatar Find and Email Similar Deals</masterLabel>
+</GenAiFunction>

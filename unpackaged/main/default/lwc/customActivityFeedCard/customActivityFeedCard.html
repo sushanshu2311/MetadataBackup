@@ -1,0 +1,58 @@
+<template>
+    <div class="feed-card">
+        <div class="feed-card__header">
+            <span class="feed-card__title">Activity</span>
+        </div>
+
+        <!-- Filters -->
+        <div class="feed-filters">
+            <div class="filter-pills">
+                <template for:each={filterOptions} for:item="f">
+                    <button key={f.value}
+                        class={f.cssClass}
+                        data-filter={f.value}
+                        onclick={handleFilterClick}>{f.label}</button>
+                </template>
+            </div>
+            <input
+                class="feed-search"
+                type="text"
+                placeholder="Search activity..."
+                value={searchText}
+                oninput={handleSearch}/>
+        </div>
+
+        <!-- Feed Items -->
+        <div class="feed-list">
+            <template for:each={filteredItems} for:item="item">
+                <div key={item.id} class={item.itemClass} onclick={handleItemClick} data-id={item.id}>
+                    <div class="feed-item__content">
+                        <div class="feed-item__title">{item.title}</div>
+                        <div class="feed-item__meta">
+                            <span class="feed-item__badge">{item.badge}</span>
+                            <span class="feed-item__datetime">{item.dateSource}</span>
+                        </div>
+                    </div>
+                    <template lwc:if={item.isExpanded}>
+                        <div class="feed-item__body">
+                            <div class="feed-item__body-box">
+                                <p class="feed-item__body-text">
+                                    <template for:each={item.bodySegments} for:item="bseg">
+                                        <span key={bseg.key} class={bseg.cssClass}>{bseg.text}</span>
+                                    </template>
+                                </p>
+                            </div>
+                        </div>
+                    </template>
+                </div>
+            </template>
+        </div>
+
+        <!-- Show more -->
+        <template lwc:if={showMoreVisible}>
+            <button class="feed-show-more" onclick={handleShowMore}>
+                Show {hiddenCount} more items ↓
+            </button>
+        </template>
+    </div>
+</template>

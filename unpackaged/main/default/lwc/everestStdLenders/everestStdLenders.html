@@ -1,0 +1,27 @@
+<template>
+    <lightning-card>
+        <!-- Filter + search row (side by side, single line) -->
+        <div class="slds-grid slds-grid_vertical-align-center slds-grid_align-spread slds-p-horizontal_medium slds-p-vertical_x-small slds-border_bottom">
+            <lightning-button-group>
+                <lightning-button label="All"            variant={fAll}    data-filter="all"    onclick={handleFilter}></lightning-button>
+                <lightning-button label="AI Recommended" variant={fAi}     data-filter="ai"     onclick={handleFilter}></lightning-button>
+                <lightning-button label="Active"         variant={fActive} data-filter="active" onclick={handleFilter}></lightning-button>
+            </lightning-button-group>
+            <lightning-input
+                type="search"
+                variant="label-hidden"
+                placeholder="Search lenders..."
+                label="Search lenders"
+                class="slds-m-left_small"
+                onchange={handleSearch}>
+            </lightning-input>
+        </div>
+
+        <lightning-datatable
+            key-field="id"
+            data={filteredLenders}
+            columns={columns}
+            hide-checkbox-column>
+        </lightning-datatable>
+    </lightning-card>
+</template>

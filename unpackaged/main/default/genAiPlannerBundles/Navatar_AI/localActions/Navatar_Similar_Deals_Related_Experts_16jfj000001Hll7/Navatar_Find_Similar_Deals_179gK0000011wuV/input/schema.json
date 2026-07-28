@@ -1,0 +1,14 @@
+{
+  "required" : [ "pipelineId" ],
+  "unevaluatedProperties" : false,
+  "properties" : {
+    "pipelineId" : {
+      "title" : "pipelineId",
+      "description" : "User provides a record name. Use Identify Record by Name to retrieve the corresponding pipelineID/dealid",
+      "lightning:type" : "lightning__recordIdType",
+      "lightning:isPII" : false,
+      "copilotAction:isUserInput" : false
+    }
+  },
+  "lightning:type" : "lightning__objectType"
+}

@@ -1,0 +1,14 @@
+/* Edit affordance: hidden, revealed on hover/focus of the summary body (matches v10).
+   Hooks onto the SLDS class slds-is-relative + the lightning-button element — no custom class names. */
+.slds-is-relative > lightning-button {
+    position: absolute;
+    top: 0.5rem;
+    right: 0.75rem;
+    opacity: 0;
+    transition: opacity 0.2s ease;
+}
+
+.slds-is-relative:hover > lightning-button,
+.slds-is-relative:focus-within > lightning-button {
+    opacity: 1;
+}

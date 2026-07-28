@@ -1,0 +1,46 @@
+<template>
+    <div class="lenders-tab">
+        <!-- Filters -->
+        <div class="tab-filters">
+            <div class="filter-pills">
+                <template for:each={filterOptions} for:item="f">
+                    <button key={f.value} class={f.cssClass} data-filter={f.value} onclick={handleFilterClick}>{f.label}</button>
+                </template>
+            </div>
+            <input class="tab-search" type="text" placeholder="Search lenders..." value={searchText} oninput={handleSearch}/>
+        </div>
+
+        <!-- Table -->
+        <div class="table-wrap">
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        <th>Firm</th>
+                        <th>Type</th>
+                        <th>Contact</th>
+                        <th>Status</th>
+                        <th>Last Activity</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <template for:each={filteredLenders} for:item="lender">
+                        <tr key={lender.id} class="data-row">
+                            <td><span class="firm-name">{lender.firm}</span></td>
+                            <td class="td-muted">{lender.type}</td>
+                            <td>
+                                <template lwc:if={lender.contact}>
+                                    <span class="contact-link">{lender.contact}</span>
+                                </template>
+                                <template lwc:else>
+                                    <span class="td-muted">—</span>
+                                </template>
+                            </td>
+                            <td><span class={lender.statusClass}>{lender.status}</span></td>
+                            <td class="td-muted">{lender.lastActivity}</td>
+                        </tr>
+                    </template>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</template>

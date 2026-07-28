@@ -1,0 +1,37 @@
+<template>
+    <div class="documents-tab">
+        <!-- Filters -->
+        <div class="tab-filters">
+            <div class="filter-pills">
+                <template for:each={filterOptions} for:item="f">
+                    <button key={f.value} class={f.cssClass} data-filter={f.value} onclick={handleFilterClick}>{f.label}</button>
+                </template>
+            </div>
+            <input class="tab-search" type="text" placeholder="Search documents..." value={searchText} oninput={handleSearch}/>
+        </div>
+
+        <!-- Document List -->
+        <div class="doc-list">
+            <template for:each={filteredDocs} for:item="doc">
+                <div key={doc.id} class={doc.itemClass} data-id={doc.id} onclick={handleDocClick}>
+                    <div class="doc-row">
+                        <div class="doc-main">
+                            <div class="doc-name-wrap">
+                                <span class={doc.nameClass}>{doc.name}</span>
+                            </div>
+                            <div class="doc-meta-row">
+                                <span class={doc.sourceBadgeClass}>{doc.sourceLabel}</span>
+                                <span class="doc-meta">{doc.metaLine}</span>
+                            </div>
+                        </div>
+                    </div>
+                    <template lwc:if={doc.isExpanded}>
+                        <div class="doc-body">
+                            <p class="doc-body-text">{doc.body}</p>
+                        </div>
+                    </template>
+                </div>
+            </template>
+        </div>
+    </div>
+</template>

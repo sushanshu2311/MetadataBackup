@@ -1,0 +1,83 @@
+<template>
+    <lightning-card>
+        <div
+            class="slds-grid slds-grid_vertical-align-center slds-wrap slds-p-horizontal_medium slds-p-vertical_x-small slds-border_bottom"
+        >
+            <c-nav-filter-multi-select
+                label="Category"
+                options={categoryOptions}
+                onfilterchange={handleCategoryFilter}
+            ></c-nav-filter-multi-select>
+            <div class="slds-col slds-grow"></div>
+            <div data-search>
+                <c-nav-search-box
+                    placeholder="Search landscape..."
+                    value={searchTerm}
+                    onsearch={handleSearch}
+                ></c-nav-search-box>
+            </div>
+        </div>
+
+        <div
+            class="slds-grid slds-p-horizontal_medium slds-p-vertical_xx-small slds-border_bottom"
+            data-columns
+        >
+            <div class="slds-col slds-size_4-of-12">Company</div>
+            <div class="slds-col slds-size_2-of-12">Type</div>
+            <div class="slds-col slds-size_4-of-12">Why it matters</div>
+            <div class="slds-col slds-size_2-of-12">Source</div>
+        </div>
+
+        <template lwc:if={hasRows}>
+            <ul class="slds-has-dividers_bottom-space">
+                <template for:each={rows} for:item="row">
+                    <li key={row.id} class="slds-item">
+                        <div
+                            class="slds-grid slds-wrap slds-p-horizontal_medium slds-p-vertical_x-small"
+                            data-row
+                            data-id={row.id}
+                            data-open={row.isOpenAttr}
+                            onclick={handleToggle}
+                        >
+                            <div class="slds-col slds-size_1-of-1 slds-medium-size_4-of-12">
+                                <p class="slds-text-body_regular slds-text-title_bold">{row.company}</p>
+                                <p class="slds-text-body_small slds-text-color_weak">{row.companyMeta}</p>
+                            </div>
+                            <div class="slds-col slds-size_1-of-1 slds-medium-size_2-of-12">
+                                <span data-cell-label>Type</span>
+                                <lightning-badge label={row.type}></lightning-badge>
+                            </div>
+                            <div
+                                class="slds-col slds-size_1-of-1 slds-medium-size_4-of-12 slds-text-body_small slds-text-color_weak"
+                            >
+                                <span data-cell-label>Why it matters</span>{row.why}
+                            </div>
+                            <div
+                                class="slds-col slds-size_1-of-1 slds-medium-size_2-of-12 slds-text-body_small slds-text-color_weak"
+                            >
+                                <span data-cell-label>Source</span>{row.source}
+                            </div>
+                        </div>
+
+                        <template lwc:if={row.isOpen}>
+                            <div class="slds-p-horizontal_medium slds-p-bottom_medium slds-text-longform">
+                                <p class="slds-m-bottom_xx-small">
+                                    <lightning-badge label="AI"></lightning-badge>
+                                    <span class="slds-text-title_caps slds-text-color_weak slds-m-left_x-small"
+                                        >Navatar Intelligence</span
+                                    >
+                                </p>
+                                <p class="slds-text-body_small">{row.detail}</p>
+                            </div>
+                        </template>
+                    </li>
+                </template>
+            </ul>
+        </template>
+        <template lwc:else>
+            <p class="slds-p-around_medium slds-text-body_small slds-text-color_weak">
+                Nothing in the landscape matches this filter.
+            </p>
+        </template>
+    </lightning-card>
+</template>

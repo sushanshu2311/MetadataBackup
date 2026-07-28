@@ -1,0 +1,46 @@
+<template>
+    <div>
+
+        <!-- Filter + Search row -->
+        <div class="slds-p-horizontal_medium slds-p-vertical_small slds-border_bottom">
+            <lightning-layout vertical-align="center">
+                <lightning-layout-item flexibility="no-flex">
+                    <lightning-button-group>
+                        <lightning-button label="All"      variant={fAll}      data-filter="all"     onclick={handleFilter}></lightning-button>
+                        <lightning-button label="Emails"   variant={fEmails}   data-filter="EMAIL"   onclick={handleFilter}></lightning-button>
+                        <lightning-button label="Calls"    variant={fCalls}    data-filter="CALL"    onclick={handleFilter}></lightning-button>
+                        <lightning-button label="Meetings" variant={fMeetings} data-filter="MEETING" onclick={handleFilter}></lightning-button>
+                    </lightning-button-group>
+                </lightning-layout-item>
+                <lightning-layout-item flexibility="auto"></lightning-layout-item>
+                <lightning-layout-item flexibility="no-flex">
+                    <lightning-input
+                        type="search"
+                        label="Search"
+                        variant="label-hidden"
+                        placeholder="Search interactions..."
+                        onchange={handleSearch}>
+                    </lightning-input>
+                </lightning-layout-item>
+            </lightning-layout>
+                  <!-- Interactions datatable -->
+                   <div class="slds-m-top_small">
+                    <lightning-datatable
+                        key-field="id"
+                        data={tableData}
+                        columns={columns}
+                        hide-checkbox-column
+                        onrowaction={handleRowAction}>
+                    </lightning-datatable>
+                 </div>
+        </div>
+
+  
+
+        <!-- Footer -->
+        <div class="slds-p-horizontal_medium slds-p-bottom_medium slds-m-top_x-small">
+            <lightning-button label="Load all interactions (12)" variant="base" onclick={handleLoadAll}></lightning-button>
+        </div>
+
+    </div>
+</template>

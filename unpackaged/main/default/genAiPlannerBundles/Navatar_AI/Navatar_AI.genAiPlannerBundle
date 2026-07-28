@@ -1,0 +1,903 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<GenAiPlannerBundle xmlns="http://soap.sforce.com/2006/04/metadata" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+    <attributeMappings>
+        <attributeName>Navatar_Similar_Deals_Related_Experts_16jfj000001Hll7.Navatar_Find_Deal_Experts_179fj000001YqgL.input_pipelineId</attributeName>
+        <attributeType>CustomPluginFunctionAttribute</attributeType>
+        <mappingTargetName>DealID</mappingTargetName>
+        <mappingType>Variable</mappingType>
+    </attributeMappings>
+    <attributeMappings>
+        <attributeName>Navatar_Similar_Deals_Related_Experts_16jfj000001Hll7.Navatar_Find_Deal_Experts_179fj000001YqgL.output_dealId</attributeName>
+        <attributeType>CustomPluginFunctionAttribute</attributeType>
+        <mappingTargetName>DealID</mappingTargetName>
+        <mappingType>Variable</mappingType>
+    </attributeMappings>
+    <attributeMappings>
+        <attributeName>Navatar_Similar_Deals_Related_Experts_16jfj000001Hll7.Navatar_Find_Deal_Experts_179fj000001YqgL.output_expertDetails</attributeName>
+        <attributeType>CustomPluginFunctionAttribute</attributeType>
+        <mappingTargetName>relatedDealDetails</mappingTargetName>
+        <mappingType>Variable</mappingType>
+    </attributeMappings>
+    <attributeMappings>
+        <attributeName>Navatar_Similar_Deals_Related_Experts_16jfj000001Hll7.Navatar_Find_Similar_Deals_179gK0000011wuV.output_dealId</attributeName>
+        <attributeType>CustomPluginFunctionAttribute</attributeType>
+        <mappingTargetName>DealID</mappingTargetName>
+        <mappingType>Variable</mappingType>
+    </attributeMappings>
+    <attributeMappings>
+        <attributeName>Navatar_Similar_Deals_Related_Experts_16jfj000001Hll7.Navatar_Find_Similar_Deals_179gK0000011wuV.output_relatedDealDetails</attributeName>
+        <attributeType>CustomPluginFunctionAttribute</attributeType>
+        <mappingTargetName>relatedDealDetails</mappingTargetName>
+        <mappingType>Variable</mappingType>
+    </attributeMappings>
+    <description>An autonomous AI agent for private equity and investment teams that summarizes Accounts, Contacts, and Deals, generates meeting prep cards, and surfaces similar deals and experts so users can prepare faster and make better investment decisions.</description>
+    <localActionLinks>
+        <genAiFunctionName>AnswerQuestionsWithKnowledge_16jfj000001Hll7</genAiFunctionName>
+    </localActionLinks>
+    <localTopicLinks>
+        <genAiPluginName>GeneralCRM_16jfj000001Hll7</genAiPluginName>
+    </localTopicLinks>
+    <localTopicLinks>
+        <genAiPluginName>Navatar_Create_Task_16jgK0000018Dqk</genAiPluginName>
+    </localTopicLinks>
+    <localTopicLinks>
+        <genAiPluginName>Navatar_File_Content_Response_16jfj000001Hll7</genAiPluginName>
+    </localTopicLinks>
+    <localTopicLinks>
+        <genAiPluginName>Navatar_Meeting_Prep_Cards_16jfj000001Hll7</genAiPluginName>
+    </localTopicLinks>
+    <localTopicLinks>
+        <genAiPluginName>Navatar_Record_Relationship_Summary_16jfj000001Hll7</genAiPluginName>
+    </localTopicLinks>
+    <localTopicLinks>
+        <genAiPluginName>Navatar_Similar_Deals_Related_Experts_16jfj000001Hll7</genAiPluginName>
+    </localTopicLinks>
+    <localTopics>
+        <fullName>GeneralCRM_16jfj000001Hll7</fullName>
+        <aiPluginUtterances>
+            <developerName>shownewleads</developerName>
+            <language xsi:nil="true" />
+            <masterLabel>show-new-leads</masterLabel>
+            <utterance>Show new leads.</utterance>
+        </aiPluginUtterances>
+        <aiPluginUtterances>
+            <developerName>gettopopportunities</developerName>
+            <language xsi:nil="true" />
+            <masterLabel>get-top-opportunities</masterLabel>
+            <utterance>Get top amount opportunities.</utterance>
+        </aiPluginUtterances>
+        <canEscalate>false</canEscalate>
+        <description>Engages and interacts with the user about any request that could be CRM data related. This could be tasks such as identify and summarize records, answer queries, aggregate data, find and query objects, update records, or drafting and refining emails.</description>
+        <developerName>GeneralCRM_16jfj000001Hll7</developerName>
+        <genAiPluginInstructions>
+            <description>There are multiple available data retrieval functions at your disposal. You can use each one of them multiple times if needed. You should use functions as many times as necessary until you have all the data required to fulfill the request of the user. You can perform extra calls if you think you can get additional relevant information.</description>
+            <developerName>dataretrieval</developerName>
+            <language xsi:nil="true" />
+            <masterLabel>data-retrieval</masterLabel>
+            <sortOrder>0</sortOrder>
+        </genAiPluginInstructions>
+        <genAiPluginInstructions>
+            <description>Do not declare your intent i.e. &quot;I will now retrieve the data&quot; - Just fetch the data.</description>
+            <developerName>proceedwithaction</developerName>
+            <language xsi:nil="true" />
+            <masterLabel>proceed-with-action</masterLabel>
+            <sortOrder>1</sortOrder>
+        </genAiPluginInstructions>
+        <genAiPluginInstructions>
+            <description>Identify the object type (i.e., leads, opportunities, accounts) the user asks about. If unclear, confirm with the user and make a suggestion based on the query context and history.</description>
+            <developerName>identifyobjecttype</developerName>
+            <language xsi:nil="true" />
+            <masterLabel>identify-object-type</masterLabel>
+            <sortOrder>2</sortOrder>
+        </genAiPluginInstructions>
+        <genAiPluginInstructions>
+            <description>When only the name of a record is mentioned in the user request, you MUST call the IdentifyRecordByName action to get the necessary IDs.</description>
+            <developerName>identifyrecord</developerName>
+            <language xsi:nil="true" />
+            <masterLabel>identify-record</masterLabel>
+            <sortOrder>3</sortOrder>
+        </genAiPluginInstructions>
+        <genAiPluginInstructions>
+            <description>Always call QueryRecords &amp; QueryRecordsWithAggregate passing plain natural language english as input. You must Include the record ID in the input if available.</description>
+            <developerName>queryrecords</developerName>
+            <language xsi:nil="true" />
+            <masterLabel>query-records</masterLabel>
+            <sortOrder>4</sortOrder>
+        </genAiPluginInstructions>
+        <genAiPluginInstructions>
+            <description>When a user asks for a summary or overview of a record, use GetRecordDetails to get an overview of the data of the record, then use other data retrieval actions as needed.</description>
+            <developerName>summary0</developerName>
+            <language xsi:nil="true" />
+            <masterLabel>summary0</masterLabel>
+            <sortOrder>5</sortOrder>
+        </genAiPluginInstructions>
+        <genAiPluginInstructions>
+            <description>When asked for a summary on multiple records, you must iterate over all record IDs and for each one call GetRecordDetails.</description>
+            <developerName>summary1</developerName>
+            <language xsi:nil="true" />
+            <masterLabel>summary1</masterLabel>
+            <sortOrder>6</sortOrder>
+        </genAiPluginInstructions>
+        <genAiPluginInstructions>
+            <description>If the user asks about activities you must call GetActivitiesTimeline.</description>
+            <developerName>activitytimeline0</developerName>
+            <language xsi:nil="true" />
+            <masterLabel>activity-timeline0</masterLabel>
+            <sortOrder>7</sortOrder>
+        </genAiPluginInstructions>
+        <genAiPluginInstructions>
+            <description>When providing the Activity Types for GetActivitiesTimeline, choose all the types that are relevant to the user request. Examples - User Request 1 - &quot;What questions does John Doe have that need addressing?&quot;, Activity Types - &quot;Call&quot;, &quot;Email&quot;. User Request 2 - &quot;What are the next activities for John Doe?&quot;, Activity Types - &quot;Task&quot;, &quot;Event&quot;.</description>
+            <developerName>activitytimeline1</developerName>
+            <language xsi:nil="true" />
+            <masterLabel>activity-timeline1</masterLabel>
+            <sortOrder>8</sortOrder>
+        </genAiPluginInstructions>
+        <genAiPluginInstructions>
+            <description>When asked about recent activities, you should provide the answer, starting from the last 30 days and ending on the current date, unless a specific date range is specified by the user.</description>
+            <developerName>activitytimeline2</developerName>
+            <language xsi:nil="true" />
+            <masterLabel>activity-timeline2</masterLabel>
+            <sortOrder>9</sortOrder>
+        </genAiPluginInstructions>
+        <genAiPluginInstructions>
+            <description>When you are asked about a single Call, Meeting, Email or any other single specific activity, call GetActivityDetails. Do not call it for any other record type.</description>
+            <developerName>getactivitydetails0</developerName>
+            <language xsi:nil="true" />
+            <masterLabel>get-activity-details0</masterLabel>
+            <sortOrder>10</sortOrder>
+        </genAiPluginInstructions>
+        <genAiPluginInstructions>
+            <description>Always use DraftOrReviseEmail when asked to generate a new email or revise a previously generated email.</description>
+            <developerName>draftorreviseemail</developerName>
+            <language xsi:nil="true" />
+            <masterLabel>draft-or-revise-email</masterLabel>
+            <sortOrder>11</sortOrder>
+        </genAiPluginInstructions>
+        <genAiPluginInstructions>
+            <description>ExtractRecordFieldsAndValuesFromUserInput must be called prior to UpdateRecordFields.</description>
+            <developerName>updaterecord</developerName>
+            <language xsi:nil="true" />
+            <masterLabel>update-record</masterLabel>
+            <sortOrder>12</sortOrder>
+        </genAiPluginInstructions>
+        <genAiPluginInstructions>
+            <description>Avoid using structured lists, bullet points, or numbered lists. Instead, present the information in complete sentences and paragraphs as if you were writing an article or a report.</description>
+            <developerName>outputstyle</developerName>
+            <language xsi:nil="true" />
+            <masterLabel>output-style</masterLabel>
+            <sortOrder>13</sortOrder>
+        </genAiPluginInstructions>
+        <genAiPluginInstructions>
+            <description>User questions which can be answered by knowledge articles or documents. These questions usually want information, instructions or guidance, including but not limited to customer questions about company information, polices and frequently asked questions.</description>
+            <developerName>answerquestions</developerName>
+            <language xsi:nil="true" />
+            <masterLabel>answer-questions</masterLabel>
+            <sortOrder>14</sortOrder>
+        </genAiPluginInstructions>
+        <language>en_US</language>
+        <localActionLinks>
+            <functionName>IdentifyObjectByName_179fj000001Uxuy</functionName>
+        </localActionLinks>
+        <localActionLinks>
+            <functionName>QueryRecords_179fj000001Uxuy</functionName>
+        </localActionLinks>
+        <localActionLinks>
+            <functionName>UpdateRecordFields_179fj000001Uxuy</functionName>
+        </localActionLinks>
+        <localActionLinks>
+            <functionName>ExtractFieldsAndValuesFromUserInput_179fj000001Uxuy</functionName>
+        </localActionLinks>
+        <localActionLinks>
+            <functionName>QueryRecordsWithAggregate_179fj000001Uxuy</functionName>
+        </localActionLinks>
+        <localActionLinks>
+            <functionName>DraftOrReviseEmail_179fj000001Uxuy</functionName>
+        </localActionLinks>
+        <localActionLinks>
+            <functionName>IdentifyRecordByName_179fj000001Uxuy</functionName>
+        </localActionLinks>
+        <localActions>
+            <fullName>QueryRecords_179fj000001Uxuy</fullName>
+            <description>Finds and retrieves Salesforce CRM records based on user input and specific conditions, such as field values. This action automatically identifies the correct records and object type. e.g. &#39;Find all open opportunities created in the last 5 days sorted by created date.&#39;</description>
+            <developerName>QueryRecords_179fj000001Uxuy</developerName>
+            <invocationTarget>queryRecords</invocationTarget>
+            <invocationTargetType>standardInvocableAction</invocationTargetType>
+            <isConfirmationRequired>false</isConfirmationRequired>
+            <isIncludeInProgressIndicator>true</isIncludeInProgressIndicator>
+            <localDeveloperName>QueryRecords</localDeveloperName>
+            <masterLabel>Query Records</masterLabel>
+            <source>EmployeeCopilot__QueryRecords</source>
+        </localActions>
+        <localActions>
+            <fullName>IdentifyObjectByName_179fj000001Uxuy</fullName>
+            <description>Finds the Salesforce object API name by extracting an object name from the user input.</description>
+            <developerName>IdentifyObjectByName_179fj000001Uxuy</developerName>
+            <invocationTarget>identifyObject</invocationTarget>
+            <invocationTargetType>standardInvocableAction</invocationTargetType>
+            <isConfirmationRequired>false</isConfirmationRequired>
+            <isIncludeInProgressIndicator>true</isIncludeInProgressIndicator>
+            <localDeveloperName>IdentifyObjectByName</localDeveloperName>
+            <masterLabel>Identify Object by Name</masterLabel>
+            <source>EmployeeCopilot__IdentifyObjectByName</source>
+        </localActions>
+        <localActions>
+            <fullName>UpdateRecordFields_179fj000001Uxuy</fullName>
+            <description>Updates fields on a Salesforce CRM record. The action ExtractFieldsAndValuesFromUserInput must be called prior to this action to extract the record&#39;s fields and values.</description>
+            <developerName>UpdateRecordFields_179fj000001Uxuy</developerName>
+            <invocationTarget>einsteinCopilotUpdateRecord</invocationTarget>
+            <invocationTargetType>standardInvocableAction</invocationTargetType>
+            <isConfirmationRequired>true</isConfirmationRequired>
+            <isIncludeInProgressIndicator>true</isIncludeInProgressIndicator>
+            <localDeveloperName>UpdateRecordFields</localDeveloperName>
+            <masterLabel>Update Record</masterLabel>
+            <progressIndicatorMessage>Making updates</progressIndicatorMessage>
+            <source>EmployeeCopilot__UpdateRecordFields</source>
+        </localActions>
+        <localActions>
+            <fullName>IdentifyRecordByName_179fj000001Uxuy</fullName>
+            <description>Searches for Salesforce CRM records by name and returns a list of matching Salesforce CRM record IDs.</description>
+            <developerName>IdentifyRecordByName_179fj000001Uxuy</developerName>
+            <invocationTarget>identifyRecordByName</invocationTarget>
+            <invocationTargetType>standardInvocableAction</invocationTargetType>
+            <isConfirmationRequired>false</isConfirmationRequired>
+            <isIncludeInProgressIndicator>true</isIncludeInProgressIndicator>
+            <localDeveloperName>IdentifyRecordByName</localDeveloperName>
+            <masterLabel>Identify Record by Name</masterLabel>
+            <source>EmployeeCopilot__IdentifyRecordByName</source>
+        </localActions>
+        <localActions>
+            <fullName>ExtractFieldsAndValuesFromUserInput_179fj000001Uxuy</fullName>
+            <description>Extracts Salesforce CRM record fields and their corresponding field values from the user input. This action must run before updateRecord to convert user input to a Salesforce sObject.</description>
+            <developerName>ExtractFieldsAndValuesFromUserInput_179fj000001Uxuy</developerName>
+            <invocationTarget>getRecordFieldsAndValues</invocationTarget>
+            <invocationTargetType>standardInvocableAction</invocationTargetType>
+            <isConfirmationRequired>false</isConfirmationRequired>
+            <isIncludeInProgressIndicator>true</isIncludeInProgressIndicator>
+            <localDeveloperName>ExtractFieldsAndValuesFromUserInput</localDeveloperName>
+            <masterLabel>Extract Fields And Values From User Input</masterLabel>
+            <progressIndicatorMessage>Preparing your changes</progressIndicatorMessage>
+            <source>EmployeeCopilot__ExtractFieldsAndValuesFromUserInput</source>
+        </localActions>
+        <localActions>
+            <fullName>QueryRecordsWithAggregate_179fj000001Uxuy</fullName>
+            <description>Answers aggregation questions (such as count, sum, max, min, or average) about Salesforce CRM data based on the user input and specific conditions, such as field values. For example &#39;Find the number of open opportunities created in the last 5 days.&#39;</description>
+            <developerName>QueryRecordsWithAggregate_179fj000001Uxuy</developerName>
+            <invocationTarget>queryRecordsWithAggregate</invocationTarget>
+            <invocationTargetType>standardInvocableAction</invocationTargetType>
+            <isConfirmationRequired>false</isConfirmationRequired>
+            <isIncludeInProgressIndicator>true</isIncludeInProgressIndicator>
+            <localDeveloperName>QueryRecordsWithAggregate</localDeveloperName>
+            <masterLabel>Query Records with Aggregate</masterLabel>
+            <source>EmployeeCopilot__QueryRecordsWithAggregate</source>
+        </localActions>
+        <localActions>
+            <fullName>DraftOrReviseEmail_179fj000001Uxuy</fullName>
+            <description>Creates an email draft or revises the latest generated email based on user input.</description>
+            <developerName>DraftOrReviseEmail_179fj000001Uxuy</developerName>
+            <invocationTarget>getDraftOrReviseEmailPrompt</invocationTarget>
+            <invocationTargetType>standardInvocableAction</invocationTargetType>
+            <isConfirmationRequired>false</isConfirmationRequired>
+            <isIncludeInProgressIndicator>true</isIncludeInProgressIndicator>
+            <localDeveloperName>DraftOrReviseEmail</localDeveloperName>
+            <masterLabel>Draft or Revise Email</masterLabel>
+            <progressIndicatorMessage>Crafting your email</progressIndicatorMessage>
+            <source>EmployeeCopilot__DraftOrReviseEmail</source>
+        </localActions>
+        <localDeveloperName>GeneralCRM</localDeveloperName>
+        <masterLabel>General CRM</masterLabel>
+        <pluginType>Topic</pluginType>
+        <scope>Your job is to interact and answer questions for the user about anything Salesforce or CRM data related, combining all data retrieval functions. i.e: QueryRecords(), GetRecordDetails(), GetActivitiesTimeline(), GetActivityDetails()</scope>
+        <source>EmployeeCopilot__GeneralCRM</source>
+    </localTopics>
+    <localTopics>
+        <fullName>Navatar_Meeting_Prep_Cards_16jfj000001Hll7</fullName>
+        <canEscalate>false</canEscalate>
+        <description>Use this topic when a user asks for a meeting prep summary for the next upcoming meeting listed on the Contact page; the summary should appear directly in the chat window.
+
+Activate this topic when the prompt includes phrases such as “generate meeting prep card,” “summaries for prep card,” “prepare for upcoming meeting,” “background for upcoming meetings,” or similar meeting-readiness language.
+
+Do not proactively suggest actions from this topic unless the user explicitly requests help with “Meeting Prep Cards”.  Always wait for the user to initiate the request before offering these tools.</description>
+        <developerName>Navatar_Meeting_Prep_Cards_16jfj000001Hll7</developerName>
+        <genAiPluginInstructions>
+            <description>The action step is mandatory.
+
+The agent must always produce a response after the action call.
+
+If the action output is missing, empty, unavailable, fails, or the action does not complete:
+Use the fallback message:
+
+&quot;This is taking time. Should I send this over email?&quot;
+
+Never skip this step.
+Never end the conversation without fallback.</description>
+            <developerName>instructions_0_1770907371926</developerName>
+            <language>en_US</language>
+            <masterLabel>instructions_0_1770907371926</masterLabel>
+            <sortOrder>0</sortOrder>
+        </genAiPluginInstructions>
+        <genAiPluginInstructions>
+            <description>Identify the most recent upcoming meeting based on: The current record context Contact.</description>
+            <developerName>instructions_0_1771497695362</developerName>
+            <language>en_US</language>
+            <masterLabel>instructions_0_1771497695362</masterLabel>
+            <sortOrder>1</sortOrder>
+        </genAiPluginInstructions>
+        <genAiPluginInstructions>
+            <description>Build a prep card containing: Meeting details (subject, date/time, organizer). Account and Contact background (firm, role, relationship history) &amp; summaries the five recent interactions.</description>
+            <developerName>instructions_1_1770907371926</developerName>
+            <language>en_US</language>
+            <masterLabel>instructions_1_1770907371926</masterLabel>
+            <sortOrder>2</sortOrder>
+        </genAiPluginInstructions>
+        <genAiPluginInstructions>
+            <description>When the user is in chat:
+If they say “show prep here”, present the card in chat. Execute Action &quot;Navatar_Meeting_Prep_Card_On_Demand&quot;
+If they say “send prep by email”, format content so it can be emailed to the relevant internal users. &quot;Navatar_Meeting_Prep_Card_On_Demand_and_Email&quot;</description>
+            <developerName>instructions_2_1770907371926</developerName>
+            <language>en_US</language>
+            <masterLabel>instructions_2_1770907371926</masterLabel>
+            <sortOrder>3</sortOrder>
+        </genAiPluginInstructions>
+        <genAiPluginInstructions>
+            <description>If fails to generate the Meeting Prep Card &quot;We’re unable to generate the Meeting Prep Card at the moment. Thanks for your patience—please try again soon.&quot;</description>
+            <developerName>instruction_0_1770371810985</developerName>
+            <language xsi:nil="true" />
+            <masterLabel>instruction_0_1770371810985</masterLabel>
+            <sortOrder>4</sortOrder>
+        </genAiPluginInstructions>
+        <genAiPluginInstructions>
+            <description>If no future events are available on the record page, display the fallback message: “No future events found for this record. Meeting Prep Card generation was skipped.”</description>
+            <developerName>instruction_1_1770371810986</developerName>
+            <language xsi:nil="true" />
+            <masterLabel>instruction_1_1770371810986</masterLabel>
+            <sortOrder>5</sortOrder>
+        </genAiPluginInstructions>
+        <genAiPluginInstructions>
+            <description>When the user provides an invalid contact name to generate the Meeting Prep Card, display the fallback message: &quot;No contact named &#39;{invalid contact name}&#39; was found. Please check the name and try again.&quot;</description>
+            <developerName>instruction_2_1770371810986</developerName>
+            <language xsi:nil="true" />
+            <masterLabel>instruction_2_1770371810986</masterLabel>
+            <sortOrder>6</sortOrder>
+        </genAiPluginInstructions>
+        <genAiPluginInstructions>
+            <description>If the user requests a Meeting Prep Card without specifying a contact record, or if no contact record is available to retrieve the contact ID, prompt:
+“Please provide the contact name to generate the Meeting Prep Card.”</description>
+            <developerName>instruction_3_1770371810986</developerName>
+            <language xsi:nil="true" />
+            <masterLabel>instruction_3_1770371810986</masterLabel>
+            <sortOrder>7</sortOrder>
+        </genAiPluginInstructions>
+        <genAiPluginInstructions>
+            <description>Always ask clarifying questions and request the contact name when the user’s request is ambiguous or does not include a contact name.
+Example: If the user asks for a Meeting Prep for a specific meeting, always prompt for the contact.</description>
+            <developerName>instruction_4_1770371810986</developerName>
+            <language xsi:nil="true" />
+            <masterLabel>instruction_4_1770371810986</masterLabel>
+            <sortOrder>8</sortOrder>
+        </genAiPluginInstructions>
+        <language>en_US</language>
+        <localActionLinks>
+            <functionName>Navatar_Meeting_Prep_Card_On_Demand_179gK0000011wuT</functionName>
+        </localActionLinks>
+        <localActionLinks>
+            <functionName>Navatar_Meeting_Prep_Card_On_Demand_and_Email_179gK0000011wuT</functionName>
+        </localActionLinks>
+        <localActionLinks>
+            <functionName>IdentifyRecordByName_179fj000001YqwT</functionName>
+        </localActionLinks>
+        <localActions>
+            <fullName>Navatar_Meeting_Prep_Card_On_Demand_179gK0000011wuT</fullName>
+            <description>Use this action to generate a Meeting Prep Card summary for the contact record. Do not suggest this action for new or empty records</description>
+            <developerName>Navatar_Meeting_Prep_Card_On_Demand_179gK0000011wuT</developerName>
+            <invocationTarget>NavatarMeetingPrepCardOnDemand</invocationTarget>
+            <invocationTargetType>apex</invocationTargetType>
+            <isConfirmationRequired>false</isConfirmationRequired>
+            <isIncludeInProgressIndicator>true</isIncludeInProgressIndicator>
+            <localDeveloperName>Navatar_Meeting_Prep_Card_On_Demand</localDeveloperName>
+            <masterLabel>Navatar Meeting Prep Card On Demand</masterLabel>
+            <progressIndicatorMessage>Generating Meeting Prep Card...</progressIndicatorMessage>
+            <source>Navatar_Meeting_Prep_Card_On_Demand</source>
+        </localActions>
+        <localActions>
+            <fullName>Navatar_Meeting_Prep_Card_On_Demand_and_Email_179gK0000011wuT</fullName>
+            <description>Use this action to generate a Meeting Prep Card summary for the contact record and send it via email. Do not suggest this action for new or empty records</description>
+            <developerName>Navatar_Meeting_Prep_Card_On_Demand_and_Email_179gK0000011wuT</developerName>
+            <invocationTarget>NavatarMeetingPrepCardSendEmail</invocationTarget>
+            <invocationTargetType>apex</invocationTargetType>
+            <isConfirmationRequired>false</isConfirmationRequired>
+            <isIncludeInProgressIndicator>true</isIncludeInProgressIndicator>
+            <localDeveloperName>Navatar_Meeting_Prep_Card_On_Demand_and_Email</localDeveloperName>
+            <masterLabel>Navatar Meeting Prep Card On Demand and Email</masterLabel>
+            <progressIndicatorMessage>Preparing the Meeting Prep Card email...</progressIndicatorMessage>
+            <source>Navatar_Meeting_Prep_Card_On_Demand_and_Email</source>
+        </localActions>
+        <localActions>
+            <fullName>IdentifyRecordByName_179fj000001YqwT</fullName>
+            <description>Searches for Salesforce CRM records by name and returns a list of matching Salesforce CRM record IDs.</description>
+            <developerName>IdentifyRecordByName_179fj000001YqwT</developerName>
+            <invocationTarget>identifyRecordByName</invocationTarget>
+            <invocationTargetType>standardInvocableAction</invocationTargetType>
+            <isConfirmationRequired>false</isConfirmationRequired>
+            <isIncludeInProgressIndicator>true</isIncludeInProgressIndicator>
+            <localDeveloperName>IdentifyRecordByName</localDeveloperName>
+            <masterLabel>Identify Record by Name</masterLabel>
+            <source>EmployeeCopilot__IdentifyRecordByName</source>
+        </localActions>
+        <localDeveloperName>Navatar_Meeting_Prep_Cards</localDeveloperName>
+        <masterLabel>Navatar Meeting Prep Cards</masterLabel>
+        <pluginType>Topic</pluginType>
+        <scope>On‑demand meeting prep from record or chat for a specific meeting.</scope>
+        <source>Navatar_Meeting_Prep_Cards</source>
+    </localTopics>
+    <localTopics>
+        <fullName>Navatar_File_Content_Response_16jfj000001Hll7</fullName>
+        <canEscalate>false</canEscalate>
+        <description>Use this topic when a user requests a summary or asks a specific question about a document present in system. The agent’s response should be displayed directly in the chat window.
+
+Activate this topic when the prompt includes phrases such as “Summarize any risks in the document,” “Summarize the financials from the document,” “What revenue and EBITDA are mentioned in the document,” “Provide background from the document,” or other similar document-related language.
+
+Do not proactively recommend actions from this topic unless the user explicitly asks for help with “ File Content Response” Always wait for the user to initiate the request before offering these tools.</description>
+        <developerName>Navatar_File_Content_Response_16jfj000001Hll7</developerName>
+        <genAiPluginInstructions>
+            <description>If a user mentions specific details in their request, provide information specific to those details from the file content.</description>
+            <developerName>instructions_0_1770975632334</developerName>
+            <language>en_US</language>
+            <masterLabel>instructions_0_1770975632334</masterLabel>
+            <sortOrder>0</sortOrder>
+        </genAiPluginInstructions>
+        <genAiPluginInstructions>
+            <description>When no specific details are mentioned, follow the default file summary instructions to generate a response.</description>
+            <developerName>instructions_1_1770975632334</developerName>
+            <language>en_US</language>
+            <masterLabel>instructions_1_1770975632334</masterLabel>
+            <sortOrder>1</sortOrder>
+        </genAiPluginInstructions>
+        <genAiPluginInstructions>
+            <description>Ensure responses are accurate and relevant to the file content provided.</description>
+            <developerName>instruction_0_1770371225740</developerName>
+            <language xsi:nil="true" />
+            <masterLabel>instruction_0_1770371225740</masterLabel>
+            <sortOrder>2</sortOrder>
+        </genAiPluginInstructions>
+        <genAiPluginInstructions>
+            <description>Ask clarifying questions if the user request is ambiguous or unclear.</description>
+            <developerName>instruction_1_1770371225746</developerName>
+            <language xsi:nil="true" />
+            <masterLabel>instruction_1_1770371225746</masterLabel>
+            <sortOrder>3</sortOrder>
+        </genAiPluginInstructions>
+        <genAiPluginInstructions>
+            <description>When system detects no extractable content (the document is empty, contains only whitespace, or has no readable text),display the exact fallback message as mentioned: &quot;No content detected in the uploaded document. Make sure the file includes text and try again.&quot;</description>
+            <developerName>instruction_2_1770371225746</developerName>
+            <language xsi:nil="true" />
+            <masterLabel>instruction_2_1770371225746</masterLabel>
+            <sortOrder>4</sortOrder>
+        </genAiPluginInstructions>
+        <genAiPluginInstructions>
+            <description>When a file is not specified and the Content Document ID cannot be retrieved from the record detail page, request the file name from the user. &quot;Please provide a file name to process your request.&quot;</description>
+            <developerName>instruction_3_1770371225746</developerName>
+            <language xsi:nil="true" />
+            <masterLabel>instruction_3_1770371225746</masterLabel>
+            <sortOrder>5</sortOrder>
+        </genAiPluginInstructions>
+        <language>en_US</language>
+        <localActionLinks>
+            <functionName>Navatar_Read_and_Respond_via_File_Content_179gK0000011wuX</functionName>
+        </localActionLinks>
+        <localActionLinks>
+            <functionName>IdentifyRecordByName_179gK0000011wuX</functionName>
+        </localActionLinks>
+        <localActions>
+            <fullName>IdentifyRecordByName_179gK0000011wuX</fullName>
+            <description>Searches for Salesforce CRM records by name and returns a list of matching Salesforce CRM record IDs.</description>
+            <developerName>IdentifyRecordByName_179gK0000011wuX</developerName>
+            <invocationTarget>identifyRecordByName</invocationTarget>
+            <invocationTargetType>standardInvocableAction</invocationTargetType>
+            <isConfirmationRequired>false</isConfirmationRequired>
+            <isIncludeInProgressIndicator>true</isIncludeInProgressIndicator>
+            <localDeveloperName>IdentifyRecordByName</localDeveloperName>
+            <masterLabel>Identify Record by Name</masterLabel>
+            <source>EmployeeCopilot__IdentifyRecordByName</source>
+        </localActions>
+        <localActions>
+            <fullName>Navatar_Read_and_Respond_via_File_Content_179gK0000011wuX</fullName>
+            <description>Use this action to read and respond using the file content, If the user mentions specific details in the request, return information specific to those details from the file content; otherwise, follow the default file summary instructions.</description>
+            <developerName>Navatar_Read_and_Respond_via_File_Content_179gK0000011wuX</developerName>
+            <invocationTarget>Navatar_Read_and_Respond_via_File_Content</invocationTarget>
+            <invocationTargetType>generatePromptResponse</invocationTargetType>
+            <isConfirmationRequired>false</isConfirmationRequired>
+            <isIncludeInProgressIndicator>true</isIncludeInProgressIndicator>
+            <localDeveloperName>Navatar_Read_and_Respond_via_File_Content</localDeveloperName>
+            <masterLabel>Navatar Read and Respond via File Content</masterLabel>
+            <progressIndicatorMessage>Please wait while we process your request...</progressIndicatorMessage>
+            <source>Navatar_Read_and_Respond_via_File_Content</source>
+        </localActions>
+        <localDeveloperName>Navatar_File_Content_Response</localDeveloperName>
+        <masterLabel>Navatar File Content Response</masterLabel>
+        <pluginType>Topic</pluginType>
+        <scope>My job is only to read file content, respond to user inquiries using the file content, and provide specific details or default summaries based on the user&#39;s request. I must not handle tasks outside this scope.</scope>
+    </localTopics>
+    <localTopics>
+        <fullName>Navatar_Similar_Deals_Related_Experts_16jfj000001Hll7</fullName>
+        <canEscalate>false</canEscalate>
+        <description>Use this topic when the user asks the agent to find deals similar to a specific deal, identify experts from prior deals, or attach those experts to the current Deal. The agent’s response should be displayed directly in the chat window.
+
+Activate this topic when the prompt includes phrases such as “find similar deals,” “have we done any deals similar,” “are there other deals like,” &quot;reference transaction,&quot; &quot;matching deals,&quot; &quot;related transactions,&quot; “experts from similar deals,” “find relevant contacts,” “add these experts to this deal,” “who should we reach out to,” “which contacts have we used for similar,” “add contacts to,” &quot;deal owner,&quot; &quot;deal sponsor,&quot; &quot;deal champion,&quot; &quot;relationship owner,&quot; &quot;deal team,&quot; &quot;advisors,&quot; &quot;consultants,&quot; &quot;stakeholders,&quot; &quot;comps,&quot; or other comparable deal-related language.
+
+Do not proactively recommend actions from this topic unless the user explicitly asks for help with “Similar Deals Related Experts” Always wait for the user to initiate the request before offering these tools.</description>
+        <developerName>Navatar_Similar_Deals_Related_Experts_16jfj000001Hll7</developerName>
+        <genAiPluginInstructions>
+            <description>Treat the flow as three actions, under one umbrella:
+1. Find Similar Deals.
+2. Recommend Experts from those deals.
+3. Add Experts to the current Deal.</description>
+            <developerName>instruction_0_1770371472738</developerName>
+            <language xsi:nil="true" />
+            <masterLabel>instruction_0_1770371472738</masterLabel>
+            <sortOrder>0</sortOrder>
+        </genAiPluginInstructions>
+        <genAiPluginInstructions>
+            <description>When asked to “find similar deals” 
+- Action is triggered to find similar record based on similarity using fields like Industry, Revenue, EBITDA, Deal Type , Source Firm with ±15% thresholds for numeric fields and exact matches for text/picklists.
+- Show up to five similar deals in chat, each with a short explanation of why it is similar (e.g., “Same sector and stage; EBITDA and revenue within ±15% of current deal”).
+- If more than 5 similar deals exist, the agent asks the user for confirmation to send the full list via email.
+- If the user confirms, the system sends an email containing the complete list of similar deals.</description>
+            <developerName>instruction_1_1770371472738</developerName>
+            <language xsi:nil="true" />
+            <masterLabel>instruction_1_1770371472738</masterLabel>
+            <sortOrder>1</sortOrder>
+        </genAiPluginInstructions>
+        <genAiPluginInstructions>
+            <description>When asked for experts from similar deals: Present experts tied to those deals, including their role, firm, and why they are relevant (e.g., “Advised on three similar buyout deals in the last 18 months”).</description>
+            <developerName>instruction_2_1770371472738</developerName>
+            <language xsi:nil="true" />
+            <masterLabel>instruction_2_1770371472738</masterLabel>
+            <sortOrder>2</sortOrder>
+        </genAiPluginInstructions>
+        <genAiPluginInstructions>
+            <description>When asked to add experts to the deal: Return a clear, structured list of experts to add, assuming the orchestration layer will perform the actual record creation.</description>
+            <developerName>instruction_3_1770371472738</developerName>
+            <language xsi:nil="true" />
+            <masterLabel>instruction_3_1770371472738</masterLabel>
+            <sortOrder>3</sortOrder>
+        </genAiPluginInstructions>
+        <genAiPluginInstructions>
+            <description>Never re‑implement the similarity algorithm in the LLM; instead, explain and present the results that code would have produced, and keep the user focused on understanding and acting on the list.</description>
+            <developerName>instruction_4_1770371472738</developerName>
+            <language xsi:nil="true" />
+            <masterLabel>instruction_4_1770371472738</masterLabel>
+            <sortOrder>4</sortOrder>
+        </genAiPluginInstructions>
+        <language>en_US</language>
+        <localActionLinks>
+            <functionName>Navatar_Find_and_Email_Similar_Deals_179fj000001YqgL</functionName>
+        </localActionLinks>
+        <localActionLinks>
+            <functionName>Navatar_Add_Deal_Experts_179fj000001YqgL</functionName>
+        </localActionLinks>
+        <localActionLinks>
+            <functionName>IdentifyRecordByName_179fj000001YqgL</functionName>
+        </localActionLinks>
+        <localActionLinks>
+            <functionName>Navatar_Find_Deal_Experts_179fj000001YqgL</functionName>
+        </localActionLinks>
+        <localActionLinks>
+            <functionName>Navatar_Find_Similar_Deals_179gK0000011wuV</functionName>
+        </localActionLinks>
+        <localActions>
+            <fullName>Navatar_Find_Deal_Experts_179fj000001YqgL</fullName>
+            <description>Your work is to find the deal experts for the deal mentioned. Whenever someone asks to find deal experts, your work is to find it and show them on chat.</description>
+            <developerName>Navatar_Find_Deal_Experts_179fj000001YqgL</developerName>
+            <invocationTarget>NavatarFindDealExperts</invocationTarget>
+            <invocationTargetType>apex</invocationTargetType>
+            <isConfirmationRequired>false</isConfirmationRequired>
+            <isIncludeInProgressIndicator>true</isIncludeInProgressIndicator>
+            <localDeveloperName>Navatar_Find_Deal_Experts</localDeveloperName>
+            <mappingAttributes>
+                <label>pipelineId</label>
+                <name>input_pipelineId</name>
+                <parameterName>pipelineId</parameterName>
+                <parameterType>input</parameterType>
+            </mappingAttributes>
+            <mappingAttributes>
+                <label>dealId</label>
+                <name>output_dealId</name>
+                <parameterName>dealId</parameterName>
+                <parameterType>output</parameterType>
+            </mappingAttributes>
+            <mappingAttributes>
+                <label>expertDetails</label>
+                <name>output_expertDetails</name>
+                <parameterName>expertDetails</parameterName>
+                <parameterType>output</parameterType>
+            </mappingAttributes>
+            <masterLabel>Navatar Find Deal Experts</masterLabel>
+            <progressIndicatorMessage>Finding Experts...</progressIndicatorMessage>
+            <source>Navatar_Find_Deal_Experts</source>
+        </localActions>
+        <localActions>
+            <fullName>Navatar_Find_and_Email_Similar_Deals_179fj000001YqgL</fullName>
+            <description>This action is invoked only after Find_Similar_Deals, when the user confirms they want the full details emailed. Identify similar deals using deal criteria and send the results to the user by email.</description>
+            <developerName>Navatar_Find_and_Email_Similar_Deals_179fj000001YqgL</developerName>
+            <invocationTarget>NavatarFindSimilarDealsSendEmail</invocationTarget>
+            <invocationTargetType>apex</invocationTargetType>
+            <isConfirmationRequired>false</isConfirmationRequired>
+            <isIncludeInProgressIndicator>true</isIncludeInProgressIndicator>
+            <localDeveloperName>Navatar_Find_and_Email_Similar_Deals</localDeveloperName>
+            <masterLabel>Navatar Find and Email Similar Deals</masterLabel>
+            <progressIndicatorMessage>Sharing details...</progressIndicatorMessage>
+            <source>Navatar_Find_and_Email_Similar_Deals</source>
+        </localActions>
+        <localActions>
+            <fullName>Navatar_Find_Similar_Deals_179gK0000011wuV</fullName>
+            <description>When this action is triggered, assume the user is viewing a Deal and wants to compare it with relevant past or active deals in the system. Do not suggest this action for new or empty records.</description>
+            <developerName>Navatar_Find_Similar_Deals_179gK0000011wuV</developerName>
+            <invocationTarget>NavatarFindSimilarDeals</invocationTarget>
+            <invocationTargetType>apex</invocationTargetType>
+            <isConfirmationRequired>false</isConfirmationRequired>
+            <isIncludeInProgressIndicator>true</isIncludeInProgressIndicator>
+            <localDeveloperName>Navatar_Find_Similar_Deals</localDeveloperName>
+            <mappingAttributes>
+                <label>dealId</label>
+                <name>output_dealId</name>
+                <parameterName>dealId</parameterName>
+                <parameterType>output</parameterType>
+            </mappingAttributes>
+            <mappingAttributes>
+                <label>relatedDealDetails</label>
+                <name>output_relatedDealDetails</name>
+                <parameterName>relatedDealDetails</parameterName>
+                <parameterType>output</parameterType>
+            </mappingAttributes>
+            <masterLabel>Navatar Find Similar Deals</masterLabel>
+            <progressIndicatorMessage>Finding Similar Deals...</progressIndicatorMessage>
+            <source>Navatar_Find_Similar_Deals</source>
+        </localActions>
+        <localActions>
+            <fullName>IdentifyRecordByName_179fj000001YqgL</fullName>
+            <description>Searches for Salesforce CRM records by name and returns a list of matching Salesforce CRM record IDs.</description>
+            <developerName>IdentifyRecordByName_179fj000001YqgL</developerName>
+            <invocationTarget>identifyRecordByName</invocationTarget>
+            <invocationTargetType>standardInvocableAction</invocationTargetType>
+            <isConfirmationRequired>false</isConfirmationRequired>
+            <isIncludeInProgressIndicator>true</isIncludeInProgressIndicator>
+            <localDeveloperName>IdentifyRecordByName</localDeveloperName>
+            <masterLabel>Identify Record by Name</masterLabel>
+            <source>EmployeeCopilot__IdentifyRecordByName</source>
+        </localActions>
+        <localActions>
+            <fullName>Navatar_Add_Deal_Experts_179fj000001YqgL</fullName>
+            <description>Extracts contact IDs from formatted text and adds them as deal experts to navpeII__Deal_Team__c. Run this action only if Get Related Deal Info has run already in the conversation The user is selecting contacts from a numbered list. Rules: - If the user means all contacts, set selectionMode = &quot;ALL&quot;. - If the user selects specific contacts by number, set selectionMode = &quot;INDEX&quot;. - When selectionMode = &quot;INDEX&quot;, extract ONLY the numbers and return them as a comma-separated list (example: &quot;1,3&quot;). - Do NOT include words, spaces, or punctuation in selectedIndexes. - Do NOT invent numbers.</description>
+            <developerName>Navatar_Add_Deal_Experts_179fj000001YqgL</developerName>
+            <invocationTarget>NavatarAddDealExperts</invocationTarget>
+            <invocationTargetType>apex</invocationTargetType>
+            <isConfirmationRequired>false</isConfirmationRequired>
+            <isIncludeInProgressIndicator>true</isIncludeInProgressIndicator>
+            <localDeveloperName>Navatar_Add_Deal_Experts</localDeveloperName>
+            <masterLabel>Navatar Add Deal Experts</masterLabel>
+            <progressIndicatorMessage>Adding Deal Expert...</progressIndicatorMessage>
+            <source>Navatar_Add_Deal_Experts</source>
+        </localActions>
+        <localDeveloperName>Navatar_Similar_Deals_Related_Experts</localDeveloperName>
+        <masterLabel>Navatar Similar Deals Related Experts</masterLabel>
+        <pluginType>Topic</pluginType>
+        <scope>Similar Deals discovery and explanation (top 5 in chat; overflow via email). Expert recommendations based on similar deals. Adding experts to the current deal.</scope>
+    </localTopics>
+    <localTopics>
+        <fullName>Navatar_Record_Relationship_Summary_16jfj000001Hll7</fullName>
+        <canEscalate>false</canEscalate>
+        <description>Use this topic when a user requests a relationship summary for a specific account, contact, or deal, or asks the agent to set a reminder or create a task related to a contact, deal, or associated record. The agent’s response should be displayed directly in the chat window.
+
+Do not proactively recommend actions from this topic unless the user explicitly asks for help with “Record Relationship Summary.” Always wait for the user to initiate the request before offering these tools.
+
+Activate this topic when the prompt includes phrases such as “Can you summarize,” “Summarize our relationship,” “background of our relationship,” “What do we know about,” &quot;Explain,&quot; &quot;Describe,&quot; &quot;Short explanation,&quot; &quot;High level description&quot; or similar relationship related language.</description>
+        <developerName>Navatar_Record_Relationship_Summary_16jfj000001Hll7</developerName>
+        <genAiPluginInstructions>
+            <description>When called on a supported record (Firm/Contact/Deal), generate a structured summary with sections tailored to the record.</description>
+            <developerName>instructions_0_1772178816456</developerName>
+            <language>en_US</language>
+            <masterLabel>instructions_0_1772178816456</masterLabel>
+            <sortOrder>0</sortOrder>
+        </genAiPluginInstructions>
+        <genAiPluginInstructions>
+            <description>Never include Fund or Fundraising summaries. If the user asks to summarize those, respond with the agreed text: “Summaries for Fund or Fundraising records aren’t supported. I can help with Account, Contact, or Deal summaries—would you like to proceed with one of those?</description>
+            <developerName>instructions_0_1772185522768</developerName>
+            <language>en_US</language>
+            <masterLabel>instructions_0_1772185522768</masterLabel>
+            <sortOrder>1</sortOrder>
+        </genAiPluginInstructions>
+        <genAiPluginInstructions>
+            <description>Respect field‑level security: 
+- Do not mention or derive restricted fields the current user cannot see. 
+- If key information is missing due to security or actual data gaps, acknowledge that the summary is based only on available fields.</description>
+            <developerName>instruction_0_1770371641810</developerName>
+            <language xsi:nil="true" />
+            <masterLabel>instruction_0_1770371641810</masterLabel>
+            <sortOrder>2</sortOrder>
+        </genAiPluginInstructions>
+        <genAiPluginInstructions>
+            <description>Keep summaries concise, scan-friendly, and ready to be copied into Rich Text, using headings and bullets instead of long prose.</description>
+            <developerName>instruction_1_1770371641810</developerName>
+            <language xsi:nil="true" />
+            <masterLabel>instruction_1_1770371641810</masterLabel>
+            <sortOrder>3</sortOrder>
+        </genAiPluginInstructions>
+        <genAiPluginInstructions>
+            <description>If records with the same name exist within one or multiple objects, the agent must request user confirmation before proceeding with record summarization.</description>
+            <developerName>instruction_2_1770371641810</developerName>
+            <language xsi:nil="true" />
+            <masterLabel>instruction_2_1770371641810</masterLabel>
+            <sortOrder>4</sortOrder>
+        </genAiPluginInstructions>
+        <genAiPluginInstructions>
+            <description>Ask clarifying questions if the user&#39;s request is ambiguous or lacks necessary details.</description>
+            <developerName>instruction_3_1770371641810</developerName>
+            <language xsi:nil="true" />
+            <masterLabel>instruction_3_1770371641810</masterLabel>
+            <sortOrder>5</sortOrder>
+        </genAiPluginInstructions>
+        <language>en_US</language>
+        <localActionLinks>
+            <functionName>IdentifyRecordByName_179fj000001YqlB</functionName>
+        </localActionLinks>
+        <localActionLinks>
+            <functionName>Navatar_Firm_Summary_179gK0000011wuU</functionName>
+        </localActionLinks>
+        <localActionLinks>
+            <functionName>Navatar_Contact_Summary_179gK0000011wuU</functionName>
+        </localActionLinks>
+        <localActionLinks>
+            <functionName>Navatar_Deal_Summary_179gK0000011wuU</functionName>
+        </localActionLinks>
+        <localActions>
+            <fullName>Navatar_Contact_Summary_179gK0000011wuU</fullName>
+            <description>Use this action when the user asks for a contact overview or summary. It includes the contact’s overview, interactions, and the history of the relationship.</description>
+            <developerName>Navatar_Contact_Summary_179gK0000011wuU</developerName>
+            <invocationTarget>NavatarContactRelationShip</invocationTarget>
+            <invocationTargetType>apex</invocationTargetType>
+            <isConfirmationRequired>false</isConfirmationRequired>
+            <isIncludeInProgressIndicator>true</isIncludeInProgressIndicator>
+            <localDeveloperName>Navatar_Contact_Summary</localDeveloperName>
+            <masterLabel>Navatar Contact Summary</masterLabel>
+            <progressIndicatorMessage>Preparing Summary...</progressIndicatorMessage>
+            <source>Navatar_Contact_Summary</source>
+        </localActions>
+        <localActions>
+            <fullName>Navatar_Deal_Summary_179gK0000011wuU</fullName>
+            <description>Use this action when the user asks for a deal overview or summary. It includes the deal’s overview, interactions, and the history of the relationship.</description>
+            <developerName>Navatar_Deal_Summary_179gK0000011wuU</developerName>
+            <invocationTarget>NavatarDealRelationship</invocationTarget>
+            <invocationTargetType>apex</invocationTargetType>
+            <isConfirmationRequired>false</isConfirmationRequired>
+            <isIncludeInProgressIndicator>true</isIncludeInProgressIndicator>
+            <localDeveloperName>Navatar_Deal_Summary</localDeveloperName>
+            <masterLabel>Navatar Deal Summary</masterLabel>
+            <progressIndicatorMessage>Preparing Summary...</progressIndicatorMessage>
+            <source>Navatar_Deal_Summary</source>
+        </localActions>
+        <localActions>
+            <fullName>Navatar_Firm_Summary_179gK0000011wuU</fullName>
+            <description>Use this action when the user asks for a firm overview or summary. It includes the firm’s overview, key contacts and interactions, and the history of the relationship.</description>
+            <developerName>Navatar_Firm_Summary_179gK0000011wuU</developerName>
+            <invocationTarget>NavatarFirmRelationShip</invocationTarget>
+            <invocationTargetType>apex</invocationTargetType>
+            <isConfirmationRequired>false</isConfirmationRequired>
+            <isIncludeInProgressIndicator>true</isIncludeInProgressIndicator>
+            <localDeveloperName>Navatar_Firm_Summary</localDeveloperName>
+            <masterLabel>Navatar Firm Summary</masterLabel>
+            <progressIndicatorMessage>Preparing Summary...</progressIndicatorMessage>
+            <source>Navatar_Firm_Summary</source>
+        </localActions>
+        <localActions>
+            <fullName>IdentifyRecordByName_179fj000001YqlB</fullName>
+            <description>Searches for Salesforce CRM records by name and returns a list of matching Salesforce CRM record IDs.</description>
+            <developerName>IdentifyRecordByName_179fj000001YqlB</developerName>
+            <invocationTarget>identifyRecordByName</invocationTarget>
+            <invocationTargetType>standardInvocableAction</invocationTargetType>
+            <isConfirmationRequired>false</isConfirmationRequired>
+            <isIncludeInProgressIndicator>true</isIncludeInProgressIndicator>
+            <localDeveloperName>IdentifyRecordByName</localDeveloperName>
+            <masterLabel>Identify Record by Name</masterLabel>
+            <source>EmployeeCopilot__IdentifyRecordByName</source>
+        </localActions>
+        <localDeveloperName>Navatar_Record_Relationship_Summary</localDeveloperName>
+        <masterLabel>Navatar Record Relationship Summary</masterLabel>
+        <pluginType>Topic</pluginType>
+        <scope>Supported objects: Account (Firm), Contact, Deal. Excludes Fund and Fundraising summaries; must return a friendly fallback for those. Must respect Salesforce field-level security and not expose restricted fields.</scope>
+    </localTopics>
+    <localTopics>
+        <fullName>Navatar_Create_Task_16jgK0000018Dqk</fullName>
+        <canEscalate>false</canEscalate>
+        <description>&quot;Use this topic when the user explicitly says “create a task / reminder / follow‑up . The agent’s response should be displayed directly in the chat window.
+Activate this topic when the prompt includes phrases such as “Remind me to reach out,” “Create a follow up,” or similar follow-up-related language.&quot;</description>
+        <developerName>Navatar_Create_Task_16jgK0000018Dqk</developerName>
+        <genAiPluginInstructions>
+            <description>If the user asks for an action like “create a task”, “set a follow‑up”, or “remind me to call them”: - Ask minimal clarifying questions only if needed: due date, owner (assume current user if not specified), and a short subject. - Keep Task creation tightly tied to the Firm/Contact/Deal context so the agent remains a “relationship &amp; next‑steps” rather than a generic task</description>
+            <developerName>instruction_0_1772376938240</developerName>
+            <language xsi:nil="true" />
+            <masterLabel>instruction_0_1772376938240</masterLabel>
+            <sortOrder>0</sortOrder>
+        </genAiPluginInstructions>
+        <genAiPluginInstructions>
+            <description>If records with the same name exist within one or multiple objects, the agent must request user confirmation before proceeding with task creation.</description>
+            <developerName>instruction_1_1772376938240</developerName>
+            <language xsi:nil="true" />
+            <masterLabel>instruction_1_1772376938240</masterLabel>
+            <sortOrder>1</sortOrder>
+        </genAiPluginInstructions>
+        <genAiPluginInstructions>
+            <description>Ask clarifying questions if the user&#39;s request is ambiguous or lacks necessary details.</description>
+            <developerName>instruction_2_1772376938240</developerName>
+            <language xsi:nil="true" />
+            <masterLabel>instruction_2_1772376938240</masterLabel>
+            <sortOrder>2</sortOrder>
+        </genAiPluginInstructions>
+        <genAiPluginInstructions>
+            <description>If Task creation fails for any reason (including but not limited to validation rules, permission issues, Apex errors, or system exceptions), the agent must:
+Display a clear error message in the AI window: Task [Task title] could not be generated due to a technical issue or workflow error.
+Please contact your Navatar Administrator for further assistance.</description>
+            <developerName>instruction_3_1772376938240</developerName>
+            <language xsi:nil="true" />
+            <masterLabel>instruction_3_1772376938240</masterLabel>
+            <sortOrder>3</sortOrder>
+        </genAiPluginInstructions>
+        <language>en_US</language>
+        <localActionLinks>
+            <functionName>Navatar_Create_Task_Record_179gK0000015TGv</functionName>
+        </localActionLinks>
+        <localActionLinks>
+            <functionName>IdentifyRecordByName_179gK0000015TGv</functionName>
+        </localActionLinks>
+        <localActions>
+            <fullName>IdentifyRecordByName_179gK0000015TGv</fullName>
+            <description>Searches for Salesforce CRM records by name and returns a list of matching Salesforce CRM record IDs.</description>
+            <developerName>IdentifyRecordByName_179gK0000015TGv</developerName>
+            <invocationTarget>identifyRecordByName</invocationTarget>
+            <invocationTargetType>standardInvocableAction</invocationTargetType>
+            <isConfirmationRequired>false</isConfirmationRequired>
+            <isIncludeInProgressIndicator>true</isIncludeInProgressIndicator>
+            <localDeveloperName>IdentifyRecordByName</localDeveloperName>
+            <masterLabel>Identify Record by Name</masterLabel>
+            <source>EmployeeCopilot__IdentifyRecordByName</source>
+        </localActions>
+        <localActions>
+            <fullName>Navatar_Create_Task_Record_179gK0000015TGv</fullName>
+            <description>This flow creates a Task record based on user-provided information.</description>
+            <developerName>Navatar_Create_Task_Record_179gK0000015TGv</developerName>
+            <invocationTarget>Navatar_Create_Task_Record</invocationTarget>
+            <invocationTargetType>flow</invocationTargetType>
+            <isConfirmationRequired>false</isConfirmationRequired>
+            <isIncludeInProgressIndicator>true</isIncludeInProgressIndicator>
+            <localDeveloperName>Navatar_Create_Task_Record</localDeveloperName>
+            <masterLabel>Navatar Create Task Record</masterLabel>
+            <progressIndicatorMessage>Creating Task</progressIndicatorMessage>
+            <source>Navatar_Create_Task_Record</source>
+        </localActions>
+        <localDeveloperName>Navatar_Create_Task</localDeveloperName>
+        <masterLabel>Navatar Create Task</masterLabel>
+        <pluginType>Topic</pluginType>
+        <scope>Supported objects: Account (Firm), Contact, Deal, Fund, Fundraising, Must respect Salesforce field-level security and not expose restricted fields.</scope>
+        <source>Navatar_Create_Task</source>
+    </localTopics>
+    <masterLabel>Navatar AI</masterLabel>
+    <plannerActions>
+        <fullName>AnswerQuestionsWithKnowledge_16jfj000001Hll7</fullName>
+        <description>Answers questions about company policies and procedures, troubleshooting steps, or product information. For example: “What is your return policy?” “How do I fix an issue?” or “What features does a product have?”</description>
+        <developerName>AnswerQuestionsWithKnowledge_16jfj000001Hll7</developerName>
+        <invocationTarget>streamKnowledgeSearch</invocationTarget>
+        <invocationTargetType>standardInvocableAction</invocationTargetType>
+        <isConfirmationRequired>false</isConfirmationRequired>
+        <isIncludeInProgressIndicator>true</isIncludeInProgressIndicator>
+        <localDeveloperName>AnswerQuestionsWithKnowledge</localDeveloperName>
+        <masterLabel>Answer Questions with Knowledge</masterLabel>
+        <progressIndicatorMessage>Getting answers</progressIndicatorMessage>
+        <source>EmployeeCopilot__AnswerQuestionsWithKnowledge</source>
+    </plannerActions>
+    <plannerSurfaces>
+        <adaptiveResponseAllowed>true</adaptiveResponseAllowed>
+        <callRecordingAllowed>false</callRecordingAllowed>
+        <surface>SurfaceAction__Messaging</surface>
+        <surfaceType>Messaging</surfaceType>
+    </plannerSurfaces>
+    <plannerType>AiCopilot__ReAct</plannerType>
+</GenAiPlannerBundle>

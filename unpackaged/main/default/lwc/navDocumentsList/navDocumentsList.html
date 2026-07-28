@@ -1,0 +1,96 @@
+<template>
+    <lightning-card>
+        <div
+            class="slds-grid slds-grid_vertical-align-center slds-wrap slds-p-horizontal_medium slds-p-vertical_x-small slds-border_bottom"
+        >
+            <div class="slds-col slds-grow"></div>
+            <div data-search>
+                <c-nav-search-box
+                    placeholder="Search documents..."
+                    value={searchTerm}
+                    onsearch={handleSearch}
+                ></c-nav-search-box>
+            </div>
+        </div>
+
+        <div
+            class="slds-grid slds-p-horizontal_medium slds-p-vertical_xx-small slds-border_bottom"
+            data-columns
+        >
+            <div class="slds-col slds-size_5-of-12">Document</div>
+            <div class="slds-col slds-size_3-of-12">Deal</div>
+            <div class="slds-col slds-size_2-of-12">Source</div>
+            <div class="slds-col slds-size_2-of-12">Date</div>
+        </div>
+
+        <template lwc:if={hasRows}>
+            <ul class="slds-has-dividers_bottom-space">
+                <template for:each={rows} for:item="row">
+                    <li key={row.recordId} class="slds-item">
+                        <div
+                            class="slds-grid slds-wrap slds-p-horizontal_medium slds-p-vertical_x-small"
+                            data-row
+                            data-id={row.recordId}
+                            data-open={row.isOpenAttr}
+                            onclick={handleToggle}
+                        >
+                            <div class="slds-col slds-size_1-of-1 slds-medium-size_5-of-12">
+                                <a
+                                    href="#"
+                                    data-id={row.recordId}
+                                    onclick={handlePreview}
+                                    class="slds-text-title_bold"
+                                    >{row.title}</a
+                                >
+                            </div>
+                            <div class="slds-col slds-size_1-of-1 slds-medium-size_3-of-12 slds-text-body_small">
+                                <span data-cell-label>Deal</span>
+                                <template lwc:if={row.dealName}>{row.dealName}</template>
+                                <template lwc:else><span class="slds-text-color_weak">-</span></template>
+                            </div>
+                            <div class="slds-col slds-size_1-of-1 slds-medium-size_2-of-12">
+                                <span data-cell-label>Source</span>
+                                <lightning-badge label={row.source}></lightning-badge>
+                            </div>
+                            <div
+                                class="slds-col slds-size_1-of-1 slds-medium-size_2-of-12 slds-text-body_small slds-text-color_weak"
+                            >
+                                <span data-cell-label>Date</span>
+                                <lightning-formatted-date-time
+                                    value={row.uploadedDate}
+                                    year="numeric"
+                                    month="short"
+                                    day="2-digit"
+                                ></lightning-formatted-date-time>
+                            </div>
+                        </div>
+
+                        <template lwc:if={row.isOpen}>
+                            <div class="slds-p-horizontal_medium slds-p-bottom_medium slds-text-longform">
+                                <template lwc:if={row.insight}>
+                                    <p class="slds-m-bottom_xx-small">
+                                        <lightning-badge label="AI"></lightning-badge>
+                                        <span class="slds-text-title_caps slds-text-color_weak slds-m-left_x-small"
+                                            >Navatar Intelligence</span
+                                        >
+                                    </p>
+                                    <p class="slds-text-body_small">{row.insight}</p>
+                                </template>
+                                <template lwc:else>
+                                    <p class="slds-text-body_small slds-text-color_weak">
+                                        No summary is available for this document yet.
+                                    </p>
+                                </template>
+                            </div>
+                        </template>
+                    </li>
+                </template>
+            </ul>
+        </template>
+        <template lwc:else>
+            <p class="slds-p-around_medium slds-text-body_small slds-text-color_weak">
+                No documents match this search.
+            </p>
+        </template>
+    </lightning-card>
+</template>

@@ -1,0 +1,26 @@
+<!-- AA-835: Removed Upload button — not present in design reference -->
+<template>
+    <lightning-card title="Documents" icon-name="utility:file">
+<div class="slds-p-horizontal_medium slds-p-bottom_medium">
+            <template for:each={documents} for:item="doc">
+                <lightning-layout key={doc.id} vertical-align="center" class="slds-border_bottom slds-p-vertical_x-small">
+                    <lightning-layout-item class="slds-m-right_small">
+                        <lightning-avatar
+                            initials={doc.abbr}
+                            alternative-text={doc.name}
+                            size="medium"
+                            fallback-icon-name="standard:file">
+                        </lightning-avatar>
+                    </lightning-layout-item>
+                    <lightning-layout-item flexibility="auto">
+                        <p class="slds-text-body_regular slds-text-title_bold">{doc.name}</p>
+                        <lightning-formatted-text value={doc.meta} class="slds-text-body_small slds-text-color_weak"></lightning-formatted-text>
+                    </lightning-layout-item>
+                    <lightning-layout-item class="slds-no-flex slds-m-left_x-small">
+                        <lightning-badge label={doc.status}></lightning-badge>
+                    </lightning-layout-item>
+                </lightning-layout>
+            </template>
+        </div>
+    </lightning-card>
+</template>

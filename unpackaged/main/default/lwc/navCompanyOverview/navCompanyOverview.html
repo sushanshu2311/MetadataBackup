@@ -1,0 +1,19 @@
+<template>
+    <!-- Current Summary — full width -->
+    <div class="slds-m-bottom_small">
+        <c-nav-current-summary segments={summarySegments}></c-nav-current-summary>
+    </div>
+
+    <!-- 2-column layout: Activity (left ~65%) | Company Profile + Tasks (right ~35%) -->
+    <lightning-layout multiple-rows="true" pull-to-boundary="small">
+        <lightning-layout-item size="12" medium-device-size="8" padding="around-small">
+            <c-nav-activity-feed record-id={recordId}></c-nav-activity-feed>
+        </lightning-layout-item>
+        <lightning-layout-item size="12" medium-device-size="4" padding="around-small">
+            <div class="slds-m-bottom_small">
+                <c-nav-company-profile record-id={recordId}></c-nav-company-profile>
+            </div>
+            <c-nav-tasks-widget record-id={recordId}></c-nav-tasks-widget>
+        </lightning-layout-item>
+    </lightning-layout>
+</template>

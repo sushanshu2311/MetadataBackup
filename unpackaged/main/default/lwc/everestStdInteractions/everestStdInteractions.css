@@ -1,0 +1,11 @@
+/* Definite host width + fixed-width search so the datatable fills width and
+   doesn't enter a width-recalculation loop. */
+:host {
+    display: block;
+    width: 100%;
+}
+
+lightning-input {
+    flex: 0 0 auto;
+    width: 220px;
+}

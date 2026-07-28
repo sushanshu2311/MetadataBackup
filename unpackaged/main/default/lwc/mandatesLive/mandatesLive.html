@@ -1,0 +1,143 @@
+<template>
+    <div class="card">
+        <!-- Toolbar -->
+        <div class="ch">
+            <span class="ct">Mandates</span>
+            <div class="cha">
+                <template if:true={hasDrafts}>
+                    <button class="btn bp" onclick={handleSave}>Save</button>
+                    <button class="btn" onclick={handleCancelAll}>Cancel</button>
+                </template>
+            </div>
+        </div>
+
+        <template if:true={error}>
+            <div class="msg-state err">{error}</div>
+        </template>
+
+        <template if:false={isEmpty}>
+            <!-- Filter bar: facet multi-selects + search -->
+            <div class="filter-bar">
+                <template for:each={facets} for:item="f">
+                    <div key={f.colName} class={f.pickClass}>
+                        <button type="button" class={f.btnClass} data-col={f.colName}
+                            onclick={toggleFacet}>{f.btnLabel}</button>
+                        <div class="ms-menu" onclick={stopClick}>
+                            <template for:each={f.options} for:item="opt">
+                                <label key={opt.key} class="ms-opt" data-col={f.colName}
+                                    data-value={opt.value} onclick={toggleFacetOption}>
+                                    <input type="checkbox" checked={opt.selected} />
+                                    {opt.value}
+                                </label>
+                            </template>
+                            <div class="ms-clr" data-col={f.colName} onclick={clearFacet}>Clear</div>
+                        </div>
+                    </div>
+                </template>
+                <input class="srch" type="search" placeholder="Search mandates…"
+                    value={searchTerm} oninput={handleSearch} />
+            </div>
+
+            <div class="tbl-wrap">
+                <table class="lc-tbl" id="pipe-tbl">
+                    <thead>
+                        <tr>
+                            <th class="th ind"></th>
+                            <template for:each={headerCols} for:item="h">
+                                <th key={h.name} class={h.thClass}>{h.label}</th>
+                            </template>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <template for:each={groups} for:item="g">
+                            <!-- Group header -->
+                            <tr key={g.stage} class={g.headerClass} data-stage={g.stage} onclick={handleToggleGroup}>
+                                <td colspan={colspan}>
+                                    <span class="grp-chev">▼</span>{g.stage}
+                                    <span class="grp-meta">{g.meta}</span>
+                                </td>
+                            </tr>
+
+                            <!-- Data rows -->
+                            <template for:each={g.rows} for:item="row">
+                                <tr key={row.id} class={row.rowClass}>
+                                    <td class="td ind" data-row-id={row.id} onclick={handleToggleExpand}>
+                                        <span class="row-chev">{row.chevron}</span>
+                                    </td>
+                                    <template for:each={row.cells} for:item="cell">
+                                        <td key={cell.key} class={cell.cellClass}
+                                            data-row-id={cell.rowId} data-col={cell.colName}
+                                            onclick={handleCellClick}>
+
+                                            <!-- Always-on Notes editor -->
+                                            <template if:true={cell.isNotes}>
+                                                <textarea class="notes-input" rows="1" placeholder="Add note…"
+                                                    data-row-id={cell.rowId} data-col={cell.colName}
+                                                    onblur={handleNotesBlur} onclick={stopClick}>{cell.notesValue}</textarea>
+                                            </template>
+
+                                            <!-- VIEW: record link -->
+                                            <template if:true={cell.showLink}>
+                                                <a href={cell.linkUrl} target="_blank"
+                                                   class="rec-link" onclick={stopClick}>{cell.display}</a>
+                                            </template>
+                                            <!-- VIEW: categorical (Sector / Geography) -->
+                                            <template if:true={cell.showCat}>
+                                                <span class="cat-val">{cell.display}</span>
+                                            </template>
+                                            <!-- VIEW: plain -->
+                                            <template if:true={cell.showPlain}>
+                                                <span class="cellval">{cell.display}</span>
+                                            </template>
+
+                                            <!-- EDIT: text box -->
+                                            <template if:true={cell.isTextEdit}>
+                                                <input type="text" class="cell-input" value={cell.editValue}
+                                                    oninput={handleEditInput} onblur={handleEditCommit}
+                                                    onkeydown={handleEditCommit} onclick={stopClick} />
+                                            </template>
+
+                                            <!-- EDIT: lookup (search-as-you-type) -->
+                                            <template if:true={cell.isReferenceEdit}>
+                                                <input type="text" class="cell-input" value={cell.editValue}
+                                                    placeholder={cell.refPlaceholder} oninput={handleLookupInput}
+                                                    onblur={cancelEdit} onkeydown={handleRefKey} onclick={stopClick} />
+                                                <template if:true={cell.lookupResults.length}>
+                                                    <div class="lk-menu" onmousedown={stopClick}>
+                                                        <template for:each={cell.lookupResults} for:item="r">
+                                                            <div key={r.value} class="lk-opt"
+                                                                data-id={r.value} data-name={r.label}
+                                                                onmousedown={handleLookupPick}>{r.label}</div>
+                                                        </template>
+                                                    </div>
+                                                </template>
+                                            </template>
+                                        </td>
+                                    </template>
+                                </tr>
+
+                                <!-- Expansion row -->
+                                <tr key={row.expKey} if:true={row.expanded} class="exp-row">
+                                    <td colspan={colspan}>
+                                        <div class="exp-inner">
+                                            <template for:each={row.detailPairs} for:item="p">
+                                                <div key={p.key} class="exp-pair">
+                                                    <span class="exp-lbl">{p.label}</span>
+                                                    <span class="exp-val">{p.value}</span>
+                                                </div>
+                                            </template>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </template>
+                        </template>
+                    </tbody>
+                </table>
+            </div>
+        </template>
+
+        <template if:true={isEmpty}>
+            <div class="msg-state">No mandates in these stages yet.</div>
+        </template>
+    </div>
+</template>

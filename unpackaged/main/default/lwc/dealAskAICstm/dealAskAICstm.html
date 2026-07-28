@@ -1,0 +1,106 @@
+<template>
+    <div class="ai-card">
+
+        <!-- Dark blue header -->
+        <div class="ai-card__header">
+            <lightning-layout vertical-align="center">
+                <lightning-layout-item flexibility="auto">
+                    <p class="ai-card__title">Ask AI</p>
+                    <p class="ai-card__subtitle">Ask questions or take action on this deal</p>
+                </lightning-layout-item>
+                <lightning-layout-item flexibility="no-flex">
+                    <lightning-button-icon
+                        icon-name={collapseIcon}
+                        variant="bare"
+                        alternative-text="Toggle"
+                        class="ai-collapse-btn"
+                        onclick={handleToggle}>
+                    </lightning-button-icon>
+                </lightning-layout-item>
+            </lightning-layout>
+        </div>
+
+        <!-- Card body -->
+        <template lwc:if={isExpanded}>
+        <div class="ai-card__body">
+
+            <!-- Input + Ask button -->
+            <lightning-layout vertical-align="end" class="slds-m-bottom_small">
+                <lightning-layout-item flexibility="auto">
+                    <lightning-input
+                        label="Type your question or prompt"
+                        placeholder="e.g. What are the key risks on this deal?"
+                        value={inputText}
+                        oninput={handleInput}
+                        onkeydown={handleKey}>
+                    </lightning-input>
+                </lightning-layout-item>
+                <lightning-layout-item flexibility="no-flex" class="slds-m-left_x-small">
+                    <lightning-button label="Ask" variant="brand" onclick={sendMessage}></lightning-button>
+                </lightning-layout-item>
+            </lightning-layout>
+
+            <!-- Quick prompts -->
+            <div class="slds-m-bottom_small">
+                <p class="slds-text-body_small slds-text-color_weak slds-m-bottom_x-small">Quick prompts</p>
+                <lightning-layout multiple-rows>
+                    <lightning-layout-item flexibility="no-flex" class="slds-m-right_xx-small slds-m-bottom_xx-small">
+                        <lightning-button variant="neutral" label="Key risks"        data-q="What are the key risks?"       onclick={handleSuggest}></lightning-button>
+                    </lightning-layout-item>
+                    <lightning-layout-item flexibility="no-flex" class="slds-m-right_xx-small slds-m-bottom_xx-small">
+                        <lightning-button variant="neutral" label="Draft agenda"     data-q="Draft 18 Jun meeting agenda"   onclick={handleSuggest}></lightning-button>
+                    </lightning-layout-item>
+                    <lightning-layout-item flexibility="no-flex" class="slds-m-right_xx-small slds-m-bottom_xx-small">
+                        <lightning-button variant="neutral" label="Lighthouse comp"  data-q="Compare to Project Lighthouse" onclick={handleSuggest}></lightning-button>
+                    </lightning-layout-item>
+                    <lightning-layout-item flexibility="no-flex" class="slds-m-right_xx-small slds-m-bottom_xx-small">
+                        <lightning-button variant="neutral" label="Pre-meeting plan" data-q="Pre-meeting action plan"       onclick={handleSuggest}></lightning-button>
+                    </lightning-layout-item>
+                </lightning-layout>
+            </div>
+
+            <!-- Chat messages -->
+            <div class="ai-messages slds-scrollable_y">
+                <template for:each={decoratedMessages} for:item="msg">
+                    <div key={msg.id} class="slds-m-bottom_x-small">
+
+                        <!-- AI message — left aligned -->
+                        <template lwc:if={msg.isAI}>
+                            <lightning-layout>
+                                <lightning-layout-item size="10">
+                                    <div class={msg.bubbleCss}>
+                                        <lightning-formatted-text value={msg.text} class="slds-text-body_small"></lightning-formatted-text>
+                                    </div>
+                                    <p class={msg.metaCss}>{msg.sender} &middot; {msg.time}</p>
+                                </lightning-layout-item>
+                                <lightning-layout-item size="2"></lightning-layout-item>
+                            </lightning-layout>
+                        </template>
+
+                        <!-- User message — right aligned -->
+                        <template lwc:else>
+                            <lightning-layout>
+                                <lightning-layout-item size="2"></lightning-layout-item>
+                                <lightning-layout-item size="10">
+                                    <div class={msg.bubbleCss}>
+                                        <lightning-formatted-text value={msg.text} class="slds-text-body_small"></lightning-formatted-text>
+                                    </div>
+                                    <p class={msg.metaCss}>{msg.sender} &middot; {msg.time}</p>
+                                </lightning-layout-item>
+                            </lightning-layout>
+                        </template>
+
+                    </div>
+                </template>
+
+                <template lwc:if={isTyping}>
+                    <div class="slds-m-top_x-small slds-p-left_x-small">
+                        <lightning-spinner size="x-small" alternative-text="AI is thinking"></lightning-spinner>
+                    </div>
+                </template>
+            </div>
+
+        </div>
+        </template>
+    </div>
+</template>

@@ -1,0 +1,28 @@
+<template>
+    <lightning-card>
+        <span slot="title">Current Summary</span>
+        <div slot="actions">
+            <lightning-badge label="AI" title="AI-generated"></lightning-badge>
+        </div>
+
+        <div class="slds-border_top slds-p-around_medium">
+            <template lwc:if={hasSummary}>
+                <p class="slds-text-body_regular" data-narrative data-capped>
+                    <template for:each={segments} for:item="segment">
+                        <span key={segment.key}>
+                            <template lwc:if={segment.isLink}>
+                                <a href="#" data-id={segment.recordId} onclick={handleNavigate}>{segment.text}</a>
+                            </template>
+                            <template lwc:else>{segment.text}</template>
+                        </span>
+                    </template>
+                </p>
+            </template>
+            <template lwc:else>
+                <p class="slds-text-body_small slds-text-color_weak">
+                    No summary is available for this record yet.
+                </p>
+            </template>
+        </div>
+    </lightning-card>
+</template>

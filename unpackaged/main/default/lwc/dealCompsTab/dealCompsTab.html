@@ -1,0 +1,23 @@
+<template>
+    <lightning-card title="Comparable Deals" icon-name="utility:chart">
+        <div class="slds-p-horizontal_medium slds-p-bottom_medium">
+            <template for:each={comparables} for:item="comp">
+                <lightning-layout key={comp.id} vertical-align="start" class="slds-border_bottom slds-p-vertical_small">
+                    <lightning-layout-item class="slds-m-right_small">
+                        <lightning-avatar
+                            initials={comp.code}
+                            alternative-text={comp.name}
+                            size="medium"
+                            fallback-icon-name="standard:opportunity">
+                        </lightning-avatar>
+                    </lightning-layout-item>
+                    <lightning-layout-item flexibility="auto">
+                        <p class="slds-text-body_regular slds-text-title_bold">{comp.name}</p>
+                        <lightning-formatted-text value={comp.meta} class="slds-text-body_small slds-text-color_weak slds-m-top_xx-small"></lightning-formatted-text>
+                        <lightning-formatted-text value={comp.note} class="slds-text-body_small slds-m-top_xx-small"></lightning-formatted-text>
+                    </lightning-layout-item>
+                </lightning-layout>
+            </template>
+        </div>
+    </lightning-card>
+</template>

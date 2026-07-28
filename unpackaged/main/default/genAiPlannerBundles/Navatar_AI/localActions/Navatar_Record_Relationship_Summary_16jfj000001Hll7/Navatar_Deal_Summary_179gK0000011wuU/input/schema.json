@@ -1,0 +1,18 @@
+{
+  "required" : [ "Deal" ],
+  "unevaluatedProperties" : false,
+  "properties" : {
+    "Deal" : {
+      "title" : "Deal",
+      "description" : "User provides a record name. Use Identify Record by Name to retrieve the corresponding Deal ID.",
+      "lightning:type" : "lightning__recordInfoType",
+      "lightning:sObjectInfo" : {
+        "apiName" : "navpeII__Pipeline__c"
+      },
+      "lightning:isPII" : false,
+      "copilotAction:isUserInput" : false
+    }
+  },
+  "lightning:type" : "lightning__objectType",
+  "lightning:textIndexed" : true
+}

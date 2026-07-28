@@ -1,0 +1,98 @@
+<!-- AA-833: Replaced manual layout with lightning-datatable to fix Tags column overflow -->
+<template>
+    <lightning-card title="Interactions" icon-name="utility:people">
+        <div slot="actions">
+            <lightning-formatted-text value={totalCountLabel} class="slds-text-body_small slds-text-color_weak slds-m-right_x-small"></lightning-formatted-text>
+            <lightning-button label="+ Log" variant="neutral" onclick={handleLogInteraction}></lightning-button>
+        </div>
+
+        <lightning-datatable
+            key-field="id"
+            data={tableData}
+            columns={columns}
+            onrowaction={handleRowAction}
+            hide-checkbox-column>
+        </lightning-datatable>
+    </lightning-card>
+
+    <template if:true={showIntModal}>
+        <section role="dialog" tabindex="-1" aria-modal="true" aria-labelledby="int-modal-title"
+                 class="slds-modal slds-fade-in-open">
+            <div class="slds-modal__container">
+                <header class="slds-modal__header">
+                    <lightning-button-icon
+                        icon-name="utility:close"
+                        size="large"
+                        variant="bare-inverse"
+                        alternative-text="Close"
+                        class="slds-modal__close"
+                        onclick={closeIntModal}>
+                    </lightning-button-icon>
+                    <lightning-layout vertical-align="center">
+                        <lightning-layout-item class="slds-m-right_small">
+                            <lightning-icon icon-name={selectedIntIcon} size="small" variant="inverse"></lightning-icon>
+                        </lightning-layout-item>
+                        <lightning-layout-item flexibility="auto">
+                            <p class="slds-text-body_small slds-text-color_inverse">{selectedInt.date} &middot; {selectedInt.type}</p>
+                            <h2 id="int-modal-title" class="slds-modal__title slds-hyphenate">{selectedInt.subject}</h2>
+                        </lightning-layout-item>
+                    </lightning-layout>
+                </header>
+
+                <div class="slds-modal__content slds-p-around_medium" id="int-modal-content">
+                    <template if:true={intViewMode}>
+                        <div class="slds-m-bottom_medium">
+                            <p class="slds-text-title slds-m-bottom_x-small">Notes</p>
+                            <div class="slds-box slds-box_x-small slds-theme_shade">
+                                <lightning-formatted-text value={selectedInt.notes} class="slds-text-body_small"></lightning-formatted-text>
+                            </div>
+                        </div>
+                        <div class="slds-m-bottom_medium">
+                            <p class="slds-text-title slds-m-bottom_x-small">People</p>
+                            <template for:each={selectedInt.people} for:item="person">
+                                <lightning-layout key={person.id} vertical-align="center" class="slds-m-bottom_x-small">
+                                    <lightning-layout-item class="slds-m-right_small">
+                                        <lightning-avatar
+                                            initials={person.initials}
+                                            alternative-text={person.name}
+                                            size="small"
+                                            fallback-icon-name="standard:person_account">
+                                        </lightning-avatar>
+                                    </lightning-layout-item>
+                                    <lightning-layout-item flexibility="auto">
+                                        <p class="slds-text-body_small slds-text-title_bold">{person.name}</p>
+                                        <p class="slds-text-body_small slds-text-color_weak">{person.org}</p>
+                                    </lightning-layout-item>
+                                </lightning-layout>
+                            </template>
+                        </div>
+                        <div>
+                            <p class="slds-text-title slds-m-bottom_x-small">Tags</p>
+                            <template for:each={selectedInt.tags} for:item="tag">
+                                <lightning-badge key={tag} label={tag} class="slds-m-right_xx-small slds-m-bottom_xx-small"></lightning-badge>
+                            </template>
+                        </div>
+                    </template>
+                    <template if:false={intViewMode}>
+                        <div class="slds-m-bottom_medium">
+                            <lightning-input label="Subject" value={editSubject} onchange={handleEditSubjectChange}></lightning-input>
+                        </div>
+                        <lightning-textarea label="Notes" value={editNotes} oninput={handleEditNotesInput} max-rows="12"></lightning-textarea>
+                    </template>
+                </div>
+
+                <footer class="slds-modal__footer">
+                    <template if:true={intViewMode}>
+                        <lightning-button label="Edit"   variant="neutral" onclick={handleIntEdit}   class="slds-m-right_x-small"></lightning-button>
+                        <lightning-button label="Close"  variant="brand"   onclick={closeIntModal}></lightning-button>
+                    </template>
+                    <template if:false={intViewMode}>
+                        <lightning-button label="Cancel" variant="neutral" onclick={handleIntCancel} class="slds-m-right_x-small"></lightning-button>
+                        <lightning-button label="Save"   variant="brand"   onclick={handleIntSave}></lightning-button>
+                    </template>
+                </footer>
+            </div>
+        </section>
+        <div class="slds-backdrop slds-backdrop_open" onclick={closeIntModal}></div>
+    </template>
+</template>

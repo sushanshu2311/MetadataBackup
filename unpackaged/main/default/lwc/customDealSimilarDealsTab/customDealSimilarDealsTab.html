@@ -1,0 +1,50 @@
+<template>
+    <div class="similar-tab">
+        <!-- Search -->
+        <div class="tab-filters">
+            <span class="tab-title">Similar Deals</span>
+            <span class="ai-matched-label">AI matched</span>
+            <input class="tab-search" type="text" placeholder="Search deals..." value={searchText} oninput={handleSearch}/>
+        </div>
+
+        <!-- Table -->
+        <div class="table-wrap">
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        <th>Deal</th>
+                        <th>Sector</th>
+                        <th>Revenue</th>
+                        <th>Multiple</th>
+                        <th>Outcome</th>
+                        <th>Match</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <template for:each={filteredDeals} for:item="deal">
+                        <tr key={deal.id} class={deal.rowClass} data-id={deal.id} onclick={handleRowClick}>
+                            <td>
+                                <div class="deal-name">{deal.name}</div>
+                                <div class="deal-geo">{deal.geography}</div>
+                            </td>
+                            <td class="td-muted">{deal.sector}</td>
+                            <td class="td-muted">{deal.revenue}</td>
+                            <td class="td-muted">{deal.multiple}</td>
+                            <td><span class="outcome-badge">{deal.outcome}</span></td>
+                            <td>
+                                <span class="match-pct">{deal.match}%</span>
+                            </td>
+                        </tr>
+                        <tr key={deal.expandkey} class={deal.expandRowClass}>
+                            <td colspan="6">
+                                <div class="expand-panel">
+                                    <p class="expand-body">{deal.body}</p>
+                                </div>
+                            </td>
+                        </tr>
+                    </template>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</template>

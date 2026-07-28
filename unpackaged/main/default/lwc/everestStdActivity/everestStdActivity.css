@@ -1,0 +1,53 @@
+/* v10-style box border around the whole component (lightning-card renders no
+   visible border here, so border the host directly). */
+:host {
+    display: block;
+    border: 1px solid #c9c9c9;
+    border-radius: 0.375rem;
+    background: #ffffff;
+    margin-left: 0.75rem;
+
+    /* Filter pills → v10 .ff: rounded, navy active, white/gray inactive, 11px.
+       SLDS button styling hooks (only the filter lightning-buttons exist here). */
+    --slds-c-button-radius-border: 1rem;
+    --slds-c-button-font-size: 0.6875rem;
+    --slds-c-button-line-height: 1.75;
+    --slds-c-button-color-background: #ffffff;
+    --slds-c-button-color-border: #dddbda;
+    --slds-c-button-text-color: #706e6b;
+    --slds-c-button-color-background-hover: #f5f5f5;
+    --slds-c-button-brand-color-background: #0b2d5f;
+    --slds-c-button-brand-color-border: #0b2d5f;
+    --slds-c-button-brand-color-background-hover: #014486;
+    --slds-c-button-brand-color-border-hover: #014486;
+}
+
+/* v10 .fi-title: 12px / 600 / dark (feed row title is the first <p>) */
+li lightning-layout-item p:first-child {
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: #181818;
+}
+
+/* Keep the search a fixed width on the right of the filter row (no stretch) */
+lightning-input {
+    flex: 0 0 auto;
+    width: 220px;
+}
+
+/* v10 section title: 12px bold (vs lightning-card's large default heading) */
+[slot="title"] {
+    font-size: 0.75rem;
+    font-weight: 700;
+    color: #181818;
+    display: inline-block;
+    padding: 0.5rem 0 0.25rem 1rem;
+}
+
+/* Feed rows are clickable (scoped to the list, not the filter-row layout) */
+li lightning-layout {
+    cursor: pointer;
+}
+li lightning-layout:hover {
+    background-color: #f3f2f2;
+}

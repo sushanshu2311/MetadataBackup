@@ -1,0 +1,40 @@
+:host {
+    --navy: #0B2D5F;
+    --sf: #0176D3;
+    --bd: #DDDBDA;
+    --t1: #181818;
+    --t2: #706E6B;
+    --t3: #9CA3AF;
+    display: block;
+    font-family: 'Salesforce Sans', Arial, sans-serif;
+}
+.card { background: #fff; border-radius: 6px; border: 1px solid #E8E8E8; overflow: hidden; }
+.ch { display: flex; align-items: center; padding: 11px 16px; gap: 8px; border-bottom: 1px solid #F0F0F0; }
+.ct { font-size: 12px; font-weight: 700; color: var(--t1); }
+.cha { display: flex; align-items: center; gap: 8px; margin-left: auto; }
+.btn {
+    border: 1px solid var(--bd); background: #fff; border-radius: 4px; cursor: pointer;
+    font-family: inherit; font-size: 12px; font-weight: 600; padding: 5px 12px; color: var(--t1);
+}
+.btn:hover { background: #F5F5F5; }
+.btn.bn { color: var(--navy); border-color: var(--navy); padding: 2px 8px; font-size: 14px; line-height: 1; }
+.add-form { display: flex; align-items: center; gap: 6px; padding: 9px 16px; background: #F7FAFD; border-bottom: 1px solid var(--bd); flex-wrap: wrap; }
+.add-input { flex: 1; min-width: 140px; border: 1px solid var(--bd); border-radius: 4px; padding: 4px 8px; font-size: 12px; font-family: inherit; outline: none; }
+.add-input:focus { border-color: var(--sf); }
+.feed-filters { display: flex; align-items: center; padding: 7px 16px; gap: 6px; flex-wrap: wrap; background: #FAFAFA; }
+.srch {
+    border: 1px solid var(--bd); border-radius: 4px; padding: 4px 8px; font-size: 11px; font-family: inherit;
+    color: var(--t1); outline: none; width: 160px; margin-left: auto;
+}
+.srch:focus { border-color: var(--sf); }
+.ti { display: flex; align-items: flex-start; padding: 9px 16px; gap: 10px; font-size: 12px; border-bottom: 1px solid #F5F5F5; }
+.ti:last-child { border-bottom: none; }
+.tc { width: 14px; height: 14px; border-radius: 50%; border: 2px solid var(--bd); flex-shrink: 0; margin-top: 1px; cursor: pointer; }
+.tc.done { background: var(--navy); border-color: var(--navy); }
+.tl { flex: 1; }
+.tt { font-weight: 600; color: var(--t1); }
+.tt a { color: inherit; text-decoration: none; }
+.tt a:hover { text-decoration: underline; }
+.tt-done a { text-decoration: line-through; color: var(--t2); }
+.td { font-size: 11px; color: var(--t2); margin-top: 2px; }
+.td-done { color: var(--t3); }

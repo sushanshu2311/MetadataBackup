@@ -1,0 +1,15 @@
+<template>
+    <lightning-card>
+        <span slot="title">Key Metrics</span>
+        <div class="slds-p-horizontal_medium slds-p-bottom_small">
+            <lightning-layout multiple-rows="true" pull-to-boundary="small">
+                <template for:each={metrics} for:item="m">
+                    <lightning-layout-item key={m.label} size="6" padding="around-small">
+                        <p class="slds-text-body_small slds-text-color_weak">{m.label}</p>
+                        <p class="slds-text-body_regular slds-text-color_default">{m.value}</p>
+                    </lightning-layout-item>
+                </template>
+            </lightning-layout>
+        </div>
+    </lightning-card>
+</template>

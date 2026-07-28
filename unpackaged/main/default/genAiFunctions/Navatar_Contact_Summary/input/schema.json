@@ -1,0 +1,17 @@
+{
+  "required" : [ "Contact" ],
+  "unevaluatedProperties" : false,
+  "properties" : {
+    "Contact" : {
+      "title" : "Contact",
+      "description" : "User provides a record name. Use Identify Record by Name to retrieve the corresponding Contact ID.",
+      "lightning:type" : "lightning__recordInfoType",
+      "lightning:sObjectInfo" : {
+        "apiName" : "Contact"
+      },
+      "lightning:isPII" : false,
+      "copilotAction:isUserInput" : false
+    }
+  },
+  "lightning:type" : "lightning__objectType"
+}

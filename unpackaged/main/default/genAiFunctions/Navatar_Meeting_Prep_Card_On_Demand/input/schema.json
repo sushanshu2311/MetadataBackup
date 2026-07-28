@@ -1,0 +1,14 @@
+{
+  "required" : [ "contactId" ],
+  "unevaluatedProperties" : false,
+  "properties" : {
+    "contactId" : {
+      "title" : "contactId",
+      "description" : "User provides the contact name, or the contact ID is retrieved from the Contact page if the user is currently on it. The Identify Record by Name method is then called to fetch the corresponding contact ID.",
+      "lightning:type" : "lightning__textType",
+      "lightning:isPII" : false,
+      "copilotAction:isUserInput" : false
+    }
+  },
+  "lightning:type" : "lightning__objectType"
+}

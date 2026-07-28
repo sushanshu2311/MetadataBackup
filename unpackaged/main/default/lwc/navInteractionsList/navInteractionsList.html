@@ -1,0 +1,112 @@
+<template>
+    <lightning-card>
+        <div
+            class="slds-grid slds-grid_vertical-align-center slds-wrap slds-p-horizontal_medium slds-p-vertical_x-small slds-border_bottom"
+        >
+            <c-nav-filter-multi-select
+                label="Type"
+                options={typeOptions}
+                onfilterchange={handleTypeFilter}
+            ></c-nav-filter-multi-select>
+            <div class="slds-col slds-grow"></div>
+            <div data-search>
+                <c-nav-search-box
+                    placeholder="Search interactions..."
+                    value={searchTerm}
+                    onsearch={handleSearch}
+                ></c-nav-search-box>
+            </div>
+        </div>
+
+        <div
+            class="slds-grid slds-p-horizontal_medium slds-p-vertical_xx-small slds-border_bottom"
+            data-columns
+        >
+            <div class="slds-col slds-size_2-of-12">Date</div>
+            <div class="slds-col slds-size_5-of-12">Subject</div>
+            <div class="slds-col slds-size_3-of-12">Participants</div>
+            <div class="slds-col slds-size_2-of-12">Type</div>
+        </div>
+
+        <template lwc:if={hasRows}>
+            <ul class="slds-has-dividers_bottom-space">
+                <template for:each={rows} for:item="row">
+                    <li key={row.recordId} class="slds-item">
+                        <div
+                            class="slds-grid slds-wrap slds-p-horizontal_medium slds-p-vertical_x-small"
+                            data-row
+                            data-id={row.recordId}
+                            data-open={row.isOpenAttr}
+                            onclick={handleToggle}
+                        >
+                            <div
+                                class="slds-col slds-size_1-of-1 slds-medium-size_2-of-12 slds-text-body_small slds-text-color_weak"
+                            >
+                                <span data-cell-label>Date</span>
+                                <template lwc:if={row.activityDate}>
+                                    <lightning-formatted-date-time
+                                        value={row.activityDate}
+                                        year="numeric"
+                                        month="short"
+                                        day="2-digit"
+                                        time-zone="UTC"
+                                    ></lightning-formatted-date-time>
+                                </template>
+                                <template lwc:else>-</template>
+                            </div>
+
+                            <div class="slds-col slds-size_1-of-1 slds-medium-size_5-of-12">
+                                <p class="slds-text-body_regular slds-text-title_bold">{row.subject}</p>
+                                <template lwc:if={row.snippet}>
+                                    <p class="slds-text-body_small slds-text-color_weak slds-truncate">
+                                        {row.snippet}
+                                    </p>
+                                </template>
+                            </div>
+
+                            <!-- Full names, linked only where the person exists as a contact. -->
+                            <div class="slds-col slds-size_1-of-1 slds-medium-size_3-of-12 slds-text-body_small">
+                                <span data-cell-label>Participants</span>
+                                <template for:each={row.participants} for:item="person">
+                                    <div key={person.key}>
+                                        <template lwc:if={person.isLinked}>
+                                            <a href="#" data-id={person.recordId} onclick={handleOpenContact}
+                                                >{person.name}</a
+                                            >
+                                        </template>
+                                        <template lwc:else>
+                                            <span class="slds-text-color_weak">{person.name}</span>
+                                        </template>
+                                    </div>
+                                </template>
+                            </div>
+
+                            <div class="slds-col slds-size_1-of-1 slds-medium-size_2-of-12">
+                                <span data-cell-label>Type</span>
+                                <lightning-badge label={row.typeLabel}></lightning-badge>
+                            </div>
+                        </div>
+
+                        <template lwc:if={row.isOpen}>
+                            <div class="slds-p-horizontal_medium slds-p-bottom_medium slds-text-longform">
+                                <template lwc:if={row.body}>
+                                    <lightning-formatted-text value={row.body}></lightning-formatted-text>
+                                </template>
+                                <template lwc:else>
+                                    <span class="slds-text-body_small slds-text-color_weak"
+                                        >No notes were logged with this interaction.</span
+                                    >
+                                </template>
+                            </div>
+                        </template>
+                    </li>
+                </template>
+            </ul>
+        </template>
+        <template lwc:else>
+            <p class="slds-p-around_medium slds-text-body_small slds-text-color_weak">
+                No interactions match this filter.
+            </p>
+        </template>
+    </lightning-card>
+</template>

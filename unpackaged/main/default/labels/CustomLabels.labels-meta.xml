@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomLabels xmlns="http://soap.sforce.com/2006/04/metadata">
+    <labels>
+        <fullName>DealRoom_LoginAs</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>DealRoom_LoginAs</shortDescription>
+        <value>https://dealroomtesting01-developer-edition.na130.force.com/</value>
+    </labels>
+    <labels>
+        <fullName>DealRoom_Url</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>DealRoom_Url</shortDescription>
+        <value>https://dealroomtesting01-developer-edition.na130.force.com/</value>
+    </labels>
+    <labels>
+        <fullName>Navatar_Document_URL</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Navatar Document URL</shortDescription>
+        <value>https://navatardocuments.azurewebsites.net</value>
+    </labels>
+</CustomLabels>

@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CompactLayout xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Intermediary_Highlight</fullName>
+    <fields>Name</fields>
+    <fields>navpeII__Entity_Type__c</fields>
+    <fields>navpeII__Tier__c</fields>
+    <fields>Website</fields>
+    <fields>navpeII__forTotalDealsShown__c</fields>
+    <label>Intermediary_Highlight</label>
+</CompactLayout>

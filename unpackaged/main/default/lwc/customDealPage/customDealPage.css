@@ -1,0 +1,64 @@
+:host {
+    --navy: #0B2D5F;
+    --sf: #0176D3;
+    --sfh: #014486;
+    --bd: #DDDBDA;
+    --t1: #181818;
+    --t2: #706E6B;
+    --t3: #9CA3AF;
+    display: block;
+    background: #fff;
+    min-height: 100vh;
+    font-family: 'Salesforce Sans', Arial, sans-serif;
+    font-size: 13px;
+    color: var(--t1);
+}
+
+.deal-page {
+    max-width: 1440px;
+    margin: 0 auto;
+    background: #fff;
+    min-height: 100vh;
+}
+
+.page-body {
+    padding: 0 24px 24px;
+}
+
+/* Tab Navigation */
+.tab-nav {
+    display: flex;
+    gap: 4px;
+    padding: 12px 0 0;
+    border-bottom: 1px solid var(--bd);
+    background: #fff;
+    overflow-x: auto;
+}
+
+.tab-pill {
+    padding: 6px 16px;
+    border: none;
+    background: transparent;
+    color: var(--t2);
+    font-size: 13px;
+    font-family: 'Salesforce Sans', Arial, sans-serif;
+    cursor: pointer;
+    border-bottom: 2px solid transparent;
+    white-space: nowrap;
+    transition: color 0.15s, border-color 0.15s;
+    margin-bottom: -1px;
+}
+
+.tab-pill:hover {
+    color: var(--navy);
+}
+
+.tab-pill--active {
+    color: var(--navy);
+    border-bottom: 2px solid var(--navy);
+    font-weight: 600;
+}
+
+.tab-content {
+    padding-top: 20px;
+}

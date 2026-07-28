@@ -1,0 +1,123 @@
+<template>
+    <div id="ppl">
+        <div class="feed-filters">
+            <c-navatar-deal-cim-multi-select
+                label="Group"
+                options={groupOptions}
+                selected-values={selectedGroups}
+                onfilterchange={handleFilterChange}
+            ></c-navatar-deal-cim-multi-select>
+            <input class="srch" placeholder="Search people..." oninput={handleSearch} />
+            <button class="btn bn" data-cat="dealteam" onclick={handleOpenAdd}>New Deal Team Member</button>
+            <button class="btn bn" data-cat="company" onclick={handleOpenAdd}>New Deal Contact</button>
+        </div>
+
+        <template if:true={showForm}>
+            <div class="acf open">
+                <span class="acf-mode">{formTitle}</span>
+                <input placeholder="Full name" value={formName} data-field="formName" oninput={handleFieldChange} />
+                <input placeholder="Organisation" value={formOrg} data-field="formOrg" oninput={handleFieldChange} />
+                <input placeholder="Role" value={formRole} data-field="formRole" oninput={handleFieldChange} />
+                <input placeholder="Email" value={formEmail} data-field="formEmail" oninput={handleFieldChange} />
+                <select onchange={handleCatChange}>
+                    <template for:each={catOptions} for:item="opt">
+                        <option key={opt.value} value={opt.value} selected={opt.selected}>{opt.label}</option>
+                    </template>
+                </select>
+                <button class="btn bn" onclick={handleSave}>Save</button>
+                <button class="btn" onclick={handleCancel}>Cancel</button>
+                <span class="acf-err">{formError}</span>
+            </div>
+        </template>
+
+        <table class="int-tbl">
+            <thead>
+                <tr>
+                    <th>Person</th>
+                    <th>Role</th>
+                    <th>Email</th>
+                    <th style="width:110px">Connections</th>
+                    <th style="width:150px">Last Touchpoint</th>
+                    <th style="width:54px"></th>
+                </tr>
+            </thead>
+            <tbody>
+                <template for:each={teamView} for:item="p">
+                    <tr key={p.key} class={p.rowClass} data-key={p.key} onclick={handleRowClick}>
+                        <td>
+                            <div class="ppl-person">
+                                <div>
+                                    <a href="#" class="ppl-name" onclick={stopClick}>{p.name}</a>
+                                    <a href="#" class="ppl-org" onclick={stopClick}>{p.org}</a>
+                                </div>
+                            </div>
+                        </td>
+                        <td class="col-muted">{p.role}</td>
+                        <td class="col-muted-sm">
+                            <a href="#" onclick={stopClick}>{p.emailDisplay}</a>
+                        </td>
+                        <td>
+                            <template if:true={p.connections}>
+                                <span class="conn-ct">{p.connections}</span>
+                            </template>
+                        </td>
+                        <td>
+                            <template if:true={p.lastTouchpointDate}>
+                                <div class="lt-date">{p.lastTouchpointDate}</div>
+                                <span class="fbadge">{p.lastTouchpointBadge}</span>
+                            </template>
+                        </td>
+                        <td class="ppl-act">
+                            <span class="edit-x" title="Edit member" data-key={p.key} onclick={handleOpenEdit}>&#9998;</span>
+                            <span class="del-x" title="Remove member" data-key={p.key} onclick={handleRemove}>&times;</span>
+                        </td>
+                    </tr>
+                    <tr key={p.expKey} class="ppl-exp-row" style={p.expRowStyle}>
+                        <td colspan="6">
+                            <template if:true={p.isOpen}>
+                                <div class="exp-inner">
+                                    <div class="exs">
+                                        <div class="exs-lbl">How We Know Them</div>
+                                        <div class="exs-body">{p.how}</div>
+                                    </div>
+                                    <div class="exs">
+                                        <div class="exs-lbl">Internal Connections</div>
+                                        <div class="exs-body">{p.internal}</div>
+                                    </div>
+                                    <div class="exs">
+                                        <div class="exs-lbl">Interaction Depth (LTM)</div>
+                                        <div class="cd-stats">
+                                            <template for:each={p.stats} for:item="s">
+                                                <div key={s.key} class="cd-stat">
+                                                    <div class="cd-num">{s.value}</div>
+                                                    <div class="cd-lbl">{s.label}</div>
+                                                </div>
+                                            </template>
+                                        </div>
+                                    </div>
+                                    <div class="exs">
+                                        <div class="exs-lbl">Warm Paths</div>
+                                        <template if:true={p.warmPathsView.length}>
+                                            <template for:each={p.warmPathsView} for:item="w">
+                                                <div key={w.key} class="wp-row">
+                                                    <div class="wp-arrow">{w.arrow}</div>
+                                                    <div class="wp-body">
+                                                        <div class="wp-line">{w.line}</div>
+                                                        <div class="wp-meta">{w.meta}</div>
+                                                    </div>
+                                                </div>
+                                            </template>
+                                        </template>
+                                        <template if:false={p.warmPathsView.length}>
+                                            <div class="wp-none">None identified yet.</div>
+                                        </template>
+                                    </div>
+                                </div>
+                            </template>
+                        </td>
+                    </tr>
+                </template>
+            </tbody>
+        </table>
+    </div>
+</template>

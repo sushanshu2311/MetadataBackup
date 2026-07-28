@@ -1,0 +1,28 @@
+:host {
+    display: block;
+}
+
+/* Width comes from the parent's filter-bar cell, not from here. */
+.slds-input[data-search-input] {
+    width: 100%;
+    height: 24px;
+    line-height: 22px;
+    padding: 0 8px;
+    font-family: inherit;
+    font-size: 11px;
+    color: #181818;
+    background: #fff;
+    border: 1px solid #dddbda;
+    border-radius: 4px;
+}
+
+.slds-input[data-search-input]:focus,
+.slds-input[data-search-input]:active {
+    border-color: #0176d3;
+    box-shadow: none;
+    outline: none;
+}
+
+.slds-input[data-search-input]::placeholder {
+    color: #9ca3af;
+}

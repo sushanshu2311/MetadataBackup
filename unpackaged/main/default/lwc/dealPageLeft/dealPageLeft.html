@@ -1,0 +1,604 @@
+<template>
+    <lightning-card>
+
+        <lightning-tabset active-tab-value={activeTab} onselect={handleTabSelect}>
+
+            <!-- ═══ OVERVIEW ═══ -->
+            <lightning-tab label="Overview" value="overview" title="Overview">
+                <c-deal-current-summary record-id={recordId}></c-deal-current-summary>
+
+                <!-- Deal Relationships summary -->
+                <div class="slds-p-around_medium slds-border_top">
+                    <div class="slds-grid slds-grid_vertical-align-center slds-m-bottom_small">
+                        <h3 class="slds-text-heading_small">Deal Relationships</h3>
+                        <a class="slds-text-link slds-text-body_small slds-col_bump-left" onclick={goToRI}>Full Relationship Intelligence &#8594;</a>
+                    </div>
+                    <div class="slds-scrollable_x">
+                        <table class="slds-table slds-table_cell-buffer slds-table_bordered slds-no-row-hover slds-text-body_small rel-table">
+                            <thead>
+                                <tr class="slds-line-height_reset">
+                                    <th scope="col" class="tbl-th">Person</th>
+                                    <th scope="col" class="tbl-th" style="width:110px">Group</th>
+                                    <th scope="col" class="tbl-th" style="width:175px">Role</th>
+                                    <th scope="col" class="tbl-th" style="width:130px">Last Touchpoint</th>
+                                    <th scope="col" class="tbl-th" style="width:80px">&#8596;</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr><td><strong>Thomas Bennett</strong><br/><span class="slds-text-color_weak">Ironwood Capital</span></td><td><span class="gbadge">Internal</span></td><td>Deal Lead, Partner</td><td><div class="rel-tp"><div class="dot dot-green"></div>Today</div></td><td class="slds-text-align_center">12</td></tr>
+                                <tr><td><strong>Sarah Patel</strong><br/><span class="slds-text-color_weak">Ironwood Capital</span></td><td><span class="gbadge">Internal</span></td><td>Analyst</td><td><div class="rel-tp"><div class="dot dot-green"></div>14 Jun</div></td><td class="slds-text-align_center">7</td></tr>
+                                <tr><td><strong>Michael Hartley</strong><br/><span class="slds-text-color_weak">Houlihan Lokey</span></td><td><span class="gbadge">Banker</span></td><td>MD Healthcare, Source</td><td><div class="rel-tp"><div class="dot dot-green"></div>Today</div></td><td class="slds-text-align_center">8</td></tr>
+                                <tr><td><strong>Dr. Marcus Webb</strong><br/><span class="slds-text-color_weak">Webb Regulatory Advisory</span></td><td><span class="gbadge">DD &amp; Experts</span></td><td>Regulatory Expert</td><td><div class="rel-tp"><div class="dot dot-green"></div>Today</div></td><td class="slds-text-align_center">3</td></tr>
+                                <tr><td><strong>Karen Philips</strong><br/><span class="slds-text-color_weak">L.E.K. Consulting</span></td><td><span class="gbadge">DD &amp; Experts</span></td><td>Commercial DD Lead</td><td><div class="rel-tp"><div class="dot dot-grey"></div>03 Jun</div></td><td class="slds-text-align_center">2</td></tr>
+                                <tr><td><strong>Kirkland &amp; Ellis</strong><br/><span class="slds-text-color_weak">Legal Counsel</span></td><td><span class="gbadge">DD &amp; Experts</span></td><td>Legal DD</td><td><div class="rel-tp"><div class="dot dot-grey"></div>28 May</div></td><td class="slds-text-align_center">4</td></tr>
+                                <tr><td><strong>Mark Hargreaves</strong><br/><span class="slds-text-color_weak">Apex Care Partners</span></td><td><span class="gbadge">Target</span></td><td>CEO, 12 years</td><td><div class="rel-tp"><div class="dot dot-grey"></div>20 May</div></td><td class="slds-text-align_center">5</td></tr>
+                                <tr><td><strong>Sarah Chen</strong><br/><span class="slds-text-color_weak">Apex Care Partners</span></td><td><span class="gbadge">Target</span></td><td>CFO, joined 2023</td><td><div class="rel-tp"><div class="dot dot-grey"></div>20 May</div></td><td class="slds-text-align_center">5</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </lightning-tab>
+
+            <!-- ═══ ACTIVITY ═══ -->
+            <lightning-tab label="Deal Activity" value="activity" title="Deal Activity">
+                <c-deal-activity-feed record-id={recordId}></c-deal-activity-feed>
+            </lightning-tab>
+
+            <!-- ═══ DETAILS ═══ -->
+            <lightning-tab label="Details" value="details" title="Details">
+                <div class="slds-p-around_medium">
+
+                    <!-- Deal Information -->
+                    <div class="ds">
+                        <div class="ds-head">Deal Information</div>
+                        <div class="slds-grid slds-wrap">
+                            <div class="ds-field slds-col slds-size_1-of-1 slds-medium-size_1-of-2"><div class="ds-label">Code Name</div><div class="ds-value">Project Everest</div></div>
+                            <div class="ds-field slds-col slds-size_1-of-1 slds-medium-size_1-of-2"><div class="ds-label">Company Name</div><div class="ds-value">Apex Care Partners</div></div>
+                            <div class="ds-field slds-col slds-size_1-of-1 slds-medium-size_1-of-2"><div class="ds-label">Deal Type</div><div class="ds-value">Buyout</div></div>
+                            <div class="ds-field slds-col slds-size_1-of-1 slds-medium-size_1-of-2"><div class="ds-label">Current Stage</div><div class="ds-value"><span class="badge fb-deal">Due Diligence</span></div></div>
+                            <div class="ds-field slds-col slds-size_1-of-1 slds-medium-size_1-of-2"><div class="ds-label">Sector</div><div class="ds-value">Healthcare Services</div></div>
+                            <div class="ds-field slds-col slds-size_1-of-1 slds-medium-size_1-of-2"><div class="ds-label">Sub-sector</div><div class="ds-value">Outpatient Rehabilitation</div></div>
+                            <div class="ds-field slds-col slds-size_1-of-1 slds-medium-size_1-of-2"><div class="ds-label">Geography</div><div class="ds-value">United Kingdom</div></div>
+                            <div class="ds-field slds-col slds-size_1-of-1 slds-medium-size_1-of-2"><div class="ds-label">HQ Location</div><div class="ds-value">London, UK</div></div>
+                            <div class="ds-field slds-col slds-size_1-of-1 slds-medium-size_1-of-2"><div class="ds-label">Ownership Type</div><div class="ds-value">Founder-owned</div></div>
+                            <div class="ds-field slds-col slds-size_1-of-1 slds-medium-size_1-of-2"><div class="ds-label">Process Type</div><div class="ds-value">Competitive Auction</div></div>
+                            <div class="ds-field slds-col slds-size_1-of-1 slds-medium-size_1-of-2"><div class="ds-label">Competing Bidders</div><div class="ds-value">3 remaining</div></div>
+                            <div class="ds-field slds-col slds-size_1-of-1 slds-medium-size_1-of-2"><div class="ds-label">Days in Stage</div><div class="ds-value">68 days</div></div>
+                        </div>
+                    </div>
+
+                    <!-- Financial Summary -->
+                    <div class="ds">
+                        <div class="ds-head">Financial Summary</div>
+                        <div class="slds-grid slds-wrap">
+                            <div class="ds-field slds-col slds-size_1-of-1 slds-medium-size_1-of-2"><div class="ds-label">Revenue (FY25A)</div><div class="ds-value">£38.0M</div></div>
+                            <div class="ds-field slds-col slds-size_1-of-1 slds-medium-size_1-of-2"><div class="ds-label">EBITDA (FY25A)</div><div class="ds-value">£8.2M</div></div>
+                            <div class="ds-field slds-col slds-size_1-of-1 slds-medium-size_1-of-2"><div class="ds-label">EBITDA Margin</div><div class="ds-value">21.6%</div></div>
+                            <div class="ds-field slds-col slds-size_1-of-1 slds-medium-size_1-of-2"><div class="ds-label">Revenue Growth (3yr CAGR)</div><div class="ds-value">18.0%</div></div>
+                            <div class="ds-field slds-col slds-size_1-of-1 slds-medium-size_1-of-2"><div class="ds-label">Entry Multiple (LOI)</div><div class="ds-value">11–13× EBITDA</div></div>
+                            <div class="ds-field slds-col slds-size_1-of-1 slds-medium-size_1-of-2"><div class="ds-label">Implied Enterprise Value</div><div class="ds-value">£90–107M</div></div>
+                            <div class="ds-field slds-col slds-size_1-of-1 slds-medium-size_1-of-2"><div class="ds-label">Equity Structure</div><div class="ds-value">Equity-heavy</div></div>
+                            <div class="ds-field slds-col slds-size_1-of-1 slds-medium-size_1-of-2"><div class="ds-label">Debt Financing</div><div class="ds-value">~65% target</div></div>
+                        </div>
+                    </div>
+
+                    <!-- Deal Timeline -->
+                    <div class="ds">
+                        <div class="ds-head">Deal Timeline</div>
+                        <div class="ds-field">
+                            <lightning-progress-indicator current-step="DD" type="base">
+                                <lightning-progress-step label="Teaser" value="Teaser" title="Teaser Received · 22 Jan 2026"></lightning-progress-step>
+                                <lightning-progress-step label="NDA"    value="NDA"    title="NDA Signed · 28 Jan 2026"></lightning-progress-step>
+                                <lightning-progress-step label="CIM"    value="CIM"    title="CIM Received · 12 Feb 2026"></lightning-progress-step>
+                                <lightning-progress-step label="Mgmt"   value="Mgmt"   title="Management Meeting · 08 Mar 2026"></lightning-progress-step>
+                                <lightning-progress-step label="IC"     value="IC"     title="IC Review · 28 May 2026"></lightning-progress-step>
+                                <lightning-progress-step label="LOI"    value="LOI"    title="LOI Submitted · 14 Mar 2026"></lightning-progress-step>
+                                <lightning-progress-step label="DD"     value="DD"     title="Due Diligence · Current · Day 68"></lightning-progress-step>
+                                <lightning-progress-step label="Close"  value="Close"  title="Close · TBC"></lightning-progress-step>
+                            </lightning-progress-indicator>
+                        </div>
+                    </div>
+
+                    <!-- Deal Team -->
+                    <div class="ds">
+                        <div class="ds-head">Deal Team</div>
+                        <ul>
+                            <li class="slds-media slds-media_center slds-p-around_x-small slds-border_bottom">
+                                <div class="slds-media__figure"><lightning-avatar initials="TB" fallback-icon-name="standard:user" size="small"></lightning-avatar></div>
+                                <div class="slds-media__body"><p class="slds-text-body_small">Thomas Bennett</p><p class="slds-text-body_small slds-text-color_weak">Deal Lead · Partner</p></div>
+                                <div class="slds-media__figure slds-media__figure_reverse"><span class="gbadge">Lead</span></div>
+                            </li>
+                            <li class="slds-media slds-media_center slds-p-around_x-small">
+                                <div class="slds-media__figure"><lightning-avatar initials="SP" fallback-icon-name="standard:user" size="small"></lightning-avatar></div>
+                                <div class="slds-media__body"><p class="slds-text-body_small">Sarah Patel</p><p class="slds-text-body_small slds-text-color_weak">Analyst</p></div>
+                                <div class="slds-media__figure slds-media__figure_reverse"><span class="gbadge">Analyst</span></div>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <!-- External Parties -->
+                    <div class="ds">
+                        <div class="ds-head">External Parties</div>
+                        <ul>
+                            <li class="slds-media slds-media_center slds-p-around_x-small slds-border_bottom">
+                                <div class="slds-media__figure"><lightning-avatar initials="MH" fallback-icon-name="standard:user" size="small"></lightning-avatar></div>
+                                <div class="slds-media__body"><p class="slds-text-body_small">Michael Hartley</p><p class="slds-text-body_small slds-text-color_weak">Source Banker · MD Healthcare · Houlihan Lokey</p></div>
+                                <div class="slds-media__figure slds-media__figure_reverse"><span class="gbadge">Banker</span></div>
+                            </li>
+                            <li class="slds-media slds-media_center slds-p-around_x-small slds-border_bottom">
+                                <div class="slds-media__figure"><lightning-avatar initials="KE" fallback-icon-name="standard:user" size="small"></lightning-avatar></div>
+                                <div class="slds-media__body"><p class="slds-text-body_small">Kirkland &amp; Ellis</p><p class="slds-text-body_small slds-text-color_weak">Legal DD – report expected 16 Jun 2026</p></div>
+                                <div class="slds-media__figure slds-media__figure_reverse"><span class="gbadge">Legal</span></div>
+                            </li>
+                            <li class="slds-media slds-media_center slds-p-around_x-small slds-border_bottom">
+                                <div class="slds-media__figure"><lightning-avatar initials="KP" fallback-icon-name="standard:user" size="small"></lightning-avatar></div>
+                                <div class="slds-media__body"><p class="slds-text-body_small">Karen Philips – L.E.K. Consulting</p><p class="slds-text-body_small slds-text-color_weak">Commercial DD – report expected 20 Jun 2026</p></div>
+                                <div class="slds-media__figure slds-media__figure_reverse"><span class="gbadge">Commercial</span></div>
+                            </li>
+                            <li class="slds-media slds-media_center slds-p-around_x-small">
+                                <div class="slds-media__figure"><lightning-avatar initials="MW" fallback-icon-name="standard:user" size="small"></lightning-avatar></div>
+                                <div class="slds-media__body"><p class="slds-text-body_small">Dr. Marcus Webb</p><p class="slds-text-body_small slds-text-color_weak">Regulatory Expert – report received today · gap flagged</p></div>
+                                <div class="slds-media__figure slds-media__figure_reverse"><span class="badge fb-gap">Gap</span></div>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <!-- Key Contacts at Target -->
+                    <div class="ds">
+                        <div class="ds-head">Key Contacts at Target</div>
+                        <ul>
+                            <li class="slds-media slds-media_center slds-p-around_x-small slds-border_bottom">
+                                <div class="slds-media__figure"><lightning-avatar initials="MH" fallback-icon-name="standard:user" size="small"></lightning-avatar></div>
+                                <div class="slds-media__body"><p class="slds-text-body_small">Mark Hargreaves</p><p class="slds-text-body_small slds-text-color_weak">CEO · 12 years tenure · holds 14 of 22 NHS referral relationships</p></div>
+                                <div class="slds-media__figure slds-media__figure_reverse"><span class="badge fb-risk">Retention Risk</span></div>
+                            </li>
+                            <li class="slds-media slds-media_center slds-p-around_x-small">
+                                <div class="slds-media__figure"><lightning-avatar initials="SC" fallback-icon-name="standard:user" size="small"></lightning-avatar></div>
+                                <div class="slds-media__body"><p class="slds-text-body_small">Sarah Chen</p><p class="slds-text-body_small slds-text-color_weak">CFO · joined 2023 · materially improved financial controls</p></div>
+                                <div class="slds-media__figure slds-media__figure_reverse"><span class="badge fb-call">Strong</span></div>
+                            </li>
+                        </ul>
+                    </div>
+
+                </div>
+            </lightning-tab>
+
+            <!-- ═══ RELATIONSHIP INTELLIGENCE ═══ -->
+            <lightning-tab label="Rel. Intelligence" value="ri" title="Relationship Intelligence">
+                <div class="slds-p-around_medium">
+
+                    <!-- AI Intelligence alerts -->
+                    <div class="ds slds-m-bottom_medium">
+                        <div class="ds-head">
+                            AI Intelligence &nbsp;<span class="badge fb-ai">AI Generated</span>
+                        </div>
+                        <ul>
+                            <li class="slds-media slds-p-around_x-small slds-border_bottom">
+                                <div class="slds-media__figure slds-align_absolute-center"><lightning-icon icon-name="utility:warning" size="x-small" variant="warning"></lightning-icon></div>
+                                <div class="slds-media__body"><p class="slds-text-body_small"><strong>Karen Philips (L.E.K.) has had no logged interaction in 12 days</strong></p><p class="slds-text-body_small slds-text-color_weak">Commercial DD report expected 20 Jun — 6 days away. Last contact was email 03 Jun. Consider a check-in call to confirm timeline.</p></div>
+                            </li>
+                            <li class="slds-media slds-p-around_x-small slds-border_bottom">
+                                <div class="slds-media__figure slds-align_absolute-center"><lightning-icon icon-name="utility:warning" size="x-small" variant="warning"></lightning-icon></div>
+                                <div class="slds-media__body"><p class="slds-text-body_small"><strong>Mark Hargreaves not contacted in 26 days — retention package still unconfirmed</strong></p><p class="slds-text-body_small slds-text-color_weak">Last interaction was the 20 May management meeting. Advent have approached him. Recommend direct contact before 18 Jun.</p></div>
+                            </li>
+                            <li class="slds-media slds-p-around_x-small slds-border_bottom">
+                                <div class="slds-media__figure slds-align_absolute-center"><lightning-icon icon-name="utility:add" size="x-small" variant="success"></lightning-icon></div>
+                                <div class="slds-media__body"><p class="slds-text-body_small"><strong>Warm path to Prof. Helen Cross (CMS specialist) not yet activated</strong></p><p class="slds-text-body_small slds-text-color_weak">Prof. Cross identified as a connection via Jonathan Reid. Given the CMS gap flagged today, her input would be directly relevant.</p></div>
+                            </li>
+                            <li class="slds-media slds-p-around_x-small">
+                                <div class="slds-media__figure slds-align_absolute-center"><lightning-icon icon-name="utility:info" size="x-small"></lightning-icon></div>
+                                <div class="slds-media__body"><p class="slds-text-body_small"><strong>Kirkland &amp; Ellis — all interactions email only since LOI</strong></p><p class="slds-text-body_small slds-text-color_weak">No verbal update logged since LOI submission. The CMS gap falls within their scope. A call to brief them before 18 Jun would be useful.</p></div>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <!-- People filter — custom pill toggle for navy active state -->
+                    <div class="slds-grid slds-grid_vertical-align-center slds-m-bottom_small slds-wrap">
+                        <div class="ri-toggle">
+                            <span class={rfc.all}      data-g="all"      onclick={handleRiFilter}>All</span>
+                            <span class={rfc.internal} data-g="internal" onclick={handleRiFilter}>Internal</span>
+                            <span class={rfc.banker}   data-g="banker"   onclick={handleRiFilter}>Banker</span>
+                            <span class={rfc.dd}       data-g="dd"       onclick={handleRiFilter}>DD &amp; Experts</span>
+                            <span class={rfc.target}   data-g="target"   onclick={handleRiFilter}>Target</span>
+                        </div>
+                        <span class="slds-text-body_small slds-text-color_weak slds-m-left_small">{riCountLabel}</span>
+                    </div>
+
+                    <div class="slds-scrollable_x">
+                        <table class="slds-table slds-table_bordered slds-table_cell-buffer slds-no-row-hover slds-text-body_small ri-table">
+                            <thead>
+                                <tr class="slds-line-height_reset">
+                                    <th scope="col" class="tbl-th" style="width:200px">Person</th>
+                                    <th scope="col" class="tbl-th" style="width:110px">Group</th>
+                                    <th scope="col" class="tbl-th" style="width:160px">Role</th>
+                                    <th scope="col" class="tbl-th" style="width:190px">Contact</th>
+                                    <th scope="col" class="tbl-th" style="width:160px">Last Touchpoint</th>
+                                    <th scope="col" class="tbl-th" style="width:60px">&#8596;</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <template for:each={riPeople} for:item="p">
+                                    <tr key={p.id}>
+                                        <td>
+                                            <div class="slds-media slds-media_center">
+                                                <div class="slds-media__figure">
+                                                    <lightning-avatar initials={p.initials} fallback-icon-name="standard:user" size="small"></lightning-avatar>
+                                                </div>
+                                                <div class="slds-media__body slds-has-flexi-truncate">
+                                                    <p class="slds-truncate slds-text-body_small">{p.name}</p>
+                                                    <p class="slds-truncate slds-text-body_small slds-text-color_weak">{p.org}</p>
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td><span class="gbadge">{p.groupLabel}</span></td>
+                                        <td>{p.role}</td>
+                                        <td class="slds-text-color_weak">{p.email}</td>
+                                        <td>
+                                            <p class="slds-text-body_small slds-m-bottom_xx-small">{p.lastDate}</p>
+                                            <span class={p.lastBadgeCss}>{p.lastBadge}</span>
+                                        </td>
+                                        <td class="slds-text-align_center">{p.interactions}</td>
+                                    </tr>
+                                </template>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </lightning-tab>
+
+            <!-- ═══ INTERACTIONS ═══ -->
+            <lightning-tab label="Interactions" value="int" title="Interactions">
+                <div class="slds-p-around_medium">
+                    <div class="slds-grid slds-grid_vertical-align-center slds-m-bottom_small">
+                        <h3 class="slds-text-heading_small">Interactions</h3>
+                        <span class="slds-text-body_small slds-text-color_weak slds-m-left_small">6 logged</span>
+                        <lightning-button label="+ Log" variant="neutral" class="slds-col_bump-left"></lightning-button>
+                    </div>
+                    <div class="slds-scrollable_x">
+                        <table class="int-tbl">
+                            <thead>
+                                <tr>
+                                    <th style="width:100px">Date</th>
+                                    <th>Subject</th>
+                                    <th style="width:160px">People</th>
+                                    <th style="width:200px">Tags</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <template for:each={interactions} for:item="row">
+                                    <tr key={row.id} class="int-row" data-id={row.id} onclick={handleIntClick}>
+                                        <td class="int-date">
+                                            <div>{row.date}</div>
+                                            <span class={row.badgeCss} style="margin-top:3px">{row.type}</span>
+                                        </td>
+                                        <td>
+                                            <div class="int-subj">{row.subject}</div>
+                                            <div class="int-prev">{row.preview}</div>
+                                        </td>
+                                        <td>
+                                            <div class="int-ppl">
+                                                <template for:each={row.people} for:item="person">
+                                                    <span key={person.id} class="int-av" style={person.avStyle}>{person.initials}</span>
+                                                </template>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="int-tags">
+                                                <template for:each={row.tags} for:item="tag">
+                                                    <span key={tag} class="int-tag">{tag}</span>
+                                                </template>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </template>
+                            </tbody>
+                        </table>
+                    </div>
+                    <a class="slds-text-link slds-text-body_small slds-m-top_small slds-show">Load all interactions (12)</a>
+                </div>
+            </lightning-tab>
+
+            <!-- ═══ DOCUMENTS ═══ -->
+            <lightning-tab label="Documents" value="docs" title="Documents">
+                <ul class="slds-card__body">
+                    <li class="slds-media slds-media_center slds-p-horizontal_medium slds-p-vertical_small slds-border_bottom">
+                        <div class="slds-media__figure"><lightning-icon icon-name="doctype:pdf" size="small"></lightning-icon></div>
+                        <div class="slds-media__body slds-has-flexi-truncate"><p class="slds-text-body_small slds-truncate">Regulatory Expert Report – Dr. Marcus Webb</p><p class="slds-text-body_small slds-text-color_weak">Received Today · PDF · 47 pages</p></div>
+                        <div class="slds-media__figure slds-media__figure_reverse"><span class="badge fb-gap">Gap Detected</span></div>
+                    </li>
+                    <li class="slds-media slds-media_center slds-p-horizontal_medium slds-p-vertical_small slds-border_bottom">
+                        <div class="slds-media__figure"><lightning-icon icon-name="utility:einstein" size="small"></lightning-icon></div>
+                        <div class="slds-media__body slds-has-flexi-truncate"><p class="slds-text-body_small slds-truncate">Management Meeting Briefing – 18 Jun 2026</p><p class="slds-text-body_small slds-text-color_weak">AI Generated · Today</p></div>
+                        <div class="slds-media__figure slds-media__figure_reverse"><span class="badge fb-ai">AI</span></div>
+                    </li>
+                    <li class="slds-media slds-media_center slds-p-horizontal_medium slds-p-vertical_small slds-border_bottom">
+                        <div class="slds-media__figure"><lightning-icon icon-name="utility:einstein" size="small"></lightning-icon></div>
+                        <div class="slds-media__body slds-has-flexi-truncate"><p class="slds-text-body_small slds-truncate">IC Review Pack – Project Everest</p><p class="slds-text-body_small slds-text-color_weak">AI Generated · 28 May 2026 · 34 pages</p></div>
+                        <div class="slds-media__figure slds-media__figure_reverse"><span class="badge fb-call">Approved</span></div>
+                    </li>
+                    <li class="slds-media slds-media_center slds-p-horizontal_medium slds-p-vertical_small slds-border_bottom">
+                        <div class="slds-media__figure"><lightning-icon icon-name="doctype:pdf" size="small"></lightning-icon></div>
+                        <div class="slds-media__body slds-has-flexi-truncate"><p class="slds-text-body_small slds-truncate">CIM – Apex Care Partners</p><p class="slds-text-body_small slds-text-color_weak">Received 12 Feb 2026 · PDF · 94 pages</p></div>
+                        <div class="slds-media__figure slds-media__figure_reverse"><span class="badge fb-doc">Analysed</span></div>
+                    </li>
+                    <li class="slds-media slds-media_center slds-p-horizontal_medium slds-p-vertical_small slds-border_bottom">
+                        <div class="slds-media__figure"><lightning-icon icon-name="doctype:excel" size="small"></lightning-icon></div>
+                        <div class="slds-media__body slds-has-flexi-truncate"><p class="slds-text-body_small slds-truncate">Financial Model v3</p><p class="slds-text-body_small slds-text-color_weak">Internal · Updated 02 Jun 2026</p></div>
+                        <div class="slds-media__figure slds-media__figure_reverse"><span class="badge fb-email">Manual</span></div>
+                    </li>
+                    <li class="slds-media slds-media_center slds-p-horizontal_medium slds-p-vertical_small">
+                        <div class="slds-media__figure"><lightning-icon icon-name="doctype:pdf" size="small"></lightning-icon></div>
+                        <div class="slds-media__body slds-has-flexi-truncate"><p class="slds-text-body_small slds-truncate">Legal DD Report – Kirkland &amp; Ellis</p><p class="slds-text-body_small slds-text-color_weak">Expected 16 Jun 2026</p></div>
+                        <div class="slds-media__figure slds-media__figure_reverse"><span class="badge fb-briefing">Awaited</span></div>
+                    </li>
+                </ul>
+                <div class="slds-p-around_medium slds-border_top">
+                    <a class="slds-text-link slds-text-body_small">View all documents (12)</a>
+                </div>
+            </lightning-tab>
+
+            <!-- ═══ COMPARABLE DEALS ═══ -->
+            <lightning-tab label="Comparable Deals" value="comps" title="Comparable Deals">
+                <ul class="slds-card__body">
+                    <li class="slds-media slds-p-horizontal_medium slds-p-vertical_small slds-border_bottom">
+                        <div class="slds-media__figure"><lightning-avatar initials="BH" fallback-icon-name="standard:account" size="small"></lightning-avatar></div>
+                        <div class="slds-media__body">
+                            <p class="slds-text-body_small"><strong>Project Lighthouse – BrightPath Health</strong></p>
+                            <p class="slds-text-body_small slds-text-color_weak slds-m-bottom_xx-small">UK outpatient rehab · £32M revenue · Closed Nov 2023 · 10.8× EBITDA</p>
+                            <p class="slds-text-body_small slds-m-bottom_xx-small">Same sector, same banker. CMS risk present – resolved via operational restructure.</p>
+                            <div class="slds-grid slds-wrap" style="gap:4px"><span class="badge fb-call">Closed</span><span class="badge fb-doc">Strongest Match</span><span class="badge fb-vinton">Same Banker</span></div>
+                        </div>
+                    </li>
+                    <li class="slds-media slds-p-horizontal_medium slds-p-vertical_small slds-border_bottom">
+                        <div class="slds-media__figure"><lightning-avatar initials="CH" fallback-icon-name="standard:account" size="small"></lightning-avatar></div>
+                        <div class="slds-media__body">
+                            <p class="slds-text-body_small"><strong>Project Harrier – Crestwood Health</strong></p>
+                            <p class="slds-text-body_small slds-text-color_weak slds-m-bottom_xx-small">UK primary care · £41M revenue · Lost at LOI Nov 2024 · 12.1× · Advent won</p>
+                            <p class="slds-text-body_small slds-m-bottom_xx-small">Lost on price. Advent ring-fenced management with earn-out – useful precedent for Everest retention structuring.</p>
+                            <div class="slds-grid slds-wrap" style="gap:4px"><span class="badge fb-gap">Lost – LOI</span><span class="badge fb-deal">Competitor: Advent</span></div>
+                        </div>
+                    </li>
+                    <li class="slds-media slds-p-horizontal_medium slds-p-vertical_small">
+                        <div class="slds-media__figure"><lightning-avatar initials="PT" fallback-icon-name="standard:account" size="small"></lightning-avatar></div>
+                        <div class="slds-media__body">
+                            <p class="slds-text-body_small"><strong>Project Titan – Pinnacle Therapy Group</strong></p>
+                            <p class="slds-text-body_small slds-text-color_weak slds-m-bottom_xx-small">UK physiotherapy · £19M revenue · Passed at SIM</p>
+                            <p class="slds-text-body_small slds-m-bottom_xx-small">Passed for same CMS supervision issue in 2 sites. Benchmark for current risk.</p>
+                            <div class="slds-grid slds-wrap" style="gap:4px"><span class="badge fb-email">Declined</span><span class="badge fb-gap">Same Risk Profile</span></div>
+                        </div>
+                    </li>
+                </ul>
+            </lightning-tab>
+
+            <!-- ═══ FINANCIALS ═══ -->
+            <lightning-tab label="Financials" value="fin" title="Financials">
+                <div class="slds-p-around_medium">
+                    <div class="slds-grid slds-grid_vertical-align-center slds-m-bottom_small">
+                        <h3 class="slds-text-heading_small">Financial Section</h3>
+                        <span class="badge fb-email slds-m-left_small">Manual</span>
+                    </div>
+                    <div class="slds-scrollable_x slds-m-bottom_small">
+                        <table class="slds-table slds-table_bordered slds-table_cell-buffer slds-no-row-hover slds-text-body_small">
+                            <thead>
+                                <tr class="slds-line-height_reset">
+                                    <th scope="col" class="tbl-th">Metric</th>
+                                    <th scope="col" class="tbl-th slds-text-align_right">FY23A</th>
+                                    <th scope="col" class="tbl-th slds-text-align_right">FY24A</th>
+                                    <th scope="col" class="tbl-th slds-text-align_right">FY25A</th>
+                                    <th scope="col" class="tbl-th slds-text-align_right">FY26E</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr><td>Revenue</td><td class="slds-text-align_right">£27.1M</td><td class="slds-text-align_right">£32.2M</td><td class="slds-text-align_right">£38.0M</td><td class="slds-text-align_right">£44.5M</td></tr>
+                                <tr><td>Revenue Growth</td><td class="slds-text-align_right">–</td><td class="slds-text-align_right">+18.8%</td><td class="slds-text-align_right">+18.0%</td><td class="slds-text-align_right">+17.1%</td></tr>
+                                <tr><td>EBITDA</td><td class="slds-text-align_right">£5.2M</td><td class="slds-text-align_right">£6.8M</td><td class="slds-text-align_right">£8.2M</td><td class="slds-text-align_right">£9.8M</td></tr>
+                                <tr><td>EBITDA Margin</td><td class="slds-text-align_right">19.2%</td><td class="slds-text-align_right">21.1%</td><td class="slds-text-align_right">21.6%</td><td class="slds-text-align_right">22.0%</td></tr>
+                                <tr><td>Capex</td><td class="slds-text-align_right">£1.1M</td><td class="slds-text-align_right">£1.4M</td><td class="slds-text-align_right">£1.6M</td><td class="slds-text-align_right">£2.1M</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="slds-box slds-theme_warning">
+                        <p class="slds-text-body_small">CMS risk not yet in model. Downside at 9–10× recommended before IC Review.</p>
+                    </div>
+                </div>
+            </lightning-tab>
+
+            <!-- ═══ SCENARIOS ═══ -->
+            <lightning-tab label="Scenarios" value="scen" title="Scenarios">
+                <div class="slds-p-around_medium">
+                    <div class="slds-grid slds-grid_vertical-align-center slds-m-bottom_small">
+                        <h3 class="slds-text-heading_small">Scenario Analysis</h3>
+                        <span class="badge fb-ai slds-m-left_small">AI</span>
+                    </div>
+                    <div class="slds-scrollable_x slds-m-bottom_small">
+                        <table class="slds-table slds-table_bordered slds-table_cell-buffer slds-no-row-hover slds-text-body_small">
+                            <thead>
+                                <tr class="slds-line-height_reset">
+                                    <th scope="col" class="tbl-th">Scenario</th>
+                                    <th scope="col" class="tbl-th slds-text-align_right">Entry ×</th>
+                                    <th scope="col" class="tbl-th slds-text-align_right">Entry Price</th>
+                                    <th scope="col" class="tbl-th slds-text-align_right">IRR</th>
+                                    <th scope="col" class="tbl-th slds-text-align_right">MOIC</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr><td><strong>Base Case</strong> – CMS resolved, MH retained</td><td class="slds-text-align_right">12.0×</td><td class="slds-text-align_right">£98.4M</td><td class="slds-text-align_right">28.4%</td><td class="slds-text-align_right">3.4×</td></tr>
+                                <tr><td><strong>Downside</strong> – CMS partial, MH retained</td><td class="slds-text-align_right">11.0×</td><td class="slds-text-align_right">£90.2M</td><td class="slds-text-align_right">19.1%</td><td class="slds-text-align_right">2.5×</td></tr>
+                                <tr><td><strong>Stress</strong> – CMS unresolved, MH departs</td><td class="slds-text-align_right">9.5×</td><td class="slds-text-align_right">£77.9M</td><td class="slds-text-align_right">11.3%</td><td class="slds-text-align_right">1.7×</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <p class="slds-text-body_small slds-text-color_weak">Based on Project Lighthouse model template. 5-year hold, 10× exit, 65% debt.</p>
+                </div>
+            </lightning-tab>
+
+            <!-- ═══ QUESTIONS LOG ═══ -->
+            <lightning-tab label="Questions Log" value="qs" title="Questions Log">
+                <div class="slds-p-around_medium">
+                    <div class="slds-grid slds-grid_vertical-align-center slds-m-bottom_small">
+                        <h3 class="slds-text-heading_small">Questions Log</h3>
+                        <span class="slds-text-body_small slds-text-color_weak slds-m-left_small">12 questions · 5 outstanding</span>
+                        <lightning-button label="+ Add" variant="neutral" class="slds-col_bump-left"></lightning-button>
+                    </div>
+                    <ul>
+                        <li class="slds-p-vertical_small slds-border_bottom">
+                            <div class="slds-grid slds-grid_vertical-align-center slds-m-bottom_xx-small">
+                                <p class="slds-text-body_small slds-has-flexi-truncate">What is management's remediation plan for the CMS supervision requirement at the 3 affected sites?</p>
+                                <span class="badge fb-gap slds-m-left_small slds-flex-shrink-none">Outstanding</span>
+                            </div>
+                            <p class="slds-text-body_small slds-text-color_weak"><span class="badge fb-ai slds-m-right_xx-small">AI</span>Added Today · For: 18 Jun meeting</p>
+                        </li>
+                        <li class="slds-p-vertical_small slds-border_bottom">
+                            <div class="slds-grid slds-grid_vertical-align-center slds-m-bottom_xx-small">
+                                <p class="slds-text-body_small slds-has-flexi-truncate">What is the contractual position on the Guildford CCG referral renewal in 2027?</p>
+                                <span class="badge fb-gap slds-m-left_small slds-flex-shrink-none">Outstanding</span>
+                            </div>
+                            <p class="slds-text-body_small slds-text-color_weak"><span class="badge fb-email slds-m-right_xx-small">Manual</span>Added 22 May · Thomas Bennett</p>
+                        </li>
+                        <li class="slds-p-vertical_small slds-border_bottom">
+                            <div class="slds-grid slds-grid_vertical-align-center slds-m-bottom_xx-small">
+                                <p class="slds-text-body_small slds-has-flexi-truncate">What is the estimated cost of IT system upgrades across the 8 legacy sites?</p>
+                                <span class="badge fb-briefing slds-m-left_small slds-flex-shrink-none">Partial</span>
+                            </div>
+                            <p class="slds-text-body_small slds-text-color_weak slds-m-bottom_xx-small">Management provided indicative range of £1.2–1.8M. Gartner to confirm by 17 Jun.</p>
+                            <p class="slds-text-body_small slds-text-color_weak"><span class="badge fb-ai slds-m-right_xx-small">AI</span>Added 03 Jun</p>
+                        </li>
+                        <li class="slds-p-vertical_small">
+                            <div class="slds-grid slds-grid_vertical-align-center slds-m-bottom_xx-small">
+                                <p class="slds-text-body_small slds-has-flexi-truncate">Has Mark Hargreaves confirmed intention to remain post-close?</p>
+                                <span class="badge fb-call slds-m-left_small slds-flex-shrink-none">Answered</span>
+                            </div>
+                            <p class="slds-text-body_small slds-text-color_weak slds-m-bottom_xx-small">Verbal confirmation 28 May. Subject to retention terms. Open to 3-year earn-out.</p>
+                            <p class="slds-text-body_small slds-text-color_weak"><span class="badge fb-email slds-m-right_xx-small">Manual</span>Answered 28 May</p>
+                        </li>
+                    </ul>
+                    <a class="slds-text-link slds-text-body_small slds-m-top_small slds-show">View all questions (12)</a>
+                </div>
+            </lightning-tab>
+
+        </lightning-tabset>
+    </lightning-card>
+
+    <!-- ═══ CLICK MAP TOGGLE ═══ -->
+    <button class="cmap-toggle" onclick={toggleClickMap} title="Show all clickable areas">
+        <template if:false={showClickMap}>&#9776; Click Map</template>
+        <template if:true={showClickMap}>&#10005; Close Map</template>
+    </button>
+
+    <!-- ═══ CLICK MAP OVERLAY ═══ -->
+    <template if:true={showClickMap}>
+        <div class="cmap-overlay">
+            <!-- numbered badges positioned over each element -->
+            <template for:each={clickPoints} for:item="pt">
+                <div key={pt.id} class="cmap-badge" style={pt.style}>{pt.num}</div>
+            </template>
+        </div>
+        <!-- legend panel -->
+        <div class="cmap-legend">
+            <div class="cmap-legend-head">
+                <span>Click Map — {clickPoints.length} targets</span>
+                <button class="cmap-legend-close" onclick={closeClickMap}>&#10005;</button>
+            </div>
+            <ul class="cmap-legend-list">
+                <template for:each={clickPoints} for:item="pt">
+                    <li key={pt.id} class="cmap-legend-item">{pt.label}</li>
+                </template>
+            </ul>
+        </div>
+    </template>
+
+    <!-- ═══ INTERACTION DETAIL MODAL ═══ -->
+    <template if:true={showIntModal}>
+        <div class="int-modal-bg" onclick={handleModalBgClick}>
+            <div class="int-modal-wrap" onclick={stopProp}>
+
+                <!-- Header -->
+                <div class="int-modal-head">
+                    <div class="int-modal-icon-wrap">
+                        <lightning-icon icon-name={selectedIntIcon} size="small"></lightning-icon>
+                    </div>
+                    <div class="int-modal-title-area">
+                        <div>
+                            <span class={selectedInt.badgeCss}>{selectedInt.type}</span>
+                            &nbsp;<span class="int-modal-date">{selectedInt.date}</span>
+                        </div>
+                        <div class="int-modal-subject">{selectedInt.subject}</div>
+                    </div>
+                    <div class="int-modal-acts">
+                        <template if:true={intViewMode}>
+                            <button class="int-act-btn int-act-edit" onclick={handleIntEdit} title="Edit">
+                                <lightning-icon icon-name="utility:edit" size="x-small"></lightning-icon>
+                            </button>
+                            <button class="int-act-btn int-act-del" onclick={handleIntDelete} title="Delete">
+                                <lightning-icon icon-name="utility:delete" size="x-small"></lightning-icon>
+                            </button>
+                        </template>
+                        <button class="int-act-btn int-act-close" onclick={closeIntModal} title="Close">
+                            <lightning-icon icon-name="utility:close" size="x-small"></lightning-icon>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="int-modal-divider"></div>
+
+                <!-- VIEW mode -->
+                <template if:true={intViewMode}>
+                    <div class="int-modal-body">
+
+                        <div class="int-modal-sect">
+                            <div class="int-sect-label">Notes</div>
+                            <div class="int-sect-body int-notes-text">{selectedInt.notes}</div>
+                        </div>
+
+                        <div class="int-modal-sect">
+                            <div class="int-sect-label">People</div>
+                            <div class="int-sect-body">
+                                <template for:each={selectedInt.people} for:item="person">
+                                    <div key={person.id} class="int-person-row">
+                                        <span class="int-av int-av-lg" style={person.avStyle}>{person.initials}</span>
+                                        <div>
+                                            <div class="int-person-name">{person.name}</div>
+                                            <div class="int-person-org">{person.org}</div>
+                                        </div>
+                                    </div>
+                                </template>
+                            </div>
+                        </div>
+
+                        <div class="int-modal-sect">
+                            <div class="int-sect-label">Tags</div>
+                            <div class="int-sect-body">
+                                <div class="int-tags">
+                                    <template for:each={selectedInt.tags} for:item="tag">
+                                        <span key={tag} class="int-tag">{tag}</span>
+                                    </template>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </template>
+
+                <!-- EDIT mode -->
+                <template if:false={intViewMode}>
+                    <div class="int-modal-body">
+                        <div class="int-modal-sect">
+                            <div class="int-sect-label">Subject</div>
+                            <lightning-input value={editSubject} onchange={handleEditSubjectChange}></lightning-input>
+                        </div>
+                        <div class="int-modal-sect">
+                            <div class="int-sect-label">Notes</div>
+                            <lightning-textarea value={editNotes} oninput={handleEditNotesInput} max-rows="12"></lightning-textarea>
+                        </div>
+                    </div>
+                    <div class="int-modal-footer">
+                        <lightning-button label="Cancel" variant="neutral" onclick={handleIntCancel} class="slds-m-right_small"></lightning-button>
+                        <lightning-button label="Save"   variant="brand"   onclick={handleIntSave}></lightning-button>
+                    </div>
+                </template>
+
+            </div>
+        </div>
+    </template>
+
+</template>

@@ -1,0 +1,29 @@
+:host {
+    --t1: #181818;
+    --t2: #706E6B;
+    --bd: #DDDBDA;
+    display: block;
+    font-family: 'Salesforce Sans', Arial, sans-serif;
+}
+.ov-left { flex: 65; min-width: 0; background: #fff; border-radius: 6px; border: 1px solid #E8E8E8; overflow: hidden; }
+.ch { display: flex; align-items: center; padding: 11px 16px; gap: 8px; }
+.ct { font-size: 12px; font-weight: 700; color: var(--t1); }
+.feed-filters { display: flex; align-items: center; padding: 7px 16px; gap: 6px; flex-wrap: wrap; background: #FAFAFA; }
+.srch {
+    border: 1px solid var(--bd); border-radius: 4px; padding: 4px 8px; font-size: 11px; font-family: inherit;
+    color: var(--t1); outline: none; width: 160px; margin-left: auto;
+}
+.srch:focus { border-color: #0176D3; }
+.fi { display: flex; align-items: flex-start; padding: 10px 16px; gap: 10px; cursor: pointer; transition: background 0.1s; flex-wrap: wrap; }
+.fi:hover, .fi.fi-open { background: #F5F5F5; }
+.fi-main { flex: 1; min-width: 0; }
+.fi-title { font-size: 12px; font-weight: 600; color: var(--t1); line-height: 1.4; }
+.fi-meta { font-size: 11px; color: var(--t2); margin-top: 2px; display: flex; align-items: center; gap: 6px; flex-wrap: wrap; }
+.fbadge {
+    display: inline-block; font-size: 9px; font-weight: 700; padding: 1px 4px; border-radius: 2px; background: #F5F5F5;
+    color: var(--t2); text-transform: uppercase; letter-spacing: 0.3px; border: 1px solid var(--bd);
+}
+.fi-exp { display: block; width: 100%; border-top: 1px solid #EFEFEF; padding: 12px 16px 14px; background: #F9F9F9; }
+.fi-exp-body { font-size: 12px; color: var(--t1); line-height: 1.75; }
+.show-more-row { padding: 10px 16px; text-align: center; font-size: 12px; color: #0176D3; cursor: pointer; }
+.show-more-row:hover { background: #F5F5F5; }

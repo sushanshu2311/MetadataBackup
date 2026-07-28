@@ -1,0 +1,314 @@
+<template>
+    <lightning-card>
+        <div
+            class="slds-grid slds-grid_vertical-align-center slds-wrap slds-p-horizontal_medium slds-p-vertical_x-small slds-border_bottom"
+        >
+            <c-nav-filter-multi-select
+                label="Category"
+                options={categoryOptions}
+                onfilterchange={handleCategoryFilter}
+            ></c-nav-filter-multi-select>
+            <div class="slds-col slds-grow"></div>
+            <div data-search class="slds-m-right_x-small">
+                <c-nav-search-box
+                    placeholder="Search contacts..."
+                    value={searchTerm}
+                    onsearch={handleSearch}
+                ></c-nav-search-box>
+            </div>
+            <lightning-button
+                variant="brand-outline"
+                label={addButtonLabel}
+                onclick={toggleAddForm}
+            ></lightning-button>
+        </div>
+
+        <template lwc:if={showAddForm}>
+            <div class="slds-p-around_medium slds-theme_shade slds-border_bottom">
+                <lightning-layout multiple-rows="true" pull-to-boundary="small">
+                    <lightning-layout-item size="12" medium-device-size="3" padding="around-small">
+                        <lightning-input
+                            label="Full name"
+                            data-field="newName"
+                            value={newName}
+                            required
+                            onchange={handleFieldChange}
+                        ></lightning-input>
+                    </lightning-layout-item>
+                    <lightning-layout-item size="12" medium-device-size="3" padding="around-small">
+                        <lightning-input
+                            label="Role / title"
+                            data-field="newRole"
+                            value={newRole}
+                            onchange={handleFieldChange}
+                        ></lightning-input>
+                    </lightning-layout-item>
+                    <lightning-layout-item size="12" medium-device-size="3" padding="around-small">
+                        <lightning-input
+                            type="email"
+                            label="Email"
+                            data-field="newEmail"
+                            value={newEmail}
+                            onchange={handleFieldChange}
+                        ></lightning-input>
+                    </lightning-layout-item>
+                    <lightning-layout-item size="12" medium-device-size="3" padding="around-small">
+                        <lightning-combobox
+                            label="Category"
+                            data-field="newCategory"
+                            value={newCategory}
+                            options={categoryChoices}
+                            onchange={handleFieldChange}
+                        ></lightning-combobox>
+                    </lightning-layout-item>
+                </lightning-layout>
+                <div class="slds-grid slds-grid_vertical-align-center slds-m-top_x-small">
+                    <lightning-button
+                        variant="brand"
+                        label="Add"
+                        disabled={saving}
+                        onclick={handleAdd}
+                        class="slds-m-right_x-small"
+                    ></lightning-button>
+                    <template lwc:if={formError}>
+                        <span class="slds-text-color_error slds-text-body_small">{formError}</span>
+                    </template>
+                </div>
+            </div>
+        </template>
+
+        <!-- Column headers on desktop; each cell carries its own label once stacked. -->
+        <div
+            class="slds-grid slds-p-horizontal_medium slds-p-vertical_xx-small slds-border_bottom"
+            data-columns
+        >
+            <!-- Sizes total 12 including the remove column, or the row wraps. -->
+            <div class="slds-col slds-size_3-of-12">Person</div>
+            <div class="slds-col slds-size_2-of-12">Role</div>
+            <div class="slds-col slds-size_2-of-12">Email</div>
+            <div class="slds-col slds-size_2-of-12">Connections</div>
+            <div class="slds-col slds-size_2-of-12">Last Touchpoint</div>
+            <div class="slds-col slds-size_1-of-12">
+                <span class="slds-assistive-text">Remove</span>
+            </div>
+        </div>
+
+        <template lwc:if={hasRows}>
+            <template for:each={sections} for:item="section">
+                <div key={section.key}>
+                    <template lwc:if={section.showLabel}>
+                        <div
+                            class="slds-p-horizontal_medium slds-p-vertical_xx-small slds-border_bottom"
+                            data-section-head
+                        >
+                            {section.label}
+                        </div>
+                    </template>
+
+                    <ul class="slds-has-dividers_bottom-space">
+                        <template for:each={section.rows} for:item="row">
+                            <li key={row.recordId} class="slds-item">
+                                <div
+                                    class="slds-grid slds-wrap slds-p-horizontal_medium slds-p-vertical_x-small"
+                                    data-row
+                                    data-id={row.recordId}
+                                    data-open={row.isOpenAttr}
+                                    onclick={handleToggle}
+                                >
+                                    <div class="slds-col slds-size_1-of-1 slds-medium-size_3-of-12">
+                                        <template lwc:if={row.isSuggested}>
+                                            <p class="slds-text-body_regular slds-text-title_bold">{row.name}</p>
+                                        </template>
+                                        <template lwc:else>
+                                            <a
+                                                href="#"
+                                                data-id={row.recordId}
+                                                onclick={handleOpenRecord}
+                                                class="slds-text-title_bold"
+                                                >{row.name}</a
+                                            >
+                                        </template>
+                                        <template lwc:if={row.org}>
+                                            <p class="slds-text-body_small slds-text-color_weak">{row.org}</p>
+                                        </template>
+                                        <template lwc:if={row.isSuggested}>
+                                            <p class="slds-m-top_xxx-small">
+                                                <lightning-badge
+                                                    label="Suggested"
+                                                    data-tone="warning"
+                                                ></lightning-badge>
+                                            </p>
+                                        </template>
+                                    </div>
+
+                                    <div
+                                        class="slds-col slds-size_1-of-1 slds-medium-size_2-of-12 slds-text-body_small slds-text-color_weak"
+                                    >
+                                        <span data-cell-label>Role</span>{row.role}
+                                    </div>
+
+                                    <div
+                                        class="slds-col slds-size_1-of-1 slds-medium-size_2-of-12 slds-text-body_small slds-truncate"
+                                    >
+                                        <span data-cell-label>Email</span>
+                                        <template lwc:if={row.email}>
+                                            <lightning-formatted-email
+                                                value={row.email}
+                                            ></lightning-formatted-email>
+                                        </template>
+                                        <template lwc:else>
+                                            <span class="slds-text-color_weak">-</span>
+                                        </template>
+                                    </div>
+
+                                    <div
+                                        class="slds-col slds-size_1-of-1 slds-medium-size_2-of-12 slds-text-body_small"
+                                    >
+                                        <span data-cell-label>Connections</span>
+                                        <template lwc:if={row.hasConnections}>
+                                            <span class="slds-text-link">{row.connectionsLabel}</span>
+                                        </template>
+                                        <template lwc:else>
+                                            <span class="slds-text-color_weak">{row.connectionsLabel}</span>
+                                        </template>
+                                    </div>
+
+                                    <div
+                                        class="slds-col slds-size_1-of-1 slds-medium-size_2-of-12 slds-text-body_small slds-text-color_weak"
+                                    >
+                                        <span data-cell-label>Last Touchpoint</span>
+                                        <template lwc:if={row.hasTouchpoint}>
+                                            <lightning-formatted-date-time
+                                                value={row.lastTouchpoint}
+                                                year="numeric"
+                                                month="short"
+                                                day="2-digit"
+                                                time-zone="UTC"
+                                            ></lightning-formatted-date-time>
+                                        </template>
+                                        <template lwc:else>-</template>
+                                    </div>
+
+                                    <div
+                                        class="slds-col slds-size_1-of-1 slds-medium-size_1-of-12 slds-text-align_right"
+                                    >
+                                        <lightning-button-icon
+                                            icon-name="utility:close"
+                                            variant="bare"
+                                            size="small"
+                                            alternative-text="Remove contact"
+                                            title="Remove contact"
+                                            data-id={row.recordId}
+                                            data-name={row.name}
+                                            onclick={handleRemove}
+                                        ></lightning-button-icon>
+                                    </div>
+                                </div>
+
+                                <template lwc:if={row.isOpen}>
+                                    <div class="slds-p-horizontal_medium slds-p-bottom_medium slds-text-longform">
+                                        <template lwc:if={row.isSuggested}>
+                                            <p
+                                                class="slds-text-title_caps slds-text-color_weak slds-m-bottom_xx-small"
+                                            >
+                                                Why Suggested
+                                            </p>
+                                            <p class="slds-text-body_small">{row.insightHow}</p>
+                                        </template>
+                                        <template lwc:else>
+                                            <lightning-layout multiple-rows="true" pull-to-boundary="small">
+                                                <lightning-layout-item
+                                                    size="12"
+                                                    large-device-size="6"
+                                                    padding="around-small"
+                                                >
+                                                    <p
+                                                        class="slds-text-title_caps slds-text-color_weak slds-m-bottom_xx-small"
+                                                    >
+                                                        How We Know Them
+                                                    </p>
+                                                    <p class="slds-text-body_small slds-m-bottom_small">
+                                                        {row.insightHow}
+                                                    </p>
+
+                                                    <p
+                                                        class="slds-text-title_caps slds-text-color_weak slds-m-bottom_xx-small"
+                                                    >
+                                                        Internal Connections
+                                                    </p>
+                                                    <p class="slds-text-body_small">{row.insightInternal}</p>
+                                                </lightning-layout-item>
+
+                                                <lightning-layout-item
+                                                    size="12"
+                                                    large-device-size="6"
+                                                    padding="around-small"
+                                                >
+                                                    <p
+                                                        class="slds-text-title_caps slds-text-color_weak slds-m-bottom_xx-small"
+                                                    >
+                                                        Interaction Depth (LTM)
+                                                    </p>
+                                                    <div class="slds-grid slds-m-bottom_small">
+                                                        <div class="slds-col slds-m-right_medium">
+                                                            <p class="slds-text-heading_small">{row.depthEmails}</p>
+                                                            <p class="slds-text-body_small slds-text-color_weak">
+                                                                Emails
+                                                            </p>
+                                                        </div>
+                                                        <div class="slds-col slds-m-right_medium">
+                                                            <p class="slds-text-heading_small">{row.depthCalls}</p>
+                                                            <p class="slds-text-body_small slds-text-color_weak">
+                                                                Calls
+                                                            </p>
+                                                        </div>
+                                                        <div class="slds-col">
+                                                            <p class="slds-text-heading_small">
+                                                                {row.depthMeetings}
+                                                            </p>
+                                                            <p class="slds-text-body_small slds-text-color_weak">
+                                                                Meetings
+                                                            </p>
+                                                        </div>
+                                                    </div>
+
+                                                    <p
+                                                        class="slds-text-title_caps slds-text-color_weak slds-m-bottom_xx-small"
+                                                    >
+                                                        Network
+                                                    </p>
+                                                    <template lwc:if={row.hasNetworkPaths}>
+                                                        <template for:each={row.networkPaths} for:item="path">
+                                                            <div key={path.id} class="slds-m-bottom_xx-small">
+                                                                <p class="slds-text-body_small">{path.line}</p>
+                                                                <p
+                                                                    class="slds-text-body_small slds-text-color_weak"
+                                                                >
+                                                                    {path.meta}
+                                                                </p>
+                                                            </div>
+                                                        </template>
+                                                    </template>
+                                                    <template lwc:else>
+                                                        <p class="slds-text-body_small slds-text-color_weak">
+                                                            None identified yet.
+                                                        </p>
+                                                    </template>
+                                                </lightning-layout-item>
+                                            </lightning-layout>
+                                        </template>
+                                    </div>
+                                </template>
+                            </li>
+                        </template>
+                    </ul>
+                </div>
+            </template>
+        </template>
+        <template lwc:else>
+            <p class="slds-p-around_medium slds-text-body_small slds-text-color_weak">
+                No contacts match this filter.
+            </p>
+        </template>
+    </lightning-card>
+</template>

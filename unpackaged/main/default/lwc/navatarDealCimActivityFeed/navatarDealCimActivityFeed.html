@@ -1,0 +1,32 @@
+<template>
+    <div class="ov-left">
+        <div class="ch"><span class="ct">Activity</span></div>
+        <div class="feed-filters">
+            <c-navatar-deal-cim-multi-select
+                label="Type"
+                options={typeOptions}
+                selected-values={selectedTypes}
+                onfilterchange={handleFilterChange}
+            ></c-navatar-deal-cim-multi-select>
+            <input class="srch" placeholder="Search activity..." onchange={handleSearch} oninput={handleSearch} />
+        </div>
+        <div class="feed-list">
+            <template for:each={items} for:item="item">
+                <div key={item.key} class={item.rowClass} data-key={item.key} onclick={handleItemClick}>
+                    <div class="fi-main">
+                        <div class="fi-title">{item.title}</div>
+                        <div class="fi-meta"><span class="fbadge">{item.badge}</span> {item.meta}</div>
+                    </div>
+                    <template if:true={item.isOpen}>
+                        <div class="fi-exp">
+                            <lightning-formatted-rich-text value={item.body} class="fi-exp-body"></lightning-formatted-rich-text>
+                        </div>
+                    </template>
+                </div>
+            </template>
+            <template if:false={showMore}>
+                <div class="show-more-row" onclick={handleShowMore}>{showMoreLabel}</div>
+            </template>
+        </div>
+    </div>
+</template>

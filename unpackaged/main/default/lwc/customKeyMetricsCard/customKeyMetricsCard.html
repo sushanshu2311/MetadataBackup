@@ -1,0 +1,21 @@
+<template>
+    <div class="metrics-card">
+        <div class="metrics-card__header">
+            <span class="metrics-card__title">Key Metrics</span>
+        </div>
+        <div class="metrics-grid">
+            <template for:each={metricRows} for:item="row">
+                <div key={row.id} class="metric-row">
+                    <div class="metric-field">
+                        <div class="metric-field__label">{row.left.label}</div>
+                        <div class="metric-field__value">{row.left.value}</div>
+                    </div>
+                    <div class="metric-field">
+                        <div class="metric-field__label">{row.right.label}</div>
+                        <div class="metric-field__value">{row.right.value}</div>
+                    </div>
+                </div>
+            </template>
+        </div>
+    </div>
+</template>

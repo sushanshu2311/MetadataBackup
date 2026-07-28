@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CompactLayout xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Portfolio_Company_Highlight</fullName>
+    <fields>Name</fields>
+    <fields>navpeII__Entity_Type__c</fields>
+    <fields>Website</fields>
+    <fields>navpeII__Investment_Type__c</fields>
+    <label>Portfolio_Company_Highlight</label>
+</CompactLayout>

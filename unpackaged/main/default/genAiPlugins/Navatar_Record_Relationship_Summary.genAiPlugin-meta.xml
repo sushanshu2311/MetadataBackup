@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<GenAiPlugin xmlns="http://soap.sforce.com/2006/04/metadata" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+    <canEscalate>false</canEscalate>
+    <description>Use this topic when the user asks to “summarize this Firm/Contact/Deal”, “relationship summary”, or requests a contextual overview of a client or deal record and Create follow-up Tasks when the user asks for next steps or explicitly says “create a task / reminder / follow‑up for this contact/deal/account</description>
+    <developerName>Navatar_Record_Relationship_Summary</developerName>
+    <genAiFunctions>
+        <functionName>EmployeeCopilot__IdentifyRecordByName</functionName>
+    </genAiFunctions>
+    <genAiFunctions>
+        <functionName>Navatar_Contact_Summary</functionName>
+    </genAiFunctions>
+    <genAiFunctions>
+        <functionName>Navatar_Deal_Summary</functionName>
+    </genAiFunctions>
+    <genAiFunctions>
+        <functionName>Navatar_Firm_Summary</functionName>
+    </genAiFunctions>
+    <genAiPluginInstructions>
+        <description>When called on a supported record (Firm/Contact/Deal), generate a structured summary with sections tailored to the record.</description>
+        <developerName>instruction_0_1770374721478</developerName>
+        <language xsi:nil="true" />
+        <masterLabel>instruction_0_1770374721478</masterLabel>
+        <sortOrder>0</sortOrder>
+    </genAiPluginInstructions>
+    <genAiPluginInstructions>
+        <description>Never include Fund or Fundraising summaries. If the user asks to summarize those, respond with the agreed text: “Summaries for Fund or Fundraising records aren’t supported. I can help with Account, Contact, or Deal summaries—would you like to proceed with one of those?</description>
+        <developerName>instruction_1_1770374721478</developerName>
+        <language xsi:nil="true" />
+        <masterLabel>instruction_1_1770374721478</masterLabel>
+        <sortOrder>0</sortOrder>
+    </genAiPluginInstructions>
+    <genAiPluginInstructions>
+        <description>Respect field‑level security: 
+- Do not mention or derive restricted fields the current user cannot see. 
+- If key information is missing due to security or actual data gaps, acknowledge that the summary is based only on available fields.</description>
+        <developerName>instruction_2_1770374721478</developerName>
+        <language xsi:nil="true" />
+        <masterLabel>instruction_2_1770374721478</masterLabel>
+        <sortOrder>0</sortOrder>
+    </genAiPluginInstructions>
+    <genAiPluginInstructions>
+        <description>Keep summaries concise, scan-friendly, and ready to be copied into Rich Text, using headings and bullets instead of long prose.</description>
+        <developerName>instruction_3_1770374721478</developerName>
+        <language xsi:nil="true" />
+        <masterLabel>instruction_3_1770374721478</masterLabel>
+        <sortOrder>0</sortOrder>
+    </genAiPluginInstructions>
+    <genAiPluginInstructions>
+        <description>If the user asks for an action like “create a task”, “set a follow‑up”, or “remind me to call them”:
+- Ask minimal clarifying questions only if needed: due date, owner (assume current user if not specified), and a short subject.
+- Keep Task creation tightly tied to the Firm/Contact/Deal context so the agent remains a “relationship &amp; next‑steps” rather than a generic task</description>
+        <developerName>instruction_4_1770374721478</developerName>
+        <language xsi:nil="true" />
+        <masterLabel>instruction_4_1770374721478</masterLabel>
+        <sortOrder>0</sortOrder>
+    </genAiPluginInstructions>
+    <genAiPluginInstructions>
+        <description>If records with the same name exist within one or multiple objects, the agent must request user confirmation before proceeding with record summarization.</description>
+        <developerName>instruction_5_1770374721478</developerName>
+        <language xsi:nil="true" />
+        <masterLabel>instruction_5_1770374721478</masterLabel>
+        <sortOrder>0</sortOrder>
+    </genAiPluginInstructions>
+    <genAiPluginInstructions>
+        <description>Ask clarifying questions if the user&#39;s request is ambiguous or lacks necessary details.</description>
+        <developerName>instruction_6_1770374721478</developerName>
+        <language xsi:nil="true" />
+        <masterLabel>instruction_6_1770374721478</masterLabel>
+        <sortOrder>0</sortOrder>
+    </genAiPluginInstructions>
+    <language>en_US</language>
+    <localDeveloperName>Navatar_Record_Relationship_Summary</localDeveloperName>
+    <masterLabel>Navatar Record Relationship Summary</masterLabel>
+    <pluginType>Topic</pluginType>
+    <scope>Supported objects: Account (Firm), Contact, Deal. Excludes Fund and Fundraising summaries; must return a friendly fallback for those. Must respect Salesforce field-level security and not expose restricted fields.</scope>
+</GenAiPlugin>

@@ -1,0 +1,7 @@
+:host { display: block; }
+.ov-cols { display: flex; gap: 14px; padding: 0 16px 16px; }
+.ov-right { flex: 35; min-width: 0; display: flex; flex-direction: column; gap: 12px; }
+
+@media (max-width: 900px) {
+    .ov-cols { flex-direction: column; }
+}

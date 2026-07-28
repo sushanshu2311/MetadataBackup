@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<GenAiFunction xmlns="http://soap.sforce.com/2006/04/metadata">
+    <description>Use this action to generate a Meeting Prep Card summary for the contact record.</description>
+    <developerName>Navatar_Meeting_Prep_Card_On_Demand</developerName>
+    <invocationTarget>NavatarMeetingPrepCardOnDemand</invocationTarget>
+    <invocationTargetType>apex</invocationTargetType>
+    <isConfirmationRequired>false</isConfirmationRequired>
+    <isIncludeInProgressIndicator>false</isIncludeInProgressIndicator>
+    <localDeveloperName>Navatar_Meeting_Prep_Card_On_Demand</localDeveloperName>
+    <masterLabel>Navatar Meeting Prep Card On Demand</masterLabel>
+</GenAiFunction>

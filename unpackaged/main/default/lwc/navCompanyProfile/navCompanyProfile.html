@@ -1,0 +1,23 @@
+<template>
+    <lightning-card>
+        <span slot="title">Company Profile</span>
+
+        <div class="slds-border_top slds-p-horizontal_medium slds-p-bottom_small">
+            <template lwc:if={hasError}>
+                <p class="slds-p-top_small slds-text-body_small slds-text-color_weak">
+                    This company's profile could not be loaded.
+                </p>
+            </template>
+            <template lwc:else>
+                <lightning-layout multiple-rows="true" pull-to-boundary="small">
+                    <template for:each={fields} for:item="field">
+                        <lightning-layout-item key={field.key} size="6" padding="around-small">
+                            <p class="slds-text-body_small slds-text-color_weak">{field.label}</p>
+                            <p class="slds-text-body_regular slds-text-title_bold">{field.value}</p>
+                        </lightning-layout-item>
+                    </template>
+                </lightning-layout>
+            </template>
+        </div>
+    </lightning-card>
+</template>

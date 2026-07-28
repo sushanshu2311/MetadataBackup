@@ -1,0 +1,60 @@
+/* Card shell */
+.ai-card {
+    border-radius: 0.25rem;
+    border: 1px solid #dddbda;
+    background: #ffffff;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.16);
+    overflow: hidden;
+}
+
+/* Dark navy header */
+.ai-card__header {
+    background-color: #16325C;
+    padding: 0.75rem 1rem;
+}
+
+.ai-card__title {
+    color: #ffffff;
+    font-size: 1rem;
+    font-weight: 700;
+    margin: 0 0 0.125rem 0;
+    line-height: 1.25;
+}
+
+.ai-card__subtitle {
+    color: rgba(255, 255, 255, 0.75);
+    font-size: 0.75rem;
+    margin: 0;
+    line-height: 1.4;
+}
+
+/* Make the collapse icon white using LWDS token */
+.ai-collapse-btn {
+    --lwc-colorTextIconDefault: #ffffff;
+}
+
+/* Card body */
+.ai-card__body {
+    padding: 1rem;
+}
+
+/* Chat message area */
+.ai-messages {
+    max-height: 320px;
+}
+
+/* AI message bubble — light gray */
+.ai-bubble--ai {
+    padding: 0.625rem 0.75rem;
+    border-radius: 0.375rem;
+    border: 1px solid #e0e5ee;
+    background-color: #f4f6f9;
+}
+
+/* User message bubble — light blue */
+.ai-bubble--user {
+    padding: 0.625rem 0.75rem;
+    border-radius: 0.375rem;
+    border: 1px solid #c9d9f8;
+    background-color: #eaf1ff;
+}

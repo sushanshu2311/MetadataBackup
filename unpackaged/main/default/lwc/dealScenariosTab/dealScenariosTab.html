@@ -1,0 +1,18 @@
+<template>
+    <lightning-card title="Return Scenarios" icon-name="utility:apex">
+        <div class="slds-p-horizontal_medium slds-p-bottom_medium">
+            <p class="slds-text-body_small slds-text-color_weak slds-p-top_small slds-p-bottom_x-small">
+                Entry: £82M (8.2M EBITDA × entry multiple). Discount rate: 10%. Hold period: 5 years.
+            </p>
+            <lightning-datatable
+                key-field="id"
+                data={scenarios}
+                columns={scenarioColumns}
+                hide-checkbox-column>
+            </lightning-datatable>
+            <p class="slds-text-body_small slds-text-color_weak slds-m-top_small">
+                Hurdle rate: 20% IRR / 2.5× MOIC. Base and Downside scenarios meet hurdle; Stress does not.
+            </p>
+        </div>
+    </lightning-card>
+</template>

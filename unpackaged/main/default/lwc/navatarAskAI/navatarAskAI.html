@@ -1,0 +1,90 @@
+<template>
+
+    <!-- Floating chat panel -->
+    <template if:true={isOpen}>
+        <div style="position:fixed;bottom:136px;right:24px;width:420px;max-height:780px;z-index:9000;border-radius:8px;box-shadow:0 8px 32px rgba(0,0,0,0.28);background:#ffffff;display:flex;flex-direction:column;">
+
+            <!-- Header -->
+            <div style="background:#16325c;border-radius:8px 8px 0 0;padding:12px 16px;flex-shrink:0;">
+                <lightning-layout vertical-align="center">
+                    <lightning-layout-item flexibility="auto">
+                        <p style="color:#ffffff;font-weight:700;font-size:14px;margin:0;">Ask AI</p>
+                        <p style="color:rgba(255,255,255,0.65);font-size:12px;margin:0;">Recommended actions</p>
+                    </lightning-layout-item>
+                    <lightning-layout-item flexibility="no-flex">
+                        <lightning-button-icon
+                            icon-name="utility:close"
+                            variant="bare-inverse"
+                            size="small"
+                            alternative-text="Close"
+                            onclick={handleClose}>
+                        </lightning-button-icon>
+                    </lightning-layout-item>
+                </lightning-layout>
+            </div>
+
+            <!-- Body (scrollable) -->
+            <div style="flex:1;overflow-y:auto;padding:12px 16px;">
+
+                <!-- Selected item context -->
+                <p style="font-size:10px;font-weight:700;color:#706e6b;letter-spacing:0.5px;margin:0 0 4px 0;">SELECTED ITEM</p>
+                <p style="font-size:13px;font-weight:600;color:#181818;margin:0 0 16px 0;">{selectedContext}</p>
+
+                <!-- Recommended actions -->
+                <p style="font-size:10px;font-weight:700;color:#2e844a;letter-spacing:0.5px;margin:0 0 8px 0;">● RECOMMENDED ACTIONS</p>
+                <template for:each={recommendedActions} for:item="action">
+                    <div key={action.id}
+                        class="slds-p-vertical_x-small slds-p-horizontal_small slds-border_bottom"
+                        style="cursor:pointer;"
+                        data-text={action.text}
+                        onclick={handleActionClick}>
+                        <p style="font-size:13px;margin:0;">{action.text}</p>
+                    </div>
+                </template>
+
+                <!-- Chat messages (appear after interaction) -->
+                <template if:true={hasMessages}>
+                    <ul class="slds-chat-list slds-m-top_medium">
+                        <template for:each={messages} for:item="msg">
+                            <li key={msg.id} class={msg.listClass}>
+                                <div class="slds-chat-message">
+                                    <div class="slds-chat-message__body">
+                                        <div class={msg.bubbleClass}>
+                                            <p class="slds-text-body_small">{msg.text}</p>
+                                        </div>
+                                        <p class="slds-chat-message__meta">{msg.timestamp}</p>
+                                    </div>
+                                </div>
+                            </li>
+                        </template>
+                    </ul>
+                    <template if:true={isTyping}>
+                        <p class="slds-text-body_small slds-text-color_weak slds-m-top_x-small">Navatar Intelligence is thinking...</p>
+                    </template>
+                </template>
+            </div>
+
+            <!-- Footer: input + send -->
+            <div class="slds-p-around_small slds-border_top" style="flex-shrink:0;">
+                <lightning-layout vertical-align="center">
+                    <lightning-layout-item flexibility="auto" class="slds-m-right_x-small">
+                        <lightning-input
+                            type="text"
+                            label="Ask"
+                            variant="label-hidden"
+                            placeholder="Ask anything about this deal..."
+                            value={inputText}
+                            onchange={handleInput}
+                            onkeydown={handleKeyDown}>
+                        </lightning-input>
+                    </lightning-layout-item>
+                    <lightning-layout-item flexibility="no-flex">
+                        <lightning-button label="Send" variant="brand" onclick={handleSend}></lightning-button>
+                    </lightning-layout-item>
+                </lightning-layout>
+            </div>
+
+        </div>
+    </template>
+
+</template>

@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<GenAiPromptTemplate xmlns="http://soap.sforce.com/2006/04/metadata">
+    <activeVersionIdentifier>3csGyRED5gz7uT2aANe6Db4ikTQZNcKk1qTn8g80B90=_2</activeVersionIdentifier>
+    <developerName>Navatar_Transform_File_Content_to_JSON</developerName>
+    <masterLabel>Navatar Transform File Content to JSON</masterLabel>
+    <overridable>false</overridable>
+    <templateVersions>
+        <content>Extract the content from the file and convert it into well-structured **hierarchical JSON** format.
+- Use **appropriate data types**: strings, numbers, lists, nested objects.
+- Ensure the JSON preserves the **structure and logic** of the original document for easy downstream querying and summarization and share the reponse as JSON .
+
+# SPECIAL INSTRUCTIONS
+When extracting numerical or financial information from the document (e.g., Revenue, EBIT, EBITDA, Net Income, Growth %, Margins, etc.), follow these rules strictly:
+ - Preserve Currency Symbols: Always include the exact currency symbol as mentioned in the document (e.g., $, €, £). Do not convert or omit the currency.
+ - Retain Units Exactly as Written. Include units such as: M, MM, Mn, Million, B, Bn, Billion, K, Thousand. Use the exact format provided in the document. Do not normalize or expand units.
+
+</content>
+        <inputs>
+            <apiName>File_Name</apiName>
+            <definition>SOBJECT://ContentDocument</definition>
+            <masterLabel>File Name</masterLabel>
+            <referenceName>Input:File_Name</referenceName>
+            <required>true</required>
+        </inputs>
+        <isCitationEnabled>false</isCitationEnabled>
+        <primaryModel>sfdc_ai__DefaultOpenAIGPT4OmniMini</primaryModel>
+        <status>Published</status>
+        <versionIdentifier>xroUVoyZzCqyUAR2ieuQxYKxkgupdfuoUA8DGTKJQac=_2</versionIdentifier>
+    </templateVersions>
+    <templateVersions>
+        <content>Extract the content from the file and convert it into well-structured **hierarchical JSON** format.
+- Use **appropriate data types**: strings, numbers, lists, nested objects.
+- Ensure the JSON preserves the **structure and logic** of the original document for easy downstream querying and summarization and share the reponse as JSON .
+
+# SPECIAL INSTRUCTIONS
+When extracting numerical or financial information from the document (e.g., Revenue, EBIT, EBITDA, Net Income, Growth %, Margins, etc.), follow these rules strictly:
+ - Preserve Currency Symbols: Always include the exact currency symbol as mentioned in the document (e.g., $, €, £). Do not convert or omit the currency.
+ - Retain Units Exactly as Written. Include units such as: M, MM, Mn, Million, B, Bn, Billion, K, Thousand. Use the exact format provided in the document. Do not normalize or expand units.
+
+</content>
+        <inputs>
+            <apiName>File_Name</apiName>
+            <definition>SOBJECT://ContentDocument</definition>
+            <masterLabel>File Name</masterLabel>
+            <referenceName>Input:File_Name</referenceName>
+            <required>true</required>
+        </inputs>
+        <isCitationEnabled>false</isCitationEnabled>
+        <primaryModel>sfdc_ai__DefaultOpenAIGPT4OmniMini</primaryModel>
+        <status>Published</status>
+        <versionIdentifier>3csGyRED5gz7uT2aANe6Db4ikTQZNcKk1qTn8g80B90=_2</versionIdentifier>
+    </templateVersions>
+    <type>einstein_gpt__flex</type>
+    <visibility>Global</visibility>
+</GenAiPromptTemplate>

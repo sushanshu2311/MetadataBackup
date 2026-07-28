@@ -1,0 +1,87 @@
+<template>
+    <div>
+
+        <!-- Header: title + Newest first -->
+        <div class="slds-p-horizontal_medium slds-p-vertical_small slds-border_bottom">
+            <lightning-layout vertical-align="center">
+                <lightning-layout-item flexibility="auto">
+                    <lightning-formatted-text value="Deal Activity" class="slds-text-heading_small slds-text-title_bold"></lightning-formatted-text>
+                </lightning-layout-item>
+                <lightning-layout-item flexibility="no-flex">
+                    <!-- <lightning-formatted-text value="Newest first" class="slds-text-body_small slds-text-color_weak"></lightning-formatted-text> -->
+                </lightning-layout-item>
+            </lightning-layout>
+        </div>
+
+        <!-- Filter + Search row -->
+        <div class="slds-p-horizontal_medium slds-p-vertical_small slds-border_bottom">
+            <lightning-layout vertical-align="center">
+                <lightning-layout-item flexibility="no-flex">
+                    <lightning-button-group>
+                        <lightning-button label="All"                variant={fAll}            data-filter="all"            onclick={handleFilter}></lightning-button>
+                        <lightning-button label="Emails"             variant={fEmail}          data-filter="email"          onclick={handleFilter}></lightning-button>
+                        <lightning-button label="Meetings"           variant={fMeeting}        data-filter="meeting"        onclick={handleFilter}></lightning-button>
+                        <lightning-button label="Deal Intelligence"  variant={fIntelligence}   data-filter="intelligence"   onclick={handleFilter}></lightning-button>
+                        <lightning-button label="News"               variant={fNews}           data-filter="news"           onclick={handleFilter}></lightning-button>
+                        <lightning-button label="AI Recommendations" variant={fRecommendation} data-filter="recommendation" onclick={handleFilter}></lightning-button>
+                    </lightning-button-group>
+                </lightning-layout-item>
+                <lightning-layout-item flexibility="auto"></lightning-layout-item>
+                <lightning-layout-item flexibility="no-flex">
+                    <lightning-input
+                        type="search"
+                        variant="label-hidden"
+                        placeholder="Search activity..."
+                        onchange={handleSearch}>
+                    </lightning-input>
+                </lightning-layout-item>
+            </lightning-layout>
+        </div>
+
+        <!-- Data table -->
+        <lightning-datatable
+            key-field="id"
+            data={filteredFeed}
+            columns={columns}
+            onrowaction={handleRowAction}
+            hide-checkbox-column>
+        </lightning-datatable>
+
+        <!-- Show more -->
+        <template if:true={hasMore}>
+            <div class="slds-border_top slds-border_bottom slds-p-vertical_small slds-text-align_center">
+                <lightning-button label={showMoreLabel} variant="base" onclick={handleShowMore}></lightning-button>
+            </div>
+        </template>
+
+        <!-- Detail modal -->
+        <template if:true={selectedItem}>
+            <div role="dialog" tabindex="-1" aria-modal="true" aria-labelledby="modal-heading"
+                class="slds-modal slds-fade-in-open">
+                <div class="slds-modal__container">
+                    <div class="slds-modal__header">
+                        <lightning-button-icon
+                            class="slds-modal__close"
+                            icon-name="utility:close"
+                            variant="bare-inverse"
+                            size="large"
+                            alternative-text="Close"
+                            onclick={handleCloseDetail}>
+                        </lightning-button-icon>
+                        <h2 id="modal-heading" class="slds-modal__title">{selectedItem.badge}</h2>
+                    </div>
+                    <div class="slds-modal__content slds-p-around_medium">
+                        <p class="slds-text-heading_small slds-m-bottom_small">{selectedItem.title}</p>
+                        <p class="slds-text-body_regular slds-text-longform">{selectedItem.preview}</p>
+                        <p class="slds-text-body_small slds-text-color_weak slds-m-top_small">{selectedItem.timestamp}</p>
+                    </div>
+                    <div class="slds-modal__footer">
+                        <lightning-button label="Close" onclick={handleCloseDetail}></lightning-button>
+                    </div>
+                </div>
+            </div>
+            <div class="slds-backdrop slds-backdrop_open"></div>
+        </template>
+
+    </div>
+</template>

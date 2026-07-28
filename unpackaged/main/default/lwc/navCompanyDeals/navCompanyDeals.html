@@ -1,0 +1,95 @@
+<template>
+    <lightning-card>
+        <div
+            class="slds-grid slds-grid_vertical-align-center slds-wrap slds-p-horizontal_medium slds-p-vertical_x-small slds-border_bottom"
+        >
+            <c-nav-filter-multi-select
+                label="Status"
+                options={statusOptions}
+                onfilterchange={handleStatusFilter}
+            ></c-nav-filter-multi-select>
+        </div>
+
+        <div
+            class="slds-grid slds-p-horizontal_medium slds-p-vertical_xx-small slds-border_bottom"
+            data-columns
+        >
+            <div class="slds-col slds-size_3-of-12">Deal / Project</div>
+            <div class="slds-col slds-size_2-of-12">Type</div>
+            <div class="slds-col slds-size_2-of-12">Enterprise Value</div>
+            <div class="slds-col slds-size_2-of-12">Stage</div>
+            <div class="slds-col slds-size_1-of-12">Year</div>
+            <div class="slds-col slds-size_2-of-12">Lead</div>
+        </div>
+
+        <template lwc:if={hasDeals}>
+            <ul class="slds-has-dividers_bottom-space">
+                <template for:each={visibleDeals} for:item="deal">
+                    <li key={deal.recordId} class="slds-item">
+                        <div
+                            class="slds-grid slds-wrap slds-p-horizontal_medium slds-p-vertical_x-small"
+                            data-row
+                            data-id={deal.recordId}
+                            data-open={deal.isOpenAttr}
+                            onclick={handleToggle}
+                        >
+                            <div class="slds-col slds-size_1-of-1 slds-medium-size_3-of-12">
+                                <a
+                                    href="#"
+                                    data-id={deal.recordId}
+                                    onclick={handleOpenRecord}
+                                    class="slds-text-title_bold"
+                                    >{deal.name}</a
+                                >
+                            </div>
+                            <div
+                                class="slds-col slds-size_1-of-1 slds-medium-size_2-of-12 slds-text-body_small slds-text-color_weak"
+                            >
+                                <span data-cell-label>Type</span>{deal.dealType}
+                            </div>
+                            <div class="slds-col slds-size_1-of-1 slds-medium-size_2-of-12 slds-text-body_small">
+                                <span data-cell-label>Enterprise Value</span>{deal.enterpriseValue}
+                            </div>
+                            <!-- Stage is plain text: no badge treatment. -->
+                            <div class="slds-col slds-size_1-of-1 slds-medium-size_2-of-12 slds-text-body_small">
+                                <span data-cell-label>Stage</span>{deal.stage}
+                            </div>
+                            <div
+                                class="slds-col slds-size_1-of-1 slds-medium-size_1-of-12 slds-text-body_small slds-text-color_weak"
+                            >
+                                <span data-cell-label>Year</span>{deal.dealYear}
+                            </div>
+                            <div
+                                class="slds-col slds-size_1-of-1 slds-medium-size_2-of-12 slds-text-body_small slds-text-color_weak"
+                            >
+                                <span data-cell-label>Lead</span>{deal.lead}
+                            </div>
+                        </div>
+
+                        <template lwc:if={deal.isOpen}>
+                            <div class="slds-p-horizontal_medium slds-p-bottom_medium slds-text-longform">
+                                <template lwc:if={deal.insight}>
+                                    <p class="slds-m-bottom_xx-small">
+                                        <lightning-badge label="AI"></lightning-badge>
+                                        <span class="slds-text-title_caps slds-text-color_weak slds-m-left_x-small"
+                                            >Navatar Intelligence</span
+                                        >
+                                    </p>
+                                    <p class="slds-text-body_small">{deal.insight}</p>
+                                </template>
+                                <template lwc:else>
+                                    <p class="slds-text-body_small slds-text-color_weak">
+                                        No summary is available for this deal yet.
+                                    </p>
+                                </template>
+                            </div>
+                        </template>
+                    </li>
+                </template>
+            </ul>
+        </template>
+        <template lwc:else>
+            <p class="slds-p-around_medium slds-text-body_small slds-text-color_weak">{emptyMessage}</p>
+        </template>
+    </lightning-card>
+</template>

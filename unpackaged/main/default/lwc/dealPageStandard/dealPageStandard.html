@@ -1,0 +1,33 @@
+<template>
+    <lightning-tabset>
+        <lightning-tab label="Overview" value="overview">
+            <c-deal-current-summary record-id={recordId}></c-deal-current-summary>
+            <c-deal-activity-feed record-id={recordId}></c-deal-activity-feed>
+            <c-deal-relationships record-id={recordId}></c-deal-relationships>
+        </lightning-tab>
+        <lightning-tab label="Details" value="details">
+            <c-deal-details-tab record-id={recordId}></c-deal-details-tab>
+        </lightning-tab>
+        <lightning-tab label="Rel. Intelligence" value="ri">
+            <c-deal-ri-tab record-id={recordId}></c-deal-ri-tab>
+        </lightning-tab>
+        <lightning-tab label="Interactions" value="interactions">
+            <c-deal-interactions-tab record-id={recordId}></c-deal-interactions-tab>
+        </lightning-tab>
+        <lightning-tab label="Documents" value="documents">
+            <c-deal-documents-tab record-id={recordId}></c-deal-documents-tab>
+        </lightning-tab>
+        <lightning-tab label="Comparable Deals" value="comps">
+            <c-deal-comps-tab record-id={recordId}></c-deal-comps-tab>
+        </lightning-tab>
+        <lightning-tab label="Financials" value="financials">
+            <c-deal-financials-tab record-id={recordId}></c-deal-financials-tab>
+        </lightning-tab>
+        <lightning-tab label="Scenarios" value="scenarios">
+            <c-deal-scenarios-tab record-id={recordId}></c-deal-scenarios-tab>
+        </lightning-tab>
+        <lightning-tab label="Questions Log" value="questions">
+            <c-deal-questions-tab record-id={recordId}></c-deal-questions-tab>
+        </lightning-tab>
+    </lightning-tabset>
+</template>

@@ -1,0 +1,53 @@
+:host {
+    --navy: #0B2D5F;
+    --bd: #DDDBDA;
+    --t1: #181818;
+    --t2: #706E6B;
+    --t3: #9CA3AF;
+    display: block;
+}
+
+.metrics-card {
+    background: #fff;
+    border: 1px solid var(--bd);
+    border-radius: 6px;
+    overflow: hidden;
+}
+
+.metrics-card__header {
+    padding: 12px 16px 10px;
+    border-bottom: 1px solid var(--bd);
+}
+
+.metrics-card__title {
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--t1);
+}
+
+.metrics-grid {
+    display: flex;
+    flex-direction: column;
+}
+
+.metric-row {
+    display: flex;
+}
+
+.metric-field {
+    flex: 1;
+    padding: 12px 16px;
+}
+
+.metric-field__label {
+    font-size: 11px;
+    color: var(--t2);
+    font-weight: 400;
+    margin-bottom: 4px;
+}
+
+.metric-field__value {
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--t1);
+}

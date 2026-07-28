@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<GenAiFunction xmlns="http://soap.sforce.com/2006/04/metadata">
+    <description>Use this action when the user asks for a contact overview or summary. It includes the contact’s overview, interactions, and the history of the relationship.</description>
+    <developerName>Navatar_Contact_Summary</developerName>
+    <invocationTarget>NavatarContactRelationShip</invocationTarget>
+    <invocationTargetType>apex</invocationTargetType>
+    <isConfirmationRequired>false</isConfirmationRequired>
+    <isIncludeInProgressIndicator>true</isIncludeInProgressIndicator>
+    <localDeveloperName>Navatar_Contact_Summary</localDeveloperName>
+    <masterLabel>Navatar Contact Summary</masterLabel>
+    <progressIndicatorMessage>Preparing Summary...</progressIndicatorMessage>
+</GenAiFunction>

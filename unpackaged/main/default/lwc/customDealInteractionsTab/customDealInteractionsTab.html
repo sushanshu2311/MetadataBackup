@@ -1,0 +1,47 @@
+<template>
+    <div class="interactions-tab">
+        <!-- Filters -->
+        <div class="tab-filters">
+            <div class="filter-pills">
+                <template for:each={filterOptions} for:item="f">
+                    <button key={f.value} class={f.cssClass} data-filter={f.value} onclick={handleFilterClick}>{f.label}</button>
+                </template>
+            </div>
+            <input class="tab-search" type="text" placeholder="Search interactions..." value={searchText} oninput={handleSearch}/>
+        </div>
+
+        <!-- Table -->
+        <div class="table-wrap">
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        <th>Date</th>
+                        <th>Subject</th>
+                        <th>Participants</th>
+                        <th>Type</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <template for:each={filteredInteractions} for:item="item">
+                        <tr key={item.id} class={item.rowClass} data-id={item.id} onclick={handleRowClick}>
+                            <td class="td-muted td-nowrap">{item.date}</td>
+                            <td>
+                                <div class="subject-cell">
+                                    <div class="subject-main">{item.subject}</div>
+                                    <div class="subject-snippet">{item.snippet}</div>
+                                </div>
+                            </td>
+                            <td class="td-muted">{item.participantsStr}</td>
+                            <td><span class={item.typeBadgeClass}>{item.typeLabel}</span></td>
+                        </tr>
+                        <tr key={item.expandkey} class={item.expandRowClass}>
+                            <td colspan="4">
+                                <pre class="expand-body">{item.body}</pre>
+                            </td>
+                        </tr>
+                    </template>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</template>

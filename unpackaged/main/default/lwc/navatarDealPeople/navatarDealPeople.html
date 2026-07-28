@@ -1,0 +1,116 @@
+<template>
+    <div>
+
+        <!-- Filter + Search row -->
+        <div class="slds-p-horizontal_medium slds-p-vertical_small slds-border_bottom">
+            <lightning-layout vertical-align="center">
+                <lightning-layout-item flexibility="no-flex">
+                    <lightning-button-group>
+                        <lightning-button label="All"              variant={fAll}      data-group="all"      onclick={handleGroupFilter}></lightning-button>
+                        <lightning-button label="Internal"         variant={fInternal} data-group="internal" onclick={handleGroupFilter}></lightning-button>
+                        <lightning-button label="Banker"           variant={fBanker}   data-group="banker"   onclick={handleGroupFilter}></lightning-button>
+                        <lightning-button label="DD &amp; Experts" variant={fDd}       data-group="dd"       onclick={handleGroupFilter}></lightning-button>
+                        <lightning-button label="Target"           variant={fTarget}   data-group="target"   onclick={handleGroupFilter}></lightning-button>
+                        <lightning-button label="AI Recommended"   variant={fAi}       data-group="ai"       onclick={handleGroupFilter}></lightning-button>
+                    </lightning-button-group>
+                </lightning-layout-item>
+                <lightning-layout-item flexibility="auto"></lightning-layout-item>
+                <lightning-layout-item flexibility="no-flex">
+                    <lightning-input
+                        type="search"
+                        placeholder="Search people..."
+                        variant="label-hidden"
+                        label="Search people"
+                        onchange={handleSearch}>
+                    </lightning-input>
+                </lightning-layout-item>
+            </lightning-layout>
+        </div>
+
+       
+
+        <!-- Data table -->
+        <lightning-datatable
+            key-field="id"
+            data={filteredPeople}
+            columns={columns}
+            onrowaction={handleRowAction}
+            hide-checkbox-column>
+        </lightning-datatable>
+
+        <!-- Detail modal -->
+        <template if:true={selectedPerson}>
+            <div role="dialog" tabindex="-1" aria-modal="true" aria-labelledby="people-modal-heading"
+                class="slds-modal slds-fade-in-open">
+                <div class="slds-modal__container">
+                    <div class="slds-modal__header">
+                        <lightning-button-icon
+                            class="slds-modal__close"
+                            icon-name="utility:close"
+                            variant="bare-inverse"
+                            size="large"
+                            alternative-text="Close"
+                            onclick={handleCloseDetail}>
+                        </lightning-button-icon>
+                        <h2 id="people-modal-heading" class="slds-modal__title">{selectedPerson.groupLabel}</h2>
+                    </div>
+                    <div class="slds-modal__content slds-p-around_medium">
+                        <!-- Name + meta row -->
+                        <p class="slds-text-heading_small slds-m-bottom_xx-small">{selectedPerson.name}</p>
+                        <p class="slds-text-body_small slds-text-color_weak slds-m-bottom_small">{selectedPerson.org} · {selectedPerson.role}</p>
+                        <div class="slds-grid slds-grid_vertical-align-center slds-m-bottom_medium">
+                            <lightning-badge label={selectedPerson.groupLabel} class="slds-m-right_x-small"></lightning-badge>
+                            <template if:true={selectedPerson.lastTouch}>
+                                <lightning-formatted-text value={selectedPerson.lastTouch} class="slds-text-body_small slds-m-right_x-small"></lightning-formatted-text>
+                                <lightning-badge label={selectedPerson.lastBadge} class="slds-m-right_x-small"></lightning-badge>
+                            </template>
+                            <template if:true={selectedPerson.count}>
+                                <lightning-badge label={selectedPerson.count}></lightning-badge>
+                            </template>
+                        </div>
+
+                        <!-- How we know -->
+                        <template if:true={selectedPerson.howWeKnow}>
+                            <p class="slds-text-title_caps slds-text-color_weak slds-m-bottom_xx-small">How we know</p>
+                            <p class="slds-text-body_small slds-m-bottom_medium">{selectedPerson.howWeKnow}</p>
+                        </template>
+
+                        <!-- Deal history -->
+                        <template if:true={selectedPerson.dealHistory}>
+                            <p class="slds-text-title_caps slds-text-color_weak slds-m-bottom_xx-small">Deal history</p>
+                            <p class="slds-text-body_small slds-m-bottom_medium">{selectedPerson.dealHistory}</p>
+                        </template>
+
+                        <!-- Documents on this deal -->
+                        <template if:true={selectedPerson.dealDocs}>
+                            <p class="slds-text-title_caps slds-text-color_weak slds-m-bottom_xx-small">Documents on this deal</p>
+                            <p class="slds-text-body_small slds-m-bottom_small">{selectedPerson.dealDocs}</p>
+                        </template>
+
+                        <!-- Contact -->
+                        <p class="slds-text-title_caps slds-text-color_weak slds-m-bottom_xx-small slds-m-top_small">Contact</p>
+                        <template if:true={selectedPerson.email}>
+                            <p class="slds-text-body_small">{selectedPerson.email}</p>
+                        </template>
+                        <template if:false={selectedPerson.email}>
+                            <p class="slds-text-body_small slds-text-color_weak">Not in Navatar</p>
+                        </template>
+                    </div>
+                    <div class="slds-modal__footer">
+                        <template if:true={selectedPerson.notContacted}>
+                            <template if:true={selectedPerson.competitor}>
+                                <lightning-button label="Research" variant="neutral" class="slds-m-right_x-small" onclick={handleCloseDetail}></lightning-button>
+                            </template>
+                            <template if:false={selectedPerson.competitor}>
+                                <lightning-button label="Add to Navatar" variant="brand" class="slds-m-right_x-small" onclick={handleCloseDetail}></lightning-button>
+                            </template>
+                        </template>
+                        <lightning-button label="Close" onclick={handleCloseDetail}></lightning-button>
+                    </div>
+                </div>
+            </div>
+            <div class="slds-backdrop slds-backdrop_open"></div>
+        </template>
+
+    </div>
+</template>

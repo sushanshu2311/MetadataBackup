@@ -1,0 +1,42 @@
+{
+  "unevaluatedProperties" : false,
+  "properties" : {
+    "DueDate" : {
+      "title" : "DueDate",
+      "description" : "Due Date will be provided by User, If User doesn't specify then use the Due date as Next Week.",
+      "lightning:type" : "lightning__dateType",
+      "lightning:isPII" : false,
+      "copilotAction:isUserInput" : false
+    },
+    "RelatedAssociationIDs" : {
+      "title" : "RelatedAssociationIDs",
+      "description" : "User will provide the list of Related Associations. Call the action IdentifyRecordByName to get the recordID of each record . Removing quotes changes the data from strings to either plain IDs in text output or to another type (e.g., Id in Apex). Make sure the target consumer expects the unquoted form. Convert this [ \\\"001gK00000JNc3IQAT\\\", \\\"a0agK000002rXjCQAU\\\", \\\"a0IgK000000X0Z7UAK\\\" ] into [001gK00000JNc3IQAT,a0agK000002rXjCQAU,a0IgK000000X0Z7UAK]",
+      "maxItems" : 2000,
+      "items" : {
+        "lightning:type" : "lightning__textType"
+      },
+      "lightning:type" : "lightning__listType",
+      "lightning:isPII" : false,
+      "copilotAction:isUserInput" : false
+    },
+    "RelationIDs" : {
+      "title" : "RelationIDs",
+      "description" : "User will provide the list of Contact. Call the action IdentifyRecordByName to get the recordID of each record . Removing quotes changes the data from strings to either plain IDs in text output or to another type (e.g., Id in Apex). Make sure the target consumer expects the unquoted form. Convert this [ \\\"003gK000009yWzOQAU\\\", \\\"003gK000008hBc1QAE\\\" ] into [003gK000009yWzOQAU,003gK000008hBc1QAE]",
+      "maxItems" : 2000,
+      "items" : {
+        "lightning:type" : "lightning__textType"
+      },
+      "lightning:type" : "lightning__listType",
+      "lightning:isPII" : false,
+      "copilotAction:isUserInput" : false
+    },
+    "Subject" : {
+      "title" : "Subject",
+      "description" : "Task Subject / Title will be provided by User.",
+      "lightning:type" : "lightning__textType",
+      "lightning:isPII" : false,
+      "copilotAction:isUserInput" : false
+    }
+  },
+  "lightning:type" : "lightning__objectType"
+}

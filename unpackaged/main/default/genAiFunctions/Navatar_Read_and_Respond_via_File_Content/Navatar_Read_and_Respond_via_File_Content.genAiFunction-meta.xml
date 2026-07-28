@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<GenAiFunction xmlns="http://soap.sforce.com/2006/04/metadata">
+    <description>Use this action to read and respond using the file content, If the user mentions specific details in the request, return information specific to those details from the file content; otherwise, follow the default file summary instructions.</description>
+    <developerName>Navatar_Read_and_Respond_via_File_Content</developerName>
+    <invocationTarget>Navatar_Read_and_Respond_via_File_Content</invocationTarget>
+    <invocationTargetType>generatePromptResponse</invocationTargetType>
+    <isConfirmationRequired>false</isConfirmationRequired>
+    <isIncludeInProgressIndicator>true</isIncludeInProgressIndicator>
+    <localDeveloperName>Navatar_Read_and_Respond_via_File_Content</localDeveloperName>
+    <masterLabel>Navatar Read and Respond via File Content</masterLabel>
+    <progressIndicatorMessage>Please wait while we process your request...</progressIndicatorMessage>
+</GenAiFunction>

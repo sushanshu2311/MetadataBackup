@@ -1,0 +1,14 @@
+{
+  "required" : [ "pipelineId" ],
+  "unevaluatedProperties" : false,
+  "properties" : {
+    "pipelineId" : {
+      "title" : "pipelineId",
+      "description" : "Deal ID retrieved from the previous action.",
+      "lightning:type" : "lightning__recordIdType",
+      "lightning:isPII" : false,
+      "copilotAction:isUserInput" : false
+    }
+  },
+  "lightning:type" : "lightning__objectType"
+}

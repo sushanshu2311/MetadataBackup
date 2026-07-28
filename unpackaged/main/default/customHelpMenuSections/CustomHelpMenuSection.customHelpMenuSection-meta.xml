@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomHelpMenuSection xmlns="http://soap.sforce.com/2006/04/metadata">
+    <customHelpMenuItems>
+        <linkUrl>https://helpcenter.navatargroup.com/en/</linkUrl>
+        <masterLabel>Navatar Help Center</masterLabel>
+        <sortOrder>1</sortOrder>
+    </customHelpMenuItems>
+    <masterLabel>Navatar Help</masterLabel>
+</CustomHelpMenuSection>

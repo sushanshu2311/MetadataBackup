@@ -1,0 +1,28 @@
+<template>
+    <div class="deal-header">
+        <div class="header-left">
+            <span class="header-icon">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <rect x="2" y="7" width="20" height="15" rx="2" stroke="#0B2D5F" stroke-width="1.8" fill="none"/>
+                    <path d="M8 7V5a4 4 0 018 0v2" stroke="#0B2D5F" stroke-width="1.8" fill="none"/>
+                    <path d="M12 13v2m0 0v2m0-2h2m-2 0H10" stroke="#0B2D5F" stroke-width="1.5"/>
+                </svg>
+            </span>
+            <span class="header-label">Deal</span>
+            <span class="header-sep">/</span>
+            <span class="header-title">Project Everest — Apex Care Partners</span>
+        </div>
+        <div class="header-actions">
+            <button class="hdr-btn" data-button="edit" onclick={handleButtonClick}>Edit</button>
+            <button class="hdr-btn hdr-btn--primary" data-button="createtask" onclick={handleButtonClick}>
+                + Create Task
+            </button>
+            <button class="hdr-btn" data-button="loginteraction" onclick={handleButtonClick}>Log Interaction</button>
+            <button class="hdr-btn hdr-btn--icon" data-button="dropdown" onclick={handleButtonClick} aria-label="More actions">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none">
+                    <path d="M6 9l6 6 6-6" stroke="#706E6B" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+            </button>
+        </div>
+    </div>
+</template>

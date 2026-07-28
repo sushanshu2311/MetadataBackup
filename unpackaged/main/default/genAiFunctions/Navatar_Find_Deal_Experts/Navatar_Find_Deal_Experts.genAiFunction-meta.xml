@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<GenAiFunction xmlns="http://soap.sforce.com/2006/04/metadata">
+    <description>Your work is to find the deal experts for the deal mentioned. Whenever someone asks to find deal experts, your work is to find it and show them on chat.</description>
+    <developerName>Navatar_Find_Deal_Experts</developerName>
+    <invocationTarget>NavatarFindDealExperts</invocationTarget>
+    <invocationTargetType>apex</invocationTargetType>
+    <isConfirmationRequired>false</isConfirmationRequired>
+    <isIncludeInProgressIndicator>true</isIncludeInProgressIndicator>
+    <localDeveloperName>Navatar_Find_Deal_Experts</localDeveloperName>
+    <masterLabel>Navatar Find Deal Experts</masterLabel>
+    <progressIndicatorMessage>Finding Experts...</progressIndicatorMessage>
+</GenAiFunction>

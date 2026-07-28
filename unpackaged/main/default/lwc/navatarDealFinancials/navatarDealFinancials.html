@@ -1,0 +1,91 @@
+<template>
+    <div>
+
+        <!-- Tab bar -->
+        <div class="slds-p-horizontal_medium slds-p-vertical_small slds-border_bottom">
+            <lightning-layout vertical-align="center">
+                <lightning-layout-item flexibility="no-flex">
+                    <lightning-button-group>
+                        <lightning-button label="All"              variant={tabAll}    data-tab="all"    onclick={handleTab}></lightning-button>
+                        <lightning-button label="P&amp;L Summary"  variant={tabPL}     data-tab="pl"     onclick={handleTab}></lightning-button>
+                        <lightning-button label="Benchmarks"       variant={tabBench}  data-tab="bench"  onclick={handleTab}></lightning-button>
+                        <lightning-button label="Return Scenarios" variant={tabReturn} data-tab="return" onclick={handleTab}></lightning-button>
+                    </lightning-button-group>
+                </lightning-layout-item>
+                <lightning-layout-item flexibility="auto"></lightning-layout-item>
+                <lightning-layout-item flexibility="no-flex">
+                    <lightning-formatted-text value="L.E.K. v3 · 16 Jun 2026" class="slds-text-body_small slds-text-color_weak"></lightning-formatted-text>
+                </lightning-layout-item>
+            </lightning-layout>
+
+             <!-- P&L Summary section -->
+        <template if:true={showPL}>
+            <div class=" slds-p-vertical_small slds-border_bottom">
+                <lightning-layout vertical-align="center">
+                    <lightning-layout-item flexibility="auto">
+                        <lightning-formatted-text value="P&amp;L Summary — Apex Care Partners" class="slds-text-heading_small slds-text-title_bold"></lightning-formatted-text>
+                    </lightning-layout-item>
+                    <lightning-layout-item flexibility="no-flex">
+                        <lightning-badge label="L.E.K. V3"></lightning-badge>
+                    </lightning-layout-item>
+                </lightning-layout>
+            </div>
+            <lightning-datatable
+                key-field="id"
+                data={plData}
+                columns={plColumns}
+                hide-checkbox-column>
+            </lightning-datatable>
+        </template>
+
+        <!-- Benchmarks section -->
+        <template if:true={showBench}>
+            <div class=" slds-p-vertical_small slds-border_bottom">
+                <lightning-layout vertical-align="center">
+                    <lightning-layout-item flexibility="auto">
+                        <lightning-formatted-text value="Deal Benchmarks" class="slds-text-heading_small slds-text-title_bold"></lightning-formatted-text>
+                    </lightning-layout-item>
+                    <lightning-layout-item flexibility="no-flex" class="slds-m-right_x-small">
+                        <lightning-badge label="AI"></lightning-badge>
+                    </lightning-layout-item>
+                    <lightning-layout-item flexibility="no-flex">
+                        <lightning-input type="search" label="Search" variant="label-hidden" placeholder="Search benchmarks..." onchange={handleBenchSearch}></lightning-input>
+                    </lightning-layout-item>
+                </lightning-layout>
+            </div>
+            <lightning-datatable
+                key-field="id"
+                data={filteredBenchmarks}
+                columns={benchColumns}
+                hide-checkbox-column>
+            </lightning-datatable>
+        </template>
+
+        <!-- Return Scenarios section -->
+        <template if:true={showReturn}>
+            <div class=" slds-p-vertical_small slds-border_bottom">
+                <lightning-layout vertical-align="center">
+                    <lightning-layout-item flexibility="auto">
+                        <lightning-formatted-text value="Return Scenarios" class="slds-text-heading_small slds-text-title_bold"></lightning-formatted-text>
+                    </lightning-layout-item>
+                    <lightning-layout-item flexibility="no-flex" class="slds-m-right_x-small">
+                        <lightning-badge label="AI"></lightning-badge>
+                    </lightning-layout-item>
+                    <lightning-layout-item flexibility="no-flex">
+                        <lightning-formatted-text value="5-year hold · 18% hurdle rate" class="slds-text-body_small slds-text-color_weak"></lightning-formatted-text>
+                    </lightning-layout-item>
+                </lightning-layout>
+            </div>
+            <lightning-datatable
+                key-field="id"
+                data={scenarioData}
+                columns={scenarioColumns}
+                hide-checkbox-column>
+            </lightning-datatable>
+        </template>
+        </div>
+
+       
+
+    </div>
+</template>

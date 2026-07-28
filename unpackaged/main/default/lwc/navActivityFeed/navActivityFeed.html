@@ -1,0 +1,78 @@
+<template>
+    <lightning-card>
+        <span slot="title">Activity</span>
+
+        <!-- Filter + search on one line -->
+        <div
+            class="slds-grid slds-grid_vertical-align-center slds-wrap slds-p-horizontal_medium slds-p-vertical_x-small slds-border_top slds-border_bottom"
+        >
+            <c-nav-filter-multi-select
+                label="Type"
+                options={typeOptions}
+                onfilterchange={handleTypeFilter}
+            ></c-nav-filter-multi-select>
+            <div class="slds-col slds-grow"></div>
+            <div data-search>
+                <c-nav-search-box
+                    placeholder="Search activity..."
+                    value={searchTerm}
+                    onsearch={handleSearch}
+                ></c-nav-search-box>
+            </div>
+        </div>
+
+        <template lwc:if={hasItems}>
+            <ul class="slds-has-dividers_bottom-space">
+                <template for:each={visibleItems} for:item="item">
+                    <li key={item.id} class="slds-item">
+                        <div
+                            class="slds-p-horizontal_medium slds-p-vertical_x-small"
+                            data-row
+                            data-id={item.id}
+                            data-open={item.isOpenAttr}
+                            onclick={handleToggle}
+                        >
+                            <p class="slds-text-body_regular slds-text-title_bold">{item.title}</p>
+                            <!-- Badge, date and source on one meta line. -->
+                            <p class="slds-m-top_xx-small">
+                                <lightning-badge label={item.typeLabel}></lightning-badge>
+                                <span class="slds-text-body_small slds-text-color_weak slds-m-left_x-small">
+                                    <template lwc:if={item.activityDate}>
+                                        <lightning-formatted-date-time
+                                            value={item.activityDate}
+                                            year="numeric"
+                                            month="short"
+                                            day="2-digit"
+                                            time-zone="UTC"
+                                        ></lightning-formatted-date-time>
+                                    </template>
+                                    <template lwc:if={item.source}> · {item.source}</template>
+                                </span>
+                            </p>
+                        </div>
+                        <template lwc:if={item.isOpen}>
+                            <div class="slds-p-horizontal_medium slds-p-bottom_medium slds-text-longform">
+                                <lightning-formatted-text value={item.body}></lightning-formatted-text>
+                            </div>
+                        </template>
+                    </li>
+                </template>
+            </ul>
+
+            <template lwc:if={hasMore}>
+                <div data-sentinel class="slds-p-around_small slds-align_absolute-center">
+                    <lightning-spinner
+                        alternative-text="Loading more activity"
+                        size="small"
+                        variant="brand"
+                    ></lightning-spinner>
+                </div>
+            </template>
+        </template>
+        <template lwc:else>
+            <p class="slds-p-around_medium slds-text-body_small slds-text-color_weak">
+                No activity matches this filter.
+            </p>
+        </template>
+    </lightning-card>
+</template>

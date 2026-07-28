@@ -1,0 +1,49 @@
+<template>
+    <div>
+
+        <!-- Header: title + AI badge -->
+        <div class="slds-p-horizontal_medium slds-p-vertical_small slds-border_bottom">
+            <lightning-layout vertical-align="center">
+                <lightning-layout-item flexibility="auto">
+                    <lightning-formatted-text value="Current Summary" class="slds-text-heading_small slds-text-title_bold"></lightning-formatted-text>
+                </lightning-layout-item>
+                <lightning-layout-item flexibility="no-flex">
+                    <lightning-badge label="AI"></lightning-badge>
+                </lightning-layout-item>
+            </lightning-layout>
+        </div>
+
+        <div class="slds-p-around_medium">
+            <!-- view mode -->
+            <template if:false={isEditing}>
+                <div class="slds-grid slds-grid_align-spread slds-grid_vertical-align-start">
+                    <p class="slds-col slds-text-body_regular slds-text-longform">{summaryText}</p>
+                    <div class="slds-col slds-shrink-none slds-m-left_small">
+                        <lightning-button-icon
+                            icon-name="utility:edit"
+                            variant="bare"
+                            alternative-text="Edit"
+                            title="Edit summary"
+                            onclick={handleEdit}>
+                        </lightning-button-icon>
+                    </div>
+                </div>
+            </template>
+
+            <!-- edit mode -->
+            <template if:true={isEditing}>
+                <lightning-textarea
+                    value={editText}
+                    label=""
+                    max-length="2000"
+                    onchange={handleChange}>
+                </lightning-textarea>
+                <div class="slds-grid slds-grid_align-end slds-m-top_small">
+                    <lightning-button label="Cancel" onclick={handleCancel} class="slds-m-right_x-small"></lightning-button>
+                    <lightning-button label="Save" variant="brand" onclick={handleSave}></lightning-button>
+                </div>
+            </template>
+        </div>
+
+    </div>
+</template>

@@ -1,0 +1,56 @@
+<template>
+    <div>
+
+        <!-- Header: Tasks | OPEN badge | spacer | + Add -->
+        <div class="slds-p-horizontal_small slds-p-vertical_small slds-border_bottom">
+            <lightning-layout vertical-align="center">
+                <lightning-layout-item flexibility="no-flex" class="slds-m-right_x-small">
+                    <lightning-formatted-text value="Tasks" class="slds-text-heading_small slds-text-title_bold"></lightning-formatted-text>
+                </lightning-layout-item>
+                <lightning-layout-item flexibility="no-flex">
+                    <lightning-badge label={openLabel}></lightning-badge>
+                </lightning-layout-item>
+                <lightning-layout-item flexibility="auto"></lightning-layout-item>
+                <lightning-layout-item flexibility="no-flex">
+                    <lightning-button label="+ Add" onclick={handleAdd}></lightning-button>
+                </lightning-layout-item>
+            </lightning-layout>
+        </div>
+
+        <div class="slds-p-horizontal_small slds-p-bottom_small">
+
+            <!-- Filter bar: Mine / All | spacer | Search -->
+            <lightning-layout vertical-align="center" class="slds-m-bottom_small slds-m-top_small">
+                <lightning-layout-item flexibility="no-flex" class="slds-m-right_x-small">
+                    <lightning-button-group>
+                        <lightning-button label="Mine" variant={mineVariant} data-mode="mine" onclick={handleToggle}></lightning-button>
+                        <lightning-button label="All"  variant={allVariant}  data-mode="all"  onclick={handleToggle}></lightning-button>
+                    </lightning-button-group>
+                </lightning-layout-item>
+                <lightning-layout-item flexibility="auto"></lightning-layout-item>
+                <lightning-layout-item flexibility="no-flex">
+                    <lightning-input
+                        type="search"
+                        label="Search"
+                        variant="label-hidden"
+                        placeholder="Search tasks..."
+                        value={searchTerm}
+                        onchange={handleSearch}>
+                    </lightning-input>
+                </lightning-layout-item>
+            </lightning-layout>
+
+            <!-- All tasks (open + completed pre-checked) -->
+            <lightning-datatable
+                key-field="id"
+                data={allDecoratedTasks}
+                columns={openColumns}
+                show-checkbox-column
+                selected-rows={completedRowIds}
+                onrowselection={handleOpenRowSelection}>
+            </lightning-datatable>
+
+        </div>
+
+    </div>
+</template>

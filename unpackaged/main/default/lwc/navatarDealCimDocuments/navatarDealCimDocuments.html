@@ -1,0 +1,34 @@
+<template>
+    <div id="doc">
+        <div class="feed-filters">
+            <input class="srch" placeholder="Search documents..." oninput={handleSearch} />
+        </div>
+        <table class="int-tbl">
+            <thead>
+                <tr>
+                    <th>Document</th>
+                    <th style="width:110px">Source</th>
+                    <th style="width:120px">Date</th>
+                    <th style="width:130px">Type</th>
+                </tr>
+            </thead>
+            <tbody>
+                <template for:each={rows} for:item="d">
+                    <tr key={d.key} class={d.rowClass} data-key={d.key} onclick={handleRowClick}>
+                        <td><a href="#" class="rec-link" onclick={handleOpenDoc}>{d.name}</a></td>
+                        <td><span class="doc-src-tag">{d.sourceTag}</span></td>
+                        <td class="col-date">{d.date}</td>
+                        <td class="col-type">{d.docType}</td>
+                    </tr>
+                    <tr key={d.expKey} class="exp-row" style={d.expRowStyle}>
+                        <td colspan="4">
+                            <template if:true={d.isOpen}>
+                                <div class="exp-inner">{d.summary}</div>
+                            </template>
+                        </td>
+                    </tr>
+                </template>
+            </tbody>
+        </table>
+    </div>
+</template>

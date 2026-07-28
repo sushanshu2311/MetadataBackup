@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<GenAiPlugin xmlns="http://soap.sforce.com/2006/04/metadata" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+    <canEscalate>false</canEscalate>
+    <description>Use this topic when the user wants to benchmark a deal (“find similar deals”, “comparable transactions”), identify experts from prior deals, or attach those experts to the current Deal. Trigger when prompts contain “similar deals”, “comparables”, “experts from similar deals”, or “add these experts to this deal”.</description>
+    <developerName>Navatar_Similar_Deals_Related_Experts</developerName>
+    <genAiFunctions>
+        <functionName>EmployeeCopilot__IdentifyRecordByName</functionName>
+    </genAiFunctions>
+    <genAiFunctions>
+        <functionName>Navatar_Add_Deal_Experts</functionName>
+    </genAiFunctions>
+    <genAiFunctions>
+        <functionName>Navatar_Find_and_Email_Similar_Deals</functionName>
+    </genAiFunctions>
+    <genAiFunctions>
+        <functionName>Navatar_Find_Deal_Experts</functionName>
+    </genAiFunctions>
+    <genAiFunctions>
+        <functionName>Navatar_Find_Similar_Deals</functionName>
+    </genAiFunctions>
+    <genAiPluginInstructions>
+        <description>Treat the flow as three actions, under one umbrella:
+1. Find Similar Deals.
+2. Recommend Experts from those deals.
+3. Add Experts to the current Deal.</description>
+        <developerName>instruction_0_1770374600324</developerName>
+        <language xsi:nil="true"/>
+        <masterLabel>instruction_0_1770374600324</masterLabel>
+        <sortOrder>0</sortOrder>
+    </genAiPluginInstructions>
+    <genAiPluginInstructions>
+        <description>When asked to “find similar deals” 
+- Action is triggered to find similar record based on similarity using fields like Industry, Revenue, EBITDA, Deal Type , Source Firm with ±15% thresholds for numeric fields and exact matches for text/picklists.
+- Show up to five similar deals in chat, each with a short explanation of why it is similar (e.g., “Same sector and stage; EBITDA and revenue within ±15% of current deal”).
+- If more than 5 similar deals exist, the agent asks the user for confirmation to send the full list via email.
+- If the user confirms, the system sends an email containing the complete list of similar deals.</description>
+        <developerName>instruction_1_1770374600332</developerName>
+        <language xsi:nil="true"/>
+        <masterLabel>instruction_1_1770374600332</masterLabel>
+        <sortOrder>0</sortOrder>
+    </genAiPluginInstructions>
+    <genAiPluginInstructions>
+        <description>When asked for experts from similar deals: Present experts tied to those deals, including their role, firm, and why they are relevant (e.g., “Advised on three similar buyout deals in the last 18 months”).</description>
+        <developerName>instruction_2_1770374600332</developerName>
+        <language xsi:nil="true"/>
+        <masterLabel>instruction_2_1770374600332</masterLabel>
+        <sortOrder>0</sortOrder>
+    </genAiPluginInstructions>
+    <genAiPluginInstructions>
+        <description>When asked to add experts to the deal: Return a clear, structured list of experts to add, assuming the orchestration layer will perform the actual record creation.</description>
+        <developerName>instruction_3_1770374600332</developerName>
+        <language xsi:nil="true"/>
+        <masterLabel>instruction_3_1770374600332</masterLabel>
+        <sortOrder>0</sortOrder>
+    </genAiPluginInstructions>
+    <genAiPluginInstructions>
+        <description>Never re‑implement the similarity algorithm in the LLM; instead, explain and present the results that code would have produced, and keep the user focused on understanding and acting on the list.</description>
+        <developerName>instruction_4_1770374600332</developerName>
+        <language xsi:nil="true"/>
+        <masterLabel>instruction_4_1770374600332</masterLabel>
+        <sortOrder>0</sortOrder>
+    </genAiPluginInstructions>
+    <language>en_US</language>
+    <localDeveloperName>Navatar_Similar_Deals_Related_Experts</localDeveloperName>
+    <masterLabel>Navatar Similar Deals Related Experts</masterLabel>
+    <pluginType>Topic</pluginType>
+    <scope>Similar Deals discovery and explanation (top 5 in chat; overflow via email). Expert recommendations based on similar deals. Adding experts to the current deal.</scope>
+</GenAiPlugin>

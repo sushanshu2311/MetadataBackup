@@ -1,0 +1,5 @@
+/* Keep the search a fixed width on the right of the filter row (no stretch) */
+lightning-input {
+    flex: 0 0 auto;
+    width: 220px;
+}

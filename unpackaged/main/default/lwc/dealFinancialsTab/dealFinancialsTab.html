@@ -1,0 +1,13 @@
+<template>
+    <lightning-card title="Financials — Apex Care Partners" icon-name="utility:metrics">
+        <div class="slds-p-around_medium">
+            <lightning-datatable
+                key-field="id"
+                data={financialRows}
+                columns={financialColumns}
+                hide-checkbox-column>
+            </lightning-datatable>
+            <p class="slds-text-body_small slds-text-color_weak slds-m-top_small">E = Management estimate. Revenue, EBITDA, Capex in GBP.</p>
+        </div>
+    </lightning-card>
+</template>

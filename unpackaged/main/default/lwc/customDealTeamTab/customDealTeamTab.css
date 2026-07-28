@@ -1,0 +1,201 @@
+:host {
+    --navy: #0B2D5F;
+    --sf: #0176D3;
+    --bd: #DDDBDA;
+    --t1: #181818;
+    --t2: #706E6B;
+    --t3: #9CA3AF;
+    display: block;
+}
+
+.team-tab {
+    background: #fff;
+    border: 1px solid var(--bd);
+    border-radius: 6px;
+    overflow: hidden;
+}
+
+.tab-filters {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 12px 16px;
+    flex-wrap: wrap;
+}
+
+.filter-pills { display: flex; gap: 4px; flex-wrap: wrap; }
+
+.filter-pill {
+    padding: 4px 12px;
+    border-radius: 12px;
+    border: 1px solid var(--bd);
+    background: #fff;
+    color: var(--t2);
+    font-size: 12px;
+    font-family: 'Salesforce Sans', Arial, sans-serif;
+    cursor: pointer;
+    transition: background 0.12s, color 0.12s;
+}
+
+.filter-pill:hover { color: var(--navy); border-color: var(--navy); }
+.filter-pill--active,
+.filter-pill--active:hover { background: var(--navy); color: #fff; border-color: var(--navy); }
+
+.tab-search {
+    margin-left: auto;
+    padding: 5px 10px;
+    border: 1px solid var(--bd);
+    border-radius: 4px;
+    font-size: 12px;
+    font-family: 'Salesforce Sans', Arial, sans-serif;
+    width: 160px;
+    outline: none;
+}
+
+.tab-search:focus { border-color: var(--sf); }
+
+.table-wrap { overflow-x: auto; }
+
+.data-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13px;
+}
+
+.data-table th {
+    background: #FAFAFA;
+    color: var(--t2);
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.3px;
+    font-weight: 600;
+    padding: 8px 16px;
+    text-align: left;
+    border-bottom: 1px solid var(--bd);
+}
+
+.data-table td {
+    padding: 10px 16px;
+    border-bottom: 1px solid var(--bd);
+    vertical-align: middle;
+}
+
+.person-row { cursor: pointer; transition: background 0.1s; }
+.person-row:hover { background: #F9F8F8; }
+.person-row--expanded { background: #F9F8F8; }
+
+.person-cell { display: flex; flex-direction: column; gap: 2px; }
+
+.person-name {
+    font-weight: 600;
+    color: var(--t1);
+    font-size: 13px;
+    text-decoration: none;
+    display: block;
+}
+
+.person-name:hover { color: var(--sf); text-decoration: underline; }
+
+.person-company {
+    font-size: 11px;
+    color: var(--t3);
+    text-decoration: none;
+    display: block;
+}
+
+.person-company:hover { color: var(--sf); text-decoration: underline; }
+
+.person-company { font-size: 11px; color: var(--t3); }
+
+.group-badge {
+    font-size: 10px;
+    border: 1px solid var(--bd);
+    color: var(--t2);
+    background: #fff;
+    padding: 2px 8px;
+    border-radius: 10px;
+    white-space: nowrap;
+    display: inline-block;
+}
+
+.group-badge--in-navatar {
+    background: var(--navy);
+    color: #fff;
+    border-color: var(--navy);
+}
+
+.group-badge--not-in-navatar {
+    background: #F3F2F2;
+    color: var(--t2);
+    border-color: var(--bd);
+}
+
+.td-muted { color: var(--t2); }
+.td-link { color: var(--sf); font-size: 12px; }
+.td-ai-sourced { color: var(--t3); font-style: italic; font-size: 12px; }
+
+.touchpoint-date { font-size: 12px; color: var(--t1); font-weight: 500; margin-bottom: 3px; }
+
+.touchpoint-badge {
+    font-size: 9px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.3px;
+    border: 1px solid var(--bd);
+    color: var(--t2);
+    background: #fff;
+    padding: 1px 6px;
+    border-radius: 3px;
+    display: inline-block;
+}
+
+/* Briefing row */
+.briefing-row td { padding: 0; border-bottom: 1px solid var(--bd); }
+
+.briefing-panel {
+    padding: 14px 16px 14px 52px;
+    background: #F9F8FF;
+    border-top: 1px solid #EDE9FE;
+}
+
+.briefing-label {
+    font-size: 10px;
+    font-weight: 700;
+    color: #7C3AED;
+    text-transform: uppercase;
+    letter-spacing: 0.4px;
+    margin-bottom: 6px;
+}
+
+.briefing-text {
+    font-size: 12px;
+    color: var(--t2);
+    line-height: 1.6;
+    margin: 0;
+}
+
+/* Loading dots */
+.briefing-loading {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+@keyframes dot-bounce {
+    0%, 80%, 100% { transform: translateY(0); opacity: 0.4; }
+    40% { transform: translateY(-4px); opacity: 1; }
+}
+
+.loading-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: #7C3AED;
+    animation: dot-bounce 1.2s infinite;
+}
+
+.loading-dot:nth-child(2) { animation-delay: 0.15s; }
+.loading-dot:nth-child(3) { animation-delay: 0.3s; }
+
+.loading-text { font-size: 12px; color: var(--t3); }
+.expand-row--hidden { display: none; }

@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<GenAiPlugin xmlns="http://soap.sforce.com/2006/04/metadata" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+    <canEscalate>false</canEscalate>
+    <description>Use this topic when the user wants to prepare for an upcoming client or deal meeting, generate a “meeting prep card”, or get a pre‑read summary for a scheduled meeting. Trigger when prompts mention “meeting prep”, “prep card”, “prepare for meeting”, “tomorrow’s meetings”, or similar meeting-readiness language.</description>
+    <developerName>Navatar_Meeting_Prep_Cards</developerName>
+    <genAiFunctions>
+        <functionName>EmployeeCopilot__IdentifyRecordByName</functionName>
+    </genAiFunctions>
+    <genAiFunctions>
+        <functionName>Navatar_Meeting_Prep_Card_On_Demand</functionName>
+    </genAiFunctions>
+    <genAiFunctions>
+        <functionName>Navatar_Meeting_Prep_Card_On_Demand_and_Email</functionName>
+    </genAiFunctions>
+    <genAiPluginInstructions>
+        <description>Identify the most recent upcoming meeting based on: The current record context Contact.</description>
+        <developerName>instruction_0_1770371810985</developerName>
+        <language xsi:nil="true" />
+        <masterLabel>instruction_0_1770371810985</masterLabel>
+        <sortOrder>0</sortOrder>
+    </genAiPluginInstructions>
+    <genAiPluginInstructions>
+        <description>Build a prep card containing: Meeting details (subject, date/time, organizer). Account and Contact background (firm, role, relationship history) &amp; summaries the five recent interactions.</description>
+        <developerName>instruction_1_1770371810986</developerName>
+        <language xsi:nil="true" />
+        <masterLabel>instruction_1_1770371810986</masterLabel>
+        <sortOrder>0</sortOrder>
+    </genAiPluginInstructions>
+    <genAiPluginInstructions>
+        <description>When the user is in chat:
+If they say “show prep here”, present the card in chat. Execute Action &quot;&quot;
+If they say “send prep by email”, format content so it can be emailed to the relevant internal users. &quot;&quot;</description>
+        <developerName>instruction_2_1770371810986</developerName>
+        <language xsi:nil="true" />
+        <masterLabel>instruction_2_1770371810986</masterLabel>
+        <sortOrder>0</sortOrder>
+    </genAiPluginInstructions>
+    <genAiPluginInstructions>
+        <description>If fails to generate the Meeting Prep Card &quot;We’re unable to generate the Meeting Prep Card at the moment. Thanks for your patience—please try again soon.&quot;</description>
+        <developerName>instruction_3_1770371810986</developerName>
+        <language xsi:nil="true" />
+        <masterLabel>instruction_3_1770371810986</masterLabel>
+        <sortOrder>0</sortOrder>
+    </genAiPluginInstructions>
+    <genAiPluginInstructions>
+        <description>If no future events are available on the record page, display the fallback message: “No future events found for this record. Meeting Prep Card generation was skipped.”</description>
+        <developerName>instruction_4_1770371810986</developerName>
+        <language xsi:nil="true" />
+        <masterLabel>instruction_4_1770371810986</masterLabel>
+        <sortOrder>0</sortOrder>
+    </genAiPluginInstructions>
+    <language>en_US</language>
+    <localDeveloperName>Navatar_Meeting_Prep_Cards</localDeveloperName>
+    <masterLabel>Navatar Meeting Prep Cards</masterLabel>
+    <pluginType>Topic</pluginType>
+    <scope>On‑demand meeting prep from record or chat for a specific meeting.</scope>
+</GenAiPlugin>

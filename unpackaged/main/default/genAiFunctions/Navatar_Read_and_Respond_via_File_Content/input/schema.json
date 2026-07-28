@@ -1,0 +1,21 @@
+{
+  "required" : [ "Input:File", "Input:UserRequest" ],
+  "unevaluatedProperties" : false,
+  "properties" : {
+    "Input:File" : {
+      "title" : "File",
+      "description" : "User provides the details needed to ask questions related to the file content.",
+      "lightning:type" : "lightning__textType",
+      "lightning:isPII" : false,
+      "copilotAction:isUserInput" : false
+    },
+    "Input:UserRequest" : {
+      "title" : "UserRequest",
+      "description" : "File Title is provided by the user.",
+      "lightning:type" : "lightning__textType",
+      "lightning:isPII" : false,
+      "copilotAction:isUserInput" : false
+    }
+  },
+  "lightning:type" : "lightning__objectType"
+}

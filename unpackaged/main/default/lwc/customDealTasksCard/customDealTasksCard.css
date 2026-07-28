@@ -1,0 +1,214 @@
+:host {
+    --navy: #0B2D5F;
+    --sf: #0176D3;
+    --bd: #DDDBDA;
+    --t1: #181818;
+    --t2: #706E6B;
+    --t3: #9CA3AF;
+    display: block;
+}
+
+.tasks-card {
+    background: #fff;
+    border: 1px solid var(--bd);
+    border-radius: 6px;
+    overflow: hidden;
+}
+
+.tasks-card__header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 12px 16px 10px;
+    border-bottom: 1px solid var(--bd);
+}
+
+.tasks-card__title-group {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.tasks-card__title {
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--t1);
+}
+
+.tasks-badge {
+display: inline-block; 
+    font-size: 10px;
+    font-weight: 700;
+    padding: 1px 5px;
+    border-radius: 3px;
+    border: 1px solid var(--bd);
+    color: var(--t2);
+    background: #fff;
+    text-transform: uppercase;
+    letter-spacing: .3px;
+}
+
+.tasks-add-btn {
+    width: 24px;
+    height: 24px;
+    border-radius: 4px;
+    border: 1px solid #9E9E9E;
+    background: #fff;
+    color: var(--t1);
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 1;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Salesforce Sans', Arial, sans-serif;
+    transition: background 0.12s;
+    flex-shrink: 0;
+}
+
+.tasks-add-btn:hover {
+    background: #f3f2f2;
+    border-color: var(--t2);
+}
+
+/* Filters */
+.tasks-filters {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 16px;
+    border-bottom: 1px solid var(--bd);
+}
+
+.filter-pills {
+    display: flex;
+    gap: 4px;
+}
+
+.filter-pill {
+    padding: 3px 10px;
+    border-radius: 12px;
+    border: 1px solid var(--bd);
+    background: #fff;
+    color: var(--t2);
+    font-size: 12px;
+    font-family: 'Salesforce Sans', Arial, sans-serif;
+    cursor: pointer;
+    transition: background 0.12s, color 0.12s;
+}
+
+.filter-pill:hover { color: var(--navy); border-color: var(--navy); }
+
+.filter-pill--active,
+.filter-pill--active:hover {
+    background: var(--navy);
+    color: #fff;
+    border-color: var(--navy);
+}
+
+.tasks-search {
+    margin-left: auto;
+    padding: 4px 8px;
+    border: 1px solid var(--bd);
+    border-radius: 4px;
+    font-size: 12px;
+    font-family: 'Salesforce Sans', Arial, sans-serif;
+    width: 160px;
+    outline: none;
+}
+
+.tasks-search:focus { border-color: var(--sf); }
+
+/* Task rows */
+.tasks-list {
+}
+
+.task-row {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    padding: 10px 16px;
+    transition: background 0.1s;
+}
+
+.task-row:hover { background: #F9F8F8; }
+
+.task-row--done .task__meta { color: var(--t3); }
+
+@keyframes task-flash {
+    0% { background: #EFF6FF; }
+    100% { background: transparent; }
+}
+
+.task-row--flash {
+    animation: task-flash 1.5s ease-out;
+}
+
+.task-check {
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    border: 2px solid var(--bd);
+    background: #fff;
+    cursor: pointer;
+    flex-shrink: 0;
+    margin-top: 2px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background 0.15s, border-color 0.15s;
+}
+
+.task-check:hover { border-color: var(--navy); }
+
+.task-check--done {
+    background: var(--navy);
+    border-color: var(--navy);
+}
+
+.task__main { flex: 1; min-width: 0; }
+
+.task__title {
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--t1);
+    margin-bottom: 2px;
+}
+
+.task__title--done {
+    text-decoration: line-through;
+    color: #706E6B;
+}
+
+.task__meta {
+    display: flex;
+    gap: 4px;
+    align-items: center;
+    font-size: 11px;
+    color: var(--t3);
+}
+
+.task__sep { color: var(--bd); }
+
+.task-priority {
+    font-size: 10px;
+    padding: 1px 7px;
+    border-radius: 10px;
+    border: 1px solid var(--bd);
+    color: var(--t2);
+    background: #fff;
+    flex-shrink: 0;
+}
+
+.task-priority--high {
+    color: #B91C1C;
+    border-color: #FECACA;
+    background: #FEF2F2;
+}
+
+.task-priority--medium {
+    color: #92400E;
+    border-color: #FDE68A;
+    background: #FFFBEB;
+}

@@ -1,0 +1,7 @@
+@import 'c/navRowStyles';
+
+/* The spinner sits in flow at the end of the feed, so it needs its own height. */
+[data-sentinel] {
+    position: relative;
+    min-height: 2.5rem;
+}

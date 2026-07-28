@@ -1,0 +1,68 @@
+<template>
+    <lightning-card title="Similar Deals" icon-name="standard:opportunity">
+        <div slot="actions" class="slds-grid slds-grid_vertical-align-center">
+            <span class="slds-text-body_small slds-text-color_weak slds-m-right_small">AI matched</span>
+            <lightning-input
+                type="search"
+                variant="label-hidden"
+                placeholder="Search deals..."
+                label="Search deals"
+                onchange={handleSearch}>
+            </lightning-input>
+        </div>
+
+        <lightning-datatable
+            key-field="id"
+            data={filteredDeals}
+            columns={columns}
+            column-widths-mode="fixed"
+            onrowaction={handleRowAction}
+            hide-checkbox-column>
+        </lightning-datatable>
+
+        <!-- Detail modal -->
+        <template if:true={selectedDeal}>
+            <section role="dialog" tabindex="-1" aria-modal="true" aria-labelledby="sim-modal-heading"
+                class="slds-modal slds-fade-in-open">
+                <div class="slds-modal__container">
+                    <header class="slds-modal__header">
+                        <lightning-button-icon
+                            class="slds-modal__close"
+                            icon-name="utility:close"
+                            variant="bare-inverse"
+                            size="large"
+                            alternative-text="Close"
+                            onclick={handleCloseDetail}>
+                        </lightning-button-icon>
+                        <h2 id="sim-modal-heading" class="slds-modal__title">{selectedDeal.deal}</h2>
+                    </header>
+                    <div class="slds-modal__content slds-p-around_medium">
+                        <p class="slds-text-body_small slds-text-color_weak slds-m-bottom_medium">{selectedDeal.region}</p>
+                        <lightning-layout multiple-rows="true" class="slds-m-bottom_medium">
+                            <lightning-layout-item size="4">
+                                <p class="slds-text-title_caps slds-text-color_weak slds-m-bottom_xx-small">Revenue</p>
+                                <p class="slds-text-body_small">{selectedDeal.revenue}</p>
+                            </lightning-layout-item>
+                            <lightning-layout-item size="4">
+                                <p class="slds-text-title_caps slds-text-color_weak slds-m-bottom_xx-small">Multiple</p>
+                                <p class="slds-text-body_small">{selectedDeal.multiple}</p>
+                            </lightning-layout-item>
+                            <lightning-layout-item size="4">
+                                <p class="slds-text-title_caps slds-text-color_weak slds-m-bottom_xx-small">Match</p>
+                                <p class="slds-text-body_small">{selectedDeal.match}</p>
+                            </lightning-layout-item>
+                        </lightning-layout>
+                        <p class="slds-text-title_caps slds-text-color_weak slds-m-bottom_xx-small">Outcome</p>
+                        <p class="slds-text-body_small slds-m-bottom_medium">{selectedDeal.outcome}</p>
+                        <p class="slds-text-title_caps slds-text-color_weak slds-m-bottom_xx-small">Relevance to Project Everest</p>
+                        <p class="slds-text-body_small slds-text-longform">{selectedDeal.detail}</p>
+                    </div>
+                    <footer class="slds-modal__footer">
+                        <lightning-button label="Close" onclick={handleCloseDetail}></lightning-button>
+                    </footer>
+                </div>
+            </section>
+            <div class="slds-backdrop slds-backdrop_open"></div>
+        </template>
+    </lightning-card>
+</template>

@@ -1,0 +1,60 @@
+<template>
+    <lightning-card>
+        <!-- Filter + search row (side by side, single line) -->
+        <div class="slds-grid slds-grid_vertical-align-center slds-grid_align-spread slds-p-horizontal_medium slds-p-vertical_x-small slds-border_bottom">
+            <lightning-button-group>
+                <lightning-button label="All"      variant={fAll}     data-filter="all"     onclick={handleFilter}></lightning-button>
+                <lightning-button label="Emails"   variant={fEmail}   data-filter="email"   onclick={handleFilter}></lightning-button>
+                <lightning-button label="Calls"    variant={fCall}    data-filter="call"    onclick={handleFilter}></lightning-button>
+                <lightning-button label="Meetings" variant={fMeeting} data-filter="meeting" onclick={handleFilter}></lightning-button>
+            </lightning-button-group>
+            <lightning-input
+                type="search"
+                variant="label-hidden"
+                placeholder="Search interactions..."
+                label="Search interactions"
+                class="slds-m-left_small"
+                onchange={handleSearch}>
+            </lightning-input>
+        </div>
+
+        <lightning-datatable
+            key-field="id"
+            data={filteredInteractions}
+            columns={columns}
+            onrowaction={handleRowAction}
+            hide-checkbox-column>
+        </lightning-datatable>
+
+        <!-- Detail modal -->
+        <template if:true={selectedItem}>
+            <section role="dialog" tabindex="-1" aria-modal="true" aria-labelledby="int-modal-heading"
+                class="slds-modal slds-fade-in-open">
+                <div class="slds-modal__container">
+                    <header class="slds-modal__header">
+                        <lightning-button-icon
+                            class="slds-modal__close"
+                            icon-name="utility:close"
+                            variant="bare-inverse"
+                            size="large"
+                            alternative-text="Close"
+                            onclick={handleCloseDetail}>
+                        </lightning-button-icon>
+                        <h2 id="int-modal-heading" class="slds-modal__title">{selectedItem.subject}</h2>
+                    </header>
+                    <div class="slds-modal__content slds-p-around_medium">
+                        <p class="slds-m-bottom_small">
+                            <lightning-badge label={selectedItem.type}></lightning-badge>
+                            <span class="slds-text-body_small slds-text-color_weak slds-m-left_x-small">{selectedItem.date} · {selectedItem.parts}</span>
+                        </p>
+                        <lightning-formatted-rich-text value={selectedItem.raw}></lightning-formatted-rich-text>
+                    </div>
+                    <footer class="slds-modal__footer">
+                        <lightning-button label="Close" onclick={handleCloseDetail}></lightning-button>
+                    </footer>
+                </div>
+            </section>
+            <div class="slds-backdrop slds-backdrop_open"></div>
+        </template>
+    </lightning-card>
+</template>

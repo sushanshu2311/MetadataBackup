@@ -1,0 +1,19 @@
+<template>
+    <!-- Current Summary — full width -->
+    <div class="slds-m-bottom_small">
+        <c-everest-std-summary></c-everest-std-summary>
+    </div>
+
+    <!-- 2-column layout: Activity (left ~65%) | Key Metrics + Tasks (right ~35%) -->
+    <lightning-layout multiple-rows="true" pull-to-boundary="small">
+        <lightning-layout-item size="12" medium-device-size="8" padding="around-small">
+            <c-everest-std-activity></c-everest-std-activity>
+        </lightning-layout-item>
+        <lightning-layout-item size="12" medium-device-size="4" padding="around-small">
+            <div class="slds-m-bottom_small">
+                <c-everest-std-key-metrics></c-everest-std-key-metrics>
+            </div>
+            <c-everest-std-tasks></c-everest-std-tasks>
+        </lightning-layout-item>
+    </lightning-layout>
+</template>

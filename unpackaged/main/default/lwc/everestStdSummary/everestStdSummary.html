@@ -1,0 +1,36 @@
+<template>
+    <lightning-card title="Current Summary">
+        <div slot="actions">
+            <lightning-badge label="AI"></lightning-badge>
+        </div>
+
+        <!-- view mode -->
+        <template if:false={isEditing}>
+            <div class="slds-border_top slds-p-around_medium slds-text-longform slds-is-relative">
+                <lightning-formatted-rich-text value={summaryHtml}></lightning-formatted-rich-text>
+                <lightning-button
+                    variant="neutral"
+                    label="Edit"
+                    title="Edit summary"
+                    onclick={handleEdit}>
+                </lightning-button>
+            </div>
+        </template>
+
+        <!-- edit mode -->
+        <template if:true={isEditing}>
+            <div class="slds-border_top slds-p-around_medium">
+                <lightning-input-rich-text
+                    value={editValue}
+                    label="Current Summary"
+                    variant="label-hidden"
+                    onchange={handleChange}>
+                </lightning-input-rich-text>
+                <div class="slds-grid slds-grid_align-end slds-m-top_small">
+                    <lightning-button label="Cancel" onclick={handleCancel} class="slds-m-right_x-small"></lightning-button>
+                    <lightning-button label="Save" variant="brand" onclick={handleSave}></lightning-button>
+                </div>
+            </div>
+        </template>
+    </lightning-card>
+</template>

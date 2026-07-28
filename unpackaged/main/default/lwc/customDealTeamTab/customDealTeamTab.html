@@ -1,0 +1,79 @@
+<template>
+    <div class="team-tab">
+        <!-- Filters -->
+        <div class="tab-filters">
+            <div class="filter-pills">
+                <template for:each={filterOptions} for:item="f">
+                    <button key={f.value} class={f.cssClass} data-filter={f.value} onclick={handleFilterClick}>{f.label}</button>
+                </template>
+            </div>
+            <input class="tab-search" type="text" placeholder="Search people..." value={searchText} oninput={handleSearch}/>
+        </div>
+
+        <!-- Table -->
+        <div class="table-wrap">
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        <th>Person</th>
+                        <th>Group</th>
+                        <th>Role</th>
+                        <th>Contact</th>
+                        <th>Last Touchpoint</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <template for:each={filteredPeople} for:item="person">
+                        <tr key={person.id} class={person.rowClass} data-id={person.id} onclick={handleRowClick}>
+                            <td>
+                                <div class="person-cell">
+                                    <a class="person-name" href="#" onclick={handlePersonClick}>{person.name}</a>
+                                    <a class="person-company" href="#" onclick={handlePersonClick}>{person.company}</a>
+                                </div>
+                            </td>
+                            <td><span class={person.groupBadgeClass}>{person.group}</span></td>
+                            <td class="td-muted">{person.role}</td>
+                            <td>
+                                <template lwc:if={person.email}>
+                                    <a class="td-link" href={person.emailHref}>{person.email}</a>
+                                </template>
+                                <template lwc:else>
+                                    <span class="td-ai-sourced">AI sourced</span>
+                                </template>
+                            </td>
+                            <td>
+                                <template lwc:if={person.lastTouchpoint}>
+                                    <div class="touchpoint-date">{person.lastTouchpoint}</div>
+                                    <template lwc:if={person.lastTouchType}>
+                                        <span class="touchpoint-badge">{person.lastTouchType}</span>
+                                    </template>
+                                </template>
+                                <template lwc:else>
+                                    <span class="td-muted">No record</span>
+                                </template>
+                            </td>
+                        </tr>
+                        <tr key={person.expandkey} class={person.expandRowClass}>
+                            <td colspan="5">
+                                <div class="briefing-panel">
+                                    <template lwc:if={person.isLoading}>
+                                        <div class="briefing-loading">
+                                            <span class="loading-dot"></span>
+                                            <span class="loading-dot"></span>
+                                            <span class="loading-dot"></span>
+                                            <span class="loading-text">Navatar AI is preparing a briefing...</span>
+                                        </div>
+                                    </template>
+                                    <template lwc:if={person.briefingReady}>
+                                        <div class="briefing-label">AI · Navatar Intelligence</div>
+                                        <p class="briefing-text">{person.briefing}</p>
+                                    </template>
+                                </div>
+                            </td>
+                        </tr>
+                    </template>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</template>

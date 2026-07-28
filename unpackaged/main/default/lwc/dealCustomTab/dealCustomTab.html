@@ -1,0 +1,25 @@
+<template>
+    <lightning-layout>
+
+        <!-- Main region -->
+        <lightning-layout-item size="8" padding="around-small">
+            <c-deal-page-standard></c-deal-page-standard>
+        </lightning-layout-item>
+
+        <!-- Sidebar region: Ask AI → Action Items → News & Alerts -->
+        <lightning-layout-item size="4" padding="around-small">
+            <lightning-layout multiple-rows>
+                <lightning-layout-item size="12" class="slds-m-bottom_small">
+                    <c-deal-ask-a-i-cstm></c-deal-ask-a-i-cstm>
+                </lightning-layout-item>
+                <lightning-layout-item size="12" class="slds-m-bottom_small">
+                    <c-deal-action-items-std></c-deal-action-items-std>
+                </lightning-layout-item>
+                <lightning-layout-item size="12">
+                    <c-deal-experts-news></c-deal-experts-news>
+                </lightning-layout-item>
+            </lightning-layout>
+        </lightning-layout-item>
+
+    </lightning-layout>
+</template>

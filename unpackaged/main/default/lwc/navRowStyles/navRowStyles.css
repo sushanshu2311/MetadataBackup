@@ -1,0 +1,145 @@
+/**
+ * Shared styling for the record-screen sections, imported as a CSS module.
+ *
+ * Structure and spacing come from lightning-card plus SLDS padding utilities in
+ * the markup — the same idiom as the everestStd* components. Nothing here
+ * resets or re-derives SLDS spacing; that was the source of the padding drift.
+ *
+ * What is left is only what the design needs on top: the tighter type scale,
+ * the badge chip, row hover, column headers, and the phone cell labels.
+ * Everything hooks onto SLDS classes, element selectors or data attributes.
+ */
+
+/* No section border: lightning-card is left exactly as it renders, matching the
+   everestStd* sections. The mockup's boxed cards are deliberately not
+   reproduced. */
+:host {
+    display: block;
+}
+
+/* --- type scale ----------------------------------------------------------- */
+
+/* Section titles: 12px bold. Slotted into lightning-card, so it stays ours. */
+[slot='title'] {
+    font-size: 12px;
+    font-weight: 700;
+    color: #181818;
+}
+
+.slds-text-body_regular {
+    font-size: 12px;
+}
+
+.slds-text-body_small {
+    font-size: 11px;
+}
+
+.slds-text-title_bold {
+    font-weight: 600;
+}
+
+/* Interaction-depth counts inside an expanded row. */
+.slds-text-heading_small {
+    font-size: 14px;
+    font-weight: 700;
+}
+
+/* Labels above blocks in an expanded row. */
+.slds-text-title_caps {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+}
+
+/* --- badges --------------------------------------------------------------- */
+
+/* A light bordered chip rather than the filled default, via the SLDS hooks. */
+lightning-badge {
+    --slds-c-badge-color-background: #fff;
+    --slds-c-badge-text-color: #706e6b;
+    --slds-c-badge-color-border: #dddbda;
+    --slds-c-badge-sizing-border: 1px;
+    --slds-c-badge-radius-border: 3px;
+}
+
+/* Suggested contacts read as unconfirmed. */
+lightning-badge[data-tone='warning'] {
+    --slds-c-badge-color-background: #fff8e7;
+    --slds-c-badge-text-color: #92680a;
+    --slds-c-badge-color-border: #e8c86a;
+}
+
+/* --- clickable rows that reveal detail in place ---------------------------- */
+
+[data-row] {
+    cursor: pointer;
+    transition: background-color 0.1s ease-in-out;
+}
+
+[data-row]:hover,
+[data-row][data-open='true'] {
+    background-color: #f5f5f5;
+}
+
+/* --- column headers over a stack of rows ---------------------------------- */
+
+[data-columns],
+[data-section-head] {
+    background-color: #fafafa;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.03em;
+    text-transform: uppercase;
+    color: #706e6b;
+}
+
+/* --- filter + search row -------------------------------------------------- */
+
+[data-search] {
+    width: 10rem;
+}
+
+/* The Tasks widget sits in a narrow column, so its search is tighter. */
+[data-search-compact] {
+    width: 7.5rem;
+}
+
+/* --- per-cell labels ------------------------------------------------------ */
+
+/* Column headers carry the labels on desktop; once rows stack on phone each
+   value needs its own label instead. */
+[data-cell-label] {
+    display: none;
+}
+
+@media (max-width: 48em) {
+    [data-search],
+    [data-search-compact] {
+        width: 100%;
+    }
+
+    [data-columns] {
+        display: none;
+    }
+
+    [data-cell-label] {
+        display: inline;
+        font-weight: 700;
+        color: #706e6b;
+        margin-right: 0.25rem;
+    }
+}
+
+/* --- narrative and detail text ------------------------------------------- */
+
+[data-narrative] {
+    font-size: 13px;
+    line-height: 1.75;
+}
+
+/* Current Summary is capped at roughly five lines with no show-more, so it
+   scrolls in place if the generated text ever runs long. */
+[data-narrative][data-capped] {
+    max-height: 9.5rem;
+    overflow-y: auto;
+}

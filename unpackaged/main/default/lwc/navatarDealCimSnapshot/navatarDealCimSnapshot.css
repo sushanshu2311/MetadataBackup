@@ -1,0 +1,13 @@
+:host {
+    --t1: #181818;
+    --t2: #706E6B;
+    display: block;
+    font-family: 'Salesforce Sans', Arial, sans-serif;
+}
+.card { background: #fff; border-radius: 6px; border: 1px solid #E8E8E8; overflow: hidden; }
+.ch { display: flex; align-items: center; padding: 11px 16px; gap: 8px; border-bottom: 1px solid #F0F0F0; }
+.ct { font-size: 12px; font-weight: 700; color: var(--t1); }
+.km-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0; padding: 4px 0 8px; }
+.km-field { padding: 8px 16px; display: flex; flex-direction: column; gap: 2px; }
+.km-label { font-size: 11px; color: var(--t2); }
+.km-value { font-size: 13px; font-weight: 600; color: var(--t1); }

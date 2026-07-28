@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<GenAiFunction xmlns="http://soap.sforce.com/2006/04/metadata">
+    <description>When this action is triggered, assume the user is viewing a Deal and wants to compare it with relevant past or active deals in the system</description>
+    <developerName>Navatar_Find_Similar_Deals</developerName>
+    <invocationTarget>NavatarFindSimilarDeals</invocationTarget>
+    <invocationTargetType>apex</invocationTargetType>
+    <isConfirmationRequired>false</isConfirmationRequired>
+    <isIncludeInProgressIndicator>true</isIncludeInProgressIndicator>
+    <localDeveloperName>Navatar_Find_Similar_Deals</localDeveloperName>
+    <masterLabel>Navatar Find Similar Deals</masterLabel>
+    <progressIndicatorMessage>Finding Similar Deals...</progressIndicatorMessage>
+</GenAiFunction>

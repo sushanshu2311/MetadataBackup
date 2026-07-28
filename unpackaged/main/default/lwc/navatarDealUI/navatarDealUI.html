@@ -1,0 +1,49 @@
+<template>
+    <div class="slds-p-around_small">
+
+        <!-- Row 1: Current Summary (full width) -->
+        <div class="slds-card slds-m-bottom_small">
+            <c-navatar-deal-overview></c-navatar-deal-overview>
+        </div>
+
+        <!-- Row 2: Activity (left ~65%) + Right panel (key metrics + tasks ~35%) -->
+        <lightning-layout multiple-rows="false" horizontal-align="spread">
+
+            <!-- Left column: Activity feed -->
+            <lightning-layout-item size="12" medium-device-size="8" class="slds-p-right_x-small">
+                <div class="slds-card">
+                    <c-navatar-deal-activity></c-navatar-deal-activity>
+                </div>
+            </lightning-layout-item>
+
+            <!-- Right column: Key Metrics + Tasks -->
+            <lightning-layout-item size="12" medium-device-size="4" class="slds-p-left_x-small">
+
+                <!-- Key Metrics card -->
+                <div class="slds-card slds-m-bottom_small">
+                    <div class="slds-p-horizontal_medium slds-p-vertical_small slds-border_bottom">
+                        <span class="slds-text-heading_small slds-text-title_bold">Key Metrics</span>
+                    </div>
+                    <div class="slds-p-around_medium">
+                        <lightning-layout multiple-rows="true">
+                            <template for:each={keyMetrics} for:item="metric">
+                                <lightning-layout-item key={metric.label} size="6" class="slds-p-bottom_small">
+                                    <p class="slds-text-body_small slds-text-color_weak slds-m-bottom_xx-small">{metric.label}</p>
+                                    <p class="slds-text-body_regular slds-text-title_bold">{metric.value}</p>
+                                </lightning-layout-item>
+                            </template>
+                        </lightning-layout>
+                    </div>
+                </div>
+
+                <!-- Tasks card -->
+                <div class="slds-card">
+                    <c-deal-action-items-std record-id={recordId}></c-deal-action-items-std>
+                </div>
+
+            </lightning-layout-item>
+
+        </lightning-layout>
+
+    </div>
+</template>

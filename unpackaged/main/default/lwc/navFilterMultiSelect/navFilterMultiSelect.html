@@ -1,0 +1,33 @@
+<template>
+    <div class={triggerClass} onclick={handleContain}>
+        <button
+            class="slds-button"
+            data-trigger
+            type="button"
+            aria-haspopup="true"
+            aria-expanded={open}
+            onclick={handleToggle}
+        >
+            <span>{menuLabel}</span>
+            <span data-caret aria-hidden="true">&#9662;</span>
+        </button>
+
+        <div class="slds-dropdown slds-dropdown_left" data-panel>
+            <ul class="slds-dropdown__list" role="menu">
+                <template for:each={menuItems} for:item="item">
+                    <li key={item.value} class="slds-dropdown__item" role="presentation">
+                        <label data-option>
+                            <input
+                                type="checkbox"
+                                data-value={item.value}
+                                checked={item.checked}
+                                onchange={handleSelect}
+                            />
+                            <span>{item.label}</span>
+                        </label>
+                    </li>
+                </template>
+            </ul>
+        </div>
+    </div>
+</template>

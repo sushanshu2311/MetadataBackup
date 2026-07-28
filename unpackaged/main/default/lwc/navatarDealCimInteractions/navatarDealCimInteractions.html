@@ -1,0 +1,52 @@
+<template>
+    <div id="int">
+        <div class="feed-filters">
+            <c-navatar-deal-cim-multi-select
+                label="Type"
+                options={typeOptions}
+                selected-values={selectedTypes}
+                onfilterchange={handleFilterChange}
+            ></c-navatar-deal-cim-multi-select>
+            <input class="srch" placeholder="Search interactions..." oninput={handleSearch} />
+        </div>
+        <table class="int-tbl">
+            <thead>
+                <tr>
+                    <th style="width:130px">Date</th>
+                    <th>Subject</th>
+                    <th style="width:200px">Participants</th>
+                    <th style="width:90px">Type</th>
+                </tr>
+            </thead>
+            <tbody>
+                <template for:each={rows} for:item="row">
+                    <tr key={row.key} class={row.rowClass} data-key={row.key} onclick={handleRowClick}>
+                        <td class="col-date">{row.date}</td>
+                        <td>
+                            <div class="int-subj">{row.subject}</div>
+                            <div class="int-snippet">{row.snippet}</div>
+                        </td>
+                        <td class="int-parts">
+                            <template for:each={row.participantsView} for:item="p">
+                                <div key={p.key} class="pt-name">
+                                    <template if:true={p.linked}>
+                                        <a href="#" onclick={stopClick}>{p.name}</a>
+                                    </template>
+                                    <template if:false={p.linked}>{p.name}</template>
+                                </div>
+                            </template>
+                        </td>
+                        <td><span class="fbadge">{row.badge}</span></td>
+                    </tr>
+                    <tr key={row.expKey} class="exp-row" style={row.expRowStyle}>
+                        <td colspan="4">
+                            <template if:true={row.isOpen}>
+                                <lightning-formatted-rich-text value={row.body} class="exp-inner"></lightning-formatted-rich-text>
+                            </template>
+                        </td>
+                    </tr>
+                </template>
+            </tbody>
+        </table>
+    </div>
+</template>

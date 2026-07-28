@@ -1,0 +1,11 @@
+/* Stabilize layout: definite host width + fixed-width search so the datatable
+   doesn't enter a width-recalculation loop ("fluctuating" width). */
+:host {
+    display: block;
+    width: 100%;
+}
+
+lightning-input {
+    flex: 0 0 auto;
+    width: 200px;
+}

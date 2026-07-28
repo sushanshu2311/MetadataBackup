@@ -1,0 +1,49 @@
+<template>
+    <div class="coinvestors-tab">
+        <!-- Filters -->
+        <div class="tab-filters">
+            <div class="filter-pills">
+                <template for:each={filterOptions} for:item="f">
+                    <button key={f.value} class={f.cssClass} data-filter={f.value} onclick={handleFilterClick}>{f.label}</button>
+                </template>
+            </div>
+            <input class="tab-search" type="text" placeholder="Search co-investors..." value={searchText} oninput={handleSearch}/>
+        </div>
+
+        <!-- Table -->
+        <div class="table-wrap">
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        <th>Firm</th>
+                        <th>Type</th>
+                        <th>Contact</th>
+                        <th>Status</th>
+                        <th>Last Activity</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <template for:each={filteredCoInvestors} for:item="ci">
+                        <tr key={ci.id} class="data-row">
+                            <td><span class="firm-name">{ci.firm}</span></td>
+                            <td class="td-muted">{ci.type}</td>
+                            <td>
+                                <template lwc:if={ci.contact}>
+                                    <span class="contact-link">{ci.contact}</span>
+                                </template>
+                                <template lwc:elseif={ci.contactBlue}>
+                                    <span class="contact-link">—</span>
+                                </template>
+                                <template lwc:else>
+                                    <span class="td-muted">—</span>
+                                </template>
+                            </td>
+                            <td><span class={ci.statusClass}>{ci.status}</span></td>
+                            <td class="td-muted">{ci.lastActivity}</td>
+                        </tr>
+                    </template>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</template>

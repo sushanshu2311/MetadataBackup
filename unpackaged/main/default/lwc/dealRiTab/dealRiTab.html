@@ -1,0 +1,38 @@
+<template>
+    <lightning-card title="AI Intelligence" icon-name="utility:einstein" class="slds-m-bottom_medium">
+        <div class="slds-p-horizontal_medium slds-p-bottom_medium">
+            <template for:each={riIntelItems} for:item="item">
+                <div key={item.id} class="slds-box slds-box_x-small slds-m-bottom_small">
+                    <div class="slds-media slds-media_center">
+                        <div class="slds-media__figure">
+                            <lightning-icon icon-name={item.iconName} size="x-small"></lightning-icon>
+                        </div>
+                        <div class="slds-media__body">
+                            <p class="slds-text-body_small slds-text-title_bold">{item.title}</p>
+                            <lightning-formatted-text value={item.body} class="slds-text-body_small slds-text-color_weak slds-m-top_xx-small"></lightning-formatted-text>
+                        </div>
+                    </div>
+                </div>
+            </template>
+        </div>
+    </lightning-card>
+
+    <lightning-card title="Relationship Intelligence" icon-name="utility:connected_apps">
+        <lightning-button-group slot="actions">
+            <lightning-button label="All"          variant={rfAll}      data-value="all"          onclick={handleRIFilter}></lightning-button>
+            <lightning-button label="Internal"     variant={rfInternal} data-value="Internal"     onclick={handleRIFilter}></lightning-button>
+            <lightning-button label="Banker"       variant={rfBanker}   data-value="Banker"       onclick={handleRIFilter}></lightning-button>
+            <lightning-button label="DD &amp; Experts" variant={rfDd}   data-value="DD &amp; Experts" onclick={handleRIFilter}></lightning-button>
+            <lightning-button label="Target"       variant={rfTarget}   data-value="Target"       onclick={handleRIFilter}></lightning-button>
+        </lightning-button-group>
+        <div class="slds-p-horizontal_medium slds-p-bottom_medium">
+            <lightning-datatable
+                key-field="id"
+                data={filteredPeople}
+                columns={fullPeopleColumns}
+                hide-checkbox-column
+                onrowaction={handlePersonAction}>
+            </lightning-datatable>
+        </div>
+    </lightning-card>
+</template>

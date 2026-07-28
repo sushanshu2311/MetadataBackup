@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<BotVersion xmlns="http://soap.sforce.com/2006/04/metadata">
+        <fullName>v1</fullName>
+        <articleAnswersGPTEnabled>false</articleAnswersGPTEnabled>
+        <botDialogs>
+            <botSteps>
+                <botMessages>
+                    <message>Hi, I’m Agentforce! I use AI to search trusted sources, and more. Ask me “What else can you do?” to see how I can simplify your workday. How can I help?</message>
+                    <messageIdentifier>ab051fa1-1b63-439b-a715-360433e58d67</messageIdentifier>
+                </botMessages>
+                <stepIdentifier>a2a71f67-e3d9-4558-b42e-526300c1f196</stepIdentifier>
+                <type>Message</type>
+            </botSteps>
+            <botSteps>
+                <stepIdentifier>b67988e3-1b58-44b3-ad5b-bed56e5bfa7d</stepIdentifier>
+                <type>Wait</type>
+            </botSteps>
+            <developerName>Welcome</developerName>
+            <isPlaceholderDialog>false</isPlaceholderDialog>
+            <label>Hi! I&#39;m your helpful bot.</label>
+            <showInFooterMenu>false</showInFooterMenu>
+        </botDialogs>
+        <botDialogs>
+            <botSteps>
+                <botMessages>
+                    <message>Something went wrong. Try again.</message>
+                    <messageIdentifier>3dabdb5f-3dae-4269-9796-2e15a6374176</messageIdentifier>
+                </botMessages>
+                <stepIdentifier>795f80cc-fe1c-4c1b-aa70-653922666641</stepIdentifier>
+                <type>Message</type>
+            </botSteps>
+            <botSteps>
+                <stepIdentifier>207f8524-5c27-4d0b-a8e5-a347eab4d798</stepIdentifier>
+                <type>Wait</type>
+            </botSteps>
+            <developerName>Error_Handling</developerName>
+            <isPlaceholderDialog>false</isPlaceholderDialog>
+            <label>Unfortunately, a system error occurred. Let us start again.</label>
+            <showInFooterMenu>false</showInFooterMenu>
+        </botDialogs>
+        <botDialogs>
+            <botSteps>
+                <botMessages>
+                    <message>One moment while I connect you to the next available service representative.</message>
+                    <messageIdentifier>f422c19f-5e32-4750-af62-a47933b8261f</messageIdentifier>
+                </botMessages>
+                <stepIdentifier>548163a7-8060-4304-a4ab-d92c61f59fcc</stepIdentifier>
+                <type>Message</type>
+            </botSteps>
+            <botSteps>
+                <conversationSystemMessage>
+                    <type>Transfer</type>
+                </conversationSystemMessage>
+                <stepIdentifier>1c0e0352-57f7-4cd8-b190-c978174ed946</stepIdentifier>
+                <type>SystemMessage</type>
+            </botSteps>
+            <developerName>Transfer_To_Agent</developerName>
+            <isPlaceholderDialog>false</isPlaceholderDialog>
+            <label>Transfer To Agent</label>
+            <showInFooterMenu>false</showInFooterMenu>
+        </botDialogs>
+        <citationsEnabled>false</citationsEnabled>
+        <company>Our company provides CRM solutions for financial services firms, with a focus on private equity. We develop software for tracking investments and managing investor relations. Our CRM platform seamless tracking of both deal flow &amp; investor activity.</company>
+        <conversationDefinitionPlanners>
+            <genAiPlannerName>Navatar_AI</genAiPlannerName>
+        </conversationDefinitionPlanners>
+        <conversationVariables>
+            <dataType>Text</dataType>
+            <description>This variable may also be referred to as VerifiedCustomerId</description>
+            <developerName>VerifiedCustomerId</developerName>
+            <includeInPrompt>false</includeInPrompt>
+            <label>VerifiedCustomerId</label>
+            <visibility>Internal</visibility>
+        </conversationVariables>
+        <conversationVariables>
+            <dataType>Text</dataType>
+            <description>The API name of the Salesforce object (such as Account or Opportunity) associated with the record the user wants to interact with. Do not use this if the user is already talking about another object in the conversation.</description>
+            <developerName>currentObjectApiName</developerName>
+            <includeInPrompt>true</includeInPrompt>
+            <label>currentObjectApiName</label>
+            <visibility>External</visibility>
+        </conversationVariables>
+        <conversationVariables>
+            <dataType>Text</dataType>
+            <description>Salesforce Application Name.</description>
+            <developerName>currentAppName</developerName>
+            <includeInPrompt>true</includeInPrompt>
+            <label>currentAppName</label>
+            <visibility>External</visibility>
+        </conversationVariables>
+        <conversationVariables>
+            <dataType>Text</dataType>
+            <description>The ID of the record on the user&#39;s screen. It may not relate to the user&#39;s input. Only use this if the user input mentions &#39;this&#39;, &#39;current&#39;, &#39;the record&#39;, etc. If in doubt, don&#39;t use it.</description>
+            <developerName>currentRecordId</developerName>
+            <includeInPrompt>true</includeInPrompt>
+            <label>currentRecordId</label>
+            <visibility>External</visibility>
+        </conversationVariables>
+        <conversationVariables>
+            <dataType>Text</dataType>
+            <description>Type of Salesforce Page.</description>
+            <developerName>currentPageType</developerName>
+            <includeInPrompt>true</includeInPrompt>
+            <label>currentPageType</label>
+            <visibility>External</visibility>
+        </conversationVariables>
+        <conversationVariables>
+            <dataType>Text</dataType>
+            <description>Deal ID to be saved for next step</description>
+            <developerName>DealID</developerName>
+            <includeInPrompt>false</includeInPrompt>
+            <label>DealID</label>
+            <visibility>Internal</visibility>
+        </conversationVariables>
+        <conversationVariables>
+            <dataType>Text</dataType>
+            <description>Save the relevant deal information returned by the action.</description>
+            <developerName>relatedDealDetails</developerName>
+            <includeInPrompt>false</includeInPrompt>
+            <label>Similar Deal Details</label>
+            <visibility>Internal</visibility>
+        </conversationVariables>
+        <defaultStdObjForContactIdFltrEnabled>false</defaultStdObjForContactIdFltrEnabled>
+        <entryDialog>Welcome</entryDialog>
+        <intentDisambiguationEnabled>false</intentDisambiguationEnabled>
+        <intentV3Enabled>false</intentV3Enabled>
+        <isScriptCompatibleAgent>false</isScriptCompatibleAgent>
+        <knowledgeActionEnabled>false</knowledgeActionEnabled>
+        <knowledgeFallbackEnabled>false</knowledgeFallbackEnabled>
+        <role>Act as PE copilot for bankers—meeting prep, relationship insights, document-driven data capture, finding similar deals, pipeline tracking, and consistent Record Summaries Account, Contact, and Deal.</role>
+        <smallTalkEnabled>false</smallTalkEnabled>
+        <staticPromptsEnabled>true</staticPromptsEnabled>
+        <stopRecPrompts>false</stopRecPrompts>
+        <stopWelcomePrompts>false</stopWelcomePrompts>
+        <surfacesEnabled>false</surfacesEnabled>
+        <toneType>Casual</toneType>
+        <welcomeRecommendations>
+            <staticUtterance>Summarize the record.</staticUtterance>
+        </welcomeRecommendations>
+        <welcomeRecommendations>
+            <staticUtterance>Update the record.</staticUtterance>
+        </welcomeRecommendations>
+        <welcomeRecommendations>
+            <staticUtterance>Document overview.</staticUtterance>
+        </welcomeRecommendations>
+    </BotVersion>

@@ -1,0 +1,14 @@
+{
+  "required" : [ "pipelineId" ],
+  "unevaluatedProperties" : false,
+  "properties" : {
+    "pipelineId" : {
+      "title" : "pipelineId",
+      "description" : "Deal id for which we find the deal experts",
+      "lightning:type" : "lightning__recordIdType",
+      "lightning:isPII" : false,
+      "copilotAction:isUserInput" : false
+    }
+  },
+  "lightning:type" : "lightning__objectType"
+}

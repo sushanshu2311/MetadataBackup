@@ -1,0 +1,61 @@
+<template>
+    <div class="deal-page">
+        <!-- <c-custom-deal-header ondispatched={handleHeaderButton}></c-custom-deal-header> -->
+
+        <div class="page-body">
+            <!-- Tab Navigation -->
+            <div class="tab-nav">
+                <button class={tabClass0} data-tab="overview" onclick={handleTabClick}>Overview</button>
+                <button class={tabClass1} data-tab="team" onclick={handleTabClick}>Team</button>
+                <button class={tabClass2} data-tab="interactions" onclick={handleTabClick}>Interactions</button>
+                <button class={tabClass3} data-tab="similarDeals" onclick={handleTabClick}>Similar Deals</button>
+                <button class={tabClass4} data-tab="lenders" onclick={handleTabClick}>Lenders</button>
+                <button class={tabClass5} data-tab="coInvestors" onclick={handleTabClick}>Co-Investors</button>
+                <button class={tabClass6} data-tab="documents" onclick={handleTabClick}>Documents</button>
+            </div>
+
+            <!-- Tab Panels -->
+            <div class="tab-content">
+                <template lwc:if={isOverviewTab}>
+                    <c-custom-deal-overview-tab
+                        open-count={openTaskCount}
+                        onfeeditemselected={handleFeedItemSelected}>
+                    </c-custom-deal-overview-tab>
+                </template>
+                <template lwc:if={isTeamTab}>
+                    <c-custom-deal-team-tab></c-custom-deal-team-tab>
+                </template>
+                <template lwc:if={isInteractionsTab}>
+                    <c-custom-deal-interactions-tab></c-custom-deal-interactions-tab>
+                </template>
+                <template lwc:if={isSimilarDealsTab}>
+                    <c-custom-deal-similar-deals-tab></c-custom-deal-similar-deals-tab>
+                </template>
+                <template lwc:if={isLendersTab}>
+                    <c-custom-deal-lenders-tab></c-custom-deal-lenders-tab>
+                </template>
+                <template lwc:if={isCoInvestorsTab}>
+                    <c-custom-deal-co-investors-tab></c-custom-deal-co-investors-tab>
+                </template>
+                <template lwc:if={isDocumentsTab}>
+                    <c-custom-deal-documents-tab></c-custom-deal-documents-tab>
+                </template>
+            </div>
+        </div>
+
+        <!-- Ask AI Panel
+        <c-custom-ask-ai-panel
+            visible={aiPanelVisible}
+            mode={aiMode}
+            action-key={aiActionKey}
+            action-title={aiActionTitle}
+            actions={aiActionsList}
+            messages={aiMessages}
+            onpanelclose={handlePanelClose}
+            onpromptselected={handlePromptSelected}
+            onmessagesent={handleMessageSent}
+            onactionexecuted={handleActionExecuted}
+            onfabclick={handleFabClick}>
+        </c-custom-ask-ai-panel> -->
+    </div>
+</template>

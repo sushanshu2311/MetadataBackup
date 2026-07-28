@@ -1,0 +1,20 @@
+/**
+ * Page frame for a tab body, imported as a CSS module.
+ *
+ * The phone-capable single-column template gives its region no padding, so the
+ * gutter and maximum content width come from the component placed in it.
+ */
+
+:host {
+    display: block;
+    width: calc(100% - 32px);
+    max-width: 1440px;
+    margin: 12px auto;
+}
+
+@media (max-width: 48em) {
+    :host {
+        width: calc(100% - 16px);
+        margin: 8px auto;
+    }
+}

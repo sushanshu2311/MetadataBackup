@@ -1,0 +1,63 @@
+<template>
+    <lightning-card>
+        <div
+            class="slds-grid slds-p-horizontal_medium slds-p-vertical_xx-small slds-border_bottom"
+            data-columns
+        >
+            <div class="slds-col slds-size_4-of-12">Reaches</div>
+            <div class="slds-col slds-size_4-of-12">Via</div>
+            <div class="slds-col slds-size_2-of-12">Strength</div>
+            <div class="slds-col slds-size_2-of-12">Basis</div>
+        </div>
+
+        <template lwc:if={hasRows}>
+            <ul class="slds-has-dividers_bottom-space">
+                <template for:each={rows} for:item="row">
+                    <li key={row.id} class="slds-item">
+                        <div
+                            class="slds-grid slds-wrap slds-p-horizontal_medium slds-p-vertical_x-small"
+                            data-row
+                            data-id={row.id}
+                            data-open={row.isOpenAttr}
+                            onclick={handleToggle}
+                        >
+                            <div class="slds-col slds-size_1-of-1 slds-medium-size_4-of-12">
+                                <p class="slds-text-body_regular slds-text-title_bold">{row.reaches}</p>
+                                <p class="slds-text-body_small slds-text-color_weak">{row.reachesMeta}</p>
+                            </div>
+                            <div class="slds-col slds-size_1-of-1 slds-medium-size_4-of-12 slds-text-body_small">
+                                <span data-cell-label>Via</span>{row.via}
+                            </div>
+                            <!-- Strength is plain text, Strong or Warm only. -->
+                            <div class="slds-col slds-size_1-of-1 slds-medium-size_2-of-12 slds-text-body_small">
+                                <span data-cell-label>Strength</span>{row.strength}
+                            </div>
+                            <div
+                                class="slds-col slds-size_1-of-1 slds-medium-size_2-of-12 slds-text-body_small slds-text-color_weak"
+                            >
+                                <span data-cell-label>Basis</span>{row.basis}
+                            </div>
+                        </div>
+
+                        <template lwc:if={row.isOpen}>
+                            <div class="slds-p-horizontal_medium slds-p-bottom_medium slds-text-longform">
+                                <p class="slds-m-bottom_xx-small">
+                                    <lightning-badge label="AI"></lightning-badge>
+                                    <span class="slds-text-title_caps slds-text-color_weak slds-m-left_x-small"
+                                        >Navatar Intelligence</span
+                                    >
+                                </p>
+                                <p class="slds-text-body_small">{row.detail}</p>
+                            </div>
+                        </template>
+                    </li>
+                </template>
+            </ul>
+        </template>
+        <template lwc:else>
+            <p class="slds-p-around_medium slds-text-body_small slds-text-color_weak">
+                No routes into this company have been identified yet.
+            </p>
+        </template>
+    </lightning-card>
+</template>

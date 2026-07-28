@@ -1,0 +1,16 @@
+<template>
+    <lightning-card title="Deal Details" icon-name="utility:info">
+        <div class="slds-p-around_medium">
+            <dl class="slds-dl_horizontal">
+                <template for:each={detailFields} for:item="f">
+                    <dt key={f.label} class="slds-dl_horizontal__label">
+                        <p class="slds-truncate slds-text-body_small slds-text-color_weak" title={f.label}>{f.label}</p>
+                    </dt>
+                    <dd key={f.value} class="slds-dl_horizontal__detail slds-tile__detail">
+                        <lightning-formatted-text value={f.value}></lightning-formatted-text>
+                    </dd>
+                </template>
+            </dl>
+        </div>
+    </lightning-card>
+</template>

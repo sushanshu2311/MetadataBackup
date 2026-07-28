@@ -1,0 +1,100 @@
+<template>
+    <lightning-card>
+
+        <div slot="title">
+            <lightning-formatted-text value="Ask AI" class="slds-text-heading_small"></lightning-formatted-text>
+            <p class="slds-text-body_small slds-text-color_weak">Ask questions or take action on this deal</p>
+        </div>
+
+        <lightning-button-icon
+            slot="actions"
+            icon-name={collapseIcon}
+            variant="bare"
+            alternative-text="Toggle"
+            onclick={handleToggle}>
+        </lightning-button-icon>
+
+        <template lwc:if={isExpanded}>
+            <div class="slds-p-horizontal_medium slds-p-bottom_medium">
+
+                <!-- Chat messages -->
+                <div class="slds-m-bottom_small">
+                    <template for:each={decoratedMessages} for:item="msg">
+                        <div key={msg.id} class="slds-m-bottom_x-small">
+
+                            <template lwc:if={msg.isAI}>
+                                <lightning-layout>
+                                    <lightning-layout-item size="10">
+                                        <div class="slds-box slds-box_x-small slds-theme_shade">
+                                            <lightning-formatted-text value={msg.text} class="slds-text-body_small"></lightning-formatted-text>
+                                        </div>
+                                        <p class="slds-text-body_small slds-text-color_weak slds-m-top_xx-small">{msg.sender}, {msg.time}</p>
+                                    </lightning-layout-item>
+                                    <lightning-layout-item size="2"></lightning-layout-item>
+                                </lightning-layout>
+                            </template>
+
+                            <template lwc:else>
+                                <lightning-layout>
+                                    <lightning-layout-item size="2"></lightning-layout-item>
+                                    <lightning-layout-item size="10">
+                                        <div class="slds-box slds-box_x-small slds-theme_info">
+                                            <lightning-formatted-text value={msg.text} class="slds-text-body_small"></lightning-formatted-text>
+                                        </div>
+                                        <p class="slds-text-body_small slds-text-color_weak slds-m-top_xx-small slds-text-align_right">{msg.sender}, {msg.time}</p>
+                                    </lightning-layout-item>
+                                </lightning-layout>
+                            </template>
+
+                        </div>
+                    </template>
+
+                    <template lwc:if={isTyping}>
+                        <div class="slds-p-left_x-small slds-m-top_x-small">
+                            <lightning-spinner size="x-small" alternative-text="AI is thinking"></lightning-spinner>
+                        </div>
+                    </template>
+                </div>
+
+                <!-- Quick prompts -->
+                <div class="slds-m-bottom_small slds-has-divider_top-space slds-p-top_small">
+                    <p class="slds-text-body_small slds-text-color_weak slds-m-bottom_x-small">QUICK PROMPTS</p>
+                    <lightning-layout multiple-rows>
+                        <lightning-layout-item flexibility="no-flex" class="slds-m-right_xx-small slds-m-bottom_xx-small">
+                            <lightning-button variant="neutral" label="Key risks"        data-q="What are the key risks?"        onclick={handleSuggest}></lightning-button>
+                        </lightning-layout-item>
+                        <lightning-layout-item flexibility="no-flex" class="slds-m-right_xx-small slds-m-bottom_xx-small">
+                            <lightning-button variant="neutral" label="Draft agenda"     data-q="Draft 18 Jun meeting agenda"    onclick={handleSuggest}></lightning-button>
+                        </lightning-layout-item>
+                        <lightning-layout-item flexibility="no-flex" class="slds-m-right_xx-small slds-m-bottom_xx-small">
+                            <lightning-button variant="neutral" label="Lighthouse comp"  data-q="Compare to Project Lighthouse"  onclick={handleSuggest}></lightning-button>
+                        </lightning-layout-item>
+                        <lightning-layout-item flexibility="no-flex" class="slds-m-right_xx-small slds-m-bottom_xx-small">
+                            <lightning-button variant="neutral" label="Pre-meeting plan" data-q="Pre-meeting action plan"        onclick={handleSuggest}></lightning-button>
+                        </lightning-layout-item>
+                    </lightning-layout>
+                </div>
+
+                <!-- Input area + Ask button -->
+                <div class="slds-has-divider_top-space slds-p-top_small">
+                    <lightning-layout vertical-align="end">
+                        <lightning-layout-item flexibility="auto">
+                            <lightning-textarea
+                                label=""
+                                value={inputText}
+                                placeholder="Ask anything about this deal…"
+                                onchange={handleInput}
+                                onkeydown={handleKey}>
+                            </lightning-textarea>
+                        </lightning-layout-item>
+                        <lightning-layout-item flexibility="no-flex" class="slds-m-left_x-small">
+                            <lightning-button label="Ask" variant="brand" onclick={sendMessage}></lightning-button>
+                        </lightning-layout-item>
+                    </lightning-layout>
+                </div>
+
+            </div>
+        </template>
+
+    </lightning-card>
+</template>

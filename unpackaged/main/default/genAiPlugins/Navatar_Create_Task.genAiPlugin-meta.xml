@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<GenAiPlugin xmlns="http://soap.sforce.com/2006/04/metadata" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+    <canEscalate>false</canEscalate>
+    <description>Use this topic when the user explicitly says “create a task / reminder / follow‑up for this contact/deal/account.
+Activate this topic when the prompt includes phrases such as “Remind me to reach out,” “Create a follow up,” or similar follow-up-related language.</description>
+    <developerName>Navatar_Create_Task</developerName>
+    <genAiFunctions>
+        <functionName>EmployeeCopilot__IdentifyRecordByName</functionName>
+    </genAiFunctions>
+    <genAiFunctions>
+        <functionName>Navatar_Create_Task_Record</functionName>
+    </genAiFunctions>
+    <genAiPluginInstructions>
+        <description>If the user asks for an action like “create a task”, “set a follow‑up”, or “remind me to call them”: - Ask minimal clarifying questions only if needed: due date, owner (assume current user if not specified), and a short subject. - Keep Task creation tightly tied to the Firm/Contact/Deal context so the agent remains a “relationship &amp; next‑steps” rather than a generic task</description>
+        <developerName>instruction_0_1772376938240</developerName>
+        <language xsi:nil="true" />
+        <masterLabel>instruction_0_1772376938240</masterLabel>
+        <sortOrder>0</sortOrder>
+    </genAiPluginInstructions>
+    <genAiPluginInstructions>
+        <description>If records with the same name exist within one or multiple objects, the agent must request user confirmation before proceeding with task creation.</description>
+        <developerName>instruction_1_1772376938240</developerName>
+        <language xsi:nil="true" />
+        <masterLabel>instruction_1_1772376938240</masterLabel>
+        <sortOrder>0</sortOrder>
+    </genAiPluginInstructions>
+    <genAiPluginInstructions>
+        <description>Ask clarifying questions if the user&#39;s request is ambiguous or lacks necessary details.</description>
+        <developerName>instruction_2_1772376938240</developerName>
+        <language xsi:nil="true" />
+        <masterLabel>instruction_2_1772376938240</masterLabel>
+        <sortOrder>0</sortOrder>
+    </genAiPluginInstructions>
+    <genAiPluginInstructions>
+        <description>If task couldn&#39;t be created due to any error. respond with the agreed text: Task [Task title] could not be generated due to a technical issue or workflow error.
+Please contact your Navatar Administrator for further assistance</description>
+        <developerName>instruction_3_1772376938240</developerName>
+        <language xsi:nil="true" />
+        <masterLabel>instruction_3_1772376938240</masterLabel>
+        <sortOrder>0</sortOrder>
+    </genAiPluginInstructions>
+    <language>en_US</language>
+    <localDeveloperName>Navatar_Create_Task</localDeveloperName>
+    <masterLabel>Navatar Create Task</masterLabel>
+    <pluginType>Topic</pluginType>
+    <scope>Supported objects: Account (Firm), Contact, Deal. Must respect Salesforce field-level security and not expose restricted fields.</scope>
+</GenAiPlugin>

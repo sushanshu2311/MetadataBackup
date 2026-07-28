@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<GenAiFunction xmlns="http://soap.sforce.com/2006/04/metadata">
+    <description>Use this action when the user asks for a firm overview or summary. It includes the firm’s overview, key contacts and interactions, and the history of the relationship.</description>
+    <developerName>Navatar_Firm_Summary</developerName>
+    <invocationTarget>NavatarFirmRelationShip</invocationTarget>
+    <invocationTargetType>apex</invocationTargetType>
+    <isConfirmationRequired>false</isConfirmationRequired>
+    <isIncludeInProgressIndicator>true</isIncludeInProgressIndicator>
+    <localDeveloperName>Navatar_Firm_Summary</localDeveloperName>
+    <masterLabel>Navatar Firm Summary</masterLabel>
+    <progressIndicatorMessage>Preparing Summary...</progressIndicatorMessage>
+</GenAiFunction>

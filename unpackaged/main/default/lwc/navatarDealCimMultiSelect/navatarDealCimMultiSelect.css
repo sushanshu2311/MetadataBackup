@@ -1,0 +1,54 @@
+:host {
+    --navy: #0B2D5F;
+    --sf: #0176D3;
+    --bd: #DDDBDA;
+    --t1: #181818;
+    --t2: #706E6B;
+    position: relative;
+    display: inline-block;
+}
+.msdd { position: relative; display: inline-block; }
+.msdd-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    border: 1px solid var(--bd);
+    background: #fff;
+    border-radius: 4px;
+    padding: 4px 10px;
+    font-family: inherit;
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--t1);
+    cursor: pointer;
+    white-space: nowrap;
+}
+.msdd-btn:hover { background: #F5F5F5; }
+.msdd-caret { font-size: 9px; color: var(--t2); transition: transform 0.15s; }
+.msdd.open .msdd-caret { transform: rotate(180deg); }
+.msdd-panel-static {
+    position: absolute;
+    top: calc(100% + 4px);
+    left: 0;
+    z-index: 300;
+    background: #fff;
+    border: 1px solid var(--bd);
+    border-radius: 4px;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.16);
+    min-width: 200px;
+    padding: 4px 0;
+    max-height: 280px;
+    overflow: auto;
+}
+.msdd-opt {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 6px 12px;
+    font-size: 12px;
+    color: var(--t1);
+    cursor: pointer;
+    white-space: nowrap;
+}
+.msdd-opt:hover { background: #F5F5F5; }
+.msdd-opt input { cursor: pointer; margin: 0; }

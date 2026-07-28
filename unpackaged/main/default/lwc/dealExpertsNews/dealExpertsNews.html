@@ -1,0 +1,25 @@
+<template>
+    <lightning-card title="News &amp; Alerts" icon-name="utility:notification">
+        <lightning-formatted-text slot="actions" value="AI monitored" class="slds-text-body_small slds-text-color_weak"></lightning-formatted-text>
+
+        <div>
+            <template for:each={newsItems} for:item="n">
+                <div key={n.id} class="slds-border_bottom slds-p-horizontal_medium slds-p-vertical_x-small">
+                    <p class="slds-text-body_small slds-m-bottom_xx-small">{n.title}</p>
+                    <lightning-layout vertical-align="center">
+                        <lightning-layout-item flexibility="no-flex">
+                            <lightning-formatted-text value={n.sourceDate} class="slds-text-body_small slds-text-color_weak"></lightning-formatted-text>
+                        </lightning-layout-item>
+                        <lightning-layout-item flexibility="no-flex" class="slds-m-left_x-small">
+                            <lightning-badge label={n.sentiment}></lightning-badge>
+                        </lightning-layout-item>
+                    </lightning-layout>
+                </div>
+            </template>
+        </div>
+
+        <div slot="footer">
+            <lightning-button variant="base" label="View all alerts (8) →" onclick={handleViewAll}></lightning-button>
+        </div>
+    </lightning-card>
+</template>

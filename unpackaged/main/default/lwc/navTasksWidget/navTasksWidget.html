@@ -1,0 +1,81 @@
+<template>
+    <lightning-card>
+        <span slot="title">Tasks</span>
+        <div slot="actions">
+            <lightning-button-icon
+                icon-name="utility:add"
+                variant="border-filled"
+                alternative-text="New task"
+                title="New task"
+                onclick={handleNew}
+            ></lightning-button-icon>
+        </div>
+
+        <!-- Search + All/Mine on one line -->
+        <div
+            class="slds-grid slds-grid_vertical-align-center slds-wrap slds-p-horizontal_medium slds-p-vertical_x-small slds-border_top slds-border_bottom"
+        >
+            <div data-search-compact class="slds-m-right_x-small">
+                <c-nav-search-box
+                    placeholder="Search tasks..."
+                    value={searchTerm}
+                    onsearch={handleSearch}
+                ></c-nav-search-box>
+            </div>
+            <c-nav-filter-multi-select
+                options={ownerOptions}
+                onfilterchange={handleOwnerFilter}
+            ></c-nav-filter-multi-select>
+        </div>
+
+        <template lwc:if={hasTasks}>
+            <ul class="slds-has-dividers_bottom-space">
+                <template for:each={visibleTasks} for:item="task">
+                    <li key={task.recordId} class="slds-item">
+                        <div class="slds-grid slds-p-horizontal_medium slds-p-vertical_x-small">
+                            <div class="slds-col slds-no-flex slds-m-right_x-small">
+                                <lightning-input
+                                    type="checkbox"
+                                    variant="label-hidden"
+                                    label="Mark complete"
+                                    data-id={task.recordId}
+                                    onchange={handleComplete}
+                                ></lightning-input>
+                            </div>
+                            <div
+                                class="slds-col slds-grow"
+                                data-row
+                                data-id={task.recordId}
+                                onclick={handleOpen}
+                            >
+                                <p class="slds-text-body_regular slds-text-title_bold">{task.subject}</p>
+                                <p class="slds-text-body_small slds-text-color_weak">
+                                    <template lwc:if={task.dueDate}>
+                                        Due
+                                        <lightning-formatted-date-time
+                                            value={task.dueDate}
+                                            year="numeric"
+                                            month="short"
+                                            day="2-digit"
+                                            time-zone="UTC"
+                                        ></lightning-formatted-date-time>
+                                    </template>
+                                    <template lwc:else>No due date</template>
+                                    <template lwc:if={task.ownerName}> · {task.ownerName}</template>
+                                </p>
+                            </div>
+                            <template lwc:if={task.isOverdue}>
+                                <div class="slds-col slds-no-flex">
+                                    <lightning-badge label="Overdue" data-tone="warning"></lightning-badge>
+                                </div>
+                            </template>
+                        </div>
+                    </li>
+                </template>
+            </ul>
+        </template>
+        <template lwc:else>
+            <p class="slds-p-around_medium slds-text-body_small slds-text-color_weak">{emptyMessage}</p>
+        </template>
+    </lightning-card>
+</template>

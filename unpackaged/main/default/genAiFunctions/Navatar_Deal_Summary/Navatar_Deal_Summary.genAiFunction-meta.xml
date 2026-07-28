@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<GenAiFunction xmlns="http://soap.sforce.com/2006/04/metadata">
+    <description>Use this action when the user asks for a deal overview or summary. It includes the deal’s overview, interactions, and the history of the relationship.</description>
+    <developerName>Navatar_Deal_Summary</developerName>
+    <invocationTarget>NavatarDealRelationship</invocationTarget>
+    <invocationTargetType>apex</invocationTargetType>
+    <isConfirmationRequired>false</isConfirmationRequired>
+    <isIncludeInProgressIndicator>true</isIncludeInProgressIndicator>
+    <localDeveloperName>Navatar_Deal_Summary</localDeveloperName>
+    <masterLabel>Navatar Deal Summary</masterLabel>
+    <progressIndicatorMessage>Preparing Summary...</progressIndicatorMessage>
+</GenAiFunction>

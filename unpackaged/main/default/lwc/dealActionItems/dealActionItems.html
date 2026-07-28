@@ -1,0 +1,66 @@
+<template>
+    <div class="task-card">
+
+        <!-- Header -->
+        <div class="task-ch">
+            <span class="task-ct">Action Items</span>
+            <div class="task-cha">
+                <div class="task-tog">
+                    <span class={tt.mine} data-mode="mine" onclick={handleToggle}>Mine</span>
+                    <span class={tt.all}  data-mode="all"  onclick={handleToggle}>All</span>
+                </div>
+                <span class="op-badge">{openLabel}</span>
+                <button class="add-btn" onclick={handleAdd}>+ Add</button>
+            </div>
+        </div>
+
+        <!-- Task list -->
+        <div class="task-list">
+
+            <!-- Open tasks -->
+            <template for:each={openTasks} for:item="t">
+                <div key={t.id} class="ti">
+                    <div class={t.tcbCss} data-id={t.id} onclick={handleCheck}></div>
+                    <div class="ti-body">
+                        <div class={t.tnCss}>{t.subject}</div>
+                        <div class="tm">
+                            <span class={t.dueCss}>{t.dueLabel}</span>
+                            <span class="to">{t.ownerInitials}</span>
+                            <template if:true={t.source}>
+                                <span class="src-pill">{t.source}</span>
+                            </template>
+                        </div>
+                    </div>
+                </div>
+            </template>
+
+            <!-- Completed section -->
+            <template if:true={hasCompleted}>
+                <div class="cl">Completed ({completedCount})</div>
+                <template for:each={completedTasks} for:item="t">
+                    <div key={t.id} class="ti">
+                        <div class="tcb done" data-id={t.id} onclick={handleCheck}>&#10003;</div>
+                        <div class="ti-body">
+                            <div class="tn tnd">{t.subject}</div>
+                            <div class="tm">
+                                <span class="td2">{t.doneLabel}</span>
+                                <template if:true={t.source}>
+                                    <span class="src-pill">{t.source}</span>
+                                </template>
+                            </div>
+                        </div>
+                    </div>
+                </template>
+            </template>
+
+            <template if:true={isEmpty}>
+                <div class="empty-msg">No tasks found.</div>
+            </template>
+
+        </div>
+    </div>
+
+    <template if:true={_cn}>
+        <div class="cn-toast">{_cn}</div>
+    </template>
+</template>

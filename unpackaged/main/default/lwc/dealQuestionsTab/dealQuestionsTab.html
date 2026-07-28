@@ -1,0 +1,28 @@
+<template>
+    <lightning-card title="Questions Log" icon-name="utility:question_mark">
+        <lightning-button slot="actions" label="+ Add Question" icon-name="utility:add" onclick={handleAddQuestion}></lightning-button>
+        <div class="slds-p-horizontal_medium slds-p-bottom_medium">
+            <template for:each={questions} for:item="q">
+                <lightning-layout key={q.id} class="slds-border_bottom slds-p-vertical_x-small">
+                    <lightning-layout-item flexibility="auto">
+                        <lightning-layout vertical-align="center" class="slds-m-bottom_xx-small">
+                            <lightning-layout-item>
+                                <lightning-badge label={q.status}></lightning-badge>
+                            </lightning-layout-item>
+                            <lightning-layout-item class="slds-m-left_xx-small">
+                                <lightning-badge label={q.source}></lightning-badge>
+                            </lightning-layout-item>
+                            <lightning-layout-item class="slds-m-left_x-small">
+                                <lightning-formatted-text value={q.added} class="slds-text-body_small slds-text-color_weak"></lightning-formatted-text>
+                            </lightning-layout-item>
+                        </lightning-layout>
+                        <lightning-formatted-text value={q.question} class="slds-text-body_regular"></lightning-formatted-text>
+                        <template if:true={q.answer}>
+                            <lightning-formatted-text value={q.answer} class="slds-text-body_small slds-text-color_weak slds-m-top_xx-small"></lightning-formatted-text>
+                        </template>
+                    </lightning-layout-item>
+                </lightning-layout>
+            </template>
+        </div>
+    </lightning-card>
+</template>

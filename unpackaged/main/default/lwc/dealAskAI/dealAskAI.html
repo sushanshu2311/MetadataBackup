@@ -1,0 +1,66 @@
+<template>
+    <div class="ask-card">
+
+        <!-- Navy collapsible header -->
+        <div class="ask-header" onclick={toggleOpen}>
+            <div class="ask-head-text">
+                <div class="ask-title">Ask AI</div>
+                <div class="ask-subtitle">Ask questions or take action on this deal</div>
+            </div>
+            <span class={chevronCss}>&#9660;</span>
+        </div>
+
+        <template if:true={isOpen}>
+            <div class="ask-body">
+
+                <!-- Input -->
+                <div class="ask-input-area">
+                    <div class="ask-input-label">Type your question or prompt</div>
+                    <div class="ask-input-row">
+                        <lightning-textarea
+                            label=""
+                            placeholder="e.g. What are the key risks on this deal?"
+                            value={inputText}
+                            rows="2"
+                            oninput={handleInput}
+                            onkeydown={handleKey}>
+                        </lightning-textarea>
+                        <lightning-button
+                            class="ask-send-btn"
+                            label="&#10148; Ask"
+                            variant="brand"
+                            onclick={sendMessage}>
+                        </lightning-button>
+                    </div>
+                </div>
+
+                <!-- Quick prompts -->
+                <div class="ask-suggestions">
+                    <div class="ask-sug-label">Quick prompts</div>
+                    <div class="ask-sug-btns">
+                        <button class="sug-btn" data-q="What are the key risks?"    onclick={handleSuggest}>Key risks</button>
+                        <button class="sug-btn" data-q="Draft 18 Jun meeting agenda" onclick={handleSuggest}>Draft agenda</button>
+                        <button class="sug-btn" data-q="Compare to Project Lighthouse" onclick={handleSuggest}>Lighthouse comp</button>
+                        <button class="sug-btn" data-q="Pre-meeting action plan"    onclick={handleSuggest}>Pre-meeting plan</button>
+                    </div>
+                </div>
+
+                <!-- Chat messages -->
+                <div class="ask-messages">
+                    <template for:each={messages} for:item="msg">
+                        <div key={msg.id} class={msg.css}>
+                            <div class="msg-bubble">{msg.text}</div>
+                            <div class="msg-meta">{msg.sender} &middot; {msg.time}</div>
+                        </div>
+                    </template>
+                    <template if:true={isTyping}>
+                        <div class="msg msg-ai">
+                            <lightning-spinner size="x-small" alternative-text="AI is thinking"></lightning-spinner>
+                        </div>
+                    </template>
+                </div>
+
+            </div>
+        </template>
+    </div>
+</template>

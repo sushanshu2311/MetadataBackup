@@ -1,0 +1,43 @@
+<template>
+    <div class="card">
+        <div class="ch">
+            <span class="ct">Tasks</span>
+            <div class="cha">
+                <button class="btn bn" title="Add task" onclick={handleOpenAdd}>+</button>
+            </div>
+        </div>
+        <template if:true={showAddForm}>
+            <div class="add-form">
+                <input
+                    class="add-input"
+                    placeholder="New task title..."
+                    value={newTitle}
+                    oninput={handleNewTitleChange}
+                />
+                <button class="btn bn" onclick={handleAddTask}>Save</button>
+                <button class="btn" onclick={handleCancelAdd}>Cancel</button>
+            </div>
+        </template>
+        <div class="feed-filters">
+            <c-navatar-deal-cim-multi-select
+                options={ownerOptions}
+                selected-values={selectedOwners}
+                onfilterchange={handleFilterChange}
+            ></c-navatar-deal-cim-multi-select>
+            <input class="srch" placeholder="Search tasks…" oninput={handleSearch} />
+        </div>
+        <div class="tasks-list">
+            <template for:each={tasksView} for:item="t">
+                <div key={t.key} class="ti">
+                    <div class={t.circleClass} data-key={t.key} onclick={handleToggleDone}></div>
+                    <div class="tl">
+                        <div class={t.titleClass}>
+                            <a href="#" onclick={handleTitleClick}>{t.title}</a>
+                        </div>
+                        <div class={t.metaClass}>{t.meta}</div>
+                    </div>
+                </div>
+            </template>
+        </div>
+    </div>
+</template>

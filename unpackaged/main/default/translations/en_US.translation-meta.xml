@@ -1,0 +1,397 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Translations xmlns="http://soap.sforce.com/2006/04/metadata">
+    <customApplications>
+        <label><!-- PE Cloud --></label>
+        <name>PE_Cloud</name>
+    </customApplications>
+    <customApplications>
+        <label><!-- PE Cloud Mobile --></label>
+        <name>PE_Cloud_Mobile</name>
+    </customApplications>
+    <customLabels>
+        <label><!-- DealRoom_LoginAs --></label>
+        <name>DealRoom_LoginAs</name>
+    </customLabels>
+    <customLabels>
+        <label><!-- DealRoom_Url --></label>
+        <name>DealRoom_Url</name>
+    </customLabels>
+    <customLabels>
+        <label><!-- Navatar Document URL --></label>
+        <name>Navatar_Document_URL</name>
+    </customLabels>
+    <customLabels>
+        <label><!-- IP_Url --></label>
+        <name>navpeII__IP_Url</name>
+    </customLabels>
+    <customLabels>
+        <label><!-- Invalid sObject for Editable SDG --></label>
+        <name>navpeII__Invalid_sObject_for_Editable_SDG</name>
+    </customLabels>
+    <customLabels>
+        <label><!-- Navatar_URL --></label>
+        <name>navpeII__Navatar_URL</name>
+    </customLabels>
+    <customLabels>
+        <label><!-- After --></label>
+        <name>navpeII__sdgAfter</name>
+    </customLabels>
+    <customLabels>
+        <label><!-- sdgAgo --></label>
+        <name>navpeII__sdgAgo</name>
+    </customLabels>
+    <customLabels>
+        <label><!-- Before --></label>
+        <name>navpeII__sdgBefore</name>
+    </customLabels>
+    <customLabels>
+        <label><!-- Contains --></label>
+        <name>navpeII__sdgContains</name>
+    </customLabels>
+    <customLabels>
+        <label><!-- Ends --></label>
+        <name>navpeII__sdgEnds</name>
+    </customLabels>
+    <customLabels>
+        <label><!-- Equals --></label>
+        <name>navpeII__sdgEquals</name>
+    </customLabels>
+    <customLabels>
+        <label><!-- sdgExcludes --></label>
+        <name>navpeII__sdgExcludes</name>
+    </customLabels>
+    <customLabels>
+        <label><!-- False --></label>
+        <name>navpeII__sdgFalse</name>
+    </customLabels>
+    <customLabels>
+        <label><!-- Filtered --></label>
+        <name>navpeII__sdgFiltered</name>
+    </customLabels>
+    <customLabels>
+        <label><!-- Filtered Of --></label>
+        <name>navpeII__sdgFilteredOf</name>
+    </customLabels>
+    <customLabels>
+        <label><!-- Greater than --></label>
+        <name>navpeII__sdgGreaterThan</name>
+    </customLabels>
+    <customLabels>
+        <label><!-- sdgIn --></label>
+        <name>navpeII__sdgIn</name>
+    </customLabels>
+    <customLabels>
+        <label><!-- sdgIncludes --></label>
+        <name>navpeII__sdgIncludes</name>
+    </customLabels>
+    <customLabels>
+        <label><!-- Last Month --></label>
+        <name>navpeII__sdgLastMonth</name>
+    </customLabels>
+    <customLabels>
+        <label><!-- Last quarter --></label>
+        <name>navpeII__sdgLastQuarter</name>
+    </customLabels>
+    <customLabels>
+        <label><!-- Last Week --></label>
+        <name>navpeII__sdgLastWeek</name>
+    </customLabels>
+    <customLabels>
+        <label><!-- Last Year --></label>
+        <name>navpeII__sdgLastYear</name>
+    </customLabels>
+    <customLabels>
+        <label><!-- Less than --></label>
+        <name>navpeII__sdgLessThan</name>
+    </customLabels>
+    <customLabels>
+        <label><!-- Next month --></label>
+        <name>navpeII__sdgNextMonth</name>
+    </customLabels>
+    <customLabels>
+        <label><!-- Next Quarter --></label>
+        <name>navpeII__sdgNextQuarter</name>
+    </customLabels>
+    <customLabels>
+        <label><!-- Next week --></label>
+        <name>navpeII__sdgNextWeek</name>
+    </customLabels>
+    <customLabels>
+        <label><!-- Next year --></label>
+        <name>navpeII__sdgNextYear</name>
+    </customLabels>
+    <customLabels>
+        <label><!-- No data --></label>
+        <name>navpeII__sdgNoData</name>
+    </customLabels>
+    <customLabels>
+        <label><!-- Not Contains --></label>
+        <name>navpeII__sdgNotContains</name>
+    </customLabels>
+    <customLabels>
+        <label><!-- Not Equals --></label>
+        <name>navpeII__sdgNotEquals</name>
+    </customLabels>
+    <customLabels>
+        <label><!-- Page --></label>
+        <name>navpeII__sdgPage</name>
+    </customLabels>
+    <customLabels>
+        <label><!-- Page Size --></label>
+        <name>navpeII__sdgPage_Size</name>
+    </customLabels>
+    <customLabels>
+        <label><!-- Starts --></label>
+        <name>navpeII__sdgStarts</name>
+    </customLabels>
+    <customLabels>
+        <label><!-- This Month --></label>
+        <name>navpeII__sdgThisMonth</name>
+    </customLabels>
+    <customLabels>
+        <label><!-- This quarter --></label>
+        <name>navpeII__sdgThisQuarter</name>
+    </customLabels>
+    <customLabels>
+        <label><!-- This Week --></label>
+        <name>navpeII__sdgThisWeek</name>
+    </customLabels>
+    <customLabels>
+        <label><!-- This Year --></label>
+        <name>navpeII__sdgThisYear</name>
+    </customLabels>
+    <customLabels>
+        <label><!-- Today --></label>
+        <name>navpeII__sdgToday</name>
+    </customLabels>
+    <customLabels>
+        <label><!-- Tomorrow --></label>
+        <name>navpeII__sdgTomorrow</name>
+    </customLabels>
+    <customLabels>
+        <label><!-- True --></label>
+        <name>navpeII__sdgTrue</name>
+    </customLabels>
+    <customLabels>
+        <label><!-- Yesterday --></label>
+        <name>navpeII__sdgYesterday</name>
+    </customLabels>
+    <customTabs>
+        <label><!-- Deal Center --></label>
+        <name>Deal_Center</name>
+    </customTabs>
+    <customTabs>
+        <label><!-- Deal Custom --></label>
+        <name>Deal_Custom</name>
+    </customTabs>
+    <customTabs>
+        <label><!-- Fund Center --></label>
+        <name>Fund_Center</name>
+    </customTabs>
+    <customTabs>
+        <label><!-- Home --></label>
+        <name>Home_Mobile</name>
+    </customTabs>
+    <customTabs>
+        <label><!-- Mandates (Live) --></label>
+        <name>Mandates_Live</name>
+    </customTabs>
+    <customTabs>
+        <label><!-- My Lists --></label>
+        <name>My_Lists</name>
+    </customTabs>
+    <flowDefinitions>
+        <flows />
+        <fullName>Calculate_DealQuality_and_Deal_Shown_on_Account</fullName>
+    </flowDefinitions>
+    <flowDefinitions>
+        <flows />
+        <fullName>Calculate_DealQuality_and_Deal_Shown_on_Contact</fullName>
+    </flowDefinitions>
+    <flowDefinitions>
+        <flows>
+            <screens>
+                <fields>
+                    <name>Already_a_portfolio_messsage</name>
+                </fields>
+                <name>Already_a_portfolio</name>
+            </screens>
+            <screens>
+                <fields>
+                    <name>confirm_update</name>
+                </fields>
+                <name>Confirmation</name>
+            </screens>
+            <screens>
+                <fields>
+                    <name>flow_complete_Confirmation</name>
+                </fields>
+                <name>Confirmation_message</name>
+            </screens>
+            <screens>
+                <fields>
+                    <name>Message</name>
+                </fields>
+                <name>Error_Message</name>
+            </screens>
+            <textTemplates>
+                <name>PortfolioTextID</name>
+            </textTemplates>
+        </flows>
+        <fullName>Convert_Deal_to_Portfolio</fullName>
+    </flowDefinitions>
+    <flowDefinitions>
+        <flows />
+        <fullName>Navatar_Auto_Create_Deal</fullName>
+    </flowDefinitions>
+    <flowDefinitions>
+        <flows />
+        <fullName>Navatar_Create_Task_Record</fullName>
+    </flowDefinitions>
+    <flowDefinitions>
+        <flows />
+        <fullName>Navatar_Email_Interaction_Content_For_Deal_Creation</fullName>
+    </flowDefinitions>
+    <flowDefinitions>
+        <flows />
+        <fullName>Navatar_Email_MeetingPrepCard</fullName>
+    </flowDefinitions>
+    <flowDefinitions>
+        <flows />
+        <fullName>Navatar_Email_MeetingPrepCard_Schedular</fullName>
+    </flowDefinitions>
+    <flowDefinitions>
+        <flows />
+        <fullName>Navatar_File_Content</fullName>
+    </flowDefinitions>
+    <flowDefinitions>
+        <flows />
+        <fullName>Update_Highest_Stage_Reached_Field</fullName>
+    </flowDefinitions>
+    <quickActions>
+        <label><!-- LogACall --></label>
+        <name>LogACall</name>
+    </quickActions>
+    <quickActions>
+        <label><!-- NewAccount --></label>
+        <name>NewAccount</name>
+    </quickActions>
+    <quickActions>
+        <label><!-- NewCase --></label>
+        <name>NewCase</name>
+    </quickActions>
+    <quickActions>
+        <label><!-- NewContact --></label>
+        <name>NewContact</name>
+    </quickActions>
+    <quickActions>
+        <label><!-- NewEvent --></label>
+        <name>NewEvent</name>
+    </quickActions>
+    <quickActions>
+        <label><!-- NewGroup --></label>
+        <name>NewGroup</name>
+    </quickActions>
+    <quickActions>
+        <label><!-- NewLead --></label>
+        <name>NewLead</name>
+    </quickActions>
+    <quickActions>
+        <label><!-- NewNote --></label>
+        <name>NewNote</name>
+    </quickActions>
+    <quickActions>
+        <label><!-- NewOpportunity --></label>
+        <name>NewOpportunity</name>
+    </quickActions>
+    <quickActions>
+        <label><!-- NewTask --></label>
+        <name>NewTask</name>
+    </quickActions>
+    <quickActions>
+        <label><!-- SendEmail --></label>
+        <name>SendEmail</name>
+    </quickActions>
+    <reportTypes>
+        <description><!-- Orchestration Run Logs Spring &apos;24 --></description>
+        <label><!-- Orchestration Run Logs Spring &apos;24 --></label>
+        <name>flow_orchestration_log_ootb_crt_two_four_eight</name>
+        <sections>
+            <label><!-- Orchestration Run Log --></label>
+            <name>Orchestration Run Log</name>
+        </sections>
+    </reportTypes>
+    <reportTypes>
+        <description><!-- Orchestration Runs Spring &apos;24 --></description>
+        <label><!-- Orchestration Runs Spring &apos;24 --></label>
+        <name>flow_orchestration_run_ootb_crt_two_four_eight</name>
+        <sections>
+            <label><!-- Orchestration Runs --></label>
+            <name>Orchestration Runs</name>
+        </sections>
+    </reportTypes>
+    <reportTypes>
+        <description><!-- Orchestration Stage Runs Spring &apos;24 --></description>
+        <label><!-- Orchestration Stage Runs Spring &apos;24 --></label>
+        <name>flow_orchestration_stage_run_ootb_crt_two_four_eight</name>
+        <sections>
+            <label><!-- Orchestration Stage Runs --></label>
+            <name>Orchestration Stage Runs</name>
+        </sections>
+    </reportTypes>
+    <reportTypes>
+        <description><!-- Orchestration Step Runs Spring &apos;24 --></description>
+        <label><!-- Orchestration Step Runs Spring &apos;24 --></label>
+        <name>flow_orchestration_step_run_ootb_crt_two_four_eight</name>
+        <sections>
+            <label><!-- Orchestration Step Runs --></label>
+            <name>Orchestration Step Runs</name>
+        </sections>
+    </reportTypes>
+    <reportTypes>
+        <description><!-- Orchestration Work Items Spring &apos;24 --></description>
+        <label><!-- Orchestration Work Items Spring &apos;24 --></label>
+        <name>flow_orchestration_work_item_ootb_crt_two_four_eight</name>
+        <sections>
+            <columns>
+                <label><!-- Orchestration Step Run: Label --></label>
+                <name>Orchestration Step Run: Label</name>
+            </columns>
+            <columns>
+                <label><!-- Orchestration Step Run: Name --></label>
+                <name>Orchestration Step Run: Name</name>
+            </columns>
+            <columns>
+                <label><!-- Orchestration Step Run: Status --></label>
+                <name>Orchestration Step Run: Status</name>
+            </columns>
+            <label><!-- Orchestration Step Runs --></label>
+            <name>Orchestration Step Runs</name>
+        </sections>
+        <sections>
+            <columns>
+                <label><!-- Assigned Group or Queue --></label>
+                <name>Assigned Group or Queue</name>
+            </columns>
+            <columns>
+                <label><!-- Assigned User --></label>
+                <name>Assigned User</name>
+            </columns>
+            <label><!-- Orchestration Work Items --></label>
+            <name>Orchestration Work Items</name>
+        </sections>
+    </reportTypes>
+    <reportTypes>
+        <description><!-- Screen Flows --></description>
+        <label><!-- Screen Flows --></label>
+        <name>screen_flows_prebuilt_crt</name>
+        <sections>
+            <label><!-- Flow Interview Log Entries --></label>
+            <name>Flow Interview Log Entries</name>
+        </sections>
+        <sections>
+            <label><!-- Flow Interview Logs --></label>
+            <name>Flow Interview Logs</name>
+        </sections>
+    </reportTypes>
+</Translations>

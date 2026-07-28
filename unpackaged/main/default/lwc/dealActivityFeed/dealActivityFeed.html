@@ -1,0 +1,87 @@
+<template>
+    <lightning-card title="Deal Activity" class="slds-m-bottom_medium">
+        <lightning-layout slot="actions" vertical-align="center">
+                <lightning-layout-item class="slds-m-right_x-small">
+                    <p class="slds-text-body_small slds-text-color_weak">Click to:</p>
+                </lightning-layout-item>
+                <lightning-layout-item>
+                    <lightning-button-group>
+                        <lightning-button label="Expand" variant={expandVariant} data-mode="expand" onclick={setViewMode}></lightning-button>
+                        <lightning-button label="Pop-up" variant={popupVariant}  data-mode="popup"  onclick={setViewMode}></lightning-button>
+                    </lightning-button-group>
+                </lightning-layout-item>
+                <lightning-layout-item class="slds-m-left_x-small">
+                    <p class="slds-text-body_small slds-text-color_weak">Newest first</p>
+                </lightning-layout-item>
+        </lightning-layout>
+
+        <div class="slds-p-horizontal_medium slds-p-top_small slds-p-bottom_x-small">
+            <lightning-layout vertical-align="center">
+                <lightning-layout-item class="slds-m-right_small">
+                    <p class="slds-text-title">FILTER:</p>
+                </lightning-layout-item>
+                <lightning-layout-item>
+                    <lightning-button-group>
+                        <lightning-button label="All"               variant={fAll}     data-value="all"          onclick={handleFilter}></lightning-button>
+                        <lightning-button label="Emails"            variant={fEmail}   data-value="email"        onclick={handleFilter}></lightning-button>
+                        <lightning-button label="Meetings"          variant={fMeeting} data-value="meeting"      onclick={handleFilter}></lightning-button>
+                        <lightning-button label="Deal Intelligence" variant={fIntel}   data-value="intelligence" onclick={handleFilter}></lightning-button>
+                    </lightning-button-group>
+                </lightning-layout-item>
+            </lightning-layout>
+        </div>
+
+        <div class="slds-p-bottom_small">
+            <template for:each={visibleFeedItems} for:item="item">
+                <lightning-layout key={item.id}
+                    vertical-align="center"
+                    class="slds-border_bottom"
+                    data-id={item.id}
+                    data-idx={item.idx}
+                    onclick={handleFeedClick}>
+                    <lightning-layout-item flexibility="auto" class="slds-p-vertical_x-small slds-p-horizontal_small slds-has-flexi-truncate">
+                        <lightning-layout vertical-align="center" class="slds-m-bottom_xx-small">
+                            <lightning-layout-item flexibility="auto" class="slds-truncate">
+                                <lightning-formatted-text value={item.title} class="slds-text-title slds-truncate"></lightning-formatted-text>
+                            </lightning-layout-item>
+                            <lightning-layout-item class="slds-m-left_x-small">
+                                <lightning-badge label={item.badge}></lightning-badge>
+                            </lightning-layout-item>
+                            <lightning-layout-item class="slds-m-left_x-small">
+                                <lightning-formatted-text value={item.timestampLabel} class="slds-text-body_small slds-text-color_weak"></lightning-formatted-text>
+                            </lightning-layout-item>
+                            <lightning-layout-item class="slds-m-left_x-small">
+                                <lightning-formatted-text value={item.openLabel} class="slds-text-link slds-text-body_small"></lightning-formatted-text>
+                            </lightning-layout-item>
+                        </lightning-layout>
+                        <lightning-formatted-text value={item.preview} class="slds-text-body_small slds-text-color_weak"></lightning-formatted-text>
+                        <template if:true={item.isExpanded}>
+                            <div class="slds-box slds-theme_shade slds-m-top_x-small" onclick={stopProp}>
+                                <lightning-layout vertical-align="center" class="slds-m-bottom_x-small">
+                                    <lightning-layout-item flexibility="auto">
+                                        <p class="slds-text-title">Detail</p>
+                                    </lightning-layout-item>
+                                    <lightning-layout-item>
+                                        <lightning-button-icon
+                                            icon-name="utility:close"
+                                            variant="bare"
+                                            size="x-small"
+                                            alternative-text="Close"
+                                            data-id={item.id}
+                                            onclick={handleCloseFeedItem}>
+                                        </lightning-button-icon>
+                                    </lightning-layout-item>
+                                </lightning-layout>
+                                <lightning-formatted-text value={item.preview} class="slds-text-body_small"></lightning-formatted-text>
+                            </div>
+                        </template>
+                    </lightning-layout-item>
+                </lightning-layout>
+            </template>
+        </div>
+
+        <div slot="footer">
+            <lightning-button label="Load earlier activity" variant="base" onclick={handleLoadMore}></lightning-button>
+        </div>
+    </lightning-card>
+</template>

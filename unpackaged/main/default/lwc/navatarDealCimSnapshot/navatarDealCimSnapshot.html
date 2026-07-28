@@ -1,0 +1,13 @@
+<template>
+    <div class="card">
+        <div class="ch"><span class="ct">Snapshot</span></div>
+        <div class="km-grid">
+            <template for:each={fields} for:item="f">
+                <div key={f.key} class="km-field">
+                    <div class="km-label">{f.label}</div>
+                    <div class="km-value">{f.value}</div>
+                </div>
+            </template>
+        </div>
+    </div>
+</template>

@@ -1,0 +1,48 @@
+<template>
+    <div class="tasks-card">
+        <div class="tasks-card__header">
+            <div class="tasks-card__title-group">
+                <span class="tasks-card__title">Tasks</span>
+                <span class="tasks-badge">{openTaskCount} open</span>
+            </div>
+            <button class="tasks-add-btn" onclick={handleAddTask} title="Add task">+</button>
+        </div>
+
+        <!-- Filters -->
+        <div class="tasks-filters">
+            <div class="filter-pills">
+                <button class={filterAllClass} data-filter="all" onclick={handleFilterClick}>All</button>
+                <button class={filterMineClass} data-filter="mine" onclick={handleFilterClick}>Mine</button>
+            </div>
+            <input
+                class="tasks-search"
+                type="text"
+                placeholder="Search tasks..."
+                value={searchText}
+                oninput={handleSearch}/>
+        </div>
+
+        <!-- Task List -->
+        <div class="tasks-list">
+            <template for:each={filteredTasks} for:item="task">
+                <div key={task.id} class={task.rowClass}>
+                    <button
+                        class={task.checkClass}
+                        data-id={task.id}
+                        onclick={handleToggle}
+                        aria-label="Toggle task">
+                        <template lwc:if={task.done}>
+                            <svg width="10" height="10" viewBox="0 0 24 24" fill="none">
+                                <path d="M5 13l4 4L19 7" stroke="#fff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                        </template>
+                    </button>
+                    <div class="task__main">
+                        <div class={task.titleClass}>{task.title}</div>
+                        <div class="task__meta">{task.metaText}</div>
+                    </div>
+                </div>
+            </template>
+        </div>
+    </div>
+</template>

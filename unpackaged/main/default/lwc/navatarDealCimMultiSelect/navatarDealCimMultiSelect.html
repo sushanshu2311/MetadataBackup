@@ -1,0 +1,18 @@
+<template>
+    <div class={wrapClass}>
+        <button type="button" class="msdd-btn" onclick={toggleOpen}>
+            <span class="msdd-lbl">{triggerLabel}</span>
+            <span class="msdd-caret">&#9662;</span>
+        </button>
+        <template if:true={isOpen}>
+            <div class="msdd-panel-static" onclick={stopClick}>
+                <template for:each={renderedOptions} for:item="opt">
+                    <label key={opt.value} class="msdd-opt">
+                        <input type="checkbox" value={opt.value} checked={opt.checked} onchange={handleOptionChange} />
+                        {opt.label}
+                    </label>
+                </template>
+            </div>
+        </template>
+    </div>
+</template>

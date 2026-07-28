@@ -1,0 +1,33 @@
+<template>
+    <div class="pb">
+        <c-navatar-deal-cim-header
+            deal-name={dealName}
+            oncreatetask={handleCreateTask}
+            onloginteraction={handleLogInteraction}
+        ></c-navatar-deal-cim-header>
+
+        <div class="card">
+            <c-navatar-deal-cim-tabs active-tab={activeTab} ontabselect={handleTabSelect}></c-navatar-deal-cim-tabs>
+
+            <template if:true={isOverview}>
+                <c-navatar-deal-cim-overview></c-navatar-deal-cim-overview>
+            </template>
+            <template if:true={isTeam}>
+                <c-navatar-deal-cim-team></c-navatar-deal-cim-team>
+            </template>
+            <template if:true={isInteractions}>
+                <c-navatar-deal-cim-interactions></c-navatar-deal-cim-interactions>
+            </template>
+            <template if:true={isSimilarDeals}>
+                <c-navatar-deal-cim-similar-deals></c-navatar-deal-cim-similar-deals>
+            </template>
+            <template if:true={isDocuments}>
+                <c-navatar-deal-cim-documents></c-navatar-deal-cim-documents>
+            </template>
+        </div>
+    </div>
+
+    <button class="ai-fab" onclick={handleOpenAskAI}>
+        <span class="ai-fab-dot"></span>Ask AI
+    </button>
+</template>

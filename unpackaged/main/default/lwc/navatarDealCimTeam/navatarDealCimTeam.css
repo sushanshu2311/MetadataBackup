@@ -1,0 +1,79 @@
+:host {
+    --navy: #0B2D5F;
+    --sf: #0176D3;
+    --bd: #DDDBDA;
+    --t1: #181818;
+    --t2: #706E6B;
+    display: block;
+    font-family: 'Salesforce Sans', Arial, sans-serif;
+}
+.feed-filters { display: flex; align-items: center; padding: 7px 16px; gap: 6px; flex-wrap: wrap; background: #FAFAFA; }
+.srch {
+    border: 1px solid var(--bd); border-radius: 4px; padding: 4px 8px; font-size: 11px; font-family: inherit;
+    color: var(--t1); outline: none; width: 160px; margin-left: auto;
+}
+.srch:focus { border-color: var(--sf); }
+.btn {
+    border: 1px solid var(--bd); background: #fff; border-radius: 4px; cursor: pointer;
+    font-family: inherit; font-size: 12px; font-weight: 600; padding: 5px 12px; color: var(--t1);
+}
+.btn:hover { background: #F5F5F5; }
+.btn.bn { color: var(--navy); border-color: var(--navy); }
+
+.acf { display: flex; align-items: center; gap: 6px; padding: 9px 16px; background: #F7FAFD; border-bottom: 1px solid var(--bd); flex-wrap: wrap; }
+.acf input, .acf select {
+    border: 1px solid var(--bd); border-radius: 4px; padding: 4px 8px; font-size: 11px; font-family: inherit;
+    color: var(--t1); outline: none; background: #fff;
+}
+.acf input { width: 132px; }
+.acf input:focus, .acf select:focus { border-color: var(--sf); }
+.acf-mode { font-size: 11px; font-weight: 700; color: var(--navy); margin-right: 2px; }
+.acf-err { font-size: 11px; color: #C23934; }
+
+.int-tbl { width: 100%; border-collapse: collapse; font-size: 12px; }
+.int-tbl th {
+    text-align: left; padding: 8px 12px; font-size: 11px; font-weight: 700; color: var(--t2);
+    border-bottom: 2px solid var(--bd); background: #FAFAFA; text-transform: uppercase; letter-spacing: 0.3px; white-space: nowrap;
+}
+.int-tbl td { padding: 9px 12px; border-bottom: 1px solid var(--bd); vertical-align: middle; }
+.ppl-row { cursor: pointer; }
+.ppl-row:hover, .ppl-row.row-open { background: #F5F5F5; }
+.ppl-exp-row td { padding: 0; background: #F9F9F9; }
+.ppl-person { display: flex; align-items: center; gap: 8px; }
+.ppl-name { font-size: 13px; font-weight: 600; color: var(--t1); text-decoration: none; display: block; }
+.ppl-name:hover { color: var(--sf); text-decoration: underline; }
+.ppl-org { font-size: 11px; color: var(--t2); text-decoration: none; display: block; }
+.ppl-org:hover { color: var(--sf); text-decoration: underline; }
+.col-muted { font-size: 12px; color: var(--t2); }
+.col-muted-sm { font-size: 11px; color: var(--t2); }
+.conn-ct { font-size: 12px; font-weight: 600; color: var(--sf); cursor: pointer; }
+.conn-ct:hover { text-decoration: underline; }
+.lt-date { font-size: 11px; font-weight: 600; color: var(--t1); }
+.fbadge {
+    display: inline-block; font-size: 9px; font-weight: 700; padding: 1px 4px; border-radius: 2px; background: #F5F5F5;
+    color: var(--t2); text-transform: uppercase; letter-spacing: 0.3px; border: 1px solid var(--bd);
+}
+.ppl-act { width: 54px; text-align: right; white-space: nowrap; }
+.del-x, .edit-x { opacity: 0.5; cursor: pointer; color: var(--t2); line-height: 1; transition: opacity 0.12s, color 0.12s; display: inline-block; margin-left: 6px; }
+.del-x { font-size: 15px; }
+.edit-x { font-size: 12px; }
+.ppl-row:hover .del-x, .ppl-row:hover .edit-x { opacity: 1; }
+.edit-x:hover { color: var(--sf); }
+.del-x:hover { color: #C23934; }
+
+.exp-inner { padding: 12px 16px; }
+.exs { margin-bottom: 14px; }
+.exs:last-child { margin-bottom: 0; }
+.exs-lbl { font-size: 10px; font-weight: 700; color: var(--t2); text-transform: uppercase; letter-spacing: 0.4px; margin-bottom: 6px; }
+.exs-body { font-size: 12px; color: var(--t1); line-height: 1.7; }
+.cd-stats { display: flex; gap: 16px; margin-top: 4px; }
+.cd-stat { display: flex; flex-direction: column; gap: 1px; }
+.cd-num { font-size: 14px; font-weight: 700; color: var(--t1); }
+.cd-lbl { font-size: 10px; color: #9CA3AF; }
+.wp-row { display: flex; align-items: flex-start; gap: 8px; padding: 6px 0; border-bottom: 1px solid #F3F3F3; font-size: 12px; }
+.wp-row:last-child { border-bottom: none; padding-bottom: 0; }
+.wp-arrow { font-size: 11px; color: #9CA3AF; flex-shrink: 0; width: 14px; text-align: center; padding-top: 2px; }
+.wp-body { flex: 1; min-width: 0; }
+.wp-line { color: var(--t1); line-height: 1.5; }
+.wp-meta { font-size: 11px; color: var(--t2); margin-top: 2px; }
+.wp-none { font-size: 12px; color: #9CA3AF; font-style: italic; }

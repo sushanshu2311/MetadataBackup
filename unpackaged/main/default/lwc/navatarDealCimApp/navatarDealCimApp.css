@@ -1,0 +1,20 @@
+:host {
+    --navy: #0B2D5F;
+    --sfh: #014486;
+    display: block;
+    font-family: 'Salesforce Sans', Arial, sans-serif;
+    font-size: 13px;
+    background: #F3F2F2;
+    min-height: 100vh;
+}
+.pb { padding: 16px 24px; max-width: 1440px; margin: 0 auto; }
+.card { background: #fff; border-radius: 6px; border: 1px solid #E8E8E8; overflow: hidden; }
+
+.ai-fab {
+    position: fixed; bottom: 24px; right: 24px; background: var(--navy); color: #fff; border: none;
+    border-radius: 24px; padding: 10px 18px; font-size: 12px; font-weight: 700; cursor: pointer;
+    font-family: inherit; box-shadow: 0 4px 16px rgba(0, 0, 0, 0.25); display: flex; align-items: center;
+    gap: 8px; z-index: 200; transition: background 0.15s;
+}
+.ai-fab:hover { background: var(--sfh); }
+.ai-fab-dot { width: 7px; height: 7px; border-radius: 50%; background: #4ADE80; flex-shrink: 0; }
